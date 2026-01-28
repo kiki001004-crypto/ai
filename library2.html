@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>경기도 공공도서관 현황 다변량 분석 보고서</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Playfair+Display:wght@400;700;900&family=Crimson+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1e3a5f;
+            --secondary-color: #2d5a88;
+            --accent-color: #d4af37;
+            --text-color: #2c3e50;
+            --light-bg: #f8f9fa;
+            --white: #ffffff;
+            --border-color: #e0e6ed;
+            --highlight-bg: #fff8e7;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1.8;
+            color: var(--text-color);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header / Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--white);
+            padding: 80px 20px 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><path d="M0,0 Q300,40 600,20 T1200,10 L1200,120 L0,120 Z" fill="rgba(255,255,255,0.05)"/></svg>') repeat-x bottom;
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero .subtitle {
+            font-size: 1.4rem;
+            font-weight: 300;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+
+        .hero .meta {
+            font-size: 1rem;
+            opacity: 0.85;
+            font-weight: 300;
+        }
+
+        /* Navigation / Table of Contents */
+        .nav-wrapper {
+            position: sticky;
+            top: 0;
+            background: var(--white);
+            box-shadow: var(--shadow);
+            z-index: 100;
+            margin-bottom: 40px;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        nav {
+            display: flex;
+            overflow-x: auto;
+            gap: 5px;
+            padding: 15px 0;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            padding: 10px 20px;
+            border-radius: 8px;
+            white-space: nowrap;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        nav a:hover {
+            background: var(--primary-color);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        .main-content {
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            margin: 40px auto;
+            overflow: hidden;
+        }
+
+        .content-wrapper {
+            padding: 60px 80px;
+        }
+
+        /* Section Styles */
+        section {
+            margin-bottom: 80px;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        section:last-child {
+            margin-bottom: 0;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--accent-color);
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: var(--secondary-color);
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin: 40px 0 20px;
+        }
+
+        h4 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin: 30px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+            text-align: justify;
+        }
+
+        strong {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        /* Tables */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 30px 0;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--white);
+        }
+
+        thead {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+        }
+
+        th {
+            padding: 18px 20px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        tbody tr:hover {
+            background: var(--light-bg);
+            transition: background 0.3s ease;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 20px 0 20px 30px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        ul li::marker {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        /* Highlight Boxes */
+        .highlight-box {
+            background: linear-gradient(135deg, var(--highlight-bg) 0%, #fffef9 100%);
+            border-left: 5px solid var(--accent-color);
+            padding: 25px 30px;
+            margin: 30px 0;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .insight-box {
+            background: linear-gradient(135deg, #e8f4f8 0%, #f0f8ff 100%);
+            border-left: 5px solid var(--secondary-color);
+            padding: 25px 30px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        .insight-box h4 {
+            color: var(--secondary-color);
+            margin-top: 0;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--white);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 900;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        /* Image Gallery */
+        .image-gallery {
+            margin: 50px 0;
+        }
+
+        .image-item {
+            margin-bottom: 50px;
+        }
+
+        .image-item img {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            transition: transform 0.3s ease;
+        }
+
+        .image-item img:hover {
+            transform: scale(1.02);
+        }
+
+        .image-caption {
+            text-align: center;
+            margin-top: 15px;
+            font-style: italic;
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Recommendations Cards */
+        .recommendation-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .rec-card {
+            background: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .rec-card:hover {
+            border-color: var(--accent-color);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-3px);
+        }
+
+        .rec-card h4 {
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .rec-card ul {
+            margin-left: 20px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-color);
+            color: var(--white);
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 60px;
+        }
+
+        footer p {
+            margin: 5px 0;
+            opacity: 0.9;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .content-wrapper {
+                padding: 40px 30px;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            h3 {
+                font-size: 1.5rem;
+            }
+
+            .stat-number {
+                font-size: 2.5rem;
+            }
+
+            nav {
+                flex-wrap: wrap;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .nav-wrapper,
+            footer {
+                display: none;
+            }
+
+            .main-content {
+                box-shadow: none;
+            }
+
+            section {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* Scroll Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: var(--accent-color);
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.1s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1>경기도 공공도서관 현황<br>다변량 분석 보고서</h1>
+            <p class="subtitle">2026년 데이터 기반 심층 분석</p>
+            <p class="meta">분석 기준일: 2026년 1월 28일</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-wrapper">
+        <div class="nav-container">
+            <nav>
+                <a href="#overview">분석 개요</a>
+                <a href="#data">데이터 소개</a>
+                <a href="#results">분석 결과</a>
+                <a href="#insights">핵심 인사이트</a>
+                <a href="#recommendations">권장사항</a>
+                <a href="#conclusion">결론</a>
+                <a href="#appendix">시각화 자료</a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="main-content">
+            <div class="content-wrapper">
+
+                <!-- 1. 분석 개요 -->
+                <section id="overview">
+                    <h2>1. 분석 개요</h2>
+                    
+                    <p>본 보고서는 경기도 공공도서관 현황 데이터를 활용하여 도서관 운영 실태와 자료 보유 현황을 다각도로 분석한 결과를 담고 있습니다. <strong>총 323개 도서관의 운영 정보, 자료 현황, 지리적 분포 등을 종합적으로 분석</strong>하여 현황 파악, 문제점 도출, 개선 방안 제시를 목적으로 합니다.</p>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number">323</div>
+                            <div class="stat-label">분석 대상 도서관</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">26</div>
+                            <div class="stat-label">분석 변수</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">5</div>
+                            <div class="stat-label">자료 유형</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">31</div>
+                            <div class="stat-label">경기도 시군</div>
+                        </div>
+                    </div>
+
+                    <h3>분석 범위</h3>
+                    <ul>
+                        <li><strong>대상:</strong> 경기도 내 공공도서관 323개소</li>
+                        <li><strong>분석 항목:</strong> 도서관 유형, 운영 방법, 자료 보유 현황, 개관일수, 지리적 위치</li>
+                        <li><strong>분석 방법:</strong> 기술통계, 상관분석, 주성분분석(PCA), 지리정보분석, 다변량 시각화</li>
+                    </ul>
+                </section>
+
+                <!-- 2. 데이터 소개 -->
+                <section id="data">
+                    <h2>2. 데이터 소개</h2>
+
+                    <h3>데이터 구조</h3>
+                    <p>본 분석에 사용된 데이터는 총 <strong>323개 행(도서관), 26개 열(변수)</strong>로 구성되어 있습니다.</p>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>범주</th>
+                                    <th>변수명</th>
+                                    <th>설명</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>기본정보</td>
+                                    <td>시군명, 도서관유형명, 운영방법</td>
+                                    <td>행정구역, 도서관 분류, 운영 주체</td>
+                                </tr>
+                                <tr>
+                                    <td>운영정보</td>
+                                    <td>개관일자, 자료실개관일수, 열람실개관일수</td>
+                                    <td>개관 시기 및 연간 운영일수</td>
+                                </tr>
+                                <tr>
+                                    <td>자료현황</td>
+                                    <td>국내도서, 국외도서, 비도서, 전자자료, 연속간행물</td>
+                                    <td>5가지 자료 유형별 보유 수량</td>
+                                </tr>
+                                <tr>
+                                    <td>위치정보</td>
+                                    <td>WGS84위도, WGS84경도, 소재지주소</td>
+                                    <td>도서관의 지리적 위치</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>데이터 품질</h3>
+                    <p>전반적으로 양호한 데이터 품질을 보이나, 일부 변수에서 결측치가 존재합니다:</p>
+                    <ul>
+                        <li>열람실개관일수: 163개 결측 (50.5%)</li>
+                        <li>국외도서자료수, 전자자료수: 각 1개 결측</li>
+                        <li>WGS84 좌표: 각 1개 결측</li>
+                    </ul>
+                </section>
+
+                <!-- 3. 주요 분석 결과 -->
+                <section id="results">
+                    <h2>3. 주요 분석 결과</h2>
+
+                    <h3>3.1. 자료 수집 현황 분석</h3>
+
+                    <h4>상관관계 분석</h4>
+                    <p>자료 유형 간 상관관계 분석 결과, 다음과 같은 패턴이 발견되었습니다:</p>
+                    <ul>
+                        <li><strong>국내도서 ↔ 비도서자료:</strong> r = 0.67 (강한 양의 상관) - 규모가 큰 도서관일수록 두 자료 모두 많이 보유</li>
+                        <li><strong>국내도서 ↔ 연속간행물:</strong> r = 0.45 (중간 수준 양의 상관) - 전통적 자료 수집 패턴</li>
+                        <li><strong>전자자료 ↔ 기타 자료:</strong> r < 0.30 (약한 상관) - 전자자료는 독립적으로 수집됨</li>
+                    </ul>
+
+                    <h4>시군별 자료 보유 현황</h4>
+                    <p><strong>총 자료수 기준 상위 5개 시군:</strong></p>
+                    <ul>
+                        <li><strong>1위 수원시:</strong> 가장 많은 총 자료수 보유, 도서관 수도 상위권</li>
+                        <li><strong>2위 고양시:</strong> 두 번째 규모, 국내도서 중심의 컬렉션</li>
+                        <li><strong>3위 용인시:</strong> 전자자료 비율이 상대적으로 높음</li>
+                        <li><strong>4위 성남시:</strong> 비도서자료가 특징적</li>
+                        <li><strong>5위 안양시:</strong> 균형잡힌 자료 구성</li>
+                    </ul>
+
+                    <div class="highlight-box">
+                        <p><strong>특이사항:</strong> 도서관 수와 총 자료수가 반드시 비례하지는 않음. 과천시의 경우 도서관 수는 적지만 평균 자료수가 높아 효율적 운영의 사례로 볼 수 있습니다.</p>
+                    </div>
+
+                    <h4>도서관 유형별 자료 구성 특징</h4>
+                    <ul>
+                        <li><strong>공공도서관:</strong> 국내도서 중심 (70-80%) - 가장 일반적인 자료 구성</li>
+                        <li><strong>어린이도서관:</strong> 비도서자료 비율 높음 - 교육용 시청각 자료 특화</li>
+                        <li><strong>교육청 소속:</strong> 연속간행물 비율 높음 - 학습 참고자료 중심</li>
+                        <li><strong>사립도서관:</strong> 중소 규모, 특화 컬렉션 - 설립 목적에 따라 다양</li>
+                    </ul>
+
+                    <h4>운영방법별 특징</h4>
+                    <p><strong>직영 도서관</strong>이 평균적으로 가장 많은 자료를 보유하고 있으며, <strong>위탁운영 도서관</strong>은 자료수는 적지만 효율적 운영이 가능한 것으로 나타났습니다.</p>
+
+                    <h3>3.2. 분포 및 관계 분석</h3>
+
+                    <h4>개관일수 vs 자료수 관계</h4>
+                    <p>대부분의 도서관이 연간 <strong>290-310일</strong> 운영되고 있으며, 개관일수와 자료수 간에는 약한 상관관계만 존재합니다 (r ≈ 0.15). 이는 <strong>개관일수보다는 도서관의 규모, 예산, 설립 시기 등이 자료수에 더 큰 영향</strong>을 미친다는 것을 시사합니다.</p>
+
+                    <h4>자료수 분포 특성</h4>
+                    <p>국내도서와 비도서자료 모두 <strong>우편향 분포</strong>를 보입니다:</p>
+                    <ul>
+                        <li><strong>국내도서:</strong> 평균 약 50,000권, 중위값 약 30,000권</li>
+                        <li><strong>비도서자료:</strong> 평균 약 8,000점, 중위값 약 5,000점</li>
+                    </ul>
+                    <p>이는 소수의 대형 도서관이 평균을 높이는 구조로, 자료 배분의 불균형을 나타냅니다.</p>
+
+                    <h3>3.3. 고급 다변량 분석</h3>
+
+                    <h4>레이더 차트 분석 (상위 6개 시군)</h4>
+                    <p>상위 6개 시군의 자료 구성을 5개 차원에서 비교 분석한 결과:</p>
+                    <ul>
+                        <li><strong>수원시:</strong> 모든 자료 유형에서 균형잡힌 높은 수치 (종합적 강점)</li>
+                        <li><strong>고양시:</strong> 국내도서에 특화 (전통적 장서 구성)</li>
+                        <li><strong>용인시:</strong> 전자자료 비율 상대적으로 높음 (디지털 전환 선도)</li>
+                        <li><strong>성남시:</strong> 비도서자료 특징적 (멀티미디어 자료 강화)</li>
+                        <li><strong>안양시, 부천시:</strong> 중간 규모, 균형적 분포 (안정적 운영)</li>
+                    </ul>
+
+                    <h4>버블차트 분석 (도서관 수 vs 평균 자료수)</h4>
+                    <p>시군별 도서관 밀도와 효율성을 동시에 파악한 결과:</p>
+                    <ul>
+                        <li><strong>수원시:</strong> 도서관 수도 많고 평균 자료수도 높음 (양적·질적 우수)</li>
+                        <li><strong>과천시:</strong> 도서관 수는 적지만 평균 자료수가 높음 (효율성 우수)</li>
+                        <li><strong>의정부시:</strong> 도서관 수에 비해 평균 자료수가 낮음 (개선 필요)</li>
+                    </ul>
+
+                    <h3>3.4. 지리적 분석</h3>
+
+                    <h4>도서관 위치 분포</h4>
+                    <p>경기도 도서관의 지리적 분포를 분석한 결과:</p>
+                    <ul>
+                        <li><strong>경기 남부 (수원, 용인, 성남):</strong> 도서관 밀집 지역</li>
+                        <li><strong>경기 북부 (파주, 연천):</strong> 상대적으로 적은 분포</li>
+                        <li><strong>주요 분포 범위:</strong> 위도 37.2-37.7°, 경도 126.8-127.2°</li>
+                    </ul>
+
+                    <h4>밀도 분석</h4>
+                    <ul>
+                        <li><strong>최고 밀도 지역:</strong> 수원, 성남, 고양, 용인 (서울 인접 지역)</li>
+                        <li><strong>도서관 공백 지역:</strong> 외곽 지역에 존재, 접근성 개선 필요</li>
+                        <li><strong>특이사항:</strong> 과천시 - 작은 면적 대비 높은 밀도, 화성시·평택시 - 넓은 면적에 비해 낮은 밀도</li>
+                    </ul>
+
+                    <h3>3.5. 통계적 고급 분석</h3>
+
+                    <h4>주성분 분석 (PCA)</h4>
+                    <p>5가지 자료 유형을 2개의 주성분으로 축소한 결과:</p>
+                    <ul>
+                        <li><strong>PC1 (55% 설명력):</strong> 전체 자료 규모를 나타냄</li>
+                        <li><strong>PC2 (25% 설명력):</strong> 자료 유형의 다양성을 나타냄</li>
+                    </ul>
+
+                    <p><strong>도서관 유형별 클러스터링:</strong></p>
+                    <ul>
+                        <li><strong>공공도서관:</strong> 넓게 분산 (다양한 규모 존재)</li>
+                        <li><strong>어린이도서관:</strong> PC2 양의 방향 (특화된 자료 구성)</li>
+                        <li><strong>사립도서관:</strong> 밀집된 분포 (유사한 특성)</li>
+                    </ul>
+
+                    <h4>전체 자료 유형 분포</h4>
+                    <p>경기도 공공도서관 전체 자료의 유형별 비율:</p>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>자료 유형</th>
+                                    <th>비율</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>국내도서</td>
+                                    <td><strong>75.2%</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>비도서자료</td>
+                                    <td>12.8%</td>
+                                </tr>
+                                <tr>
+                                    <td>연속간행물</td>
+                                    <td>6.5%</td>
+                                </tr>
+                                <tr>
+                                    <td>전자자료</td>
+                                    <td>3.8%</td>
+                                </tr>
+                                <tr>
+                                    <td>국외도서</td>
+                                    <td>1.7%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>국내도서가 절대적 비중을 차지하며, 외국도서와 전자자료는 매우 낮은 비율을 보입니다.</p>
+                </section>
+
+                <!-- 4. 핵심 인사이트 -->
+                <section id="insights">
+                    <h2>4. 핵심 인사이트</h2>
+
+                    <div class="insight-box">
+                        <h4>1. 자원 배분의 불균형</h4>
+                        <p><strong>현황:</strong> 소수의 대형 도서관이 전체 자료의 상당 부분을 보유하고 있습니다. 시군 간, 도서관 간 자료수 격차가 크게 나타나며, 중위값과 평균값의 큰 차이가 이를 입증합니다.</p>
+                        <p><strong>시사점:</strong> 중소 규모 도서관에 대한 자료 확충 지원이 필요합니다.</p>
+                    </div>
+
+                    <div class="insight-box">
+                        <h4>2. 지리적 접근성 문제</h4>
+                        <p><strong>현황:</strong> 서울 인접 지역에 도서관이 밀집되어 있으며, 외곽 지역에는 도서관 공백 지역이 존재합니다. 화성시, 평택시 등 넓은 면적을 가진 시군의 경우 도서관 밀도가 낮아 주민 접근성이 떨어집니다.</p>
+                        <p><strong>시사점:</strong> 외곽 지역 도서관 신설 또는 이동도서관 서비스 강화가 필요합니다.</p>
+                    </div>
+
+                    <div class="insight-box">
+                        <h4>3. 자료 구성의 편중</h4>
+                        <p><strong>현황:</strong> 국내도서가 전체의 75%를 차지하며, 외국도서(1.7%)와 전자자료(3.8%)의 비율이 매우 낮습니다. 디지털 시대와 다문화 사회의 요구에 부응하지 못하는 구조입니다.</p>
+                        <p><strong>시사점:</strong> 다양한 자료 유형 확충으로 이용자 선택권을 확대해야 합니다.</p>
+                    </div>
+
+                    <div class="insight-box">
+                        <h4>4. 운영 효율성 차이</h4>
+                        <p><strong>현황:</strong> 개관일수와 자료수 간 상관관계가 낮아, 운영일수만으로는 서비스 품질을 판단하기 어렵습니다. 직영과 위탁 간 자료 보유 차이가 존재하나, 효율성은 별도로 평가되어야 합니다.</p>
+                        <p><strong>시사점:</strong> 운영방식별 성과 지표를 개발하고 지속적으로 모니터링해야 합니다.</p>
+                    </div>
+
+                    <div class="insight-box">
+                        <h4>5. 유형별 특성화</h4>
+                        <p><strong>현황:</strong> 어린이도서관은 비도서자료 비율이 높고, 교육청 도서관은 연속간행물이 강점입니다. 이러한 특성화는 긍정적이나, 더욱 명확한 차별화 전략이 필요합니다.</p>
+                        <p><strong>시사점:</strong> 도서관 유형별 특성화 전략을 수립하고 강화해야 합니다.</p>
+                    </div>
+                </section>
+
+                <!-- 5. 권장사항 -->
+                <section id="recommendations">
+                    <h2>5. 권장사항</h2>
+
+                    <div class="recommendation-cards">
+                        <div class="rec-card">
+                            <h4>단기 개선 과제 (1년 이내)</h4>
+                            <ul>
+                                <li>중소 규모 도서관 자료 확충 예산 증액</li>
+                                <li>전자자료 및 외국도서 구입 확대</li>
+                                <li>도서관 공백 지역 실태 조사 및 이동도서관 운영 강화</li>
+                                <li>도서관 유형별 특성화 가이드라인 수립</li>
+                            </ul>
+                        </div>
+
+                        <div class="rec-card">
+                            <h4>중기 개선 과제 (2-3년)</h4>
+                            <ul>
+                                <li>외곽 지역 신규 도서관 건립 계획 수립</li>
+                                <li>운영방식별 성과 평가 시스템 구축</li>
+                                <li>디지털 자료 플랫폼 통합 구축</li>
+                                <li>시군별 자료 공동 활용 체계 마련</li>
+                            </ul>
+                        </div>
+
+                        <div class="rec-card">
+                            <h4>장기 개선 과제 (3년 이상)</h4>
+                            <ul>
+                                <li>경기도 전역 도서관 네트워크 구축</li>
+                                <li>인구 대비 적정 도서관 밀도 달성</li>
+                                <li>자료 유형별 균형잡힌 장서 구성 실현</li>
+                                <li>데이터 기반 도서관 정책 수립 체계 정착</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 6. 결론 -->
+                <section id="conclusion">
+                    <h2>6. 결론</h2>
+
+                    <p>본 분석을 통해 경기도 공공도서관의 현황과 과제를 다각도로 파악할 수 있었습니다. <strong>주요 발견사항은 다음과 같습니다:</strong></p>
+
+                    <ul>
+                        <li>경기도는 323개의 공공도서관을 운영하고 있으나, 자원 배분과 지리적 접근성에서 불균형이 존재합니다.</li>
+                        <li>국내도서 중심의 자료 구성은 디지털 시대와 다문화 사회의 요구에 부응하지 못하고 있습니다.</li>
+                        <li>도서관 유형별 특성화는 진행 중이나, 더욱 명확한 차별화 전략이 필요합니다.</li>
+                        <li>수원, 고양, 용인 등 일부 시군은 양적·질적으로 우수하나, 외곽 지역은 개선이 시급합니다.</li>
+                    </ul>
+
+                    <div class="highlight-box">
+                        <p><strong>향후 방향:</strong> 본 분석 결과를 바탕으로 <strong>① 자원의 공평한 배분</strong>, <strong>② 지리적 접근성 개선</strong>, <strong>③ 자료 다양성 확보</strong>, <strong>④ 운영 효율성 제고</strong>를 핵심 과제로 추진해야 할 것입니다.</p>
+                    </div>
+
+                    <p>지속적인 데이터 수집과 분석을 통해 정책의 효과를 모니터링하고, 주민의 도서관 접근성과 만족도를 높이는 방향으로 개선해 나가야 할 것입니다.</p>
+                </section>
+
+                <!-- 부록: 시각화 -->
+                <section id="appendix">
+                    <h2>부록: 시각화 자료</h2>
+
+                    <div class="image-gallery">
+                        <div class="image-item">
+                            <h3>그림 1. 자료 수집 현황 분석</h3>
+                            <img src="eda_page1.png" alt="자료 수집 현황 분석">
+                            <p class="image-caption">상관관계 히트맵, 시군별 자료수 및 도서관 수, 도서관 유형별 자료 구성, 운영방법별 비교</p>
+                        </div>
+
+                        <div class="image-item">
+                            <h3>그림 2. 분포 및 관계 분석</h3>
+                            <img src="eda_page2.png" alt="분포 및 관계 분석">
+                            <p class="image-caption">개관일수 vs 자료수 산점도, 시군별 박스플롯, 자료 분포 히스토그램, 유형×운영방법 조합</p>
+                        </div>
+
+                        <div class="image-item">
+                            <h3>그림 3. 고급 다변량 분석</h3>
+                            <img src="eda_page3.png" alt="고급 다변량 분석">
+                            <p class="image-caption">레이더 차트(상위 6개 시군), 개관일수 상관분석, 버블차트, 누적 면적 차트</p>
+                        </div>
+
+                        <div class="image-item">
+                            <h3>그림 4. 지리적 분석</h3>
+                            <img src="eda_page4.png" alt="지리적 분석">
+                            <p class="image-caption">지리적 위치 분석, 도서관 유형별 지리 분포, 밀도 히트맵, 시군별 밀집도</p>
+                        </div>
+
+                        <div class="image-item">
+                            <h3>그림 5. 통계적 고급 분석</h3>
+                            <img src="eda_page5.png" alt="통계적 고급 분석">
+                            <p class="image-caption">상관관계 매트릭스, PCA 분석, 자료 유형 비율 파이차트, 교차분석 히트맵</p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p><strong>경기도 공공도서관 현황 다변량 분석 보고서</strong></p>
+        <p>분석 기준일: 2026년 1월 28일</p>
+        <p>© 2026 Data Analysis Report. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Scroll Progress Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+        // Smooth Scroll for Navigation
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                const navHeight = document.querySelector('.nav-wrapper').offsetHeight;
+                const targetPosition = targetElement.offsetTop - navHeight - 20;
+
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Fade-in Animation on Scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
