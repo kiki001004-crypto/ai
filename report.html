@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>타이타닉 생존률 분석 보고서</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --paper:#0f1730;
+      --card:#121c3a;
+      --text:#e8ecff;
+      --muted:#aab3dd;
+      --line:rgba(255,255,255,.12);
+      --accent:#7aa2ff;
+      --accent2:#77f1c1;
+      --warn:#ffcc66;
+      --danger:#ff6b88;
+      --shadow: 0 18px 40px rgba(0,0,0,.35);
+      --radius: 18px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Apple SD Gothic Neo", "Malgun Gothic", "Nanum Gothic", "Noto Sans KR", Arial, sans-serif;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color: var(--text);
+      background:
+        radial-gradient(1200px 700px at 20% 10%, rgba(122,162,255,.28), transparent 60%),
+        radial-gradient(900px 600px at 80% 30%, rgba(119,241,193,.18), transparent 55%),
+        radial-gradient(900px 700px at 50% 90%, rgba(255,204,102,.12), transparent 60%),
+        linear-gradient(180deg, var(--bg), #070a14);
+    }
+
+    a{ color: var(--accent); text-decoration:none; }
+    a:hover{ text-decoration:underline; }
+
+    .app{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 18px 80px;
+      display:grid;
+      grid-template-columns: 320px 1fr;
+      gap: 18px;
+    }
+
+    header{
+      grid-column: 1 / -1;
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap: 16px;
+      padding: 22px 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(18,28,58,.88), rgba(15,23,48,.74));
+      box-shadow: var(--shadow);
+    }
+
+    .title h1{
+      margin:0;
+      font-size: 22px;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+
+    .title p{
+      margin:8px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .meta{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      gap: 10px;
+    }
+
+    .chip{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--muted);
+      backdrop-filter: blur(6px);
+      white-space: nowrap;
+    }
+
+    .sidebar{
+      position: sticky;
+      top: 16px;
+      align-self: start;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(18,28,58,.78), rgba(15,23,48,.68));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    .sidebar .toc-head{
+      padding: 16px 16px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .sidebar .toc-head strong{
+      display:block;
+      font-size: 13px;
+      letter-spacing: .02em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .sidebar nav{
+      padding: 10px 10px 14px;
+    }
+
+    .toc a{
+      display:block;
+      padding: 10px 10px;
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 13px;
+      border: 1px solid transparent;
+    }
+
+    .toc a small{ color: var(--muted); font-size: 12px; }
+
+    .toc a:hover{
+      background: rgba(122,162,255,.10);
+      border-color: rgba(122,162,255,.22);
+      text-decoration:none;
+    }
+
+    .content{
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(18,28,58,.70), rgba(15,23,48,.62));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    .content .inner{
+      padding: 22px;
+    }
+
+    section{
+      padding: 18px 0;
+      border-top: 1px dashed rgba(255,255,255,.14);
+    }
+    section:first-child{ border-top:none; padding-top: 0; }
+
+    h2{
+      margin: 0 0 10px;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    h3{
+      margin: 14px 0 10px;
+      font-size: 15px;
+      color: #f1f4ff;
+      letter-spacing: -0.02em;
+    }
+
+    p{
+      margin: 8px 0;
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 14px;
+    }
+
+    .muted{ color: var(--muted); }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
+    }
+
+    .card{
+      grid-column: span 12;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255,255,255,.05);
+      padding: 14px 14px;
+      overflow:auto;
+    }
+
+    .callout{
+      border-left: 3px solid var(--accent2);
+      background: rgba(119,241,193,.08);
+      padding: 12px 12px;
+      border-radius: 14px;
+    }
+
+    .warn{
+      border-left-color: var(--warn);
+      background: rgba(255,204,102,.10);
+    }
+
+    .danger{
+      border-left-color: var(--danger);
+      background: rgba(255,107,136,.10);
+    }
+
+    table{
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 13px;
+      overflow:hidden;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      min-width: 520px;
+    }
+
+    th, td{
+      padding: 10px 10px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      vertical-align: top;
+    }
+
+    th{
+      text-align:left;
+      background: rgba(122,162,255,.12);
+      color: #f3f6ff;
+      font-weight: 600;
+    }
+
+    tr:last-child td{ border-bottom:none; }
+
+    code{
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: 2px 6px;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 8px;
+      background: rgba(0,0,0,.18);
+      color: #e9eeff;
+    }
+
+    .figlist li{
+      margin: 6px 0;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 13px;
+    }
+
+    .kpi{
+      display:flex;
+      gap: 10px;
+      flex-wrap:wrap;
+    }
+
+    .kpi .pill{
+      flex: 0 0 auto;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      border-radius: 14px;
+      padding: 10px 12px;
+      min-width: 160px;
+    }
+
+    .kpi .pill strong{ display:block; font-size: 12px; color: var(--muted); font-weight:600; }
+    .kpi .pill span{ display:block; font-size: 18px; margin-top: 2px; letter-spacing:-0.02em; }
+
+    .footer{
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255,255,255,.12);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    /* responsive */
+    @media (max-width: 980px){
+      .app{ grid-template-columns: 1fr; }
+      .sidebar{ position: relative; top: 0; }
+      table{ min-width: 0; }
+    }
+
+    /* print */
+    @media print{
+      body{ background: #fff; color:#111; }
+      header, .sidebar, .content{ box-shadow:none; background:#fff; }
+      .sidebar{ display:none; }
+      .content{ border-color:#ddd; }
+      .card{ background:#fff; border-color:#ddd; }
+      th{ background:#f2f4ff; }
+      a{ color:#1457ff; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <header>
+      <div class="title">
+        <h1>타이타닉 생존률 분석 보고서</h1>
+        <p>
+          업로드 데이터(<code>titanic_preprocessed_current.xlsx</code>) 기준으로 결측치/이상치 점검 및 EDA(일변량·다변량)를 수행했습니다.
+          <span class="muted">(Age 평균대체, Sex 최빈값 대체 적용)</span>
+        </p>
+      </div>
+      <div class="meta">
+        <div class="chip">등록일자: 2026.01.26</div>
+        <div class="chip">관측치: 418</div>
+        <div class="chip">변수: 8</div>
+        <div class="chip">목표: Survived(0/1)</div>
+      </div>
+    </header>
+
+    <aside class="sidebar">
+      <div class="toc-head"><strong>목차</strong></div>
+      <nav class="toc">
+        <a href="#ch1"><small>Chapter.1</small> 분석 목적 & 배경</a>
+        <a href="#direction"><small>—</small> 분석 방향</a>
+        <a href="#ch2"><small>Chapter.2</small> 활용데이터</a>
+        <a href="#ch3"><small>Chapter.3</small> 분석과정</a>
+        <a href="#ch4"><small>Chapter.4</small> 분석결과</a>
+        <a href="#r41"><small>4-1</small> 탑승객 구성 분석</a>
+        <a href="#r42"><small>4-2</small> 생존 영향 요인 분석</a>
+        <a href="#r43"><small>4-3</small> 요금 및 등급 구조 분석</a>
+        <a href="#r44"><small>4-4</small> 가족 동반 구조 분석</a>
+        <a href="#r45"><small>4-5</small> 수치형 상관관계 분석</a>
+        <a href="#r46"><small>4-6</small> 예측 사례 및 시사점</a>
+        <a href="#ch5"><small>Chapter.5</small> 한계점 및 결론</a>
+        <a href="#appendix"><small>부록</small> 시각화 목록</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <div class="inner">
+
+        <section id="ch1">
+          <h2>Chapter.1 분석 목적 & 배경</h2>
+          <p>
+            타이타닉 생존 데이터는 제한된 상황에서의 의사결정(대피/구조)의 결과가 탑승객 속성에 따라 어떻게 달라지는지 살펴볼 수 있는 사례입니다.
+            본 분석은 생존에 영향을 줄 수 있는 요인을 기술통계와 시각화로 확인하고, 전처리 및 모델링 관점의 시사점을 정리하는 데 목적이 있습니다.
+          </p>
+
+          <div class="grid">
+            <div class="card callout" style="grid-column: span 12;">
+              <strong style="display:block; margin-bottom:6px;">분석 목표</strong>
+              <ul style="margin:0; padding-left:18px; color:var(--text); line-height:1.6; font-size:14px;">
+                <li>변수별 분포 및 기초 통계로 데이터 특성 파악</li>
+                <li>생존과 변수들의 관계(교차/분포/상관)를 다변량 시각화로 확인</li>
+                <li>결측치/이상치 처리의 영향과 한계점을 정리</li>
+                <li>요청 조건에 대한 생존 예측 사례를 제공</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="direction">
+          <h2>“분석 방향”</h2>
+          <div class="card">
+            <table>
+              <thead>
+                <tr>
+                  <th>구분</th>
+                  <th>내용</th>
+                  <th>산출물(예)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>현황 파악</td>
+                  <td>변수별 분포/기초 통계</td>
+                  <td>일변량 EDA(막대·히스토그램)</td>
+                </tr>
+                <tr>
+                  <td>요인 분석</td>
+                  <td>생존과 변수의 관계 탐색</td>
+                  <td>다변량 EDA(교차·박스·산점·상관)</td>
+                </tr>
+                <tr>
+                  <td>인사이트 도출</td>
+                  <td>전처리·변수구조·예측 시사점</td>
+                  <td>한계점/결론, 예측 사례</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="ch2">
+          <h2>Chapter.2 활용데이터</h2>
+          <div class="grid">
+            <div class="card" style="grid-column: span 12;">
+              <h3>“활용데이터”</h3>
+              <table>
+                <thead>
+                  <tr><th>항목</th><th>내용</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>원본 파일</td><td><code>titanicsurvived.csv</code></td></tr>
+                  <tr><td>전처리 파일</td><td><code>titanic_preprocessed_current.xlsx</code></td></tr>
+                  <tr><td>관측치(행)</td><td>418</td></tr>
+                  <tr><td>변수(열)</td><td>8</td></tr>
+                  <tr><td>목표변수</td><td><code>Survived</code> (0=사망, 1=생존)</td></tr>
+                </tbody>
+              </table>
+
+              <h3 style="margin-top:16px;">변수 구성</h3>
+              <table>
+                <thead>
+                  <tr><th>구분</th><th>변수</th><th>설명</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>목표변수</td>
+                    <td><code>Survived</code></td>
+                    <td>0=사망, 1=생존</td>
+                  </tr>
+                  <tr>
+                    <td>수치형</td>
+                    <td><code>Pclass</code>, <code>Age</code>, <code>SibSp</code>, <code>Parch</code>, <code>Fare</code></td>
+                    <td>객실 등급, 나이, 동승 형제/배우자 수, 동승 부모/자녀 수, 요금</td>
+                  </tr>
+                  <tr>
+                    <td>범주형</td>
+                    <td><code>Sex</code>, <code>Embarked</code></td>
+                    <td>성별, 승선 항구</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section id="ch3">
+          <h2>Chapter.3 분석과정</h2>
+          <div class="grid">
+            <div class="card" style="grid-column: span 12;">
+              <h3>“분석절차”</h3>
+              <table>
+                <thead>
+                  <tr><th>단계</th><th>내용</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>1</td><td>데이터 로드 및 스키마 확인(418×8)</td></tr>
+                  <tr><td>2</td><td>결측치 탐지 및 처리(Age 평균 대체, Sex 최빈값 대체)</td></tr>
+                  <tr><td>3</td><td>이상치 탐지(IQR) 및 변수 특성 해석(구조적 이상치 구분)</td></tr>
+                  <tr><td>4</td><td>일변량 시각화 EDA(분포 확인)</td></tr>
+                  <tr><td>5</td><td>다변량 시각화 EDA(생존 요인 탐색)</td></tr>
+                  <tr><td>6</td><td>상관관계 히트맵 및 핵심 관계 요약</td></tr>
+                  <tr><td>7</td><td>간단 예측 모델 학습(원-핫 인코딩 + 로지스틱 회귀) 및 예측 사례</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="card callout warn" style="grid-column: span 12;">
+              <strong style="display:block; margin-bottom:6px;">“분석의 한계성”</strong>
+              <ul style="margin:0; padding-left:18px; color:var(--text); line-height:1.65; font-size:14px;">
+                <li><b>Age 평균 대체</b>로 인해 나이 분포(특히 30세 근처 빈도)가 인위적으로 증가할 수 있음</li>
+                <li>상관계수는 <b>선형 관계</b>만 반영하므로 비선형/조건부 효과는 추가 검증이 필요</li>
+                <li>본 데이터는 <b>Sex가 생존을 매우 강하게 분리</b>하는 형태로 나타나 과적합/누수 유사 현상 점검이 필요</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="ch4">
+          <h2>Chapter.4 분석결과</h2>
+          <p class="muted">아래 결과는 일변량/다변량 시각화 및 기술통계를 종합해 정리했습니다.</p>
+
+          <div class="kpi" aria-label="핵심 요약">
+            <div class="pill"><strong>생존률(평균)</strong><span>36.36%</span></div>
+            <div class="pill"><strong>Pclass(3등석 비중)</strong><span>최다</span></div>
+            <div class="pill"><strong>Fare 분포</strong><span>우측 왜도</span></div>
+            <div class="pill"><strong>핵심 축</strong><span>Sex / Pclass·Fare / Family</span></div>
+          </div>
+        </section>
+
+        <section id="r41">
+          <h2>4-1. “탑승객 구성 분석”</h2>
+          <div class="card">
+            <table>
+              <thead>
+                <tr><th>항목</th><th>분포(건수)</th><th>코멘트</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>생존(Survived)</td><td>0: 266, 1: 152</td><td>생존률 ≈ 36.36%</td></tr>
+                <tr><td>객실등급(Pclass)</td><td>1: 107, 2: 93, 3: 218</td><td>3등석 비중이 가장 큼</td></tr>
+                <tr><td>성별(Sex)</td><td>male: 270, female: 148</td><td>남성 비중이 큼</td></tr>
+                <tr><td>승선항구(Embarked)</td><td>S: 270, C: 102, Q: 46</td><td>S가 가장 많음</td></tr>
+              </tbody>
+            </table>
+            <p class="muted">관련 시각화: 그림 1~4</p>
+          </div>
+        </section>
+
+        <section id="r42">
+          <h2>4-2. “생존 영향 요인 분석”</h2>
+          <div class="grid">
+            <div class="card" style="grid-column: span 12;">
+              <h3>범주형 변수별 생존율</h3>
+              <table>
+                <thead>
+                  <tr><th>구분</th><th>범주</th><th>생존율</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>성별(Sex)</td><td>female</td><td>1.000</td></tr>
+                  <tr><td></td><td>male</td><td>0.015</td></tr>
+                  <tr><td>객실등급(Pclass)</td><td>1</td><td>0.467</td></tr>
+                  <tr><td></td><td>2</td><td>0.323</td></tr>
+                  <tr><td></td><td>3</td><td>0.330</td></tr>
+                  <tr><td>승선항구(Embarked)</td><td>Q</td><td>0.522</td></tr>
+                  <tr><td></td><td>C</td><td>0.392</td></tr>
+                  <tr><td></td><td>S</td><td>0.326</td></tr>
+                </tbody>
+              </table>
+
+              <div class="callout danger" style="margin-top:12px;">
+                <b>주의:</b> 본 데이터에서는 <code>Sex</code>가 생존을 매우 강하게 구분하는 형태로 나타납니다.
+                모델이 성별 규칙처럼 동작할 수 있으므로, 일반화 해석 시 데이터 품질/누수 점검이 필요합니다.
+              </div>
+
+              <p class="muted">관련 시각화: 그림 5~8</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="r43">
+          <h2>4-3. “요금 및 등급 구조 분석”</h2>
+          <div class="grid">
+            <div class="card" style="grid-column: span 12;">
+              <h3>요금(Fare) 분포 요약</h3>
+              <table>
+                <thead><tr><th>통계</th><th>값</th></tr></thead>
+                <tbody>
+                  <tr><td>평균</td><td>35.60</td></tr>
+                  <tr><td>중앙값</td><td>14.45</td></tr>
+                  <tr><td>최대값</td><td>512.33</td></tr>
+                </tbody>
+              </table>
+
+              <div class="callout" style="margin-top:12px;">
+                <b>해석:</b> <code>Fare</code>는 우측 꼬리가 긴 분포(왜도)로, 일부 고가 요금이 존재합니다.
+                또한 <code>Pclass</code>와 <code>Fare</code>는 강하게 연결되어(상관 -0.58) 등급이 높을수록 요금이 비쌉니다.
+              </div>
+
+              <p class="muted">관련 시각화: 그림 9~11</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="r44">
+          <h2>4-4. “가족 동반 구조 분석”</h2>
+          <div class="grid">
+            <div class="card" style="grid-column: span 12;">
+              <p>
+                <code>SibSp</code>(형제/배우자)와 <code>Parch</code>(부모/자녀)는 0이 가장 많아 단독 또는 소규모 동반이 대부분입니다.
+                IQR 기준에서 구조적 이상치가 발생할 수 있어 제거보다는 파생변수 활용이 적합합니다.
+              </p>
+
+              <h3>파생변수: FamilySize</h3>
+              <p class="muted">정의: <code>FamilySize = SibSp + Parch + 1</code></p>
+              <table>
+                <thead><tr><th>가족규모</th><th>생존율</th></tr></thead>
+                <tbody>
+                  <tr><td>1(혼자)</td><td>0.269</td></tr>
+                  <tr><td>2</td><td>0.486</td></tr>
+                  <tr><td>3</td><td>0.526</td></tr>
+                  <tr><td>4</td><td>0.714</td></tr>
+                  <tr><td>5</td><td>0.286</td></tr>
+                </tbody>
+              </table>
+
+              <div class="callout" style="margin-top:12px;">
+                <b>해석:</b> 혼자(1명)는 낮고, 2~4명 구간에서 상대적으로 높아지는 경향이 관찰됩니다.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="r45">
+          <h2>4-5. “수치형 상관관계 분석”</h2>
+          <div class="grid">
+            <div class="card" style="grid-column: span 12;">
+              <h3>생존(Survived)과의 상관(피어슨, 선형)</h3>
+              <table>
+                <thead><tr><th>변수</th><th>상관계수</th></tr></thead>
+                <tbody>
+                  <tr><td>Fare</td><td>+0.19</td></tr>
+                  <tr><td>Parch</td><td>+0.16</td></tr>
+                  <tr><td>SibSp</td><td>+0.10</td></tr>
+                  <tr><td>Pclass</td><td>-0.11</td></tr>
+                  <tr><td>Age</td><td>-0.00</td></tr>
+                </tbody>
+              </table>
+
+              <h3 style="margin-top:16px;">변수 간 구조적 관계(요약)</h3>
+              <table>
+                <thead><tr><th>변수쌍</th><th>상관계수</th><th>의미</th></tr></thead>
+                <tbody>
+                  <tr><td>Pclass ↔ Fare</td><td>-0.58</td><td>등급이 낮을수록 요금이 낮아지는 구조</td></tr>
+                  <tr><td>Pclass ↔ Age</td><td>-0.44</td><td>상위 등급에 상대적으로 고연령 비중 가능</td></tr>
+                  <tr><td>Age ↔ Fare</td><td>+0.33</td><td>연령과 요금이 함께 증가하는 경향</td></tr>
+                  <tr><td>SibSp ↔ Parch</td><td>+0.31</td><td>가족 동반 구조 반영</td></tr>
+                </tbody>
+              </table>
+
+              <p class="muted">관련 시각화: 그림 12(상관관계 히트맵)</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="r46">
+          <h2>4-6. “예측 사례 및 시사점”</h2>
+          <div class="grid">
+            <div class="card" style="grid-column: span 12;">
+              <h3>예측 입력값(예시)</h3>
+              <table>
+                <thead><tr><th>변수</th><th>값</th></tr></thead>
+                <tbody>
+                  <tr><td>Pclass</td><td>3</td></tr>
+                  <tr><td>Sex</td><td>male</td></tr>
+                  <tr><td>Age</td><td>35</td></tr>
+                  <tr><td>SibSp</td><td>0</td></tr>
+                  <tr><td>Parch</td><td>0</td></tr>
+                  <tr><td>Fare</td><td>7.8292</td></tr>
+                  <tr><td>Embarked</td><td>Q</td></tr>
+                </tbody>
+              </table>
+
+              <div class="callout" style="margin-top:12px;">
+                <b>예측 결과(간단 모델):</b> <code>Survived = 0</code>
+                <span class="muted">(모델: 원-핫 인코딩 + 로지스틱 회귀)</span>
+              </div>
+
+              <div class="callout warn" style="margin-top:12px;">
+                <b>시사점:</b> 본 데이터는 <code>Sex</code> 변수가 매우 강력하여, 예측 모델이 성별 규칙처럼 동작할 수 있습니다.
+                따라서 해석 시 데이터 구성/편향 및 누수 가능성을 함께 점검해야 합니다.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="ch5">
+          <h2>Chapter.5 한계점 및 결론</h2>
+          <div class="card">
+            <table>
+              <thead><tr><th>구분</th><th>내용</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>한계점</td>
+                  <td>
+                    (1) <code>Age</code> 평균 대체로 분포가 인위적으로 변형될 수 있음<br/>
+                    (2) 상관관계는 선형 관계만 반영(비선형/조건부 효과는 추가 검증 필요)<br/>
+                    (3) <code>Sex</code>가 생존을 거의 분리하여 모델이 과도하게 단순해질 수 있음
+                  </td>
+                </tr>
+                <tr>
+                  <td>결론</td>
+                  <td>
+                    (1) 생존 관련 핵심 축은 <b>성별(Sex)</b>, <b>등급/요금(Pclass/Fare)</b>, <b>가족 동반(FamilySize)</b>로 요약됨<br/>
+                    (2) <code>Fare</code>는 왜도/이상치가 커서 <code>log1p(Fare)</code> 변환이 해석·모델링에 유리<br/>
+                    (3) 남성·하위 등급·저요금·단독 탑승 조합은 생존 확률이 낮게 추정되는 경향
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="footer">
+              ※ 본 웹페이지는 EDA 결과를 문서 템플릿 구조로 재구성한 정적 페이지입니다. 그래프 이미지는 별도 삽입(예: <code>&lt;img src="..."&gt;</code>) 형태로 추가할 수 있습니다.
+            </div>
+          </div>
+        </section>
+
+        <section id="appendix">
+          <h2>부록. 시각화 목록(요약)</h2>
+          <div class="card">
+            <ol class="figlist" style="margin:0; padding-left: 18px;">
+              <li>그림 1. 생존 여부 분포 — 막대</li>
+              <li>그림 2. 객실 등급 분포 — 막대</li>
+              <li>그림 3. 성별 분포 — 막대</li>
+              <li>그림 4. 승선 항구 분포 — 막대</li>
+              <li>그림 5. 성별×생존(카운트/생존율) — 누적 막대 / 막대</li>
+              <li>그림 6. 객실등급×생존(카운트/생존율) — 누적 막대 / 막대</li>
+              <li>그림 7. 승선 항구별 생존율 — 막대</li>
+              <li>그림 8. 객실등급×성별 생존율 — 그룹 막대</li>
+              <li>그림 9. 요금 분포(원자료) — 히스토그램</li>
+              <li>그림 10. 요금 분포(log1p) — 히스토그램</li>
+              <li>그림 11. 생존 여부별 요금 분포 — 박스플롯</li>
+              <li>그림 12. 수치형 변수 상관관계 히트맵 — 히트맵</li>
+            </ol>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+</body>
+</html>
