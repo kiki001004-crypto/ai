@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>채혜진의 홈페이지</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@300;400;500&display=swap");
+
+      :root {
+        --green: #1a7a1a;
+        --blue: #003399;
+        --red: #cc0000;
+        --text: #222222;
+        --bg: #ffffff;
+        --divider: #003399;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: var(--bg);
+        color: var(--text);
+        font-family: "Noto Sans KR", sans-serif;
+        font-weight: 400;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 20px;
+      }
+
+      .container {
+        max-width: 680px;
+        width: 100%;
+        text-align: center;
+      }
+
+      /* Title */
+      .title {
+        font-family: "Nanum Myeongjo", serif;
+        font-weight: 800;
+        font-size: 1.75rem;
+        color: var(--green);
+        letter-spacing: 0.06em;
+        margin-bottom: 36px;
+        line-height: 1.4;
+      }
+
+      /* Welcome text block */
+      .welcome-text {
+        font-size: 0.95rem;
+        line-height: 2.1;
+        color: var(--text);
+        margin-bottom: 32px;
+        font-weight: 300;
+        letter-spacing: 0.02em;
+      }
+
+      /* Contact block */
+      .contact-block {
+        font-size: 0.95rem;
+        line-height: 2.2;
+        color: var(--text);
+        margin-bottom: 28px;
+        font-weight: 300;
+        letter-spacing: 0.02em;
+      }
+
+      .contact-block a {
+        color: var(--red);
+        text-decoration: underline;
+        font-style: italic;
+        font-family: "Nanum Myeongjo", serif;
+      }
+
+      .contact-block a:hover {
+        color: #990000;
+      }
+
+      /* Date */
+      .date {
+        font-size: 0.9rem;
+        color: var(--text);
+        margin-bottom: 28px;
+        letter-spacing: 0.04em;
+        font-weight: 300;
+      }
+
+      /* Footer wrapper to align dividers with h2 */
+      .footer-wrapper {
+        display: inline-block;
+      }
+
+      /* Horizontal rule — top */
+      .divider-top {
+        border: none;
+        border-top: 3px solid var(--divider);
+        width: 100%;
+        margin: 0 auto 20px auto;
+      }
+
+      /* Footer section */
+      .footer-text {
+        font-family: "Nanum Myeongjo", serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--green);
+        letter-spacing: 0.05em;
+        margin-bottom: 20px;
+        white-space: nowrap;
+      }
+
+      /* Horizontal rule — bottom */
+      .divider-bottom {
+        border: none;
+        border-top: 3px solid var(--divider);
+        width: 100%;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="title">이지연의 홈페이지에 오신 것을 환영합니다.</h1>
+
+      <p class="welcome-text">
+        멋진 홈페이지가 되도록 노력하겠습니다.<br />
+        부디 저의 홈페이지에서 좋은 시간 가지시기 바라며<br />
+        가실 때에 따뜻한 글한마디 남겨주시면 감사하겠습니다.
+      </p>
+
+      <p class="contact-block">
+        그리고 제 홈페이지에 궁금한 점이 있으시면<br />
+        <a href="mailto:kiki001004@gmail.com">kiki001004@gmail.com</a>으로<br />
+        메일 보내주시기 바랍니다.
+      </p>
+
+      <p class="date">2026년 3월 23일</p>
+
+      <div class="footer-wrapper">
+        <hr class="divider-top" />
+        <h2 class="footer-text">KD아카데미 강의실에서</h2>
+        <hr class="divider-bottom" />
+      </div>
+    </div>
+  </body>
+</html>
