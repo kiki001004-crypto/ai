@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>검색엔진(이미지)</title>
+    <style>
+      /* 기본 페이지 스타일 및 중앙 정렬 */
+      body {
+        text-align: center;
+        font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+        margin-top: 50px;
+        background-color: #ffffff;
+      }
+
+      /* 제목 스타일 */
+      h2 {
+        font-size: 24px;
+        color: #000000;
+        margin-bottom: 20px;
+        font-weight: bold;
+      }
+
+      /* 붉은색 구분선 스타일 (짧은 선) */
+      hr.short-line {
+        width: 200px;
+        border: none;
+        border-top: 2px solid #b52a2a; /* 시안과 유사한 붉은색 */
+        margin: 20px auto;
+      }
+
+      /* 붉은색 구분선 스타일 (긴 선) */
+      hr.long-line {
+        width: 400px;
+        border: none;
+        border-top: 1px solid #b52a2a;
+        margin: 20px auto;
+      }
+
+      /* 로고 이미지 컨테이너 및 간격 설정 */
+      .logo-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        margin: 30px 0;
+      }
+
+      /* 개별 로고 이미지 크기 조정 */
+      .logo-container img {
+        object-fit: contain;
+        transition: opacity 0.3s;
+      }
+
+      .logo-container img:hover {
+        opacity: 0.8;
+      }
+
+      .naver-logo {
+        height: 30px;
+      }
+      .daum-logo {
+        height: 45px;
+      }
+      .google-logo {
+        height: 35px;
+      }
+
+      /* 하단 텍스트 링크 스타일 */
+      .text-link {
+        text-decoration: none;
+        color: #3333cc; /* 일반적인 하이퍼링크 색상 */
+        font-size: 14px;
+      }
+
+      .text-link:hover {
+        text-decoration: underline;
+      }
+
+      /* 푸터(카피라이트) 스타일 */
+      .footer {
+        font-size: 13px;
+        color: #000000;
+        margin-top: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 상단 제목 -->
+    <h2>검색엔진(이미지)</h2>
+
+    <!-- 첫 번째 구분선 -->
+    <hr class="short-line" style="width: 200px" />
+
+    <!-- 로고 하이퍼링크 영역 -->
+    <div class="logo-container">
+      <a href="https://www.naver.com" target="_blank" title="네이버로 이동">
+        <img
+          src="https://s.pstatic.net/static/www/mobile/edit/2016/0705/mobile_212852414260.png"
+          alt="NAVER"
+          class="naver-logo"
+        />
+      </a>
+      <a href="https://www.daum.net" target="_blank" title="다음으로 이동">
+        <img
+          src="https://t1.daumcdn.net/daumtop_chanel/op/20170315064553027.png"
+          alt="Daum"
+          class="daum-logo"
+        />
+      </a>
+      <a href="https://www.google.com" target="_blank" title="구글로 이동">
+        <img
+          src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
+          alt="Google"
+          class="google-logo"
+        />
+      </a>
+    </div>
+
+    <!-- 두 번째 구분선 -->
+    <hr class="short-line" />
+
+    <!-- 문자 검색엔진 이동 링크 -->
+    <a href="./search.html" class="text-link">[검색엔진(문자)로 가기]</a>
+
+    <!-- 세 번째 구분선 -->
+    <hr class="long-line" style="width: 400px" />
+
+    <!-- 하단 카피라이트 (시안의 오타 'CopyWrite' 포함하여 동일하게 구현) -->
+    <div class="footer">CopyWrite © 이호연 닷컴 All Right</div>
+  </body>
+</html>
