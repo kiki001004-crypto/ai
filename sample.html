@@ -3,94 +3,68 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>수평선삽입과class</title>
+    <title>list목록태그</title>
     <style>
-      h1 {
-        text-align: center;
+      ul li {
         color: red;
+        list-style: circle;
+        list-style: square;
+        list-style: disc;
+        list-style: none;
+        list-style: circle;
       }
-      p {
-        text-align: center;
-      }
-      .p1 {
-        color: orange;
-      }
-      .hr1 {
-        width: 320px;
-        height: 10px;
-        background-color: orange;
-      }
-      .p2 {
+      ol li {
         color: blue;
+        list-style: upper-alpha;
+        list-style: lower-alpha;
+        list-style: lower-roman;
+        list-style: upper-roman;
+        list-style: decimal;
+        list-style: none;
+        list-style: decimal;
       }
-      .hr2 {
-        width: 390px;
-        height: 5px;
-        background-color: blue;
+      ul li ol li {
+        list-style: upper-alpha;
       }
-      .p3 {
-        color: yellowgreen;
-      }
-      .hr3 {
-        width: 280px;
-        background-color: yellowgreen;
-        height: 1px;
-      }
-      .hr4 {
-        width: 390px;
-        height: 1px;
-        background-color: orange;
-      }
-      .hr5 {
-        width: 500px;
-        height: 3px;
-        background-color: yellowgreen;
-      }
-      .hr6 {
-        width: 420px;
-        height: 10px;
-        background-color: orange;
-      }
-      .hr7 {
-        width: 100%;
-        background-color: blue;
-        height: 7px;
-      }
-      .last {
-        color: green;
-      }
-      body {
-        background-color: pink;
+      ul li ul li {
+        list-style: square;
       }
     </style>
   </head>
   <body>
-    <h1>절대반지는?</h1>
-    <p class="p1">
-      반지 세 개는 하늘 아래 <strong>요정왕</strong>들을 위한 것.
-    </p>
-    <hr class="hr1" />
-    <p class="p2">
-      일곱 개는 <em>돌의 전당에</em> 있는 <ins>난쟁이</ins> 군주들을 위한 것.
-    </p>
-    <hr class="hr2" />
-    <p class="p3">아홉 개는 죽은 운명의 인간을 위한 것.</p>
-    <hr class="hr3" />
-    <p class="p1">하나는 암흑의 왕좌에 앉은 암흑 제왕을 위한 것.</p>
-    <hr class="hr4" />
-    <p class="p2">그곳은 망령들이 지배라는 모르도르의 땅.</p>
-    <hr class="hr2" />
-    <p class="p3">
-      그 모든 반지를 다스릴 반지하나 그 모든 반지를 찾기 위한 절대반지.
-    </p>
-    <hr class="hr5" />
-    <p class="p1">그 모든 반지를 암흑 속에 가두기 위한 반지는 절대반지뿐.</p>
-    <hr class="hr6" />
-    <p class="p2">바로 망령들이 누워 있는 모르도르의 땅에</p>
-    <hr class="hr7" />
-    <p class="last">
-      <em> <strong>반지의 제왕 중에서</strong></em
-      >...
-    </p>
+    <h1>순서 없는 목록(타는 것)</h1>
+    <hr />
+    <ul>
+      <li>
+        비행기
+        <ol>
+          <li>국내용</li>
+          <li>
+            국제용
+            <ul>
+              <li>미주지역</li>
+              <li>아시아지역</li>
+              <li>유럽지역</li>
+            </ul>
+          </li>
+        </ol>
+      </li>
+      <li>
+        버스
+        <ul>
+          <li>시내버스</li>
+          <li>시외버스</li>
+        </ul>
+      </li>
+      <li>기차</li>
+    </ul>
+    <hr />
+    <h1>순서 있는 목록(먹는 것)</h1>
+    <hr />
+    <ol>
+      <li>바나나</li>
+      <li>딸기</li>
+      <li>수박</li>
+    </ol>
   </body>
 </html>
