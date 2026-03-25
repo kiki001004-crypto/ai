@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>CARBAK</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Noto+Sans+KR:wght@400;500;700&display=swap");
+
+      :root {
+        --primary-color: #5671b4;
+        --bg-color: #f8f9fa;
+      }
+
+      body {
+        background-color: #e5e7eb;
+        font-family: "Noto Sans KR", sans-serif;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      /* 모바일 디바이스 컨테이너 시뮬레이션 */
+      #mobile-container {
+        width: 100%;
+        max-width: 400px;
+        height: 100dvh;
+        max-height: 850px;
+        background-color: #ffffff;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      }
+
+      @media (min-width: 401px) {
+        #mobile-container {
+          height: 90vh;
+          border-radius: 2rem;
+        }
+      }
+
+      /* 스플래시 스크린 */
+      #splash-screen {
+        position: absolute;
+        inset: 0;
+        background-color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 50;
+        transition: opacity 0.5s ease-in-out;
+      }
+
+      .carbak-logo-text {
+        font-family: "Montserrat", sans-serif;
+        font-weight: 800;
+        font-size: 2.75rem;
+        color: var(--primary-color);
+        letter-spacing: 0.05em;
+        margin-top: -10px;
+      }
+
+      /* 메인 콘텐츠 영역 */
+      #main-content {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        opacity: 0;
+        visibility: hidden;
+        transition:
+          opacity 0.5s ease-in-out,
+          visibility 0.5s ease-in-out;
+        background-color: var(--bg-color);
+      }
+
+      #main-content.active {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      /* 스크롤바 숨기기 */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      /* 하단 네비게이션 */
+      .bottom-nav {
+        box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.05);
+      }
+
+      .nav-item {
+        color: #9ca3af;
+        transition: color 0.2s;
+      }
+
+      .nav-item.active {
+        color: var(--primary-color);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="mobile-container">
+      <!-- 스플래시 화면 -->
+      <div id="splash-screen">
+        <!-- 로고 SVG (제공된 이미지 기반 재구성) -->
+        <svg
+          width="240"
+          height="120"
+          viewBox="0 0 240 120"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <!-- 달 -->
+          <path
+            d="M140 25C140 25 125 25 120 40C115 55 125 65 125 65C125 65 110 55 112 35C114 15 130 15 140 25Z"
+            fill="#5671B4"
+          />
+
+          <!-- 별 1 (좌측) -->
+          <path
+            d="M95 45C97 45 97 42 97 42C97 45 100 45 100 45C97 45 97 48 97 48C97 45 95 45 95 45Z"
+            fill="#5671B4"
+            stroke="#5671B4"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+
+          <!-- 별 2 (우측 상단) -->
+          <path
+            d="M105 30C108 30 108 26 108 26C108 30 112 30 112 30C108 30 108 34 108 34C108 30 105 30 105 30Z"
+            fill="#5671B4"
+            stroke="#5671B4"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+
+          <!-- 차박 텐트 (루프박스) -->
+          <path
+            d="M90 60L125 58C128 58 130 60 130 63L128 65L88 65L90 60Z"
+            fill="#5671B4"
+          />
+
+          <!-- 자동차 바디 -->
+          <path
+            d="M85 66H132L145 74V83C145 85 143 87 141 87H138C138 82 134 78 129 78C124 78 120 82 120 87H100C100 82 96 78 91 78C86 78 82 82 82 87H79C77 87 75 85 75 83V76L85 66Z"
+            fill="#5671B4"
+          />
+
+          <!-- 자동차 창문 -->
+          <path d="M86 68H106V74H80L86 68Z" fill="white" />
+          <path d="M109 68H126L135 74H109V68Z" fill="white" />
+
+          <!-- 바퀴 -->
+          <circle cx="91" cy="86" r="5" fill="white" />
+          <circle cx="91" cy="86" r="2.5" fill="#5671B4" />
+          <circle cx="129" cy="86" r="5" fill="white" />
+          <circle cx="129" cy="86" r="2.5" fill="#5671B4" />
+
+          <!-- 헤드라이트 & 그릴 디테일 -->
+          <rect x="140" y="78" width="3" height="4" rx="1" fill="white" />
+          <rect x="133" y="80" width="4" height="2" fill="white" />
+
+          <!-- 지평선 곡선 -->
+          <path
+            d="M45 92C90 85 150 85 195 92"
+            stroke="#5671B4"
+            stroke-width="2.5"
+            stroke-linecap="round"
+          />
+        </svg>
+        <div class="carbak-logo-text">CARBAK</div>
+      </div>
+
+      <!-- 메인 앱 인터페이스 -->
+      <div id="main-content">
+        <!-- 헤더 -->
+        <header
+          class="bg-white px-5 py-4 flex justify-between items-center sticky top-0 z-10 shadow-sm"
+        >
+          <div
+            class="font-[Montserrat] font-extrabold text-xl text-[#5671B4] tracking-wider"
+          >
+            CARBAK
+          </div>
+          <div class="flex gap-3 text-gray-600">
+            <i class="ph ph-magnifying-glass text-2xl"></i>
+            <i class="ph ph-bell text-2xl"></i>
+          </div>
+        </header>
+
+        <!-- 메인 스크롤 영역 -->
+        <main class="flex-1 overflow-y-auto no-scrollbar pb-20">
+          <!-- 환영 메시지 & 날씨 -->
+          <section class="px-5 py-6 bg-white mb-2">
+            <h1 class="text-2xl font-bold text-gray-800 mb-1">이번 주말,</h1>
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">
+              어디로 떠나볼까요? 🚙
+            </h2>
+
+            <div
+              class="bg-blue-50 rounded-xl p-4 flex items-center justify-between border border-blue-100"
+            >
+              <div class="flex items-center gap-3">
+                <i class="ph-fill ph-sun text-4xl text-yellow-500"></i>
+                <div>
+                  <p class="text-sm text-gray-500 font-medium">
+                    현재 위치 (김포시)
+                  </p>
+                  <p class="text-lg font-bold text-gray-800">맑음, 18°C</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <p class="text-xs text-gray-500">차박 지수</p>
+                <p class="text-sm font-bold text-[#5671B4]">매우 좋음</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- 빠른 메뉴 -->
+          <section class="px-5 py-4 bg-white mb-2">
+            <div class="flex justify-between">
+              <button class="flex flex-col items-center gap-2 w-1/4">
+                <div
+                  class="w-12 h-12 rounded-full bg-[#5671B4]/10 flex items-center justify-center text-[#5671B4]"
+                >
+                  <i class="ph-fill ph-map-pin text-2xl"></i>
+                </div>
+                <span class="text-xs font-medium text-gray-700"
+                  >차박지 찾기</span
+                >
+              </button>
+              <button class="flex flex-col items-center gap-2 w-1/4">
+                <div
+                  class="w-12 h-12 rounded-full bg-[#5671B4]/10 flex items-center justify-center text-[#5671B4]"
+                >
+                  <i class="ph-fill ph-list-checks text-2xl"></i>
+                </div>
+                <span class="text-xs font-medium text-gray-700"
+                  >체크리스트</span
+                >
+              </button>
+              <button class="flex flex-col items-center gap-2 w-1/4">
+                <div
+                  class="w-12 h-12 rounded-full bg-[#5671B4]/10 flex items-center justify-center text-[#5671B4]"
+                >
+                  <i class="ph-fill ph-fire text-2xl"></i>
+                </div>
+                <span class="text-xs font-medium text-gray-700">불멍 스팟</span>
+              </button>
+              <button class="flex flex-col items-center gap-2 w-1/4">
+                <div
+                  class="w-12 h-12 rounded-full bg-[#5671B4]/10 flex items-center justify-center text-[#5671B4]"
+                >
+                  <i class="ph-fill ph-users text-2xl"></i>
+                </div>
+                <span class="text-xs font-medium text-gray-700">커뮤니티</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- 추천 차박지 -->
+          <section class="px-5 py-6 bg-white">
+            <div class="flex justify-between items-end mb-4">
+              <h3 class="text-lg font-bold text-gray-800">
+                이번 주 추천 차박지
+              </h3>
+              <a href="#" class="text-sm text-[#5671B4] font-medium">더보기</a>
+            </div>
+
+            <div class="flex flex-col gap-4">
+              <!-- 카드 1 -->
+              <div
+                class="rounded-2xl overflow-hidden shadow-sm border border-gray-100 relative"
+              >
+                <div class="h-40 bg-gray-200 relative">
+                  <!-- Placeholder for actual image -->
+                  <img
+                    src="https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                    alt="캠핑장"
+                    class="w-full h-full object-cover"
+                  />
+                  <button
+                    class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 flex items-center justify-center backdrop-blur-sm"
+                  >
+                    <i class="ph ph-heart text-gray-600"></i>
+                  </button>
+                  <div
+                    class="absolute bottom-3 left-3 bg-black/50 text-white text-xs px-2 py-1 rounded backdrop-blur-sm"
+                  >
+                    강원도 평창군
+                  </div>
+                </div>
+                <div class="p-4 bg-white">
+                  <h4 class="font-bold text-gray-800 mb-1">
+                    육백마지기 은하수 차박
+                  </h4>
+                  <div class="flex items-center gap-2 text-xs text-gray-500">
+                    <span class="flex items-center gap-1"
+                      ><i class="ph-fill ph-star text-yellow-400"></i> 4.8</span
+                    >
+                    <span>·</span>
+                    <span>화장실 O</span>
+                    <span>·</span>
+                    <span>취사 X</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 카드 2 -->
+              <div
+                class="rounded-2xl overflow-hidden shadow-sm border border-gray-100 relative"
+              >
+                <div class="h-40 bg-gray-200 relative">
+                  <img
+                    src="https://images.unsplash.com/photo-1504280387969-e3801f9ce77e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                    alt="캠핑장"
+                    class="w-full h-full object-cover"
+                  />
+                  <button
+                    class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 flex items-center justify-center backdrop-blur-sm"
+                  >
+                    <i class="ph ph-heart text-gray-600"></i>
+                  </button>
+                  <div
+                    class="absolute bottom-3 left-3 bg-black/50 text-white text-xs px-2 py-1 rounded backdrop-blur-sm"
+                  >
+                    충남 태안군
+                  </div>
+                </div>
+                <div class="p-4 bg-white">
+                  <h4 class="font-bold text-gray-800 mb-1">
+                    몽산포 해수욕장 노지
+                  </h4>
+                  <div class="flex items-center gap-2 text-xs text-gray-500">
+                    <span class="flex items-center gap-1"
+                      ><i class="ph-fill ph-star text-yellow-400"></i> 4.5</span
+                    >
+                    <span>·</span>
+                    <span>화장실 O</span>
+                    <span>·</span>
+                    <span>취사 O</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <!-- 하단 네비게이션 바 -->
+        <nav
+          class="bottom-nav absolute bottom-0 w-full bg-white border-t border-gray-100 px-6 py-3 flex justify-between items-center z-20 pb-safe"
+        >
+          <button class="nav-item active flex flex-col items-center gap-1 w-16">
+            <i class="ph-fill ph-house text-2xl"></i>
+            <span class="text-[10px] font-medium">홈</span>
+          </button>
+          <button class="nav-item flex flex-col items-center gap-1 w-16">
+            <i class="ph ph-map-trifold text-2xl"></i>
+            <span class="text-[10px] font-medium">지도</span>
+          </button>
+          <button
+            class="nav-item flex flex-col items-center gap-1 w-16 relative"
+          >
+            <div
+              class="absolute -top-6 bg-[#5671B4] text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-4 border-white"
+            >
+              <i class="ph-bold ph-plus text-xl"></i>
+            </div>
+          </button>
+          <button class="nav-item flex flex-col items-center gap-1 w-16">
+            <i class="ph ph-bookmark-simple text-2xl"></i>
+            <span class="text-[10px] font-medium">저장</span>
+          </button>
+          <button class="nav-item flex flex-col items-center gap-1 w-16">
+            <i class="ph ph-user text-2xl"></i>
+            <span class="text-[10px] font-medium">마이</span>
+          </button>
+        </nav>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // 스플래시 스크린 타이머 제어 (3초 후 네이버로 이동)
+        const splashScreen = document.getElementById("splash-screen");
+        const mainContent = document.getElementById("main-content");
+
+        setTimeout(() => {
+          window.location.href = "./work1.html";
+        }, 3000);
+
+        // 하단 네비게이션 탭 전환 로직 (UI 효과용)
+        const navItems = document.querySelectorAll(".nav-item");
+        navItems.forEach((item) => {
+          item.addEventListener("click", function () {
+            // 중앙 플러스 버튼 제외
+            if (this.classList.contains("relative")) return;
+
+            navItems.forEach((nav) => {
+              nav.classList.remove("active");
+              // 아이콘을 채워진(fill) 상태에서 선(outline) 상태로 변경
+              const icon = nav.querySelector("i");
+              if (icon && icon.classList.contains("ph-fill")) {
+                icon.className = icon.className.replace("ph-fill", "ph");
+              }
+            });
+
+            this.classList.add("active");
+            // 선택된 탭의 아이콘을 채워진 상태로 변경
+            const activeIcon = this.querySelector("i");
+            if (activeIcon && activeIcon.classList.contains("ph")) {
+              activeIcon.className = activeIcon.className.replace(
+                "ph ",
+                "ph-fill ",
+              );
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
