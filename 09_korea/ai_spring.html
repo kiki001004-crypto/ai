@@ -13,7 +13,7 @@
         font-family: "Malgun Gothic", "맑은 고딕", sans-serif;
         display: flex;
         justify-content: center;
-        align-items: center;
+        align-items: flex-start; /* 수정: center에서 flex-start로 변경하여 위쪽 정렬 */
         min-height: 100vh;
       }
 
@@ -21,6 +21,7 @@
       .container {
         width: 600px; /* 이미지 및 선의 가로 기준 너비 */
         text-align: center;
+        margin-top: 50px; /* 추가: 최상단 여백 확보 (원하는 픽셀로 조정 가능) */
       }
 
       /* 상단 제목 텍스트 */
@@ -81,9 +82,9 @@
 
       <!-- 이미지 (대체 이미지 URL 적용 및 Fallback 처리) -->
       <div class="image-wrapper">
-        <a href="./ai_main.html"
-          ><img src="./images/spring.jpg" alt="벚곷 이미지"
-        /></a>
+        <a href="./ai_main.html">
+          <img src="./images/spring.jpg" alt="벚꽃 이미지" />
+        </a>
       </div>
 
       <!-- 하단 선 -->

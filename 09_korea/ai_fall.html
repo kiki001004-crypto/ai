@@ -39,19 +39,22 @@
       .divider {
         border: 0;
         border-top: 4px solid #333333;
-        margin: 0; /* 이미지와의 간격을 최소화하기 위해 마진 0 */
+        width: 500px;
+        margin: 0 auto; /* 이미지와의 간격 최소화 및 중앙 정렬 */
       }
 
-      /* 이미지 컨테이너 및 이미지 반응형 설정 */
+      /* 이미지 컨테이너 설정 */
       .image-box {
         width: 100%;
         margin: 10px 0; /* 선과 이미지 사이의 간격 */
       }
 
+      /* 요청된 이미지 사이즈 적용 및 중앙 정렬 */
       .image-box img {
-        width: 100%;
-        height: auto;
+        width: 500px;
+        height: 334px;
         display: block;
+        margin: 0 auto; /* 고정 크기로 변경 시 레이아웃 중앙 유지를 위한 속성 */
       }
 
       /* 하단 링크 영역 설정 */
@@ -79,12 +82,14 @@
       <!-- 상단 구분선 -->
       <hr class="divider" />
 
-      <!-- 메인 이미지 (시안의 사진과 유사한 대체 이미지 적용) -->
+      <!-- 메인 이미지 (중복 a 태그 제거) -->
       <div class="image-box">
-        <a href="./ai_main.html"
-          ><a href="./ai_main.html"
-            ><img src="./images/fall.jpg" alt="가을나무이미지" /></a
-        ></a>
+        <a href="./ai_main.html">
+          <img
+            src="https://images.unsplash.com/photo-1507371341162-763b5e419408?w=500&h=334&fit=crop"
+            alt="가을나무이미지"
+          />
+        </a>
       </div>
 
       <!-- 하단 구분선 -->
