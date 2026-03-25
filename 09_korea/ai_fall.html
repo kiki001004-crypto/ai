@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>가을의 계절</title>
+    <style>
+      /* 기본 여백 제거 및 배경색 설정 */
+      body {
+        background-color: #fba980;
+        margin: 0;
+        padding: 0;
+        font-family: "Malgun Gothic", "맑은 고딕", sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      /* 중앙 컨텐츠 영역 설정 */
+      .container {
+        width: 100%;
+        max-width: 800px; /* 시안 비율에 맞춘 최대 너비 제한 */
+        text-align: center;
+        padding: 40px 20px;
+        box-sizing: border-box;
+      }
+
+      /* 메인 타이틀 설정 */
+      h1 {
+        color: #3e2723;
+        font-size: 2.2rem;
+        margin-bottom: 25px;
+        font-weight: bold;
+        letter-spacing: 2px;
+      }
+
+      /* 상하단 굵은 구분선 */
+      .divider {
+        border: 0;
+        border-top: 4px solid #333333;
+        margin: 0; /* 이미지와의 간격을 최소화하기 위해 마진 0 */
+      }
+
+      /* 이미지 컨테이너 및 이미지 반응형 설정 */
+      .image-box {
+        width: 100%;
+        margin: 10px 0; /* 선과 이미지 사이의 간격 */
+      }
+
+      .image-box img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      /* 하단 링크 영역 설정 */
+      .link-container {
+        margin-top: 25px;
+      }
+
+      .link-container a {
+        text-decoration: none;
+        color: #212121;
+        font-size: 1rem;
+        letter-spacing: 1px;
+      }
+
+      .link-container a:hover {
+        text-decoration: underline; /* 마우스 오버 시 시각적 피드백 */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- 타이틀 -->
+      <h1>가을의 계절</h1>
+
+      <!-- 상단 구분선 -->
+      <hr class="divider" />
+
+      <!-- 메인 이미지 (시안의 사진과 유사한 대체 이미지 적용) -->
+      <div class="image-box">
+        <a href="./ai_main.html"
+          ><img src="./images/fall.jpg" alt="가을나무이미지"
+        /></a>
+      </div>
+
+      <!-- 하단 구분선 -->
+      <hr class="divider" />
+
+      <!-- 하단 이동 링크 -->
+      <div class="link-container">
+        <a href="#">[메인화면으로 이동]</a>
+      </div>
+    </div>
+  </body>
+</html>

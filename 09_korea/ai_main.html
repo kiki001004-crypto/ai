@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>한국의 사계</title>
+    <style>
+      /* 초기화 및 기본 문서 설정 */
+      body {
+        /* 시안과 유사한 연두색 배경 지정 */
+        background-color: #dcf282;
+        margin: 0;
+        padding: 50px 0 0 0;
+        /* 수평 중앙 정렬을 위한 Flexbox 설정 */
+        display: flex;
+        justify-content: center;
+        min-height: 100vh;
+        font-family: "Malgun Gothic", "맑은 고딕", sans-serif;
+        color: #222;
+      }
+
+      /* 콘텐츠 래퍼 */
+      .container {
+        text-align: center;
+        width: 100%;
+        max-width: 500px; /* 가로선 및 콘텐츠의 최대 너비 제한 */
+      }
+
+      /* 최상단 제목 */
+      h1 {
+        font-size: 2.2rem;
+        font-weight: bold;
+        margin: 0 0 20px 0;
+        letter-spacing: 2px;
+      }
+
+      /* 굵은 가로선 */
+      .divider {
+        border-top: 4px solid #444;
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      /* 계절 목록 */
+      .season-list {
+        list-style: none;
+        padding: 0;
+        margin: 25px 0;
+      }
+
+      .season-list li {
+        margin-bottom: 15px;
+      }
+
+      .season-list li:last-child {
+        margin-bottom: 0;
+      }
+
+      /* 목록 내 텍스트 및 링크 스타일 */
+      .season-list a {
+        text-decoration: none;
+        color: #222;
+        font-size: 1rem;
+      }
+
+      /* 링크에 마우스를 올렸을 때(hover) 밑줄 생성 */
+      .season-list a:hover {
+        text-decoration: underline;
+      }
+
+      /* '봄의 계절' 파란색 스타일 (기본 밑줄 제거됨) */
+      .season-list a.active {
+        color: blue;
+      }
+
+      /* 하단 카피라이트 텍스트 */
+      .footer-text {
+        margin-top: 15px;
+        font-size: 0.9rem;
+        color: #222;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- 제목 -->
+      <h1>한국의 사계</h1>
+
+      <!-- 상단 구분선 -->
+      <div class="divider"></div>
+
+      <!-- 계절 메뉴 -->
+      <ul class="season-list">
+        <li><a href="#" class="active">봄의 계절</a></li>
+        <li><a href="#">여름의 계절</a></li>
+        <li><a href="#">가을의 계절</a></li>
+        <li><a href="#">겨울의 계절</a></li>
+      </ul>
+
+      <!-- 하단 구분선 -->
+      <div class="divider"></div>
+
+      <!-- 카피라이트 -->
+      <div class="footer-text">Copyright&copy;이지연 2026 All Reserved.</div>
+    </div>
+  </body>
+</html>

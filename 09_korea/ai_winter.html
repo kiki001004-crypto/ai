@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>겨울의 계절</title>
+    <style>
+      /* 기본 여백 제거 및 배경색 설정 */
+      body {
+        background-color: #dadada; /* 시안과 유사한 밝은 회색 배경 */
+        margin: 0;
+        padding: 50px 20px;
+        font-family: "Malgun Gothic", "맑은 고딕", sans-serif;
+        display: flex;
+        justify-content: center;
+      }
+
+      /* 중앙 정렬을 위한 컨테이너 */
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 600px; /* 시안 비율에 맞춘 최대 너비 */
+      }
+
+      /* 상단 제목 스타일링 */
+      h1 {
+        color: #7b71f9; /* 연한 보라/파란색 계열 */
+        font-size: 2rem;
+        font-weight: bold;
+        margin: 0 0 20px 0;
+        text-align: center;
+      }
+
+      /* 이미지 및 상하단 구분선 영역 */
+      .image-wrapper {
+        width: 100%;
+        border-top: 4px solid #4a4a4a; /* 상단 굵은 가로선 */
+        border-bottom: 4px solid #4a4a4a; /* 하단 굵은 가로선 */
+        padding: 10px 0; /* 선과 이미지 사이의 간격 */
+        box-sizing: border-box;
+      }
+
+      /* 이미지 스타일링 */
+      .image-wrapper img {
+        width: 100%;
+        height: auto;
+        display: block; /* 하단 여백 제거 */
+      }
+
+      /* 하단 링크 영역 */
+      .footer-link {
+        margin-top: 20px;
+      }
+
+      /* 하단 링크 텍스트 스타일링 */
+      .footer-link a {
+        color: #333333;
+        text-decoration: none;
+        font-size: 0.95rem;
+      }
+
+      .footer-link a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- 제목 -->
+      <h1>겨울의 계절</h1>
+
+      <!-- 중앙 이미지 및 상하단 구분선 -->
+      <div class="image-wrapper">
+        <a href="./ai_main.html"
+          ><img src="./images/winter.jpg" alt="겨울눈이미지"
+        /></a>
+      </div>
+
+      <!-- 하단 이동 링크 -->
+      <div class="footer-link">
+        <a href="#">[메인화면으로 이동]</a>
+      </div>
+    </div>
+  </body>
+</html>

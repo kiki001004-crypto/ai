@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>한국의 사계 - 여름</title>
+    <style>
+      /* 기본 여백 제거 및 배경색 설정 */
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #a9bcee; /* 시안과 유사한 연파랑 배경색 */
+        font-family:
+          "Malgun Gothic", "맑은 고딕", "Apple SD Gothic Neo", sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 100vh;
+        padding-top: 80px; /* 상단 여백 */
+      }
+
+      /* 콘텐츠 전체를 감싸는 중앙 정렬 컨테이너 */
+      .container {
+        width: 600px; /* 이미지 너비에 맞춘 고정 너비 */
+        text-align: center;
+      }
+
+      /* 메인 제목 스타일링 */
+      h1 {
+        color: #405275; /* 어두운 푸른색 계열 */
+        font-size: 32px;
+        font-weight: bold;
+        margin: 0 0 20px 0;
+        letter-spacing: 2px;
+      }
+
+      /* 상하단 구분선 (수평선) */
+      .divider {
+        height: 4px;
+        background-color: #333333; /* 짙은 회색/검정색 굵은 선 */
+        border: none;
+        margin: 0;
+      }
+
+      /* 이미지 컨테이너 및 이미지 스타일링 */
+      .image-box {
+        margin: 10px 0; /* 구분선과 이미지 사이의 간격 */
+      }
+
+      .image-box img {
+        width: 100%;
+        height: auto;
+        display: block; /* 이미지 하단의 기본 여백 제거 */
+      }
+
+      /* 하단 링크 텍스트 스타일링 */
+      .footer-link {
+        margin-top: 15px;
+      }
+
+      .footer-link a {
+        color: #333333;
+        font-size: 14px;
+        text-decoration: none; /* 밑줄 제거 */
+      }
+
+      /* 반응형 처리 (화면이 600px보다 작아질 경우) */
+      @media (max-width: 640px) {
+        .container {
+          width: 90%;
+        }
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- 타이틀 -->
+      <h1>여름의 계절</h1>
+
+      <!-- 상단 선 -->
+      <hr class="divider" />
+
+      <!-- 이미지 영역 (저작권 무료 바다 이미지를 임시로 적용) -->
+      <div class="image-box">
+        <a href="./ai_main.html">
+          <img src="./images/summer.jpg" alt="여름바다이미지"
+        /></a>
+      </div>
+
+      <!-- 하단 선 -->
+      <hr class="divider" />
+
+      <!-- 하단 링크 -->
+      <div class="footer-link">
+        <a href="#">[메인화면으로 이동]</a>
+      </div>
+    </div>
+  </body>
+</html>

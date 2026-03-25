@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>봄의 계절</title>
+    <style>
+      /* 기본 여백 제거 및 배경색 설정 */
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #fdbdf0; /* 시안과 유사한 연분홍색 배경 */
+        font-family: "Malgun Gothic", "맑은 고딕", sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      /* 중앙 콘텐츠를 감싸는 컨테이너 */
+      .container {
+        width: 600px; /* 이미지 및 선의 가로 기준 너비 */
+        text-align: center;
+      }
+
+      /* 상단 제목 텍스트 */
+      h1 {
+        color: #b90e81; /* 시안과 유사한 진자주색 */
+        font-size: 26px;
+        font-weight: bold;
+        margin-top: 0;
+        margin-bottom: 15px;
+      }
+
+      /* 상하단 구분선 */
+      .divider {
+        width: 100%;
+        height: 4px;
+        background-color: #333333; /* 진한 회색/검정색 선 */
+        border: none;
+        margin: 5px 0;
+      }
+
+      /* 이미지 영역 */
+      .image-wrapper {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        display: flex;
+      }
+
+      .image-wrapper img {
+        width: 100%;
+        height: auto;
+        display: block; /* 하단 여백 발생 방지 */
+        object-fit: cover;
+      }
+
+      /* 하단 링크 텍스트 */
+      .footer-link {
+        margin-top: 15px;
+      }
+
+      .footer-link a {
+        color: #333333;
+        text-decoration: none;
+        font-size: 14px;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- 제목 -->
+      <h1>봄의 계절</h1>
+
+      <!-- 상단 선 -->
+      <div class="divider"></div>
+
+      <!-- 이미지 (대체 이미지 URL 적용 및 Fallback 처리) -->
+      <div class="image-wrapper">
+        <img src="./images/spring.jpg" alt="벚곷 이미지" />
+      </div>
+
+      <!-- 하단 선 -->
+      <div class="divider"></div>
+
+      <!-- 하단 링크 -->
+      <div class="footer-link">
+        <a href="#">[메인화면으로 이동]</a>
+      </div>
+    </div>
+  </body>
+</html>
