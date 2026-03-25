@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>BLACKUP</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #000;
+        color: #fff;
+      }
+
+      /* Header */
+      .header {
+        background: #fff;
+        color: #000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 40px;
+        font-size: 14px;
+      }
+
+      .logo {
+        font-weight: bold;
+        font-size: 24px;
+      }
+
+      .nav-bar {
+        background: #000;
+        padding: 12px 0;
+        text-align: center;
+        font-size: 13px;
+      }
+
+      .nav-bar span {
+        margin: 0 20px;
+        cursor: pointer;
+      }
+
+      /* Hero */
+      .hero {
+        width: 100%;
+      }
+
+      .hero img {
+        width: 100%;
+        display: block;
+      }
+
+      /* Section */
+      .section {
+        padding: 80px 0;
+        display: flex;
+        justify-content: center;
+      }
+
+      .grid-3 {
+        width: 1200px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+
+      .grid-4 {
+        width: 1200px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+      }
+
+      .card img {
+        width: 100%;
+        display: block;
+      }
+
+      /* Footer */
+      .footer {
+        background: #111;
+        padding: 60px 40px;
+        font-size: 12px;
+        color: #aaa;
+      }
+
+      .footer-top {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 30px;
+      }
+
+      .footer-links span {
+        margin-right: 20px;
+      }
+
+      .footer-bottom {
+        font-size: 11px;
+        line-height: 1.6;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <div class="header">
+      <div>SHOP</div>
+      <div class="logo">BLACKUP</div>
+      <div>SEARCH &nbsp; ACCOUNT &nbsp; BAG:0</div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-bar">
+      <span>25HS LOOKBOOK</span>
+      <span>실시간 인기상품</span>
+      <span>신상품</span>
+      <span>B-BASIC & B-DENIM</span>
+      <span>트렌드 키워드</span>
+    </div>
+
+    <!-- Hero -->
+    <div class="hero">
+      <img
+        src="https://images.unsplash.com/photo-1520975922203-b4e6b3c1e7a0?q=80&w=1200"
+        alt="main"
+      />
+    </div>
+
+    <!-- Section 1 -->
+    <div class="section">
+      <div class="grid-3">
+        <div class="card">
+          <img src="./images/main_visual.jpg" />
+        </div>
+        <div class="card">
+          <img src="./images/visual2.jpg" />
+        </div>
+        <div class="card">
+          <img src="./images/visual3.jpg" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="section">
+      <div class="grid-4">
+        <div class="card">
+          <img src="./images/visual4.jpg" />
+        </div>
+        <div class="card">
+          <img src="./images/visual5.jpg" />
+        </div>
+        <div class="card">
+          <img src="./images/visual6.jpg" />
+        </div>
+        <div class="card">
+          <img src="./images/visual7.jpg" />
+        </div>
+
+        <div class="card">
+          <img
+            src="https://images.unsplash.com/photo-1520974735194-76d3c0d8b8e0?q=80&w=500"
+          />
+        </div>
+        <div class="card">
+          <img
+            src="https://images.unsplash.com/photo-1503342452485-86ff0a5d71c4?q=80&w=500"
+          />
+        </div>
+        <div class="card">
+          <img
+            src="https://images.unsplash.com/photo-1495121605193-b116b5b09a15?q=80&w=500"
+          />
+        </div>
+        <div class="card">
+          <img
+            src="https://images.unsplash.com/photo-1520975922203-b4e6b3c1e7a0?q=80&w=500"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="footer-top">
+        <div class="footer-links">
+          <span>AGREEMENT</span>
+          <span>GUIDE</span>
+          <span>PRIVACY POLICY</span>
+          <span>CONTACT US</span>
+          <span>SHOPPING GUIDE</span>
+          <span>CUSTOMER CARE</span>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        TEL: 02-0000-0000<br />
+        E-MAIL: contact@blackup.com<br />
+        ADDRESS: Seoul, Republic of Korea<br /><br />
+        © BLACKUP 2025
+      </div>
+    </div>
+  </body>
+</html>
