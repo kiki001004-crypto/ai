@@ -12,10 +12,11 @@
       }
 
       body {
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        background-color: #000000;
-        color: #ffffff;
-        min-width: 1280px; /* 데스크톱 전용 고정 최소 너비 */
+        font-family:
+          "Helvetica Neue", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+        background-color: #ffffff; /* 전체 배경을 흰색으로 변경 (레퍼런스 기준) */
+        color: #000000;
+        min-width: 1280px;
         overflow-x: auto;
       }
 
@@ -36,9 +37,9 @@
         justify-content: space-between;
         align-items: center;
         padding: 0 40px;
-        height: 70px;
-        font-size: 13px;
-        font-weight: bold;
+        height: 80px;
+        font-size: 12px;
+        font-weight: 700;
       }
 
       .header-top .left {
@@ -46,9 +47,11 @@
       }
 
       .header-top .logo {
-        font-size: 28px;
+        font-family: "Arial Black", Impact, sans-serif; /* 레퍼런스 유사 폰트 */
+        font-size: 32px;
         font-weight: 900;
-        letter-spacing: 2px;
+        letter-spacing: -1.5px;
+        transform: scaleX(1.2); /* 텍스트를 가로로 약간 늘림 */
         text-transform: uppercase;
       }
 
@@ -56,7 +59,7 @@
         width: 200px;
         display: flex;
         justify-content: flex-end;
-        gap: 20px;
+        gap: 15px;
       }
 
       /* 2. 서브 네비게이션바 (Black) */
@@ -67,14 +70,14 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        border-bottom: 1px solid #222;
       }
 
       .header-nav ul {
         display: flex;
-        gap: 40px;
-        font-size: 12px;
-        letter-spacing: 1px;
+        gap: 50px; /* 간격 넓게 */
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
       }
 
       .header-nav ul li a {
@@ -82,13 +85,13 @@
       }
 
       .header-nav ul li a:hover {
-        color: #cccccc;
+        color: #999;
       }
 
       /* 3. 메인 배너 섹션 */
       .hero-section {
         width: 100%;
-        height: 800px; /* 와이어프레임 규격 고정 */
+        height: 800px;
         background-color: #f4f4f4;
         position: relative;
         display: flex;
@@ -100,7 +103,8 @@
       .hero-section img {
         width: 100%;
         height: 100%;
-        object-fit: cover; /* 비율 유지하며 와이어프레임 꽉 채움 */
+        object-fit: cover;
+        object-position: top; /* 이미지가 위쪽을 기준으로 잘리도록 */
         display: block;
       }
 
@@ -113,52 +117,107 @@
       }
 
       .hero-controls button {
-        background-color: #000000;
+        background-color: #111;
         color: #ffffff;
         border: 1px solid #333;
-        width: 40px;
-        height: 40px;
+        width: 36px;
+        height: 36px;
         cursor: pointer;
-        font-size: 16px;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .hero-controls button:first-child {
+        border-bottom: none;
       }
 
       .hero-controls button:hover {
-        background-color: #222;
+        background-color: #333;
       }
 
       /* 4. 특집(Featured) 이미지 섹션 */
-      .featured-section {
+      .featured-section-wrap {
         width: 1200px;
-        margin: 100px auto;
+        margin: 80px auto;
+      }
+
+      .section-title {
+        font-family: "Arial Black", sans-serif;
+        font-size: 24px;
+        font-weight: 900;
+        letter-spacing: -0.5px;
+        margin-bottom: 25px;
+        text-transform: uppercase;
+      }
+
+      .featured-section {
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         gap: 20px;
       }
 
       .featured-item {
-        width: 380px;
-        height: 500px; /* 와이어프레임 규격 고정 */
-        background-color: #000000;
+        width: calc(33.333% - 13.33px);
       }
 
-      .featured-item img {
+      .featured-image-wrap {
+        width: 100%;
+        height: 520px;
+        background-color: #000000;
+        margin-bottom: 15px;
+      }
+
+      .featured-image-wrap img {
         width: 100%;
         height: 100%;
-        object-fit: cover; /* 비율 유지하며 와이어프레임 꽉 채움 */
+        object-fit: cover;
         display: block;
       }
 
+      .featured-info .feat-title {
+        font-size: 14px;
+        font-weight: 800;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+      }
+
+      .featured-info .feat-desc {
+        font-size: 11px;
+        color: #666;
+        font-weight: 500;
+      }
+
       /* 5. 상품 그리드 섹션 */
-      .product-section {
+      .product-section-wrap {
         width: 1200px;
-        margin: 0 auto 100px;
+        margin: 100px auto;
+      }
+
+      .section-header-center {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .section-header-center h2 {
+        font-family: "Arial Black", sans-serif;
+        font-size: 26px;
+        font-weight: 900;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+      }
+
+      .section-header-center p {
+        font-size: 13px;
+        font-weight: 700;
       }
 
       .product-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 15px;
-        row-gap: 40px;
+        gap: 20px;
+        row-gap: 60px;
       }
 
       .product-card {
@@ -167,61 +226,114 @@
 
       .product-image-wrap {
         width: 100%;
-        height: 380px; /* 와이어프레임 규격 고정 */
+        height: 420px;
         background-color: #f4f4f4;
         position: relative;
-        margin-bottom: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        margin-bottom: 15px;
       }
 
       .product-image-wrap img {
         width: 100%;
         height: 100%;
-        object-fit: cover; /* contain에서 cover로 변경하여 빈틈없이 채움 */
+        object-fit: cover;
+        display: block;
       }
 
       .product-label {
         position: absolute;
-        top: 10px;
-        left: 10px;
-        font-size: 10px;
-        font-weight: bold;
+        top: 12px;
+        left: 12px;
+        font-size: 9px;
+        font-weight: 800;
         color: #000;
         z-index: 10;
+        line-height: 1.2;
+      }
+
+      .product-info-grid {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+
+      .product-text-area {
+        width: 90%;
+      }
+
+      .product-name {
+        font-size: 12px;
+        font-weight: 500;
+        color: #333;
+        margin-bottom: 5px;
+        line-height: 1.4;
+      }
+
+      .product-price {
+        font-size: 12px;
+        font-weight: 800;
+        color: #000;
+      }
+
+      .product-icon {
+        /* 장바구니/담기 아이콘 형태 CSS로 간략 구현 */
+        width: 12px;
+        height: 14px;
+        border: 1px solid #000;
+        border-top: none;
+        position: relative;
+        margin-top: 2px;
+        cursor: pointer;
+      }
+
+      .product-icon::before {
+        content: "";
+        position: absolute;
+        top: -4px;
+        left: 3px;
+        width: 4px;
+        height: 4px;
+        border: 1px solid #000;
+        border-bottom: none;
+        border-radius: 50% 50% 0 0;
       }
 
       /* 더보기 버튼 영역 */
       .more-button-container {
         text-align: center;
-        margin-top: 60px;
-        margin-bottom: 80px;
+        margin-top: 80px;
+        margin-bottom: 100px;
       }
 
       .more-button {
         display: inline-block;
+        background-color: #000;
         color: #fff;
         font-size: 12px;
-        text-decoration: underline;
-        text-underline-offset: 4px;
+        font-weight: 600;
+        padding: 18px 80px;
         cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .more-button:hover {
+        background-color: #333;
       }
 
       /* 6. 푸터 (Footer) */
       .footer {
-        background-color: #1c1c1c;
-        padding: 60px 40px;
-        font-size: 11px;
-        color: #888;
+        background-color: #1f1f1f;
+        padding: 50px 40px;
+        font-size: 10px;
+        color: #777;
       }
 
       .footer-links {
         display: flex;
-        gap: 60px;
+        gap: 50px;
         margin-bottom: 40px;
-        font-weight: bold;
+        font-weight: 800;
         color: #fff;
+        font-size: 11px;
       }
 
       .footer-info-container {
@@ -231,7 +343,8 @@
 
       .footer-info p {
         line-height: 1.8;
-        margin-bottom: 5px;
+        margin-bottom: 3px;
+        font-size: 9px;
       }
     </style>
   </head>
@@ -249,19 +362,19 @@
       </div>
       <nav class="header-nav">
         <ul>
-          <li><a href="#">NEW 5%</a></li>
-          <li><a href="#">BEST</a></li>
-          <li><a href="#">OUTER</a></li>
-          <li><a href="#">TOP</a></li>
-          <li><a href="#">BOTTOM</a></li>
-          <li><a href="#">ACC/SHOES</a></li>
+          <li><a href="#">2025 HS LOOKBOOK</a></li>
+          <li><a href="#">핫썸머 신상품</a></li>
+          <li><a href="#">전상품</a></li>
+          <li><a href="#">MADE IN BLACKUP</a></li>
+          <li><a href="#">아울렛 세일</a></li>
         </ul>
       </nav>
     </header>
 
     <!-- 메인 배너 영역 -->
     <section class="hero-section">
-      <img src="./images/main_visual.jpg" alt="" />
+      <!-- 레퍼런스 이미지 비율 반영 -->
+      <img src="./images/main_visual.jpg" alt="메인 배너" />
       <div class="hero-controls">
         <button>▲</button>
         <button>▼</button>
@@ -269,77 +382,169 @@
     </section>
 
     <!-- 3단 특집 이미지 영역 -->
-    <section class="featured-section">
-      <div class="featured-item">
-        <img src="./images/visual10.jpg" alt="" />
-      </div>
-      <div class="featured-item">
-        <img src="./images/visual2.jpg" alt="" />
-      </div>
-      <!-- 인라인 스타일 제거하여 1, 2번째 항목과 레이아웃 동기화 -->
-      <div class="featured-item">
-        <img src="./images/visual3.jpg" alt="" />
+    <section class="featured-section-wrap">
+      <h2 class="section-title">ONLY BLACKUP</h2>
+      <div class="featured-section">
+        <div class="featured-item">
+          <div class="featured-image-wrap">
+            <img src="./images/visual2.jpg" alt="B-BASIC & B-DENIM" />
+          </div>
+          <div class="featured-info">
+            <div class="feat-title">B-BASIC & B-DENIM</div>
+            <div class="feat-desc">블랙업 베이직 & 데님 라인</div>
+          </div>
+        </div>
+        <div class="featured-item">
+          <div class="featured-image-wrap">
+            <img src="./images/visual3.jpg" alt="BLACKUP PROJECT" />
+          </div>
+          <div class="featured-info">
+            <div class="feat-title">BLACKUP PROJECT</div>
+            <div class="feat-desc">블랙업 프로젝트</div>
+          </div>
+        </div>
+        <div class="featured-item">
+          <div class="featured-image-wrap">
+            <img src="./images/visual4.jpg" alt="TODAY DELIVERY" />
+          </div>
+          <div class="featured-info">
+            <div class="feat-title">TODAY DELIVERY</div>
+            <div class="feat-desc">오늘출발 -> 내일도착</div>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- 8단 상품 그리드 영역 (4x2) -->
-    <section class="product-section">
+    <section class="product-section-wrap">
+      <div class="section-header-center">
+        <h2>2025 HS LOOKBOOK</h2>
+        <p>핫썸머 신상품 발매</p>
+      </div>
       <div class="product-grid">
         <!-- 1열 -->
         <div class="product-card">
           <div class="product-image-wrap">
-            <span class="product-label">MADE BY BLACKUP</span>
-            <img src="./images/visual5.jpg" alt="" />
+            <span class="product-label">BLACKUP<br />PROJECT</span>
+            <img src="./images/visual5.jpg" alt="상품 5" />
+          </div>
+          <div class="product-info-grid">
+            <div class="product-text-area">
+              <div class="product-name">
+                [MADE] 메디에 슬리브리스 투피스세트
+              </div>
+              <div class="product-price">39,000 KRW</div>
+            </div>
+            <div class="product-icon"></div>
           </div>
         </div>
         <div class="product-card">
           <div class="product-image-wrap">
-            <span class="product-label">MADE BY BLACKUP</span>
-            <img src="./images/visual6.jpg" alt="" />
+            <span class="product-label">BLACKUP<br />PROJECT</span>
+            <img src="./images/visual6.jpg" alt="상품 6" />
+          </div>
+          <div class="product-info-grid">
+            <div class="product-text-area">
+              <div class="product-name">
+                [MADE] 피니 셔링 반팔 티셔츠 (5color)
+              </div>
+              <div class="product-price">22,000 KRW</div>
+            </div>
+            <div class="product-icon"></div>
           </div>
         </div>
         <div class="product-card">
           <div class="product-image-wrap">
-            <span class="product-label">MADE BY BLACKUP</span>
-            <img src="./images/visual7.jpg" alt="" />
+            <span class="product-label">BLACKUP<br />PROJECT</span>
+            <img src="./images/visual7.jpg" alt="상품 7" />
+          </div>
+          <div class="product-info-grid">
+            <div class="product-text-area">
+              <div class="product-name">[MADE] 루안스 투웨이 셔링 가디건</div>
+              <div class="product-price">29,000 KRW</div>
+            </div>
+            <div class="product-icon"></div>
           </div>
         </div>
         <div class="product-card">
           <div class="product-image-wrap">
-            <span class="product-label">MADE BY BLACKUP</span>
-            <img src="./images/visual8.jpg" alt="" />
+            <span class="product-label">BLACKUP<br />PROJECT</span>
+            <img src="./images/visual8.jpg" alt="상품 8" />
+          </div>
+          <div class="product-info-grid">
+            <div class="product-text-area">
+              <div class="product-name">
+                [MADE] 아르엘 슬리브리스 투피스세트
+              </div>
+              <div class="product-price">38,000 KRW</div>
+            </div>
+            <div class="product-icon"></div>
           </div>
         </div>
 
         <!-- 2열 -->
         <div class="product-card">
           <div class="product-image-wrap">
-            <span class="product-label">MADE BY BLACKUP</span>
-            <img src="./images/visual9.jpg" alt="" />
+            <span class="product-label">BLACKUP<br />PROJECT</span>
+            <img src="./images/visual9.jpg" alt="상품 9" />
+          </div>
+          <div class="product-info-grid">
+            <div class="product-text-area">
+              <div class="product-name">
+                [MADE] 레이스 핀턱 슬리브리스 블라우스
+              </div>
+              <div class="product-price">24,000 KRW</div>
+            </div>
+            <div class="product-icon"></div>
           </div>
         </div>
         <div class="product-card">
           <div class="product-image-wrap">
-            <span class="product-label">MADE BY BLACKUP</span>
-            <img src="./images/visual10.jpg" alt="" />
+            <span class="product-label">BLACKUP<br />PROJECT</span>
+            <img src="./images/visual10.jpg" alt="상품 10" />
+          </div>
+          <div class="product-info-grid">
+            <div class="product-text-area">
+              <div class="product-name">[MADE] 로맨틱 레이어드 미니 스커트</div>
+              <div class="product-price">32,000 KRW</div>
+            </div>
+            <div class="product-icon"></div>
           </div>
         </div>
         <div class="product-card">
           <div class="product-image-wrap">
-            <span class="product-label">MADE BY BLACKUP</span>
-            <img src="./images/visual12.jpg" alt="" />
+            <span class="product-label">BLACKUP<br />PROJECT</span>
+            <img src="./images/visual12.jpg" alt="상품 12" />
+          </div>
+          <div class="product-info-grid">
+            <div class="product-text-area">
+              <div class="product-name">
+                [MADE] 빈티지 셔링 크롭 티셔츠 (3color)
+              </div>
+              <div class="product-price">21,000 KRW</div>
+            </div>
+            <div class="product-icon"></div>
           </div>
         </div>
         <div class="product-card">
           <div class="product-image-wrap">
-            <span class="product-label">MADE BY BLACKUP</span>
-            <img src="./images/visual11.jpg" alt="" />
+            <span class="product-label">BLACKUP<br />PROJECT</span>
+            <img src="./images/visual11.jpg" alt="상품 11" />
+          </div>
+          <div class="product-info-grid">
+            <div class="product-text-area">
+              <div class="product-name">
+                [MADE] 메이비 스퀘어넥 핀턱 블라우스
+              </div>
+              <div class="product-price">26,000 KRW</div>
+            </div>
+            <div class="product-icon"></div>
           </div>
         </div>
       </div>
 
       <div class="more-button-container">
-        <span class="more-button">더 많은 상품 보기</span>
+        <span class="more-button">핫썸머 신상품 전체보기</span>
       </div>
     </section>
 
