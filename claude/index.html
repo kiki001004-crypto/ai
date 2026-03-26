@@ -14,8 +14,16 @@
       body {
         font-family: Arial, Helvetica, sans-serif;
         background: #ffffff;
-        color: #222;
+        color: #333;
         min-width: 1440px;
+      }
+
+      .header-wrap {
+        width: 100%;
+        min-width: 1440px;
+        position: relative;
+        background: #f3f3f3;
+        border-bottom: 1px solid #e6e6e6;
       }
 
       .header {
@@ -23,7 +31,6 @@
         min-width: 1440px;
         height: 80px;
         background: #f3f3f3;
-        border-bottom: 1px solid #e6e6e6;
       }
 
       .header-inner {
@@ -102,13 +109,21 @@
       }
 
       .nav {
+        position: relative;
         display: flex;
         align-items: center;
         gap: 56px;
         height: 80px;
       }
 
-      .nav a {
+      .nav-item {
+        position: relative;
+        height: 80px;
+        display: flex;
+        align-items: center;
+      }
+
+      .nav-link {
         position: relative;
         display: inline-flex;
         align-items: center;
@@ -116,22 +131,21 @@
         text-decoration: none;
         font-size: 14px;
         font-weight: 700;
-        color: #222;
+        color: #333;
         text-transform: uppercase;
         transition: color 0.2s ease;
+        z-index: 2;
       }
 
-      /* 기본 active 상태: 밑줄 없음 */
-      .nav a.active {
-        color: #222;
+      .nav-link.active {
+        color: #333;
       }
 
-      /* hover 시 색상 + 밑줄 */
-      .nav a:hover {
+      .nav-item:hover .nav-link {
         color: #e07d57;
       }
 
-      .nav a:hover::after {
+      .nav-item:hover .nav-link::after {
         content: "";
         position: absolute;
         left: 0;
@@ -140,6 +154,54 @@
         height: 4px;
         background: #e07d57;
         border-radius: 999px;
+      }
+
+      .submenu-panel {
+        position: absolute;
+        top: 80px;
+        left: 0; /* 각 1차 메뉴 텍스트 시작점과 맞춤 */
+        width: max-content;
+        min-width: max-content;
+        height: 72px;
+        display: none;
+        z-index: 10;
+      }
+
+      .submenu-about,
+      .submenu-products,
+      .submenu-partnership {
+        display: none;
+      }
+
+      .submenu-inner {
+        display: flex;
+        align-items: center;
+        gap: 56px;
+        height: 72px;
+        padding: 0;
+        background: #ffffff;
+        border-top: 1px solid #e6e6e6;
+        border-bottom: 1px solid #e6e6e6;
+        white-space: nowrap;
+      }
+
+      .submenu-link {
+        text-decoration: none;
+        color: #333;
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: -0.2px;
+        white-space: nowrap;
+        transition: color 0.2s ease;
+      }
+
+      .submenu-link.active,
+      .submenu-link:hover {
+        color: #e07d57;
+      }
+
+      .nav-item:hover .submenu-panel {
+        display: block;
       }
 
       .right-group {
@@ -170,32 +232,74 @@
     </style>
   </head>
   <body>
-    <header class="header">
-      <div class="header-inner">
-        <div class="left-group">
-          <div class="logo">
-            <div class="logo-mark">
-              <span></span>
-              <i></i>
+    <div class="header-wrap">
+      <header class="header">
+        <div class="header-inner">
+          <div class="left-group">
+            <div class="logo">
+              <div class="logo-mark">
+                <span></span>
+                <i></i>
+              </div>
+              <div class="logo-text">Claude</div>
             </div>
-            <div class="logo-text">Claude</div>
+
+            <nav class="nav">
+              <div class="nav-item">
+                <a href="#" class="nav-link active">ABOUT</a>
+                <div class="submenu-panel submenu-about">
+                  <div class="submenu-inner">
+                    <a href="#" class="submenu-link active">대표 인사말</a>
+                    <a href="#" class="submenu-link">기업 소개</a>
+                    <a href="#" class="submenu-link">비주얼 아이덴티티</a>
+                    <a href="#" class="submenu-link">사회공헌</a>
+                    <a href="#" class="submenu-link">오시는 길</a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="nav-item">
+                <a href="#" class="nav-link">PRODUCTS</a>
+                <div class="submenu-panel submenu-products">
+                  <div class="submenu-inner">
+                    <a href="#" class="submenu-link">AI &amp; 인공지능</a>
+                    <a href="#" class="submenu-link">Sonnet 모델</a>
+                    <a href="#" class="submenu-link">Coding Pro</a>
+                    <a href="#" class="submenu-link">대표적인 Ai</a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="nav-item">
+                <a href="#" class="nav-link">PARTNERSHIP</a>
+                <div class="submenu-panel submenu-partnership">
+                  <div class="submenu-inner">
+                    <a href="#" class="submenu-link">가맹점 현황</a>
+                    <a href="#" class="submenu-link">가맹점 개설 안내</a>
+                    <a href="#" class="submenu-link">가맹점 개설 문의</a>
+                    <a href="#" class="submenu-link">제휴 문의</a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="nav-item">
+                <a href="#" class="nav-link">EDUCATION</a>
+              </div>
+              <div class="nav-item">
+                <a href="#" class="nav-link">WHAT’S NEW</a>
+              </div>
+              <div class="nav-item">
+                <a href="#" class="nav-link">SUPPORT</a>
+              </div>
+            </nav>
           </div>
 
-          <nav class="nav">
-            <a href="#" class="active">ABOUT</a>
-            <a href="#">PRODUCTS</a>
-            <a href="#">PARTERSHIP</a>
-            <a href="#">EDUCATION</a>
-            <a href="#">WHAT’S NEW</a>
-            <a href="#">SUPPORT</a>
-          </nav>
+          <div class="right-group">
+            <button class="btn btn-dark">매장찾기</button>
+            <button class="btn btn-accent">클로드마켓</button>
+          </div>
         </div>
-
-        <div class="right-group">
-          <button class="btn btn-dark">매장찾기</button>
-          <button class="btn btn-accent">클로드마켓</button>
-        </div>
-      </div>
-    </header>
+      </header>
+    </div>
   </body>
 </html>
