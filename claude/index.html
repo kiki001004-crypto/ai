@@ -2,7 +2,7 @@
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=1440" />
+    <meta name="viewport" content="width=1920" />
     <title>Claude Header Desktop</title>
     <style>
       * {
@@ -13,20 +13,18 @@
 
       body {
         font-family: Arial, Helvetica, sans-serif;
-        /* 이미지 AI 컨셉에 부합하는 세련되고 미래지향적인 추상 배경 이미지 적용 */
         background: url("https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2560&auto=format&fit=crop")
           no-repeat center center fixed;
         background-size: cover;
         color: #333;
-        min-width: 1440px;
+        min-width: 1920px;
         min-height: 100vh;
       }
 
       .header-wrap {
         width: 100%;
-        min-width: 1440px;
+        min-width: 1920px;
         position: relative;
-        /* 배경 이미지가 은은하게 비치도록 반투명 설정 및 블러 효과 추가 */
         background: rgba(243, 243, 243, 0.85);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
@@ -35,25 +33,27 @@
 
       .header {
         width: 100%;
-        min-width: 1440px;
+        min-width: 1920px;
         height: 80px;
         background: transparent;
       }
 
       .header-inner {
-        width: 1440px;
+        width: 100%;
+        max-width: 1920px;
         height: 80px;
         margin: 0 auto;
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        padding: 0 32px;
+        justify-content: flex-start; /* 수치 고정을 위해 양끝 정렬 해제 */
+        padding: 0 260px; /* 전체 데스크탑 기준 마진 260px 적용 */
       }
 
-      .left-group {
+      /* 로고와 네비게이션 간격 조정 */
+      .left-section {
         display: flex;
         align-items: center;
-        gap: 42px;
+        gap: 188px; /* 로고와 ABOUT 간격 188px */
       }
 
       .logo {
@@ -119,7 +119,7 @@
         position: relative;
         display: flex;
         align-items: center;
-        gap: 56px;
+        gap: 32px;
         height: 80px;
       }
 
@@ -209,10 +209,12 @@
         display: block;
       }
 
+      /* 네비게이션과 우측 버튼 간의 간격 강제 할당 */
       .right-group {
         display: flex;
         align-items: center;
         gap: 16px;
+        margin-left: 80px; /* SUPPORT와 매장찾기 간격 80px */
       }
 
       .btn {
@@ -240,7 +242,7 @@
     <div class="header-wrap">
       <header class="header">
         <div class="header-inner">
-          <div class="left-group">
+          <div class="left-section">
             <div class="logo">
               <div class="logo-mark">
                 <span></span>
