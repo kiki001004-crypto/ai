@@ -13,24 +13,31 @@
 
       body {
         font-family: Arial, Helvetica, sans-serif;
-        background: #ffffff;
+        /* 이미지 AI 컨셉에 부합하는 세련되고 미래지향적인 추상 배경 이미지 적용 */
+        background: url("https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2560&auto=format&fit=crop")
+          no-repeat center center fixed;
+        background-size: cover;
         color: #333;
         min-width: 1440px;
+        min-height: 100vh;
       }
 
       .header-wrap {
         width: 100%;
         min-width: 1440px;
         position: relative;
-        background: #f3f3f3;
-        border-bottom: 1px solid #e6e6e6;
+        /* 배경 이미지가 은은하게 비치도록 반투명 설정 및 블러 효과 추가 */
+        background: rgba(243, 243, 243, 0.85);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(230, 230, 230, 0.5);
       }
 
       .header {
         width: 100%;
         min-width: 1440px;
         height: 80px;
-        background: #f3f3f3;
+        background: transparent;
       }
 
       .header-inner {
@@ -159,45 +166,43 @@
       .submenu-panel {
         position: absolute;
         top: 80px;
-        left: 0; /* 각 1차 메뉴 텍스트 시작점과 맞춤 */
+        left: 50%;
+        transform: translateX(-50%);
         width: max-content;
-        min-width: max-content;
-        height: 72px;
+        min-width: 160px;
+        background: #ffffff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e6e6e6;
+        border-top: none;
+        border-radius: 0 0 8px 8px;
         display: none;
         z-index: 10;
-      }
-
-      .submenu-about,
-      .submenu-products,
-      .submenu-partnership {
-        display: none;
+        padding: 8px 0;
       }
 
       .submenu-inner {
         display: flex;
-        align-items: center;
-        gap: 56px;
-        height: 72px;
-        padding: 0;
-        background: #ffffff;
-        border-top: 1px solid #e6e6e6;
-        border-bottom: 1px solid #e6e6e6;
-        white-space: nowrap;
+        flex-direction: column;
       }
 
       .submenu-link {
+        display: block;
+        padding: 12px 24px;
         text-decoration: none;
         color: #333;
         font-size: 14px;
         font-weight: 700;
         letter-spacing: -0.2px;
-        white-space: nowrap;
-        transition: color 0.2s ease;
+        text-align: center;
+        transition:
+          color 0.2s ease,
+          background-color 0.2s ease;
       }
 
       .submenu-link.active,
       .submenu-link:hover {
         color: #e07d57;
+        background-color: #f9f9f9;
       }
 
       .nav-item:hover .submenu-panel {
@@ -247,7 +252,7 @@
             <nav class="nav">
               <div class="nav-item">
                 <a href="#" class="nav-link active">ABOUT</a>
-                <div class="submenu-panel submenu-about">
+                <div class="submenu-panel">
                   <div class="submenu-inner">
                     <a href="#" class="submenu-link active">대표 인사말</a>
                     <a href="#" class="submenu-link">기업 소개</a>
@@ -260,7 +265,7 @@
 
               <div class="nav-item">
                 <a href="#" class="nav-link">PRODUCTS</a>
-                <div class="submenu-panel submenu-products">
+                <div class="submenu-panel">
                   <div class="submenu-inner">
                     <a href="#" class="submenu-link">AI &amp; 인공지능</a>
                     <a href="#" class="submenu-link">Sonnet 모델</a>
@@ -272,7 +277,7 @@
 
               <div class="nav-item">
                 <a href="#" class="nav-link">PARTNERSHIP</a>
-                <div class="submenu-panel submenu-partnership">
+                <div class="submenu-panel">
                   <div class="submenu-inner">
                     <a href="#" class="submenu-link">가맹점 현황</a>
                     <a href="#" class="submenu-link">가맹점 개설 안내</a>
