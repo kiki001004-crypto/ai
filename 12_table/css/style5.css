@@ -10,6 +10,9 @@ table {
   border-spacing: 0;
   border-collapse: collapse;
   margin-bottom: 50px;
+  a {
+    text-decoration: none;
+  }
 }
 
 th {
@@ -22,4 +25,12 @@ td {
   text-align: center;
   height: 40px;
   width: 100px;
+}
+
+.ss {
+  width: 130px;
+}
+
+.uu {
+  width: 270px;
 }
