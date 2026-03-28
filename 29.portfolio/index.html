@@ -303,44 +303,23 @@
       }
 
       .process-image-wrap {
-        display: grid;
-        gap: 20px;
+        display: block;
+        width: 100%;
         margin-top: auto;
         aspect-ratio: 16 / 10;
         background: var(--surface);
         border-radius: var(--radius-md);
         border: 1px solid rgba(255, 255, 255, 0.08);
         overflow: hidden;
-        /* 패딩 제거됨: 부모 프레임 안에 이미지만 들어가도록 수정 */
-      }
-
-      .process-image-wrap.grid-2 {
-        grid-template-columns: 1fr 1fr;
       }
 
       .process-image-wrap img {
         width: 100%;
         height: 100%;
-        object-fit: contain;
+        object-fit: cover;
         object-position: center;
         background: transparent;
         border: none;
-      }
-
-      /* Step 개별 이미지 정렬 (크기 통일 및 위치 조정) */
-      .process-image-wrap img.step1-img,
-      .process-image-wrap img.step2-img {
-        transform: scale(1.1); /* Step 3, 4와 동일한 크기로 적용 */
-      }
-
-      .process-image-wrap img.step3-img {
-        object-position: left center;
-        transform: scale(1.1) translateX(-15px);
-      }
-
-      .process-image-wrap img.step4-img {
-        object-position: center top;
-        transform: scale(1.1) translateY(-15px);
       }
 
       /* Projects Section */
@@ -375,6 +354,7 @@
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
+        background-color: #2a2d35; /* Fallback color for missing images */
       }
 
       .thumb-1 {
@@ -523,7 +503,6 @@
         resize: vertical;
       }
 
-      /* Center Align the Contact Form Button */
       #contactForm .btn {
         justify-self: center;
         min-width: 200px;
@@ -757,18 +736,6 @@
           grid-template-columns: 1fr;
           grid-auto-rows: auto;
         }
-
-        .process-image-wrap.grid-2 {
-          grid-template-columns: 1fr;
-        }
-
-        .process-image-wrap {
-          aspect-ratio: auto;
-        }
-
-        .process-image-wrap img {
-          aspect-ratio: 16 / 10;
-        }
       }
 
       @media (max-width: 768px) {
@@ -880,6 +847,7 @@
           <img
             src="./images/ChatGPT Image 2026년 3월 27일 오후 02_37_09-min.png"
             alt="LEE JI YEON PORTFOLIO"
+            onerror="this.style.display='none'"
           />
           <span style="color: var(--text)">
             <span class="primary-color">Ji Yeon</span> PROJECT
@@ -1107,6 +1075,7 @@
                   src="./images/research-min.png"
                   alt="Research Overview Image"
                   class="step1-img"
+                  onerror="this.style.display='none'"
                 />
               </div>
             </div>
@@ -1125,6 +1094,7 @@
                   src="./images/ia-min.png"
                   alt="Insight and Information Architecture Image"
                   class="step2-img"
+                  onerror="this.style.display='none'"
                 />
               </div>
             </div>
@@ -1143,6 +1113,7 @@
                   src="./images/design-min.png"
                   alt="Color System and UI Elements Image"
                   class="step3-img"
+                  onerror="this.style.display='none'"
                 />
               </div>
             </div>
@@ -1161,6 +1132,7 @@
                   src="./images/prototype-min.png"
                   alt="Splash and Walkthrough Prototype Image"
                   class="step4-img"
+                  onerror="this.style.display='none'"
                 />
               </div>
             </div>
