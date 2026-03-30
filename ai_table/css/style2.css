@@ -1,0 +1,35 @@
+@charset "utf-8";
+
+table {
+  border-collapse: collapse;
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.table-1 {
+  width: 900px;
+  margin-bottom: 100px;
+}
+
+.table-2 {
+  width: 300px;
+}
+
+.table-2 th {
+  width: 100px;
+}
+
+.table-2 td {
+  width: 200px;
+}
+
+th,
+td {
+  border: 1px solid #cccccc;
+  padding: 12px 15px;
+}
+
+th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}

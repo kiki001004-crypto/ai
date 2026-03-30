@@ -1,0 +1,49 @@
+@charset "utf-8";
+
+body {
+  font-family: "맑은 고딕", "malgun gothic", sans-serif;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  padding: 40px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 400px;
+  text-align: center;
+  background-color: #ffffff;
+}
+
+th,
+td {
+  border: 1px solid #333;
+  padding: 12px;
+}
+
+th {
+  background-color: #ffffff;
+  font-weight: bold;
+}
+
+/* 첫 번째 제목행 스타일 */
+thead th {
+  background-color: #ffffff;
+  font-size: 1.1em;
+}
+
+/* 두 번째 테이블 열 너비 설정 */
+#table2 th:nth-child(1) {
+  width: 130px;
+}
+
+#table2 th:nth-child(2) {
+  width: 270px;
+}
+
+/* 하이퍼링크 밑줄 제거 */
+#table2 a {
+  text-decoration: none;
+}
