@@ -1,4 +1,80 @@
 // Smooth Scroll Animation on Page Load
+
+document.addEventListener("DOMContentLoaded", function () {
+  const header = document.querySelector(".header");
+  const mobileBtn = document.querySelector(".mobile-menu-btn");
+  const navMenu = document.querySelector(".nav-menu");
+  const navLinks = document.querySelectorAll(".nav-link");
+  const sections = document.querySelectorAll("section, footer");
+
+  // 1. 스크롤 시 헤더 배경색 변경
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 50) {
+      header.classList.add("scrolled");
+    } else {
+      header.classList.remove("scrolled");
+    }
+  });
+
+  // 2. 모바일 햄버거 메뉴 토글
+  if (mobileBtn && navMenu) {
+    mobileBtn.addEventListener("click", () => {
+      mobileBtn.classList.toggle("active");
+      navMenu.classList.toggle("active");
+    });
+  }
+
+  // 3. 부드러운 스크롤 및 메뉴 클릭 로직
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener("click", function (e) {
+      e.preventDefault();
+      const targetId = this.getAttribute("href");
+      if (targetId === "#") return;
+
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        const headerHeight = header.offsetHeight;
+        const elementPosition = targetElement.getBoundingClientRect().top;
+        const offsetPosition =
+          elementPosition + window.pageYOffset - headerHeight;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth",
+        });
+
+        // 클릭 시 모바일 메뉴 닫기
+        if (navMenu.classList.contains("active")) {
+          mobileBtn.classList.remove("active");
+          navMenu.classList.remove("active");
+        }
+      }
+    });
+  });
+
+  // 4. 스크롤 위치에 따른 활성 링크 표시 (Intersection Observer)
+  const observerOptions = {
+    root: null,
+    rootMargin: "-20% 0px -80% 0px",
+    threshold: 0,
+  };
+
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        navLinks.forEach((link) => {
+          link.classList.remove("active");
+          if (link.getAttribute("href") === `#${entry.target.id}`) {
+            link.classList.add("active");
+          }
+        });
+      }
+    });
+  }, observerOptions);
+
+  sections.forEach((section) => sectionObserver.observe(section));
+});
+
 document.addEventListener("DOMContentLoaded", function () {
   // Add scroll reveal animation
   const observerOptions = {
