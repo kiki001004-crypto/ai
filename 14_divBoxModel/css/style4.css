@@ -11,7 +11,7 @@ body {
 .box {
   width: 1000px;
   height: 300px;
-  border: 4px solid black;
+  border: 5px solid black;
   margin: 0 auto;
 }
 
@@ -42,7 +42,7 @@ ul li {
 ul {
   width: 1000px;
   height: 300px;
-  border: 4px solid black;
+  border: 5px solid black;
   margin: 0 auto;
 }
 ul .lilast {
