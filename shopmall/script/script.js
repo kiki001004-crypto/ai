@@ -247,9 +247,9 @@ const productImagesMap = {
     "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80",
   ],
   "pants-cream": [
-    "https://images.unsplash.com/photo-1506629905607-d405b7a89f34?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1200&q=80",
+    "https://images.unsplash.com/photo-1605131545304-096aeaeee5d9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fCVFQyU5OSU4MCVFQyU5RCVCNCVFQiU5MyU5QyVFQiVCMCU5NCVFQyVBNyU4MCUyMCVFRCU4MSVBQyVFQiVBNiVCQyVFQiVCMiVBMCVFQyU5RCVCNCVFQyVBNyU4MHxlbnwwfHwwfHx8MA%3D%3D",
+    "https://images.unsplash.com/photo-1605131545304-096aeaeee5d9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fCVFQyU5OSU4MCVFQyU5RCVCNCVFQiU5MyU5QyVFQiVCMCU5NCVFQyVBNyU4MCUyMCVFRCU4MSVBQyVFQiVBNiVCQyVFQiVCMiVBMCVFQyU5RCVCNCVFQyVBNyU4MHxlbnwwfHwwfHx8MA%3D%3D",
+    "https://images.unsplash.com/photo-1605131545304-096aeaeee5d9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fCVFQyU5OSU4MCVFQyU5RCVCNCVFQiU5MyU5QyVFQiVCMCU5NCVFQyVBNyU4MCUyMCVFRCU4MSVBQyVFQiVBNiVCQyVFQiVCMiVBMCVFQyU5RCVCNCVFQyVBNyU4MHxlbnwwfHwwfHx8MA%3D%3D",
   ],
 };
 
