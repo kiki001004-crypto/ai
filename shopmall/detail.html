@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>MAISON - 상품상세</title>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <header class="header page-header">
+        <a class="back-btn" href="category.html" aria-label="뒤로가기">←</a>
+        <h1 class="subpage-title">상품상세</h1>
+        <a
+          class="icon-btn cart-btn link-btn"
+          href="cart.html"
+          aria-label="장바구니"
+        >
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span class="badge">2</span>
+        </a>
+      </header>
+
+      <main class="main-content page-detail" id="detailPage"></main>
+
+      <div class="detail-bottom-bar">
+        <a class="ghost-btn" href="category.html">목록으로</a>
+        <button
+          class="checkout-btn detail-btn"
+          id="addToCartButton"
+          type="button"
+        >
+          장바구니 담기
+        </button>
+      </div>
+    </div>
+
+    <script src="./script/script.js"></script>
+  </body>
+</html>
