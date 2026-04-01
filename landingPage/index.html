@@ -731,6 +731,145 @@
           transform: translateY(-8px);
         }
       }
+
+      /* ── MODAL ── */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 999;
+        background: rgba(0, 0, 0, 0.45);
+        backdrop-filter: blur(6px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
+      }
+      .modal-overlay.open {
+        opacity: 1;
+        pointer-events: all;
+      }
+      .modal {
+        background: white;
+        border-radius: 28px;
+        padding: 48px 44px;
+        max-width: 480px;
+        width: 90%;
+        text-align: center;
+        position: relative;
+        transform: translateY(24px) scale(0.97);
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.18);
+      }
+      .modal-overlay.open .modal {
+        transform: translateY(0) scale(1);
+      }
+      .modal-close {
+        position: absolute;
+        top: 18px;
+        right: 20px;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--gray-2);
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        color: var(--ink-3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.15s;
+        line-height: 1;
+      }
+      .modal-close:hover {
+        background: var(--gray-3);
+      }
+      .modal-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 20px;
+        background: var(--blue-light);
+        font-size: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+      }
+      .modal-title {
+        font-size: 22px;
+        font-weight: 800;
+        color: var(--ink);
+        margin-bottom: 12px;
+        letter-spacing: -0.02em;
+      }
+      .modal-desc {
+        font-size: 15px;
+        color: var(--ink-3);
+        line-height: 1.7;
+        margin-bottom: 24px;
+      }
+      .modal-desc strong {
+        color: var(--blue);
+      }
+      .modal-benefits {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background: var(--gray-1);
+        border-radius: 16px;
+        padding: 18px 20px;
+        margin-bottom: 28px;
+        text-align: left;
+      }
+      .modal-benefit-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        color: var(--ink-2);
+        font-weight: 500;
+      }
+      .modal-benefit-item .check {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--blue);
+        color: white;
+        font-size: 11px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .modal-btn {
+        width: 100%;
+        background: var(--blue);
+        color: white;
+        border: none;
+        border-radius: 14px;
+        padding: 16px;
+        font-size: 16px;
+        font-weight: 700;
+        font-family: inherit;
+        cursor: pointer;
+        box-shadow: 0 4px 20px rgba(49, 130, 246, 0.35);
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+      .modal-btn:hover {
+        background: var(--blue-dark);
+        transform: translateY(-2px);
+      }
+      .modal-note {
+        font-size: 12px;
+        color: var(--gray-4);
+        margin-top: 12px;
+      }
     </style>
   </head>
   <body>
@@ -746,12 +885,7 @@
         <a href="#benefit">기대효과</a>
         <a href="#cta-section">신청하기</a>
       </div>
-      <button
-        class="nav-cta"
-        onclick="window.open('https://forms.gle/8dtoBf9ByNZ4KyqR7', '_blank')"
-      >
-        무료로 시작하기
-      </button>
+      <button class="nav-cta" onclick="openModal()">무료로 시작하기</button>
     </nav>
 
     <!-- HERO -->
@@ -776,10 +910,7 @@
       </p>
 
       <div class="hero-actions">
-        <button
-          class="btn-primary"
-          onclick="window.open('https://forms.gle/8dtoBf9ByNZ4KyqR7', '_blank')"
-        >
+        <button class="btn-primary" onclick="openModal()">
           지금 시작하기 →
         </button>
         <button
@@ -991,10 +1122,7 @@
           막막했던 AI 활용을 실무에서 바로 쓸 수 있도록 안내해 드려요. 복잡한
           기술 지식은 필요 없어요.
         </div>
-        <button
-          class="btn-white"
-          onclick="window.open('https://forms.gle/8dtoBf9ByNZ4KyqR7', '_blank')"
-        >
+        <button class="btn-white" onclick="openModal()">
           무료로 신청하기 →
         </button>
         <div class="cta-note">무료 · 언제든 취소 가능 · 스팸 없음</div>
@@ -1029,6 +1157,64 @@
         nav.style.boxShadow =
           window.scrollY > 20 ? "0 2px 20px rgba(0,0,0,0.08)" : "none";
       });
+
+      function openModal() {
+        document.getElementById("signupModal").classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+      function closeModal(e) {
+        if (e.target === document.getElementById("signupModal")) {
+          document.getElementById("signupModal").classList.remove("open");
+          document.body.style.overflow = "";
+        }
+      }
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          document.getElementById("signupModal").classList.remove("open");
+          document.body.style.overflow = "";
+        }
+      });
     </script>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="signupModal" onclick="closeModal(event)">
+      <div class="modal">
+        <button
+          class="modal-close"
+          onclick="
+            document.getElementById('signupModal').classList.remove('open')
+          "
+        >
+          ✕
+        </button>
+        <div class="modal-icon">🚀</div>
+        <div class="modal-title">AI 협업, 지금 바로 시작해요!</div>
+        <div class="modal-desc">
+          <strong>무료</strong>로 신청하고, 실무에서 바로 쓰는<br />AI 협업
+          방법을 가장 먼저 받아보세요.
+        </div>
+        <div class="modal-benefits">
+          <div class="modal-benefit-item">
+            <span class="check">✓</span> 복잡한 기술 지식 없이 바로 적용
+          </div>
+          <div class="modal-benefit-item">
+            <span class="check">✓</span> 하루 2시간 업무 시간 절약
+          </div>
+          <div class="modal-benefit-item">
+            <span class="check">✓</span> 보고서 초안 10분 완성 노하우
+          </div>
+          <div class="modal-benefit-item">
+            <span class="check">✓</span> 일의 즐거움을 되찾는 실전 가이드
+          </div>
+        </div>
+        <button
+          class="modal-btn"
+          onclick="window.open('https://forms.gle/8dtoBf9ByNZ4KyqR7', '_blank')"
+        >
+          구글 폼으로 신청하기 →
+        </button>
+        <div class="modal-note">무료 · 언제든 취소 가능 · 스팸 없음</div>
+      </div>
+    </div>
   </body>
 </html>
