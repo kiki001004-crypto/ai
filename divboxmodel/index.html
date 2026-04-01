@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Card UI Component - 1500px Layout</title>
+    <style>
+      /* 기본 초기화 및 폰트 설정 */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        background-color: #f9fafb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 2rem;
+      }
+
+      /* 카드 배치 컨테이너: 가로 1500px 설정 */
+      .card-wrapper {
+        display: grid;
+        width: 1500px; /* 부모 박스 가로 길이 고정 */
+        grid-template-columns: repeat(3, 480px); /* 카드 3개 (480*3 = 1440) */
+        gap: 30px; /* 간격 30px 설정 시 총합 1500px (1440 + 30*2) */
+        margin: 0 auto;
+      }
+
+      /* 카드 컨테이너 규격: 가로 480px 고정 */
+      .card {
+        width: 480px;
+        background-color: #ffffff;
+        border-radius: 1rem;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        border: 1px solid #e5e7eb;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transition: box-shadow 0.3s ease;
+      }
+      .card:hover {
+        box-shadow:
+          0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      }
+
+      /* 이미지 영역 */
+      .card-image {
+        width: 100%;
+        height: 330px;
+        object-fit: cover;
+        margin-bottom: 38px;
+      }
+
+      /* 콘텐츠 영역 */
+      .card-content {
+        padding: 0 30px;
+        font-size: 18px;
+        color: #0ca17b;
+      }
+      .card-category {
+        font-size: 18px;
+        color: #0ca17b;
+        font-weight: 600;
+        margin-bottom: 20px;
+      }
+      .card-title {
+        font-size: 24px;
+        font-weight: 600;
+        color: #111827;
+        margin-bottom: 20px;
+        letter-spacing: 1px;
+      }
+      .card-description {
+        margin-bottom: 54px;
+        line-height: 1.5;
+        font-size: 17px;
+        color: #676767;
+        letter-spacing: 1px;
+      }
+
+      /* 하단 가격 영역 */
+      .card-footer {
+        padding: 0 1.5rem 1.5rem 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        margin-top: auto;
+      }
+
+      .card-price {
+        display: inline-block;
+        font-size: 26px;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 30px;
+      }
+      .price-unit {
+        font-size: 18px;
+        font-weight: 400;
+      }
+
+      /* 반응형 대응 */
+      @media (max-width: 1540px) {
+        .card-wrapper {
+          width: 100%;
+          grid-template-columns: repeat(auto-fit, 480px);
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card-wrapper">
+      <!-- 카드 1 -->
+      <div class="card">
+        <img
+          class="card-image"
+          src="./images/636844607357281152.jpg"
+          alt="카드 이미지 1"
+        />
+        <div class="card-content">
+          <div class="card-category">해외여행</div>
+          <h2 class="card-title">[서유럽 여행] ★런던/프랑스/스위스/이탈리아</h2>
+          <p class="card-description">
+            #6월연휴기간출발#가족여행추천#베스트상품
+          </p>
+        </div>
+        <div class="card-footer">
+          <span class="card-price"
+            >3,199,000<span class="price-unit">원~</span></span
+          >
+        </div>
+      </div>
+
+      <!-- 카드 2 -->
+      <div class="card">
+        <img
+          class="card-image"
+          src="./images/635713457277990389.jpg"
+          alt="카드 이미지 2"
+        />
+        <div class="card-content">
+          <div class="card-category">해외여행</div>
+          <h2 class="card-title">
+            [대만/단수이/예류/스펀/지우펀] 3/4/5일 ★BEST
+          </h2>
+          <p class="card-description">
+            #스펀 천등 체험 #센과치히로의행방불명'지우펀' #기암괴석 예류해양공원
+          </p>
+        </div>
+        <div class="card-footer">
+          <span class="card-price"
+            >529,900<span class="price-unit">원~</span></span
+          >
+        </div>
+      </div>
+
+      <!-- 카드 3 -->
+      <div class="card">
+        <img
+          class="card-image"
+          src="./images/638689081315238278.jpg"
+          alt="카드 이미지 3"
+        />
+        <div class="card-content">
+          <div class="card-category">해외여행</div>
+          <h2 class="card-title">[시드니] 베스트셀러 6/7일 ★전일정4성</h2>
+          <p class="card-description">
+            #블루마운틴 #오페라하우스 #시드니동물원 #저비스베이 #돌핀크루즈
+            #하버크루즈
+          </p>
+        </div>
+        <div class="card-footer">
+          <span class="card-price"
+            >1,149,000<span class="price-unit">원~</span></span
+          >
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
