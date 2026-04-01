@@ -591,6 +591,8 @@
         padding: 0 40px 120px;
         max-width: 1100px;
         margin: 0 auto;
+        position: relative;
+        z-index: 10;
       }
       .cta-box {
         background: linear-gradient(
@@ -609,12 +611,12 @@
         position: absolute;
         inset: 0;
         background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-        pointer-events: none; /* 패턴이 버튼 클릭을 막지 않도록 설정 */
+        pointer-events: none;
         z-index: 0;
       }
       .cta-content {
         position: relative;
-        z-index: 1;
+        z-index: 2;
       }
       .cta-eyebrow {
         font-size: 13px;
@@ -652,7 +654,7 @@
         box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
         transition: all 0.2s;
         position: relative;
-        z-index: 2; /* 버튼이 확실히 위에 오도록 설정 */
+        z-index: 5;
       }
       .btn-white:hover {
         transform: translateY(-3px);
@@ -875,6 +877,11 @@
         font-size: 36px;
         margin: 0 auto 24px;
       }
+
+      /* 숨겨진 프레임 (구글 폼 제출 후 페이지 리디렉션 방지용) */
+      #hidden_iframe {
+        display: none;
+      }
     </style>
   </head>
   <body>
@@ -1080,6 +1087,7 @@
             지금 신청하면 가장 먼저 받아볼 수 있어요
           </div>
           <div class="cta-title">AI 협업, 오늘부터<br />시작해 보세요</div>
+          <!-- 버튼 활성화 보장을 위해 z-index와 pointer-events가 처리된 상태 -->
           <button class="btn-white" onclick="openModal()">
             무료로 신청하기 →
           </button>
@@ -1107,11 +1115,20 @@
             정보를 입력하시면 실무 가이드와<br />신청 안내를 즉시 보내드려요.
           </div>
 
-          <form class="signup-form" onsubmit="handleFormSubmit(event)">
+          <!-- 실제 구글 폼과 연결하기 위한 폼 구조 -->
+          <!-- ⚠️ 주의: entry.XXXXX 부분은 실제 구글 폼의 '항목 ID'로 변경해야 데이터가 정확히 들어갑니다. -->
+          <form
+            class="signup-form"
+            action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSeW6yP3N6pY2F_pYyL8pW_pY6pW_pY6pW_pY6pW_pY6pW_pY6p/formResponse"
+            method="POST"
+            target="hidden_iframe"
+            onsubmit="handleFormSubmit(event)"
+          >
             <div class="input-group">
               <label class="input-label">이름</label>
               <input
                 type="text"
+                name="entry.1000001"
                 class="input-field"
                 placeholder="성함을 입력해 주세요"
                 required
@@ -1122,6 +1139,7 @@
               <label class="input-label">전화번호</label>
               <input
                 type="tel"
+                name="entry.1000002"
                 class="input-field"
                 placeholder="010-0000-0000"
                 required
@@ -1132,12 +1150,14 @@
               <label class="input-label">이메일 주소</label>
               <input
                 type="email"
+                name="entry.1000003"
                 class="input-field"
                 placeholder="가이드를 받을 이메일 주소"
                 required
                 id="userEmail"
               />
             </div>
+
             <button type="submit" class="modal-btn">
               신청 완료하고 가이드 받기
             </button>
@@ -1159,6 +1179,9 @@
         </div>
       </div>
     </div>
+
+    <!-- 구글 폼 제출 시 페이지 이동을 막기 위한 숨겨진 iframe -->
+    <iframe name="hidden_iframe" id="hidden_iframe"></iframe>
 
     <script>
       // Scroll reveal
@@ -1201,25 +1224,25 @@
 
       // Form Submit Handler
       function handleFormSubmit(e) {
-        e.preventDefault();
-        const name = document.getElementById("userName").value;
-        const phone = document.getElementById("userPhone").value;
-        const email = document.getElementById("userEmail").value;
-
-        console.log("신청 정보 수집됨:", { name, phone, email });
+        // 실제 구글 폼으로 전송되기 때문에 preventDefault()를 하지 않거나,
+        // target="hidden_iframe"을 사용하여 현재 페이지를 유지합니다.
 
         const btn = e.target.querySelector("button");
         const originalText = btn.innerText;
         btn.innerText = "처리 중...";
         btn.disabled = true;
 
-        // 제출 시뮬레이션 (800ms)
+        // 제출 후 UI 전환 (iframe 전송 시간을 고려하여 약간의 지연 후 실행)
         setTimeout(() => {
           document.getElementById("formState").style.display = "none";
           document.getElementById("successState").style.display = "block";
           btn.disabled = false;
           btn.innerText = originalText;
-        }, 800);
+
+          // 콘솔 확인용
+          const name = document.getElementById("userName").value;
+          console.log(name + "님의 신청 정보가 구글 폼으로 전송되었습니다.");
+        }, 1000);
       }
 
       // ESC key support
@@ -1227,12 +1250,12 @@
         if (e.key === "Escape") closeModalDirect();
       });
 
-      // DOMContentLoaded 이후에 리스너 명시적 재연결
+      // CTA 섹션 버튼 클릭 보장 로직
       document.addEventListener("DOMContentLoaded", () => {
         const ctaBtn = document.querySelector("#cta-section .btn-white");
         if (ctaBtn) {
           ctaBtn.addEventListener("click", (e) => {
-            e.preventDefault();
+            e.stopPropagation(); // 이벤트 전파 방지
             openModal();
           });
         }
