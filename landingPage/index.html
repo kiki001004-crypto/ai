@@ -253,7 +253,6 @@
         color: var(--blue);
       }
 
-      /* hero visual cards */
       .hero-visual {
         margin-top: 72px;
         width: 100%;
@@ -344,13 +343,11 @@
         max-width: 1100px;
         margin: 0 auto;
       }
-
       .problem-bg {
         background: var(--gray-1);
         border-radius: 32px;
         padding: 80px 64px;
       }
-
       .pain-grid {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
@@ -409,7 +406,6 @@
       #content {
         background: white;
       }
-
       .pillars {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
@@ -439,7 +435,6 @@
       .pillar-3 {
         background: linear-gradient(135deg, #fff7ed 0%, #fee2cb 100%);
       }
-
       .pillar-num {
         font-size: 12px;
         font-weight: 800;
@@ -482,7 +477,6 @@
         margin: 0 auto;
         padding: 0 40px;
       }
-
       .before-after {
         display: grid;
         grid-template-columns: 1fr auto 1fr;
@@ -534,7 +528,6 @@
         flex-shrink: 0;
         margin-top: 1px;
       }
-
       .arrow-center {
         display: flex;
         flex-direction: column;
@@ -560,7 +553,6 @@
         letter-spacing: 0.06em;
       }
 
-      /* stats row */
       .stats-row {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -617,6 +609,12 @@
         position: absolute;
         inset: 0;
         background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        pointer-events: none; /* 패턴이 버튼 클릭을 막지 않도록 설정 */
+        z-index: 0;
+      }
+      .cta-content {
+        position: relative;
+        z-index: 1;
       }
       .cta-eyebrow {
         font-size: 13px;
@@ -653,6 +651,8 @@
         cursor: pointer;
         box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
         transition: all 0.2s;
+        position: relative;
+        z-index: 2; /* 버튼이 확실히 위에 오도록 설정 */
       }
       .btn-white:hover {
         transform: translateY(-3px);
@@ -700,9 +700,6 @@
       .reveal-delay-3 {
         transition-delay: 0.3s;
       }
-      .reveal-delay-4 {
-        transition-delay: 0.4s;
-      }
 
       /* ── ANIMATIONS ── */
       @keyframes fadeUp {
@@ -720,15 +717,6 @@
         50% {
           opacity: 0.5;
           transform: scale(0.75);
-        }
-      }
-      @keyframes float {
-        0%,
-        100% {
-          transform: translateY(0);
-        }
-        50% {
-          transform: translateY(-8px);
         }
       }
 
@@ -753,9 +741,9 @@
       .modal {
         background: white;
         border-radius: 28px;
-        padding: 48px 44px;
+        padding: 48px 40px;
         max-width: 480px;
-        width: 90%;
+        width: 95%;
         text-align: center;
         position: relative;
         transform: translateY(24px) scale(0.97);
@@ -780,11 +768,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: background 0.15s;
-        line-height: 1;
-      }
-      .modal-close:hover {
-        background: var(--gray-3);
       }
       .modal-icon {
         width: 64px;
@@ -808,53 +791,56 @@
         font-size: 15px;
         color: var(--ink-3);
         line-height: 1.7;
-        margin-bottom: 24px;
+        margin-bottom: 32px;
       }
-      .modal-desc strong {
-        color: var(--blue);
-      }
-      .modal-benefits {
+
+      /* 신청 폼 스타일 */
+      .signup-form {
         display: flex;
         flex-direction: column;
-        gap: 10px;
-        background: var(--gray-1);
-        border-radius: 16px;
-        padding: 18px 20px;
-        margin-bottom: 28px;
+        gap: 16px;
         text-align: left;
       }
-      .modal-benefit-item {
+      .input-group {
         display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 14px;
-        color: var(--ink-2);
-        font-weight: 500;
+        flex-direction: column;
+        gap: 8px;
       }
-      .modal-benefit-item .check {
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        background: var(--blue);
-        color: white;
-        font-size: 11px;
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      .input-label {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--ink-2);
+        margin-left: 4px;
+      }
+      .input-field {
+        width: 100%;
+        padding: 16px;
+        border-radius: 12px;
+        border: 1.5px solid var(--gray-3);
+        font-size: 15px;
+        font-family: inherit;
+        transition:
+          border-color 0.2s,
+          background-color 0.2s;
+        outline: none;
+        background-color: var(--gray-1);
+      }
+      .input-field:focus {
+        border-color: var(--blue);
+        background-color: white;
       }
       .modal-btn {
         width: 100%;
         background: var(--blue);
         color: white;
         border: none;
-        border-radius: 14px;
-        padding: 16px;
+        border-radius: 12px;
+        padding: 18px;
         font-size: 16px;
         font-weight: 700;
         font-family: inherit;
         cursor: pointer;
-        box-shadow: 0 4px 20px rgba(49, 130, 246, 0.35);
+        margin-top: 12px;
         transition: all 0.2s;
         display: flex;
         align-items: center;
@@ -863,12 +849,31 @@
       }
       .modal-btn:hover {
         background: var(--blue-dark);
-        transform: translateY(-2px);
+        transform: translateY(-1px);
       }
       .modal-note {
         font-size: 12px;
         color: var(--gray-4);
-        margin-top: 12px;
+        margin-top: 16px;
+        text-align: center;
+      }
+
+      /* 성공 상태 메시지 */
+      #successState {
+        display: none;
+        padding: 20px 0;
+      }
+      #successState .check-large {
+        width: 72px;
+        height: 72px;
+        background: #f0fff4;
+        color: #22c55e;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 36px;
+        margin: 0 auto 24px;
       }
     </style>
   </head>
@@ -892,23 +897,17 @@
     <div id="hero">
       <div class="hero-blob hero-blob-1"></div>
       <div class="hero-blob hero-blob-2"></div>
-
       <div class="hero-badge">
-        <span class="pulse"></span>
-        직장인 AI 협업 가이드
+        <span class="pulse"></span>직장인 AI 협업 가이드
       </div>
-
       <h1 class="hero-title">
-        AI가 필요한 이유는<br />
-        <span class="accent">'속도'</span>보다
+        AI가 필요한 이유는<br /><span class="accent">'속도'</span>보다
         <span class="accent">'집중'</span>입니다
       </h1>
-
       <p class="hero-sub">
-        막막했던 AI 활용, 이제 실무에서 바로 씁니다.<br />
-        복잡한 기술 없이, 오늘 당장 적용 가능한 AI 협업법을 알려드려요.
+        막막했던 AI 활용, 이제 실무에서 바로 씁니다.<br />복잡한 기술 없이, 오늘
+        당장 적용 가능한 AI 협업법을 알려드려요.
       </p>
-
       <div class="hero-actions">
         <button class="btn-primary" onclick="openModal()">
           지금 시작하기 →
@@ -924,7 +923,6 @@
           콘텐츠 살펴보기
         </button>
       </div>
-
       <div class="hero-visual">
         <div class="hero-card">
           <div class="icon-wrap" style="background: #ebf3ff">⏱️</div>
@@ -962,10 +960,8 @@
             AI, 써보고 싶은데<br />어디서부터 시작할지 모르겠다면
           </h2>
           <p class="reveal reveal-delay-2 section-sub">
-            수많은 직장인이 같은 막막함을 느끼고 있어요. 당신만의 문제가
-            아닙니다.
+            수많은 직장인이 같은 막막함을 느끼고 있어요.
           </p>
-
           <div class="pain-grid">
             <div class="pain-card reveal reveal-delay-1">
               <div class="pain-num">01</div>
@@ -999,45 +995,38 @@
       </div>
     </div>
 
-    <!-- CONTENT PILLARS -->
+    <!-- CONTENT -->
     <section id="content">
       <div class="reveal section-label">무엇을 배우나요?</div>
       <h2 class="reveal reveal-delay-1 section-title">
         실무에 바로 적용되는<br />3가지 핵심 주제
       </h2>
-      <p class="reveal reveal-delay-2 section-sub">
-        이론이 아닌 내일 당장 업무에 쓸 수 있는 내용만 담았어요.
-      </p>
-
       <div class="pillars">
         <div class="pillar pillar-1 reveal reveal-delay-1">
           <div class="pillar-num">CHAPTER 01</div>
           <div class="pillar-icon">🔍</div>
-          <div class="pillar-topic">Why AI</div>
           <div class="pillar-title">왜 지금 AI 협업이 필요한가</div>
           <div class="pillar-msg">
             AI가 필요한 이유는 '속도'보다 '집중'입니다. 잡무에서 벗어나 정말
-            중요한 일에 집중하는 방법을 알려드려요.
+            중요한 일에 집중하는 법을 배워요.
           </div>
         </div>
         <div class="pillar pillar-2 reveal reveal-delay-2">
           <div class="pillar-num">CHAPTER 02</div>
           <div class="pillar-icon">⚡</div>
-          <div class="pillar-topic">How to Use</div>
           <div class="pillar-title">실무에 바로 쓰는 AI 협업 방법</div>
           <div class="pillar-msg">
-            복잡한 기술보다, 바로 쓰는 업무형 AI 스킬. 오늘 배워서 내일 업무에
-            적용할 수 있는 실전 방법론입니다.
+            오늘 배워서 내일 바로 적용하는 실전 방법론. 실무자의 언어로 AI에게
+            명령하는 기술을 공유합니다.
           </div>
         </div>
         <div class="pillar pillar-3 reveal reveal-delay-3">
           <div class="pillar-num">CHAPTER 03</div>
           <div class="pillar-icon">✨</div>
-          <div class="pillar-topic">After AI</div>
-          <div class="pillar-title">AI를 쓰고 나서 달라지는 업무 방식</div>
+          <div class="pillar-title">AI를 쓰고 나서 달라지는 삶</div>
           <div class="pillar-msg">
-            생산성은 높이고, 일의 즐거움은 되찾는 방법. 업무가 어떻게 바뀌는지
-            직접 경험해 보세요.
+            생산성은 높이고, 일의 즐거움은 되찾는 방법. 칼퇴를 현실로 만드는 AI
+            협업의 결과물을 확인하세요.
           </div>
         </div>
       </div>
@@ -1050,7 +1039,6 @@
         <h2 class="reveal reveal-delay-1 section-title">
           AI 협업 전후,<br />이렇게 달라집니다
         </h2>
-
         <div class="before-after">
           <div class="ba-col reveal reveal-delay-1">
             <span class="ba-tag">AI 협업 전</span>
@@ -1061,21 +1049,13 @@
               <span class="ico">🔄</span> 반복 업무에 에너지 소진
             </div>
             <div class="ba-item">
-              <span class="ico">😶</span> 창의적 아이디어 낼 여유 없음
-            </div>
-            <div class="ba-item">
-              <span class="ico">📉</span> 퇴근 후에도 머릿속에 업무
-            </div>
-            <div class="ba-item">
               <span class="ico">🤔</span> AI 어떻게 써야 할지 막막함
             </div>
           </div>
-
           <div class="arrow-center reveal">
             <div class="arrow-wrap">→</div>
             <div class="arrow-label">변화</div>
           </div>
-
           <div class="ba-col after reveal reveal-delay-2">
             <span class="ba-tag">AI 협업 후</span>
             <div class="ba-item">
@@ -1085,29 +1065,8 @@
               <span class="ico">🤖</span> 반복 업무는 AI에게 위임
             </div>
             <div class="ba-item">
-              <span class="ico">💡</span> 하루 2시간 이상 여유 확보
-            </div>
-            <div class="ba-item">
               <span class="ico">😌</span> 퇴근 후 온전한 나만의 시간
             </div>
-            <div class="ba-item">
-              <span class="ico">✅</span> 오늘 배워서 내일 바로 적용
-            </div>
-          </div>
-        </div>
-
-        <div class="stats-row">
-          <div class="stat-card reveal reveal-delay-1">
-            <div class="stat-num">2<span class="stat-unit">h</span></div>
-            <div class="stat-desc">하루 평균 업무 시간 절약</div>
-          </div>
-          <div class="stat-card reveal reveal-delay-2">
-            <div class="stat-num">10<span class="stat-unit">분</span></div>
-            <div class="stat-desc">보고서 초안 작성 시간</div>
-          </div>
-          <div class="stat-card reveal reveal-delay-3">
-            <div class="stat-num">3<span class="stat-unit">배</span></div>
-            <div class="stat-desc">핵심 업무 집중도 향상</div>
           </div>
         </div>
       </div>
@@ -1116,24 +1075,90 @@
     <!-- CTA -->
     <div id="cta-section">
       <div class="cta-box reveal">
-        <div class="cta-eyebrow">지금 신청하면 가장 먼저 받아볼 수 있어요</div>
-        <div class="cta-title">AI 협업, 오늘부터<br />시작해 보세요</div>
-        <div class="cta-desc">
-          막막했던 AI 활용을 실무에서 바로 쓸 수 있도록 안내해 드려요. 복잡한
-          기술 지식은 필요 없어요.
+        <div class="cta-content">
+          <div class="cta-eyebrow">
+            지금 신청하면 가장 먼저 받아볼 수 있어요
+          </div>
+          <div class="cta-title">AI 협업, 오늘부터<br />시작해 보세요</div>
+          <button class="btn-white" onclick="openModal()">
+            무료로 신청하기 →
+          </button>
+          <div class="cta-note">무료 · 언제든 취소 가능 · 스팸 없음</div>
         </div>
-        <button class="btn-white" onclick="openModal()">
-          무료로 신청하기 →
-        </button>
-        <div class="cta-note">무료 · 언제든 취소 가능 · 스팸 없음</div>
       </div>
     </div>
 
     <!-- FOOTER -->
     <footer>
       <div class="footer-logo">AI 협업 스쿨</div>
-      <p>실무에서 바로 쓰는 AI 협업 방법 | © 2026 All rights reserved.</p>
+      <p>© 2026 AI Collaboration School. All rights reserved.</p>
     </footer>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="signupModal" onclick="closeModal(event)">
+      <div class="modal">
+        <button class="modal-close" onclick="closeModalDirect()">✕</button>
+
+        <!-- 신청 폼 섹션 -->
+        <div id="formState">
+          <div class="modal-icon">🚀</div>
+          <div class="modal-title">AI 협업, 지금 시작하세요!</div>
+          <div class="modal-desc">
+            정보를 입력하시면 실무 가이드와<br />신청 안내를 즉시 보내드려요.
+          </div>
+
+          <form class="signup-form" onsubmit="handleFormSubmit(event)">
+            <div class="input-group">
+              <label class="input-label">이름</label>
+              <input
+                type="text"
+                class="input-field"
+                placeholder="성함을 입력해 주세요"
+                required
+                id="userName"
+              />
+            </div>
+            <div class="input-group">
+              <label class="input-label">전화번호</label>
+              <input
+                type="tel"
+                class="input-field"
+                placeholder="010-0000-0000"
+                required
+                id="userPhone"
+              />
+            </div>
+            <div class="input-group">
+              <label class="input-label">이메일 주소</label>
+              <input
+                type="email"
+                class="input-field"
+                placeholder="가이드를 받을 이메일 주소"
+                required
+                id="userEmail"
+              />
+            </div>
+            <button type="submit" class="modal-btn">
+              신청 완료하고 가이드 받기
+            </button>
+          </form>
+          <div class="modal-note">
+            무료 서비스이며 언제든 구독 해제 가능합니다.
+          </div>
+        </div>
+
+        <!-- 성공 메시지 섹션 -->
+        <div id="successState">
+          <div class="check-large">✓</div>
+          <div class="modal-title">신청이 완료되었습니다!</div>
+          <div class="modal-desc">
+            입력하신 이메일과 연락처로 가이드를 발송했습니다.<br />잠시 후
+            확인해 주세요.
+          </div>
+          <button class="modal-btn" onclick="closeModalDirect()">확인</button>
+        </div>
+      </div>
+    </div>
 
     <script>
       // Scroll reveal
@@ -1151,70 +1176,67 @@
       );
       reveals.forEach((el) => observer.observe(el));
 
-      // Nav scroll effect
-      const nav = document.querySelector("nav");
-      window.addEventListener("scroll", () => {
-        nav.style.boxShadow =
-          window.scrollY > 20 ? "0 2px 20px rgba(0,0,0,0.08)" : "none";
-      });
-
+      // Modal functions
       function openModal() {
-        document.getElementById("signupModal").classList.add("open");
+        const modal = document.getElementById("signupModal");
+        const formState = document.getElementById("formState");
+        const successState = document.getElementById("successState");
+
+        modal.classList.add("open");
+        formState.style.display = "block";
+        successState.style.display = "none";
         document.body.style.overflow = "hidden";
       }
+
       function closeModal(e) {
         if (e.target === document.getElementById("signupModal")) {
-          document.getElementById("signupModal").classList.remove("open");
-          document.body.style.overflow = "";
+          closeModalDirect();
         }
       }
+
+      function closeModalDirect() {
+        document.getElementById("signupModal").classList.remove("open");
+        document.body.style.overflow = "";
+      }
+
+      // Form Submit Handler
+      function handleFormSubmit(e) {
+        e.preventDefault();
+        const name = document.getElementById("userName").value;
+        const phone = document.getElementById("userPhone").value;
+        const email = document.getElementById("userEmail").value;
+
+        console.log("신청 정보 수집됨:", { name, phone, email });
+
+        const btn = e.target.querySelector("button");
+        const originalText = btn.innerText;
+        btn.innerText = "처리 중...";
+        btn.disabled = true;
+
+        // 제출 시뮬레이션 (800ms)
+        setTimeout(() => {
+          document.getElementById("formState").style.display = "none";
+          document.getElementById("successState").style.display = "block";
+          btn.disabled = false;
+          btn.innerText = originalText;
+        }, 800);
+      }
+
+      // ESC key support
       document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") {
-          document.getElementById("signupModal").classList.remove("open");
-          document.body.style.overflow = "";
+        if (e.key === "Escape") closeModalDirect();
+      });
+
+      // DOMContentLoaded 이후에 리스너 명시적 재연결
+      document.addEventListener("DOMContentLoaded", () => {
+        const ctaBtn = document.querySelector("#cta-section .btn-white");
+        if (ctaBtn) {
+          ctaBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            openModal();
+          });
         }
       });
     </script>
-
-    <!-- MODAL -->
-    <div class="modal-overlay" id="signupModal" onclick="closeModal(event)">
-      <div class="modal">
-        <button
-          class="modal-close"
-          onclick="
-            document.getElementById('signupModal').classList.remove('open')
-          "
-        >
-          ✕
-        </button>
-        <div class="modal-icon">🚀</div>
-        <div class="modal-title">AI 협업, 지금 바로 시작해요!</div>
-        <div class="modal-desc">
-          <strong>무료</strong>로 신청하고, 실무에서 바로 쓰는<br />AI 협업
-          방법을 가장 먼저 받아보세요.
-        </div>
-        <div class="modal-benefits">
-          <div class="modal-benefit-item">
-            <span class="check">✓</span> 복잡한 기술 지식 없이 바로 적용
-          </div>
-          <div class="modal-benefit-item">
-            <span class="check">✓</span> 하루 2시간 업무 시간 절약
-          </div>
-          <div class="modal-benefit-item">
-            <span class="check">✓</span> 보고서 초안 10분 완성 노하우
-          </div>
-          <div class="modal-benefit-item">
-            <span class="check">✓</span> 일의 즐거움을 되찾는 실전 가이드
-          </div>
-        </div>
-        <button
-          class="modal-btn"
-          onclick="window.open('https://forms.gle/8dtoBf9ByNZ4KyqR7', '_blank')"
-        >
-          구글 폼으로 신청하기 →
-        </button>
-        <div class="modal-note">무료 · 언제든 취소 가능 · 스팸 없음</div>
-      </div>
-    </div>
   </body>
 </html>
