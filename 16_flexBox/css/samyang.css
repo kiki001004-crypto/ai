@@ -1,0 +1,135 @@
+@charset "utf-8";
+/* 웹폰트 설정 */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap");
+body {
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+section {
+  width: 100%;
+  padding: 180px 0 100px;
+}
+
+section .title {
+  text-align: center;
+}
+
+section .title h2 {
+  font-size: 40px;
+  color: #333;
+  font-weight: 900;
+  margin-bottom: 30px;
+}
+
+section .title p {
+  font-size: 21px;
+  color: #222;
+  font-weight: 400;
+  line-height: 32px;
+  margin-bottom: 72px;
+}
+
+section ul {
+  /* flex */
+  display: flex;
+  gap: 16px;
+  /* flex 가운데 정렬 */
+  justify-content: center;
+}
+
+section ul li {
+  list-style: none;
+}
+
+/* 박스모델 제일 큰 부모 */
+section .box_total_wrap {
+  width: 1140px;
+  margin: 50px auto 0;
+  display: flex;
+  gap: 19px;
+}
+
+section .box_total_wrap .left {
+  width: 312px;
+  height: 655px;
+  border: 1px solid #313131;
+}
+section .box_total_wrap .center {
+  width: 474px;
+  height: 655px;
+}
+section .box_total_wrap .center .video {
+  width: 100%;
+  height: 429px;
+  padding: 40px;
+  box-sizing: border-box;
+  border: 1px solid #313131;
+  /* padding으로 늘어난 길이 방지 */
+}
+section .box_total_wrap .center .cs {
+  width: 100%;
+  height: 209px;
+  margin-top: 19px;
+  padding: 40px;
+  box-sizing: border-box;
+  border: 1px solid #313131;
+}
+
+section .box_total_wrap .right {
+  width: 313px;
+  height: 655px;
+}
+
+section .box_total_wrap .right .food {
+  width: 100%;
+  height: 213px;
+  padding: 32px;
+  box-sizing: border-box;
+  border: 1px solid #313131;
+}
+section .box_total_wrap .right .board {
+  width: 100%;
+  height: 193px;
+  margin-top: 19px;
+  padding: 32px;
+  box-sizing: border-box;
+  border: 1px solid #313131;
+}
+section .box_total_wrap .right .mall {
+  width: 100%;
+  height: 210px;
+  margin-top: 19px;
+  padding: 32px;
+  box-sizing: border-box;
+  border: 1px solid #313131;
+}
+
+/* 전체 박스에 한번에 제목스타일 바꾸기 */
+section .box_total_wrap div h3 {
+  font-size: 27px;
+  font-weight: 600;
+}
+
+section .box_total_wrap div p {
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: -1px;
+  margin-top: 16px;
+}
+
+section .box_total_wrap div button {
+  margin-top: 32px;
+  width: 90px;
+  height: 26px;
+  background: #ff6405;
+  color: #fff;
+  border: 1px solid #ff6405;
+  border-radius: 999px;
+  /* 버튼에 하이퍼링크 손모양 걸어주는 명령 */
+  cursor: pointer;
+}
