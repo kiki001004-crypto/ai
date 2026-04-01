@@ -4,20 +4,26 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI 협업 — 집중의 기술</title>
+    <!-- 구글 폰트 -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./css/style.css">
-
-    <body>
+    <!-- CSS 연결 (파일명: style.css) -->
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
     <!-- ── NAV ── -->
     <nav>
-      <div class="nav-logo"><div class="dot"></div>AI 협업 스쿨</div>
+      <div class="nav-logo">
+        <div class="dot"></div>
+        AI 협업 스쿨
+      </div>
       <div class="nav-menu">
         <a href="#problem">고민</a>
         <a href="#content">콘텐츠</a>
+        <a href="#benefit">기대효과</a>
         <a href="#cta-section">신청하기</a>
       </div>
       <button class="nav-cta" onclick="openModal()">무료로 시작하기</button>
@@ -28,10 +34,27 @@
       <div class="hero-blob hero-blob-1"></div>
       <div class="hero-blob hero-blob-2"></div>
       <div class="hero-badge">직장인 AI 협업 가이드</div>
-      <h1 class="hero-title">AI가 필요한 이유는<br /><span class="accent">'속도'</span>보다 <span class="accent">'집중'</span>입니다</h1>
-      <p class="hero-sub">데이터 연동이 완료된 최종 버전입니다. 실무에 바로 적용해 보세요.</p>
+      <h1 class="hero-title">
+        AI가 필요한 이유는<br /><span class="accent">'속도'</span>보다
+        <span class="accent">'집중'</span>입니다
+      </h1>
+      <p class="hero-sub">
+        데이터 연동이 완료된 최종 버전입니다. 실무에 바로 적용해 보세요.
+      </p>
       <div class="hero-actions">
-        <button class="btn-primary" onclick="openModal()">지금 신청하기 →</button>
+        <button class="btn-primary" onclick="openModal()">
+          지금 신청하기 →
+        </button>
+        <button
+          class="btn-secondary"
+          onclick="
+            document
+              .getElementById('content')
+              .scrollIntoView({ behavior: 'smooth' })
+          "
+        >
+          콘텐츠 살펴보기
+        </button>
       </div>
     </div>
 
@@ -40,19 +63,27 @@
       <div class="inner">
         <div class="problem-bg">
           <div class="reveal section-label">혹시 이런 고민, 있으신가요?</div>
-          <h2 class="reveal section-title">AI, 써보고 싶은데 어디서부터 시작할지 모르겠다면</h2>
+          <h2 class="reveal section-title">
+            AI, 써보고 싶은데 어디서부터 시작할지 모르겠다면
+          </h2>
           <div class="pain-grid">
             <div class="pain-card reveal">
               <div class="pain-num">01</div>
-              <div class="pain-quote">"ChatGPT 써봤는데 업무에 어떻게 쓰는지 모르겠어요"</div>
+              <div class="pain-quote">
+                "ChatGPT 써봤는데 업무에 어떻게 쓰는지 모르겠어요"
+              </div>
             </div>
             <div class="pain-card reveal">
               <div class="pain-num">02</div>
-              <div class="pain-quote">"AI 쓰면 빨라진다는데 나는 왜 그대로일까요"</div>
+              <div class="pain-quote">
+                "AI 쓰면 빨라진다는데 나는 왜 그대로일까요"
+              </div>
             </div>
             <div class="pain-card reveal">
               <div class="pain-num">03</div>
-              <div class="pain-quote">"기술 공부할 시간도 없는데 어떻게 배워야 하죠"</div>
+              <div class="pain-quote">
+                "기술 공부할 시간도 없는데 어떻게 배워야 하죠"
+              </div>
             </div>
           </div>
         </div>
@@ -62,22 +93,54 @@
     <!-- ── CONTENT ── -->
     <section id="content">
       <div class="reveal section-label">무엇을 배우나요?</div>
-      <h2 class="reveal section-title">실무에 바로 적용되는<br />3가지 핵심 주제</h2>
+      <h2 class="reveal section-title">
+        실무에 바로 적용되는<br />3가지 핵심 주제
+      </h2>
       <div class="pillars">
         <div class="pillar pillar-1 reveal">
           <div class="pillar-icon">🔍</div>
           <div class="pillar-title">Why AI</div>
-          <div class="pillar-msg">AI가 필요한 진짜 이유는 잡무에서 벗어나 정말 중요한 일에 집중하기 위함입니다.</div>
+          <div class="pillar-msg">
+            AI가 필요한 진짜 이유는 잡무에서 벗어나 정말 중요한 일에 집중하기
+            위함입니다.
+          </div>
         </div>
         <div class="pillar pillar-2 reveal">
           <div class="pillar-icon">⚡</div>
           <div class="pillar-title">How to Use</div>
-          <div class="pillar-msg">복잡한 프롬프트 대신 실무자의 언어로 AI와 협업하는 실전 방법론을 배웁니다.</div>
+          <div class="pillar-msg">
+            복잡한 프롬프트 대신 실무자의 언어로 AI와 협업하는 실전 방법론을
+            배웁니다.
+          </div>
         </div>
         <div class="pillar pillar-3 reveal">
           <div class="pillar-icon">✨</div>
           <div class="pillar-title">After AI</div>
-          <div class="pillar-msg">생산성은 높이고 퇴근은 빠르게. AI와 함께 달라진 업무 방식을 직접 경험해 보세요.</div>
+          <div class="pillar-msg">
+            생산성은 높이고 퇴근은 빠르게. AI와 함께 달라진 업무 방식을 직접
+            경험해 보세요.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── BENEFIT ── -->
+    <section id="benefit">
+      <div class="reveal section-label">어떻게 달라지나요?</div>
+      <h2 class="reveal section-title">AI 협업 전후, 이렇게 달라집니다</h2>
+      <div class="before-after">
+        <div class="ba-col reveal">
+          <span class="ba-tag">AI 협업 전</span>
+          <div class="ba-item">😩 보고서 작성에 반나절 소요</div>
+          <div class="ba-item">🔄 반복 업무에 에너지 소진</div>
+          <div class="ba-item">🤔 AI 어떻게 써야 할지 막막함</div>
+        </div>
+        <div class="arrow-wrap reveal">→</div>
+        <div class="ba-col after reveal">
+          <span class="ba-tag">AI 협업 후</span>
+          <div class="ba-item">🚀 보고서 초안 10분 완성</div>
+          <div class="ba-item">🤖 반복 업무는 AI에게 위임</div>
+          <div class="ba-item">😌 퇴근 후 온전한 나만의 시간</div>
         </div>
       </div>
     </section>
@@ -86,9 +149,9 @@
     <div id="cta-section">
       <div class="cta-box reveal">
         <div class="cta-content">
-          <div class="cta-eyebrow">지금 신청하면 가이드를 보내드려요</div>
-          <div class="cta-title">AI 협업, 오늘부터<br />시작해 보세요</div>
-          <button class="btn-white" onclick="openModal()">무료로 신청하기 →</button>
+          <span class="cta-eyebrow">지금 신청하면 가이드를 보내드려요</span>
+          <h2 class="cta-title">AI 협업, 오늘부터<br />시작해 보세요</h2>
+          <button class="btn-white">무료로 신청하기 →</button>
         </div>
       </div>
     </div>
@@ -98,49 +161,76 @@
       <p>© 2026 AI Collaboration School. All rights reserved.</p>
     </footer>
 
-    <!-- ── MODAL (구글 폼 데이터 연동) ── -->
+    <!-- ── MODAL ── -->
     <div class="modal-overlay" id="signupModal" onclick="closeModal(event)">
       <div class="modal">
         <button class="modal-close" onclick="closeModalDirect()">✕</button>
-        
         <div id="formState">
-          <div style="margin-bottom: 8px; font-weight: 800; font-size: 22px;">AI 협업 신청하기</div>
-          <div style="font-size: 15px; color: var(--ink-3);">직장인을 위한 AI 활용 고객자료</div>
-          
-          <!-- ✅ 실제 구글 폼 연동 설정 -->
-          <form class="signup-form" 
-                action="https://docs.google.com/forms/d/e/1FAIpQLSeW1xabS5j3JdEX3lMrx_IPStRAUj6eRXvscBVf9LdALPVfvA/formResponse" 
-                method="POST" 
-                target="hidden_iframe"
-                onsubmit="handleFormSubmit(this)">
-            
+          <div style="margin-bottom: 8px; font-weight: 800; font-size: 22px">
+            AI 협업 신청하기
+          </div>
+          <div
+            style="font-size: 15px; color: var(--ink-3); margin-bottom: 24px"
+          >
+            직장인을 위한 AI 활용 고객자료
+          </div>
+          <!-- ✅ 구글 폼 연동 설정 -->
+          <form
+            class="signup-form"
+            action="https://docs.google.com/forms/d/e/1FAIpQLSeW1xabS5j3JdEX3lMrx_IPStRAUj6eRXvscBVf9LdALPVfvA/formResponse"
+            method="POST"
+            target="hidden_iframe"
+            onsubmit="handleFormSubmit(this)"
+          >
             <div class="input-group">
               <label class="input-label">이름</label>
-              <!-- ✅ 이름 ID 적용 -->
-              <input type="text" name="entry.1355224665" class="input-field" placeholder="성함을 입력해 주세요" required>
+              <input
+                type="text"
+                name="entry.1355224665"
+                class="input-field"
+                placeholder="성함을 입력해 주세요"
+                required
+              />
             </div>
-            
             <div class="input-group">
               <label class="input-label">전화번호</label>
-              <!-- ✅ 전화번호 ID 적용 -->
-              <input type="tel" name="entry.483200008" class="input-field" placeholder="010-0000-0000" required>
+              <input
+                type="tel"
+                name="entry.483200008"
+                class="input-field"
+                placeholder="010-0000-0000"
+                required
+              />
             </div>
-            
             <div class="input-group">
               <label class="input-label">이메일 주소</label>
-              <!-- ✅ 이메일 ID 적용 -->
-              <input type="email" name="entry.2134621320" class="input-field" placeholder="kiki001004@gmail.com" required>
+              <input
+                type="email"
+                name="entry.2134621320"
+                class="input-field"
+                placeholder="kiki001004@gmail.com"
+                required
+              />
             </div>
-            
-            <button type="submit" class="modal-btn">신청 완료하고 가이드 받기</button>
+            <button type="submit" class="modal-btn">
+              신청 완료하고 가이드 받기
+            </button>
           </form>
-          <p style="margin-top:16px; font-size:12px; color:var(--gray-4);">작성된 정보는 구글 시트에 안전하게 저장됩니다.</p>
+          <p style="margin-top: 16px; font-size: 12px; color: var(--gray-4)">
+            작성된 정보는 구글 시트에 안전하게 저장됩니다.
+          </p>
         </div>
-
         <div id="successState">
           <div class="check-icon">✓</div>
-          <div style="font-size: 22px; font-weight: 800; margin-bottom: 8px;">신청 완료!</div>
-          <div style="margin-bottom: 24px; color: var(--ink-3); font-size: 15px;">구글 시트에 정상적으로 등록되었습니다.<br>메일함을 곧 확인해 주세요.</div>
+          <div style="font-size: 22px; font-weight: 800; margin-bottom: 8px">
+            신청 완료!
+          </div>
+          <div
+            style="margin-bottom: 24px; color: var(--ink-3); font-size: 15px"
+          >
+            구글 시트에 정상적으로 등록되었습니다.<br />메일함을 곧 확인해
+            주세요.
+          </div>
           <button class="modal-btn" onclick="closeModalDirect()">확인</button>
         </div>
       </div>
@@ -148,6 +238,8 @@
 
     <!-- 구글 폼 전송용 숨겨진 프레임 (페이지 이동 방지) -->
     <iframe name="hidden_iframe" id="hidden_iframe"></iframe>
+
+    <!-- JS 연결 (파일명: script.js) -->
     <script src="./script/script.js"></script>
-    </body>
+  </body>
 </html>

@@ -1,5 +1,9 @@
 @charset "ctf-8";
-*,F
+body{
+  font-family: "맑은 고딕";
+}
+
+*,
 *::before,
 *::after {
   box-sizing: border-box;
