@@ -1,0 +1,22 @@
+@charset "ctf-8";
+body {
+  font-family: "맑은 고딕";
+}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+ol li {
+  list-style: none;
+}
+
+form ol {
+  margin-top: 78px;
+  margin-bottom: 20px;
+  margin-left: 6px;
+}
+input {
+  margin-left: 6px;
+}

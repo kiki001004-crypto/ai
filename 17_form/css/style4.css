@@ -1,0 +1,11 @@
+@charset "ctf-8";
+body {
+  font-family: "맑은 고딕";
+}
+
+ol li {
+  list-style: none;
+}
+ol {
+  padding-left: 0;
+}
