@@ -43,8 +43,7 @@
       /* 1280px 부모 컨테이너 */
       .container {
         width: 100%;
-        max-width: 1280px; /* 요청하신 전체 부모 사이즈 */
-        padding: 0 20px;
+        max-width: 1280px; /* 내부 컨텐츠 너비 1280px 보장 */
         margin: 0 auto;
       }
 
@@ -137,6 +136,13 @@
         }
       }
 
+      /* 반응형 처리 (화면이 1320px 이하일 때 여백 추가) */
+      @media (max-width: 1320px) {
+        .container {
+          padding: 0 20px;
+        }
+      }
+
       /* 반응형 처리 (태블릿 및 모바일 환경 대비) */
       @media (max-width: 992px) {
         .hero-title {
@@ -183,7 +189,9 @@
             <div class="card-image-wrapper">
               <div
                 class="card-image"
-                style="background-image: url(./images/img_about_1.jpg)"
+                style="
+                  background-image: url(&quot;./images/img_about_1.jpg&quot;);
+                "
               ></div>
             </div>
             <div class="card-text">직무</div>
@@ -195,7 +203,9 @@
             <div class="card-image-wrapper">
               <div
                 class="card-image"
-                style="background-image: url(./images/img_about_2.png)"
+                style="
+                  background-image: url(&quot;./images/img_about_2.png&quot;);
+                "
               ></div>
             </div>
             <div class="card-text">국정원 역사</div>
@@ -207,7 +217,9 @@
             <div class="card-image-wrapper">
               <div
                 class="card-image"
-                style="background-image: url(./images/img_about_3.jpg)"
+                style="
+                  background-image: url(&quot;./images/img_about_3.jpg&quot;);
+                "
               ></div>
             </div>
             <div class="card-text">관련 법령</div>
