@@ -28,7 +28,7 @@ body {
 .formbox input[type="text"]::placeholder {
   font-size: 18px;
   font-weight: 600;
-  color: #fff;
+  color: #111;
 }
 
 .formbox input[type="email"] {
@@ -44,7 +44,7 @@ body {
 .formbox input[type="email"]::placeholder {
   font-size: 18px;
   font-weight: 600;
-  color: #fff;
+  color: #111;
 }
 
 .formbox textarea {
@@ -60,7 +60,7 @@ body {
 .formbox textarea::placeholder {
   font-size: 18px;
   font-weight: 600;
-  color: #fff;
+  color: #111;
 }
 
 .formbox .btn {
