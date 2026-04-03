@@ -1,0 +1,85 @@
+body {
+  font-family: "Noto Sans KR", sans-serif;
+  background-color: #30273f; /* 시안과 동일한 전체 배경색 */
+  color: white;
+  margin: 0;
+  padding: 0;
+  min-width: 1920px; /* 데스크탑 기준 1920px 최소폭 */
+}
+
+/* 940px 이너박스, 패딩 없이 중앙 정렬 (내부 요소 margin으로 여백 조정) */
+.inner-box {
+  width: 940px;
+  margin: 0 auto;
+  background-color: #24182e; /* 시안과 동일한 이너박스 배경색 */
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 라디오 버튼 커스텀 스타일 (카드와 연동) */
+.product-radio:checked + .card-content {
+  border: 2px solid #8b5cf6;
+}
+.product-radio:checked + .card-content .radio-circle {
+  border-color: #8b5cf6;
+}
+.product-radio:checked + .card-content .radio-inner {
+  background-color: #8b5cf6;
+}
+
+/* 품절 상태(0개) 스타일 */
+.product-radio:disabled + .card-content {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.img-placeholder {
+  width: 234px;
+  height: 150px;
+  background-color: #ffffff; /* 요청하신 #ffffff 배경색 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  font-size: 12px;
+  text-align: center;
+}
+
+/* 플립 시계 스타일 */
+.flip-card {
+  position: relative;
+  background-color: #413259;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.flip-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background-color: #1c1226;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  z-index: 1;
+}
+.flip-card::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #30273f; /* 중앙 분할선 */
+  transform: translateY(-50%);
+  z-index: 2;
+}
+.flip-card span {
+  position: relative;
+  z-index: 3;
+}
