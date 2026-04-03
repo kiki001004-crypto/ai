@@ -70,3 +70,8 @@ body {
   border-radius: 6px;
   cursor: pointer;
 }
+
+.formbox #msg {
+  font-size: 18px;
+  color: #fff;
+}
