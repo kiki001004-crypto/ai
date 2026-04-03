@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>html5Form응용</title>
+    <link rel="stylesheet" href="./css/style1.css" />
+  </head>
+  <body>
+    <h1>상품 주문서</h1>
+    <form action="" name="">
+      <fieldset>
+        <legend>개인 정보</legend>
+        <ul>
+          <li>
+            <label for="">이름</label>
+            <input type="text" placeholder="여백없이 입력" />
+          </li>
+          <li>
+            <label for="">비밀번호</label>
+            <input type="password" placeholder="비밀번호를 입력하시오" />
+          </li>
+        </ul>
+      </fieldset>
+
+      <fieldset>
+        <legend>배송지 정보</legend>
+        <ul>
+          <li>
+            <label for="">주소</label>
+            <input type="text" />
+          </li>
+          <li>
+            <label for="">전화번호</label>
+            <input type="text" class="tel" value="010" disabled /> -
+            <input type="text" class="tel" maxlength="4" /> -
+            <input type="text" class="tel" maxlength="4" />
+          </li>
+          <li>
+            <label for="">메모</label>
+            <textarea
+              rows="2"
+              cols="33"
+              placeholder="여기에 메모를 입력하세요"
+            ></textarea>
+          </li>
+        </ul>
+      </fieldset>
+      <fieldset>
+        <legend>주문정보</legend>
+        <ul>
+          <li>
+            <label for="">과테말라 안티구아 (100g)</label>
+            <input type="number" class="ri" value="1" min="1" /> 개
+          </li>
+          <li>
+            <label for="">인도네시아 만델링 (100G)</label>
+            <input type="number" class="ri" value="1" min="1" /> 개
+          </li>
+          <li>
+            <label for="">탐라는도다 (블렌딩) (100g)</label>
+            <input type="number" class="ri" value="1" min="1" /> 개
+          </li>
+          <li>
+            <label for="">01</label>
+            <input type="checkbox" />
+            <label for="">02</label>
+            <input type="checkbox" />
+            <label for="">03</label>
+            <input type="checkbox" />
+            <label for="">04</label>
+            <input type="checkbox" />
+          </li>
+          <li>
+            <label for="">r01</label>
+            <input type="radio" />
+            <label for="">r02</label>
+            <input type="radio" />
+            <label for="">r03</label>
+            <input type="radio" />
+            <label for="">r04</label>
+            <input type="radio" />
+          </li>
+        </ul>
+      </fieldset>
+      <fieldset>
+        <legend>버튼모음</legend>
+        <button type="submit" class="btn">주문하기</button>
+      </fieldset>
+    </form>
+  </body>
+</html>

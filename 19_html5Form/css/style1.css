@@ -1,0 +1,50 @@
+@charset "utf-8";
+body {
+  font-family: "맑은 고딕";
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+form {
+  padding: 20px;
+}
+h1 {
+  margin-left: 20px;
+}
+
+form fieldset {
+  width: 775px;
+  border-color: #d6bf8a;
+  color: #d4af9e;
+  padding: 20px;
+}
+
+form ul li {
+  color: #444746;
+  width: 735px;
+  height: 44px;
+  background: #eee;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+form ul {
+  list-style: none;
+}
+
+form .btn {
+  background-color: black;
+  color: #fff;
+}
+
+form .tel {
+  width: 36px;
+}
+
+form .ri {
+  text-align: right;
+}
