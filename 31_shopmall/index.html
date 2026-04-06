@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shape Layout</title>
+    <style>
+      /* 기본 여백 제거 및 직접 중앙 정렬을 위한 Body 설정 */
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* 모든 직계 자식 요소를 중앙 정렬 */
+        min-height: 100vh;
+        background-color: #ffffff; /* 시안 배경색 */
+        padding-top: 50px; /* 시안과 유사하게 상단 여백 추가 */
+        overflow-x: auto; /* 1920px 미만 해상도에서 가로 스크롤 허용 (hidden -> auto 변경) */
+        width: 100%; /* 기본 너비 */
+        min-width: 1920px; /* 전체 캔버스 사이즈 1920px 고정 데이터 적용 */
+      }
+
+      /* 각 블록의 데이터 속성 */
+      .block-red {
+        width: 1200px; /* inner 영역 1200px 절대값 적용 */
+        height: 150px;
+        padding: 0; /* 헤더 내부 패딩 0 강제 적용 데이터 */
+        background-color: #fd4a4b;
+        /* 헤더 자식 박스 가로 정렬을 위한 Flex 설정 추가 */
+        display: flex;
+        justify-content: space-evenly; /* 일정한 간격 분배 */
+        align-items: center; /* 수직 중앙 정렬 */
+        box-sizing: border-box; /* 패딩 및 테두리가 전체 너비/높이에 영향을 주지 않도록 설정 */
+      }
+
+      /* 헤더 자식 박스 개별 사이즈 및 색상 데이터 (기획 반영) */
+      .box-search {
+        width: 350px;
+        height: 60px;
+        background-color: #b5f1f3;
+      } /* 1) search 박스 */
+      .box-logo {
+        width: 350px;
+        height: 70px;
+        background-color: #dcaaf0;
+      } /* 2) logo 박스 */
+      .box-right {
+        width: 350px;
+        height: 90px;
+        background-color: #acf0a6;
+      } /* 3) right 박스 */
+
+      .banner {
+        width: 1920px; /* 배너 가로 1920px 절대값 데이터 적용 */
+        height: 450px;
+        background-color: #3aa581;
+      }
+
+      .block-purple {
+        width: 1200px; /* inner 영역 1200px 절대값 적용 */
+        min-height: 600px;
+        background-color: #51507a;
+        /* 자식 박스 수직 정렬을 위한 Flex 설정 추가 */
+        display: flex;
+        flex-direction: column;
+      }
+
+      .block-magenta {
+        width: 1200px; /* inner 영역 1200px 절대값 적용 */
+        height: 200px;
+        background-color: #c6168d;
+        /* footer 자식 박스 배치를 위한 Flex 및 여백 설정 (시안 반영) */
+        display: flex;
+        padding: 10px; /* 테두리처럼 보이는 마젠타 배경 영역 (추정치 10px) */
+        gap: 10px; /* 좌우 박스 간격 */
+        box-sizing: border-box; /* 패딩이 전체 너비에 영향을 주지 않도록 설정 */
+      }
+
+      /* footer 자식 박스 데이터 (비율 기반 추정) */
+      .footer-box-left {
+        width: 350px;
+        height: 100%;
+        background-color: #5b6f16; /* 짙은 올리브/카키색 */
+      }
+      .footer-box-right {
+        width: 820px; /* (1200 - padding 20 - gap 10) - left 350 = 820px */
+        height: 100%;
+        background-color: #3c0485; /* 짙은 보라색 */
+      }
+
+      /* 메인 영역 내부 자식 박스 공통 속성 */
+      .inner-box {
+        width: 100%;
+        box-sizing: border-box; /* 테두리 두께를 포함하여 너비 계산 */
+      }
+
+      /* 자식 박스 개별 비율(높이) 및 배경색 데이터 (기획 반영) */
+      .box-side-dish {
+        height: 1000px;
+        background-color: #a4b644;
+      } /* 1) 반찬 박스 */
+      .box-regular-sub {
+        height: 600px;
+        background-color: #a4fa8c;
+      } /* 2) 정기적 반찬 박스 */
+      .box-new-product {
+        height: 1000px;
+        background-color: #f7b38d;
+      } /* 3) 신제품 반찬 박스 */
+      .box-sub-banner {
+        height: 200px;
+        background-color: #8da1f8;
+      } /* 4) 배너 박스 */
+      .box-md-pick {
+        height: 1000px;
+        background-color: #e32dfb;
+      } /* 5) md 추천반찬 박스 */
+    </style>
+  </head>
+  <body>
+    <!-- 불필요한 컨테이너(shape-container)를 제거하여 레이아웃 연산 오차 방지 -->
+    <header class="block-red">
+      <!-- 헤더 영역 내부 자식 박스 3개 생성 (사이즈 및 역할 변경) -->
+      <div class="box-search"></div>
+      <div class="box-logo"></div>
+      <div class="box-right"></div>
+    </header>
+    <section class="banner"></section>
+
+    <main class="block-purple">
+      <!-- 메인 영역 내부 자식 박스 분할 구조 -->
+      <div class="inner-box box-side-dish"></div>
+      <!-- 1) 반찬 박스: 1000px -->
+      <div class="inner-box box-regular-sub"></div>
+      <!-- 2) 정기적 반찬 박스: 600px -->
+      <div class="inner-box box-new-product"></div>
+      <!-- 3) 신제품 반찬 박스: 1000px -->
+      <div class="inner-box box-sub-banner"></div>
+      <!-- 4) 배너 박스: 200px -->
+      <div class="inner-box box-md-pick"></div>
+      <!-- 5) md 추천반찬 박스: 1000px -->
+    </main>
+
+    <footer class="block-magenta">
+      <!-- 푸터 영역 내부 자식 박스 2개 생성 (시안 구조 반영) -->
+      <div class="footer-box-left"></div>
+      <div class="footer-box-right"></div>
+    </footer>
+  </body>
+</html>
