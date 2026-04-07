@@ -49,14 +49,9 @@
         background-color: #1a1b1e;
         /* SVG Noise를 활용한 가죽 질감 및 중앙 하이라이트 조명 */
         background-image:
-          radial-gradient(
-            circle at 50% 35%,
-            rgba(65, 65, 75, 0.45) 0%,
-            rgba(15, 15, 18, 0.95) 70%
-          ),
+          radial-gradient(circle at 50% 35%, rgba(65, 65, 75, 0.45) 0%, rgba(15, 15, 18, 0.95) 70%),
           url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.05' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E");
         color: #fff;
-        /* overflow: hidden; 하단 요소 노출을 위해 제거됨 */
       }
 
       /* 배경 우측 상단 대형 렌즈 실루엣 구현 */
@@ -69,27 +64,9 @@
         height: 900px;
         border-radius: 50%;
         background:
-          radial-gradient(
-            circle at 50% 50%,
-            transparent 60%,
-            rgba(255, 255, 255, 0.04) 61%,
-            rgba(255, 255, 255, 0.01) 62%,
-            transparent 63%
-          ),
-          radial-gradient(
-            circle at 50% 50%,
-            transparent 65%,
-            rgba(0, 0, 0, 0.5) 66%,
-            rgba(255, 255, 255, 0.03) 67%,
-            transparent 68%
-          ),
-          radial-gradient(
-            circle at 50% 50%,
-            transparent 72%,
-            rgba(255, 255, 255, 0.03) 73%,
-            rgba(0, 0, 0, 0.6) 75%,
-            transparent 77%
-          );
+          radial-gradient(circle at 50% 50%, transparent 60%, rgba(255, 255, 255, 0.04) 61%, rgba(255, 255, 255, 0.01) 62%, transparent 63%),
+          radial-gradient(circle at 50% 50%, transparent 65%, rgba(0, 0, 0, 0.5) 66%, rgba(255, 255, 255, 0.03) 67%, transparent 68%),
+          radial-gradient(circle at 50% 50%, transparent 72%, rgba(255, 255, 255, 0.03) 73%, rgba(0, 0, 0, 0.6) 75%, transparent 77%);
         box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.9);
         pointer-events: none;
         z-index: 1;
@@ -119,7 +96,7 @@
         margin: 0 auto;
         min-height: 780px;
         padding-top: 24px;
-        z-index: 10; /* 하단 요소 위로 노출시키기 위해 z-index 값을 2에서 10으로 상향 조정 */
+        z-index: 10;
       }
 
       .topbar {
@@ -158,7 +135,7 @@
 
       .hero-copy .accent {
         display: block;
-        color: #8b22ff;
+        color: #8B22FF;
         font-size: 68px;
         line-height: 1.05;
         font-weight: 300;
@@ -278,43 +255,21 @@
       }
 
       /* 시안 비율에 맞춘 절대 좌표 및 크기 재할당 */
-      .prize-banana {
-        left: 10px;
-        top: 100px;
-        width: 150px;
-        z-index: 5;
-      } /* 크기 대폭 확대 및 재배치 */
-      .prize-drives {
-        left: 160px;
-        top: 120px;
-        width: 180px;
-        z-index: 4;
+      .prize-banana { left: 10px; top: 100px; width: 150px; z-index: 5; } /* 크기 대폭 확대 및 재배치 */
+      .prize-drives { left: 160px; top: 120px; width: 180px; z-index: 4; }
+      .prize-camera { left: 320px; top: 50px; width: 300px; z-index: 6; }
+      
+      /* 라미 만년필 수정 - 텍스트 위치 개별 조정 */
+      .prize-pen { left: 100px; top: 240px; width: 280px; z-index: 7; }
+      .prize-pen img { transform: rotate(-8deg); }
+      .prize-pen .prize-label.bottom { 
+        position: absolute; 
+        top: 140px; /* 190px에서 140px로 50px 추가 상향 조정 */
+        left: 30px; 
       }
-      .prize-camera {
-        left: 320px;
-        top: 50px;
-        width: 300px;
-        z-index: 6;
-      }
-      .prize-pen {
-        left: 100px;
-        top: 340px;
-        width: 280px;
-        transform: rotate(-8deg);
-        z-index: 7;
-      }
-      .prize-giftcard {
-        right: 150px;
-        top: 130px;
-        width: 220px;
-        z-index: 4;
-      }
-      .prize-shilla {
-        right: 30px;
-        top: 230px;
-        width: 250px;
-        z-index: 5;
-      }
+      
+      .prize-giftcard { right: 150px; top: 130px; width: 220px; z-index: 4; }
+      .prize-shilla { right: 30px; top: 230px; width: 250px; z-index: 5; }
 
       .bubble {
         position: absolute;
@@ -390,7 +345,7 @@
       .video-overlap {
         position: absolute;
         left: 50%;
-        bottom: -290px;
+        bottom: -221px; /* 비디오 전체 높이(442px)의 정확히 절반으로 수정하여 정중앙 배치 */
         width: 750px;
         transform: translateX(-50%);
         z-index: 6;
@@ -399,7 +354,7 @@
       .video-area {
         position: relative;
         background: linear-gradient(to top right, #9188c1 0%, #8dd3d1 100%);
-        padding: 290px 0 78px;
+        padding: 240px 0 78px; /* 비디오 박스 상향 조정에 맞추어 상단 간격 축소 */
         overflow: visible;
         z-index: 1;
       }
@@ -491,7 +446,7 @@
         display: block;
         width: 22px;
         height: 22px;
-        border-top: 4px solid #ffffff;
+        border-top: 4px solid #ffffff; 
         border-left: 4px solid #ffffff;
         margin: 0 auto;
       }
@@ -514,7 +469,7 @@
         align-items: center;
         justify-content: center;
         gap: 24px;
-        width: 940px;
+        width: 740px; /* 기존 940px에서 740px로 수정 */
         margin: 52px auto 42px;
         color: rgba(255, 255, 255, 0.85);
         font-size: 18px;
@@ -524,19 +479,19 @@
       .section-title-line::before,
       .section-title-line::after {
         content: "";
-        width: 252px;
+        flex: 1; /* 고정 길이 대신 유동적 비율(Flex) 적용 */
         height: 1px;
         background: rgba(255, 255, 255, 0.5);
       }
 
       .steps {
-        width: 940px;
+        width: 740px; /* 기존 940px에서 740px로 수정 */
         margin: 0 auto;
         background: rgba(96, 100, 136, 0.72);
-        padding: 34px 38px;
+        padding: 30px 24px; /* 축소된 너비에 맞게 패딩 비율 축소 */
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 24px;
+        gap: 16px; /* 그리드 간격 축소 */
         color: #fff;
       }
 
@@ -557,8 +512,8 @@
       }
 
       .step h3 {
-        margin: 0 0 18px;
-        font-size: 40px;
+        margin: 0 0 14px;
+        font-size: 32px; /* 740px 너비에 최적화하여 폰트 사이즈 조정 */
         line-height: 1;
         font-weight: 300;
         letter-spacing: -0.05em;
@@ -567,7 +522,7 @@
 
       .step p {
         margin: 0;
-        font-size: 18px;
+        font-size: 15px; /* 폰트 사이즈 소폭 축소 조정 */
         line-height: 1.8;
         color: rgba(255, 255, 255, 0.92);
         letter-spacing: -0.04em;
@@ -575,7 +530,7 @@
       }
 
       .notice-row {
-        width: 940px;
+        width: 740px; /* 기존 940px에서 740px로 수정 */
         margin: 30px auto 0;
         display: flex;
         justify-content: space-between;
@@ -584,7 +539,7 @@
       }
 
       .notice {
-        width: 640px;
+        width: 550px; /* 너비 조절 */
         color: rgba(255, 255, 255, 0.9);
         font-size: 15px;
         line-height: 1.9;
@@ -653,55 +608,33 @@
           <div class="prizes">
             <div class="prize-item prize-banana">
               <span class="prize-label">바나나맛 우유</span>
-              <img
-                src="./images/sbanana.png"
-                alt="바나나맛 우유"
-                class="blend-screen"
-              />
+              <img src="./images/banananu.png" alt="바나나맛 우유" class="blend-screen" />
             </div>
 
             <div class="prize-item prize-drives">
               <span class="prize-label">외장하드 1TB</span>
-              <img
-                src="./images/stb.png"
-                alt="외장하드 1TB"
-                class="blend-multiply"
-              />
+              <img src="/images/TBnu.png" alt="외장하드 1TB" class="blend-multiply" />
             </div>
 
             <div class="prize-item prize-camera">
               <div class="bubble">오직<br />평론가만!</div>
-              <img
-                src="./images/sonnynu.png"
-                alt="소니 미러리스 A5100"
-                class="blend-multiply"
-              />
+              <img src="./images/sonynu.png" alt="소니 미러리스 A5100" class="blend-multiply" />
               <span class="prize-label bottom">소니 미러리스 A5100</span>
             </div>
 
             <div class="prize-item prize-pen">
-              <img src="./images/slamy.png" alt="라미 만년필" />
+              <img src="./images/lamynu.png" alt="라미 만년필" class="blend-multiply" />
               <span class="prize-label bottom">라미 만년필</span>
             </div>
 
             <div class="prize-item prize-giftcard">
               <span class="prize-label">백화점 상품권</span>
-              <img
-                src="./images/man.png"
-                alt="백화점 상품권"
-                class="blend-screen"
-              />
+              <img src="./images/man.png" alt="백화점 상품권" class="blend-screen" />
             </div>
 
             <div class="prize-item prize-shilla">
-              <img
-                src="./images/shilla.png"
-                alt="신라호텔 식사권"
-                class="blend-screen"
-              />
-              <span class="prize-label bottom"
-                >신라호텔 더 파크뷰<br />뷔페 식사권</span
-              >
+              <img src="./images/shilla.png" alt="신라호텔 식사권" class="blend-screen" />
+              <span class="prize-label bottom">신라호텔 더 파크뷰<br />뷔페 식사권</span>
             </div>
           </div>
         </div>
@@ -733,8 +666,7 @@
             <div class="slider-window" aria-label="비디오 슬라이더">
               <div class="slides" id="slides">
                 <div class="slide s1">
-                  <iframe
-                    class="slide-iframe"
+                  <iframe class="slide-iframe"
                     src="https://www.youtube.com/embed/1T_pVkPiKOw?si=12GjFKOgHZrrf_nQ"
                     title="YouTube video player"
                     frameborder="0"
@@ -752,8 +684,7 @@
                   ></iframe>
                 </div>
                 <div class="slide s2">
-                  <iframe
-                    class="slide-iframe"
+                  <iframe class="slide-iframe"
                     src="https://www.youtube.com/embed/wn5XYaMo9Es?si=HtfEcGCL_zWuN-oB"
                     title="YouTube video player"
                     frameborder="0"
@@ -771,23 +702,7 @@
                   ></iframe>
                 </div>
                 <div class="slide s3">
-                  <iframe
-                    class="slide-iframe"
-                    src="https://www.youtube.com/embed/sHrZIVOCQUg?si=oG6Na5EBvJe_rK-d"
-                    title="YouTube video player"
-                    frameborder="0"
-                    allow="
-                      accelerometer;
-                      autoplay;
-                      clipboard-write;
-                      encrypted-media;
-                      gyroscope;
-                      picture-in-picture;
-                      web-share;
-                    "
-                    referrerpolicy="strict-origin-when-cross-origin"
-                    allowfullscreen
-                  ></iframe>
+                  <iframe class="slide-iframe" src="https://www.youtube.com/embed/sHrZIVOCQUg?si=oG6Na5EBvJe_rK-d" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 </div>
               </div>
 
@@ -836,9 +751,7 @@
 
         <div class="notice-row">
           <div class="notice">
-            <strong
-              >단, 미러리스의 경우 평론가 등급의 회원에게만 증정됩니다.</strong
-            >
+            <strong>단, 미러리스의 경우 평론가 등급의 회원에게만 증정됩니다.</strong>
             리뷰를 하는 데 있어 도움이 될 수 있는 분들에게 드리기 위하여 선착순
             안에 참여하여도, 평론가 등급이 아닐 경우 당첨이 제외됩니다.
           </div>
