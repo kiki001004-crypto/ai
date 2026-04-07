@@ -120,14 +120,95 @@ main {
   width: 1200px;
   /* 최소 높이는 600px */
   min-height: 600px;
-  background: chartreuse;
+  /* background: chartreuse; */
   margin: 0 auto;
 }
 main .banchan {
   width: 100%;
-  height: 1000px;
-  border: 5px solid #000;
+  height: 1256px;
+  /* border: 5px solid #000; */
+  padding: 50px 16px 16px;
 }
+main .banchan .tit {
+  text-align: center;
+}
+main .banchan .tit h2 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+main .banchan .tit p {
+  font-size: 16px;
+  font-weight: 500;
+  color: #636363;
+}
+
+/* 제품 박스 8개 나열 */
+main .banchan .product {
+  width: 100%;
+  /* 자식요소 옆으로 배치 */
+  display: flex;
+  /* 카드와 카드 사이 간격 */
+  gap: 16px;
+  /* 부모요소 기준으로 초과시 줄바꿈 */
+  flex-wrap: wrap;
+  margin-top: 41px;
+}
+main .banchan .product .card {
+  width: 280px;
+  /* height: 532px; */
+  /* background: blue; */
+}
+main .banchan .product .card .imgbox {
+  width: 100%;
+  height: 370px;
+}
+main .banchan .product .card .imgbox img {
+  width: 100%;
+  height: 100%;
+  /* 이미지 왜곡 발생하지 않게 가로x세로 비율 */
+  object-fit: cover;
+}
+/* 카드의 정보(info) */
+main .banchan .product .card .info {
+  padding: 16px 8px;
+}
+main .banchan .product .card .info .new {
+  font-size: 12px;
+  color: #ca504c;
+  background: #f5dede;
+  font-weight: 500;
+  padding: 4px;
+  border-radius: 4px;
+}
+main .banchan .product .card .info h3 {
+  font-size: 18px;
+  color: #333333;
+  font-weight: 600;
+  margin-top: 16px;
+}
+main .banchan .product .card .info p {
+  font-size: 16px;
+  color: #848484;
+  margin-top: 16px;
+}
+main .banchan .product .card .info h4 {
+  font-size: 18px;
+  color: #333333;
+  font-weight: 600;
+  margin-top: 16px;
+}
+main .banchan .product .card .info h4 .sale {
+  color: #c53e3a;
+}
+main .banchan .product .card .info .price {
+  font-size: 14px;
+  color: #848484;
+  font-weight: 600;
+  /* 취소선 */
+  text-decoration: line-through;
+}
+
 main .day-banchan {
   width: 100%;
   height: 600px;
