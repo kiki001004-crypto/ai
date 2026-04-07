@@ -1,0 +1,896 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CONECTS Event Page</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family:
+          "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+        color: #222;
+        background: #efefef;
+        min-width: 940px;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      img {
+        display: block;
+        max-width: 100%;
+      }
+      button {
+        font: inherit;
+      }
+
+      .page {
+        width: 100%;
+        min-width: 940px;
+        overflow-x: hidden;
+        background: #efefef;
+      }
+
+      /* Hero Section - 질감 및 배경 조명 업데이트 */
+      .hero {
+        position: relative;
+        width: 100%;
+        min-height: 780px;
+        background-color: #1a1b1e;
+        /* SVG Noise를 활용한 가죽 질감 및 중앙 하이라이트 조명 */
+        background-image:
+          radial-gradient(
+            circle at 50% 35%,
+            rgba(65, 65, 75, 0.45) 0%,
+            rgba(15, 15, 18, 0.95) 70%
+          ),
+          url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.05' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E");
+        color: #fff;
+        /* overflow: hidden; 하단 요소 노출을 위해 제거됨 */
+      }
+
+      /* 배경 우측 상단 대형 렌즈 실루엣 구현 */
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: -300px;
+        right: -150px;
+        width: 900px;
+        height: 900px;
+        border-radius: 50%;
+        background:
+          radial-gradient(
+            circle at 50% 50%,
+            transparent 60%,
+            rgba(255, 255, 255, 0.04) 61%,
+            rgba(255, 255, 255, 0.01) 62%,
+            transparent 63%
+          ),
+          radial-gradient(
+            circle at 50% 50%,
+            transparent 65%,
+            rgba(0, 0, 0, 0.5) 66%,
+            rgba(255, 255, 255, 0.03) 67%,
+            transparent 68%
+          ),
+          radial-gradient(
+            circle at 50% 50%,
+            transparent 72%,
+            rgba(255, 255, 255, 0.03) 73%,
+            rgba(0, 0, 0, 0.6) 75%,
+            transparent 77%
+          );
+        box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.9);
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      /* 배경 렌즈 내부 텍스트 디테일 */
+      .hero::after {
+        content: "α \A FE 3.5-5.6/28-70 \A 0.25m/0.82ft-0.30m/0.98ft";
+        white-space: pre;
+        position: absolute;
+        top: 100px;
+        right: 180px;
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.07);
+        text-align: center;
+        transform: rotate(-12deg);
+        letter-spacing: 0.15em;
+        line-height: 1.6;
+        font-weight: 300;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .hero-inner {
+        position: relative;
+        width: 940px;
+        margin: 0 auto;
+        min-height: 780px;
+        padding-top: 24px;
+        z-index: 10; /* 하단 요소 위로 노출시키기 위해 z-index 값을 2에서 10으로 상향 조정 */
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.82);
+        letter-spacing: -0.02em;
+      }
+
+      .topbar-left,
+      .topbar-right {
+        display: flex;
+        gap: 34px;
+        align-items: center;
+        min-width: 240px;
+      }
+
+      .topbar-right {
+        justify-content: flex-end;
+        gap: 14px;
+      }
+
+      .brand {
+        font-size: 34px;
+        font-weight: 800;
+        letter-spacing: -0.06em;
+        color: #fff;
+      }
+
+      .hero-copy {
+        text-align: center;
+        padding-top: 118px;
+      }
+
+      .hero-copy .accent {
+        display: block;
+        color: #8b22ff;
+        font-size: 68px;
+        line-height: 1.05;
+        font-weight: 300;
+        letter-spacing: -0.06em;
+        margin-bottom: 10px;
+      }
+
+      .hero-copy h1 {
+        margin: 0;
+        font-size: 74px;
+        line-height: 1.14;
+        letter-spacing: -0.07em;
+        font-weight: 300;
+      }
+
+      .hero-copy p {
+        margin: 28px 0 0;
+        font-size: 24px;
+        line-height: 1.5;
+        color: rgba(255, 255, 255, 0.9);
+        letter-spacing: -0.04em;
+      }
+
+      .camera-deco {
+        position: absolute;
+        right: -120px;
+        top: -28px;
+        width: 360px;
+        height: 360px;
+        border-radius: 32px;
+        transform: rotate(12deg);
+        background: linear-gradient(145deg, #1f2025, #090a0d);
+        box-shadow: -16px 20px 50px rgba(0, 0, 0, 0.45);
+        opacity: 0.95;
+      }
+
+      .camera-deco::before {
+        content: "";
+        position: absolute;
+        left: 88px;
+        top: 50px;
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle at 50% 50%,
+          #113c45 0 10%,
+          #234e63 10% 16%,
+          #0d0f14 16% 31%,
+          #394257 31% 36%,
+          #0b0c11 36% 48%,
+          #6d7786 48% 49%,
+          #171920 49% 63%,
+          #0a0b0f 63% 100%
+        );
+        box-shadow: inset 0 0 22px rgba(255, 255, 255, 0.08);
+      }
+
+      .camera-deco::after {
+        content: "α";
+        position: absolute;
+        right: 26px;
+        top: 32px;
+        font-size: 48px;
+        color: rgba(255, 255, 255, 0.22);
+        font-weight: 700;
+      }
+
+      .prizes {
+        position: absolute;
+        left: 50%;
+        bottom: -130px;
+        transform: translateX(-50%);
+        width: 940px;
+        height: 480px;
+        z-index: 3;
+      }
+
+      .prize-item {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .prize-item img {
+        display: block;
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+        filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.45));
+      }
+
+      /* 검은색 배경을 투명하게 렌더링하는 클래스 */
+      .blend-screen {
+        mix-blend-mode: screen;
+      }
+
+      /* 흰색 배경을 투명하게 렌더링하는 클래스 */
+      .blend-multiply {
+        mix-blend-mode: multiply;
+      }
+
+      .prize-label {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 8px;
+        white-space: nowrap;
+        letter-spacing: -0.05em;
+      }
+
+      .prize-label.bottom {
+        margin-bottom: 0;
+        margin-top: 8px;
+        color: #333; /* 밝은 배경 위에서 시인성을 확보하기 위해 어두운 계열로 색상 변경 */
+        font-weight: 500;
+      }
+
+      /* 시안 비율에 맞춘 절대 좌표 및 크기 재할당 */
+      .prize-banana {
+        left: 10px;
+        top: 100px;
+        width: 150px;
+        z-index: 5;
+      } /* 크기 대폭 확대 및 재배치 */
+      .prize-drives {
+        left: 160px;
+        top: 120px;
+        width: 180px;
+        z-index: 4;
+      }
+      .prize-camera {
+        left: 320px;
+        top: 50px;
+        width: 300px;
+        z-index: 6;
+      }
+      .prize-pen {
+        left: 100px;
+        top: 340px;
+        width: 280px;
+        transform: rotate(-8deg);
+        z-index: 7;
+      }
+      .prize-giftcard {
+        right: 150px;
+        top: 130px;
+        width: 220px;
+        z-index: 4;
+      }
+      .prize-shilla {
+        right: 30px;
+        top: 230px;
+        width: 250px;
+        z-index: 5;
+      }
+
+      .bubble {
+        position: absolute;
+        right: 20px;
+        top: -40px;
+        width: 74px;
+        height: 74px;
+        border-radius: 50%;
+        background: #7f32ff;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 700;
+        text-align: center;
+        line-height: 1.25;
+        box-shadow: 0 10px 20px rgba(127, 50, 255, 0.35);
+        z-index: 10;
+      }
+
+      .bubble::after {
+        content: "";
+        position: absolute;
+        left: 20px;
+        bottom: 2px;
+        width: 14px;
+        height: 14px;
+        background: #7f32ff;
+        clip-path: polygon(0 0, 100% 40%, 40% 100%);
+        transform: rotate(15deg);
+      }
+
+      .section-white {
+        background: #efefef;
+        height: 700px;
+        padding-top: 88px;
+        position: relative;
+        overflow: visible;
+        z-index: 2;
+      }
+
+      .inner {
+        width: 940px;
+        margin: 0 auto;
+      }
+
+      .intro {
+        text-align: center;
+        position: relative;
+        z-index: 4;
+      }
+
+      .intro h2 {
+        width: 650px;
+        margin: 0 auto;
+        font-size: 48px;
+        line-height: 1.35;
+        font-weight: 300;
+        letter-spacing: -0.08em;
+        color: #444;
+      }
+
+      .intro p {
+        width: 760px;
+        margin: 26px auto 0;
+        font-size: 18px;
+        line-height: 1.95;
+        color: #8f8f8f;
+        letter-spacing: -0.04em;
+      }
+
+      .video-overlap {
+        position: absolute;
+        left: 50%;
+        bottom: -290px;
+        width: 750px;
+        transform: translateX(-50%);
+        z-index: 6;
+      }
+
+      .video-area {
+        position: relative;
+        background: linear-gradient(to top right, #9188c1 0%, #8dd3d1 100%);
+        padding: 290px 0 78px;
+        overflow: visible;
+        z-index: 1;
+      }
+
+      .slider-shell {
+        position: relative;
+        width: 750px;
+        margin: 0 auto;
+        z-index: 5;
+      }
+
+      .slider-window {
+        position: relative;
+        width: 750px;
+        height: 430px;
+        margin: 0 auto;
+        overflow: hidden;
+        border: 6px solid rgba(255, 255, 255, 0.75);
+        box-shadow: 0 14px 26px rgba(0, 0, 0, 0.18);
+        background: #d9d9d9;
+      }
+
+      .slides {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.45s ease;
+      }
+
+      .slide {
+        flex: 0 0 100%;
+        position: relative;
+        overflow: hidden;
+        background: #cfcfcf;
+      }
+
+      .slide-media {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .slide.s1,
+      .slide.s2,
+      .slide.s3 {
+        background: #cfcfcf;
+      }
+
+      .play-icon {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 86px;
+        height: 86px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.82);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+      }
+
+      .play-icon::before {
+        content: "";
+        position: absolute;
+        left: 35px;
+        top: 26px;
+        width: 0;
+        height: 0;
+        border-top: 16px solid transparent;
+        border-bottom: 16px solid transparent;
+        border-left: 24px solid rgba(60, 60, 60, 0.9);
+      }
+
+      .slider-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 42px;
+        height: 42px;
+        border: 0;
+        background: transparent;
+        cursor: pointer;
+        z-index: 4;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+      }
+
+      .slider-btn::before {
+        content: "";
+        display: block;
+        width: 22px;
+        height: 22px;
+        border-top: 4px solid #ffffff;
+        border-left: 4px solid #ffffff;
+        margin: 0 auto;
+      }
+
+      .slider-btn.prev {
+        left: -72px;
+      }
+      .slider-btn.prev::before {
+        transform: rotate(-45deg);
+      }
+      .slider-btn.next {
+        right: -48px;
+      }
+      .slider-btn.next::before {
+        transform: rotate(135deg);
+      }
+
+      .section-title-line {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 24px;
+        width: 940px;
+        margin: 52px auto 42px;
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 18px;
+        font-weight: 500;
+      }
+
+      .section-title-line::before,
+      .section-title-line::after {
+        content: "";
+        width: 252px;
+        height: 1px;
+        background: rgba(255, 255, 255, 0.5);
+      }
+
+      .steps {
+        width: 940px;
+        margin: 0 auto;
+        background: rgba(96, 100, 136, 0.72);
+        padding: 34px 38px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+        color: #fff;
+      }
+
+      .step {
+        position: relative;
+        padding-right: 12px;
+        min-height: 130px;
+      }
+
+      .step:not(:last-child)::after {
+        content: ">";
+        position: absolute;
+        right: -8px;
+        top: 0;
+        color: rgba(255, 255, 255, 0.66);
+        font-size: 26px;
+        font-weight: 300;
+      }
+
+      .step h3 {
+        margin: 0 0 18px;
+        font-size: 40px;
+        line-height: 1;
+        font-weight: 300;
+        letter-spacing: -0.05em;
+        color: rgba(255, 255, 255, 0.95);
+      }
+
+      .step p {
+        margin: 0;
+        font-size: 18px;
+        line-height: 1.8;
+        color: rgba(255, 255, 255, 0.92);
+        letter-spacing: -0.04em;
+        word-break: keep-all;
+      }
+
+      .notice-row {
+        width: 940px;
+        margin: 30px auto 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 20px;
+      }
+
+      .notice {
+        width: 640px;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 15px;
+        line-height: 1.9;
+        letter-spacing: -0.03em;
+      }
+
+      .notice strong {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      .cta-btn {
+        width: 150px;
+        height: 48px;
+        border: 0;
+        border-radius: 2px;
+        background: #7b21ff;
+        color: #fff;
+        font-size: 17px;
+        cursor: pointer;
+        box-shadow: 0 10px 18px rgba(77, 16, 179, 0.22);
+      }
+
+      @media (max-width: 939px) {
+        body,
+        .page {
+          min-width: 940px;
+        }
+      }
+      .slide-iframe {
+        display: block;
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <section class="hero">
+        <div class="camera-deco"></div>
+
+        <div class="hero-inner">
+          <header class="topbar">
+            <nav class="topbar-left">
+              <a href="#">광고주센터</a>
+              <a href="#">ROTICON</a>
+              <a href="#">고객센터</a>
+            </nav>
+            <div class="brand">CONECTS</div>
+            <div class="topbar-right">
+              <a href="#">로그인</a>
+              <span>/</span>
+              <a href="#">회원가입</a>
+            </div>
+          </header>
+
+          <div class="hero-copy">
+            <span class="accent">커넥츠가</span>
+            <h1>미러리스 밀어줄게</h1>
+            <p>매일 밤 10시, 선착순 100% 증정</p>
+          </div>
+
+          <div class="prizes">
+            <div class="prize-item prize-banana">
+              <span class="prize-label">바나나맛 우유</span>
+              <img
+                src="./images/sbanana.png"
+                alt="바나나맛 우유"
+                class="blend-screen"
+              />
+            </div>
+
+            <div class="prize-item prize-drives">
+              <span class="prize-label">외장하드 1TB</span>
+              <img
+                src="./images/stb.png"
+                alt="외장하드 1TB"
+                class="blend-multiply"
+              />
+            </div>
+
+            <div class="prize-item prize-camera">
+              <div class="bubble">오직<br />평론가만!</div>
+              <img
+                src="./images/sonnynu.png"
+                alt="소니 미러리스 A5100"
+                class="blend-multiply"
+              />
+              <span class="prize-label bottom">소니 미러리스 A5100</span>
+            </div>
+
+            <div class="prize-item prize-pen">
+              <img src="./images/slamy.png" alt="라미 만년필" />
+              <span class="prize-label bottom">라미 만년필</span>
+            </div>
+
+            <div class="prize-item prize-giftcard">
+              <span class="prize-label">백화점 상품권</span>
+              <img
+                src="./images/man.png"
+                alt="백화점 상품권"
+                class="blend-screen"
+              />
+            </div>
+
+            <div class="prize-item prize-shilla">
+              <img
+                src="./images/shilla.png"
+                alt="신라호텔 식사권"
+                class="blend-screen"
+              />
+              <span class="prize-label bottom"
+                >신라호텔 더 파크뷰<br />뷔페 식사권</span
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-white">
+        <div class="inner intro">
+          <h2>소중한 경험을 공유하는 여러분을<br />커넥츠가 응원합니다.</h2>
+          <p>
+            프리미엄 커넥츠는 좋은 경험과 가치를 제공하기 위해 시작하게
+            되었습니다.
+            <br />커넥츠 프리미엄 리뷰 플랫폼에서 여러분들의 리뷰 활동과 체험
+            활동을 그저 말로만<br />
+            응원하지 않고, 등록한 리뷰마다 활동마다 가치를 제공하고 있습니다.
+            그리고 이번에는 커넥츠는<br />
+            여러분들에게 리뷰 활동이 진짜 도움이 될 수 있는 선물을
+            준비하였습니다.
+          </p>
+        </div>
+
+        <div class="video-overlap">
+          <div class="slider-shell">
+            <button
+              class="slider-btn prev"
+              type="button"
+              aria-label="이전 슬라이드"
+            ></button>
+
+            <div class="slider-window" aria-label="비디오 슬라이더">
+              <div class="slides" id="slides">
+                <div class="slide s1">
+                  <iframe
+                    class="slide-iframe"
+                    src="https://www.youtube.com/embed/1T_pVkPiKOw?si=12GjFKOgHZrrf_nQ"
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="
+                      accelerometer;
+                      autoplay;
+                      clipboard-write;
+                      encrypted-media;
+                      gyroscope;
+                      picture-in-picture;
+                      web-share;
+                    "
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen
+                  ></iframe>
+                </div>
+                <div class="slide s2">
+                  <iframe
+                    class="slide-iframe"
+                    src="https://www.youtube.com/embed/wn5XYaMo9Es?si=HtfEcGCL_zWuN-oB"
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="
+                      accelerometer;
+                      autoplay;
+                      clipboard-write;
+                      encrypted-media;
+                      gyroscope;
+                      picture-in-picture;
+                      web-share;
+                    "
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen
+                  ></iframe>
+                </div>
+                <div class="slide s3">
+                  <iframe
+                    class="slide-iframe"
+                    src="https://www.youtube.com/embed/sHrZIVOCQUg?si=oG6Na5EBvJe_rK-d"
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="
+                      accelerometer;
+                      autoplay;
+                      clipboard-write;
+                      encrypted-media;
+                      gyroscope;
+                      picture-in-picture;
+                      web-share;
+                    "
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen
+                  ></iframe>
+                </div>
+              </div>
+
+              <div class="video-replace-guide" style="display: none"></div>
+            </div>
+
+            <button
+              class="slider-btn next"
+              type="button"
+              aria-label="다음 슬라이드"
+            ></button>
+          </div>
+        </div>
+      </section>
+
+      <section class="video-area">
+        <div class="section-title-line">이벤트 참여 방법</div>
+
+        <div class="steps">
+          <article class="step">
+            <h3>STEP 1</h3>
+            <p>
+              로그인을 해주세요.<br />(비회원일 경우<br />회원가입을 해주세요)
+            </p>
+          </article>
+          <article class="step">
+            <h3>STEP 2</h3>
+            <p>
+              매일 밤 9시 50분에<br />공개되는 문제를 검색!<br />정답을
+              찾아주세요.
+            </p>
+          </article>
+          <article class="step">
+            <h3>STEP 3</h3>
+            <p>
+              밤 10시 정각,<br />원하는 상품을 고른 후<br />정답을 빠르게 제출!
+            </p>
+          </article>
+          <article class="step">
+            <h3>STEP 4</h3>
+            <p>
+              10시 30분에 공지사항<br />당첨자 발표 게시판을<br />확인해주세요.
+            </p>
+          </article>
+        </div>
+
+        <div class="notice-row">
+          <div class="notice">
+            <strong
+              >단, 미러리스의 경우 평론가 등급의 회원에게만 증정됩니다.</strong
+            >
+            리뷰를 하는 데 있어 도움이 될 수 있는 분들에게 드리기 위하여 선착순
+            안에 참여하여도, 평론가 등급이 아닐 경우 당첨이 제외됩니다.
+          </div>
+          <button class="cta-btn" type="button">평론가 신청</button>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      (function () {
+        const slides = document.getElementById("slides");
+        const prevBtn = document.querySelector(".slider-btn.prev");
+        const nextBtn = document.querySelector(".slider-btn.next");
+        const sliderWindow = document.querySelector(".slider-window");
+        const total = slides.children.length;
+        let index = 0;
+        let timer;
+
+        function render() {
+          slides.style.transform = `translateX(-${index * 100}%)`;
+        }
+
+        function go(nextIndex) {
+          index = (nextIndex + total) % total;
+          render();
+        }
+
+        function startAuto() {
+          stopAuto();
+          timer = setInterval(() => go(index + 1), 3200);
+        }
+
+        function stopAuto() {
+          if (timer) clearInterval(timer);
+        }
+
+        prevBtn.addEventListener("click", () => {
+          go(index - 1);
+          startAuto();
+        });
+
+        nextBtn.addEventListener("click", () => {
+          go(index + 1);
+          startAuto();
+        });
+
+        sliderWindow.addEventListener("mouseenter", stopAuto);
+        sliderWindow.addEventListener("mouseleave", startAuto);
+
+        render();
+        startAuto();
+      })();
+    </script>
+  </body>
+</html>
