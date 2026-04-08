@@ -153,10 +153,9 @@
       }
 
       .card-info {
-        padding: 16px;
+        padding: 20px 16px; /* 세로(상하) 20px, 가로(좌우) 16px 데이터 반영 */
         display: flex;
         flex-direction: column;
-        flex-grow: 1; /* 잉여 세로 공간을 100% 채우도록 데이터 추가 */
         gap: 6px;
       }
 
@@ -164,6 +163,7 @@
       .card-tags {
         display: flex;
         gap: 4px;
+        /* min-height 데이터 삭제: 태그가 없을 경우 위로 밀착되도록 수정 */
       }
 
       /* 공통 태그 형태 데이터 */
@@ -201,11 +201,9 @@
         margin-bottom: 8px;
       }
 
-      /* 가격 영역 최하단 고정 데이터 추가 (margin-top: auto) */
       .card-price-wrap {
         display: flex;
         flex-direction: column;
-        margin-top: auto;
       }
       .card-price-row {
         display: flex;
@@ -337,7 +335,7 @@
               </div>
             </div>
           </div>
-          <!-- 카드 4 (태그 삭제 데이터 반영) -->
+          <!-- 카드 4 (태그 영역 제거: 패딩 20px 직후 상품명 위치 데이터 반영) -->
           <div class="card-item">
             <div class="card-image">
               <img
@@ -346,7 +344,7 @@
               />
             </div>
             <div class="card-info">
-              <!-- 태그 없음 -->
+              <!-- 태그 영역 완전 삭제로 간격 20px 유지 -->
               <strong class="card-name">한끼 한돈제육_완조리</strong>
               <span class="card-desc">혼자 먹기 딱 좋은 1인분 제육볶음</span>
               <div class="card-price-wrap">
