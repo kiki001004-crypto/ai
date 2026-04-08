@@ -160,16 +160,34 @@
         gap: 6px;
       }
 
-      /* 카드 내부 텍스트 및 가격 요소 데이터 */
-      .card-tag {
+      /* 복수 태그 배치를 위한 래퍼(Wrapper) 데이터 */
+      .card-tags {
+        display: flex;
+        gap: 4px;
+      }
+
+      /* 공통 태그 형태 데이터 */
+      .tag-item {
         font-size: 12px;
         font-weight: bold;
-        color: #e93f33;
-        background-color: #fbeae9; /* 추가: 시안 기반 옅은 붉은색 배경(Fill) 데이터 */
-        padding: 4px 6px; /* 추가: 배경 적용을 위한 내부 여백 데이터 */
-        border-radius: 2px; /* 추가: 모서리 곡률 데이터 */
-        width: fit-content; /* 추가: 텍스트 길이만큼만 배경이 채워지도록 너비 제한 */
+        padding: 4px 6px;
+        border-radius: 2px;
       }
+
+      /* 개별 태그 색상(Color/Fill) 데이터 */
+      .tag-new {
+        color: #e93f33;
+        background-color: #fbeae9;
+      }
+      .tag-mild {
+        color: #f28b00; /* 시안 분석 기반 주황색 데이터 */
+        background-color: #fff4e5; /* 시안 분석 기반 연주황색 배경 데이터 */
+      }
+      .tag-best {
+        color: #2e8b57; /* 시안 분석 기반 녹색 데이터 */
+        background-color: #eaf5eb; /* 시안 분석 기반 연녹색 배경 데이터 */
+      }
+
       .card-name {
         font-size: 17px;
         font-weight: bold;
@@ -247,7 +265,7 @@
         </div>
 
         <div class="card-list">
-          <!-- 카드 1 (할인 적용 데이터 반영) -->
+          <!-- 카드 1 (복수 태그 적용 데이터) -->
           <div class="card-item">
             <div class="card-image">
               <img
@@ -256,7 +274,10 @@
               />
             </div>
             <div class="card-info">
-              <span class="card-tag">신제품</span>
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
               <strong class="card-name">쭈꾸미 풋마늘 파스타</strong>
               <span class="card-desc"
                 >봄기운 가득! 쭈꾸미와 풋마늘의 찰떡 궁합</span
@@ -270,7 +291,7 @@
               </div>
             </div>
           </div>
-          <!-- 카드 2 (할인 적용 데이터 반영) -->
+          <!-- 카드 2 (복수 태그 적용 데이터) -->
           <div class="card-item">
             <div class="card-image">
               <img
@@ -279,7 +300,10 @@
               />
             </div>
             <div class="card-info">
-              <span class="card-tag">신제품</span>
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
               <strong class="card-name">쭈꾸미 미나리 파스타</strong>
               <span class="card-desc">지금이 제철! 쭈꾸미와 미나리의 만남</span>
               <div class="card-price-wrap">
@@ -291,7 +315,7 @@
               </div>
             </div>
           </div>
-          <!-- 카드 3 (할인 미적용 데이터 반영) -->
+          <!-- 카드 3 (태그 색상 변경 및 복수 적용 데이터) -->
           <div class="card-item">
             <div class="card-image">
               <img
@@ -300,7 +324,10 @@
               />
             </div>
             <div class="card-info">
-              <span class="card-tag">신제품</span>
+              <div class="card-tags">
+                <span class="tag-item tag-best">인기</span>
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
               <strong class="card-name">잡채</strong>
               <span class="card-desc">탱글한 면발과 맛깔진 고명이 가득</span>
               <div class="card-price-wrap">
@@ -310,7 +337,7 @@
               </div>
             </div>
           </div>
-          <!-- 카드 4 (할인 미적용 데이터 반영) -->
+          <!-- 카드 4 (태그 삭제 데이터 반영) -->
           <div class="card-item">
             <div class="card-image">
               <img
@@ -319,7 +346,7 @@
               />
             </div>
             <div class="card-info">
-              <span class="card-tag">신제품</span>
+              <!-- 태그 없음 -->
               <strong class="card-name">한끼 한돈제육_완조리</strong>
               <span class="card-desc">혼자 먹기 딱 좋은 1인분 제육볶음</span>
               <div class="card-price-wrap">
@@ -329,7 +356,7 @@
               </div>
             </div>
           </div>
-          <!-- 카드 5 (할인 적용 데이터 삭제 및 텍스트 반영) -->
+          <!-- 카드 5 (복수 태그 및 텍스트 수정 데이터 반영) -->
           <div class="card-item">
             <div class="card-image">
               <img
@@ -338,9 +365,12 @@
               />
             </div>
             <div class="card-info">
-              <span class="card-tag">신제품</span>
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
               <strong class="card-name">[원더스푼] 된장국</strong>
-              <span class="card-desc">매일먹어도 좋은 담백한 된장국</span>
+              <span class="card-desc">매일 먹어도 좋은 담백한 된장국</span>
               <div class="card-price-wrap">
                 <div class="card-price-row">
                   <span class="card-price">3,300원</span>
@@ -348,35 +378,19 @@
               </div>
             </div>
           </div>
-          <!-- 카드 6 (할인 미적용 데이터 유지 및 텍스트 반영) -->
+          <!-- 카드 6 (이미지 및 데이터 동기화 반영) -->
           <div class="card-item">
             <div class="card-image">
               <img
                 src="./images/04_md_banchan/imgi_240_ZIP_P_8075_A.jpg"
-                alt="한끼 한돈제육_완조리"
-              />
-            </div>
-            <div class="card-info">
-              <span class="card-tag">신제품</span>
-              <strong class="card-name">한끼 한돈제육_완조리</strong>
-              <span class="card-desc">혼자 먹기 딱 좋은 1인분 제육볶음</span>
-              <div class="card-price-wrap">
-                <div class="card-price-row">
-                  <span class="card-price">6,800원</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- 카드 7 (할인 적용 데이터 삭제 및 텍스트 반영) -->
-          <div class="card-item">
-            <div class="card-image">
-              <img
-                src="./images/04_md_banchan/imgi_241_ZIP_P_8067_A.jpg"
                 alt="[원더스푼] 맑은 순두부찌개"
               />
             </div>
             <div class="card-info">
-              <span class="card-tag">신제품</span>
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
               <strong class="card-name">[원더스푼] 맑은 순두부찌개</strong>
               <span class="card-desc">맵지 않은 순두부찌개, 아이도 OK</span>
               <div class="card-price-wrap">
@@ -386,23 +400,52 @@
               </div>
             </div>
           </div>
-          <!-- 카드 8 (할인 미적용 데이터 유지 및 텍스트 반영) -->
+          <!-- 카드 7 (이미지 및 데이터 동기화 반영) -->
           <div class="card-item">
             <div class="card-image">
               <img
-                src="./images/04_md_banchan/imgi_242_ZIP_P_8066_A.jpg"
+                src="./images/04_md_banchan/imgi_241_ZIP_P_8067_A.jpg"
                 alt="[원더스푼] 맛살 계란 덮밥"
               />
             </div>
             <div class="card-info">
-              <span class="card-tag">신제품</span>
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
               <strong class="card-name">[원더스푼] 맛살 계란 덮밥</strong>
               <span class="card-desc"
-                >고소한 맛살, 폭신한계란 부드러운 조합</span
+                >고소한 맛살과 폭신한 계란의 부드러운 조합</span
               >
               <div class="card-price-wrap">
                 <div class="card-price-row">
                   <span class="card-price">4,300원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 카드 8 (이미지 및 데이터 동기화 반영) -->
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_242_ZIP_P_8066_A.jpg"
+                alt="[원더스푼] 한우 스테이크소스 덮밥"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
+              <strong class="card-name"
+                >[원더스푼] 한우 스테이크소스 덮밥</strong
+              >
+              <span class="card-desc"
+                >한우의 풍미를 그대로 담은 스테이크소스</span
+              >
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">4,500원</span>
                 </div>
               </div>
             </div>
