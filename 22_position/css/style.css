@@ -1,0 +1,75 @@
+@charset "utf-8";
+body {
+  font-family: "맑은 고딕";
+  height: 3000px;
+}
+div {
+  width: 200px;
+  height: 200px;
+  border: 2px solid black;
+}
+.box1 {
+  background: red;
+  width: 100%;
+  /* 공중에 띄워서 고정시켜서 배치 */
+  position: fixed;
+  left: 0;
+  top: 0;
+  /* 레이어 순서 바꾸기 */
+  z-index: 3;
+  position: static;
+}
+.box2 {
+  background: green;
+  /* 브라우저 기준으로 정렬 안하고 싶을때 */
+  /* 초록색 박스 기준으로 배치 */
+  position: relative;
+}
+/* box2에 자식박스 */
+.box2 div {
+  width: 80px;
+  height: 80px;
+  border: 1px solid black;
+}
+.box2 .ch1 {
+  background: orange;
+  position: absolute;
+  left: 30px;
+  top: 30px;
+  z-index: 4;
+}
+.box2 .ch2 {
+  background: purple;
+  position: absolute;
+  left: 90px;
+  top: 90px;
+  z-index: 5;
+}
+
+.box3 {
+  background: blue;
+}
+.box4 {
+  /* 공중에 띄운다 */
+  /* position: absolute; */
+  /* 배치 위치 */
+  /* left: 50px; */
+  /* top: 50px; */
+  /* 공중에 띄운거 해제 */
+  /* position: static; */
+  position: absolute;
+  /* top: 300px; */
+  /* right: 0; */
+  /* bottom: 0; */
+
+  /* 브라우저 기준으로 가운데 정렬 */
+  /* 가로가운데 */
+  left: 50%;
+  margin-left: -100px;
+  /* 세로가운데 */
+  top: 50%;
+  margin-top: -100px;
+
+  background: yellow;
+  z-index: 4;
+}
