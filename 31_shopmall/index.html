@@ -11,118 +11,227 @@
         padding: 0;
         display: flex;
         flex-direction: column;
-        align-items: center; /* 모든 직계 자식 요소를 중앙 정렬 */
+        align-items: center;
         min-height: 100vh;
-        background-color: #ffffff; /* 시안 배경색 */
-        padding-top: 50px; /* 시안과 유사하게 상단 여백 추가 */
-        overflow-x: auto; /* 1920px 미만 해상도에서 가로 스크롤 허용 (hidden -> auto 변경) */
-        width: 100%; /* 기본 너비 */
-        min-width: 1920px; /* 전체 캔버스 사이즈 1920px 고정 데이터 적용 */
+        background-color: #ffffff;
+        padding-top: 50px;
+        overflow-x: auto;
+        width: 100%;
+        min-width: 1920px;
       }
 
       /* 각 블록의 데이터 속성 */
       .block-red {
-        width: 1200px; /* inner 영역 1200px 절대값 적용 */
+        width: 1200px;
         height: 150px;
-        padding: 0; /* 헤더 내부 패딩 0 강제 적용 데이터 */
+        padding: 0;
         background-color: #fd4a4b;
-        /* 헤더 자식 박스 가로 정렬을 위한 Flex 설정 추가 */
         display: flex;
-        justify-content: space-between; /* 양쪽 정렬(space-between) 데이터 변경 적용 */
-        align-items: center; /* 수직 중앙 정렬 */
-        box-sizing: border-box; /* 패딩 및 테두리가 전체 너비/높이에 영향을 주지 않도록 설정 */
+        justify-content: space-between;
+        align-items: center;
+        box-sizing: border-box;
       }
 
-      /* 헤더 자식 박스 개별 사이즈 및 색상 데이터 (기획 반영) */
       .box-search {
         width: 350px;
         height: 60px;
         background-color: #b5f1f3;
-      } /* 1) search 박스 */
+      }
       .box-logo {
         width: 350px;
         height: 70px;
         background-color: #dcaaf0;
-      } /* 2) logo 박스 */
+      }
       .box-right {
         width: 350px;
         height: 90px;
         background-color: #acf0a6;
-      } /* 3) right 박스 */
+      }
 
       .banner {
-        width: 1920px; /* 배너 가로 1920px 절대값 데이터 적용 */
+        width: 1920px;
         height: 450px;
         background-color: #3aa581;
       }
 
       .block-purple {
-        width: 1200px; /* inner 영역 1200px 절대값 적용 */
+        width: 1200px;
         min-height: 600px;
-        background-color: #51507a;
-        /* 자식 박스 수직 정렬을 위한 Flex 설정 추가 */
+        /* background-color: #51507a; */
         display: flex;
         flex-direction: column;
       }
 
       .block-magenta {
-        width: 1200px; /* inner 영역 1200px 절대값 적용 */
+        width: 1200px;
         height: 200px;
         background-color: #c6168d;
-        /* footer 자식 박스 배치를 위한 Flex 및 여백 설정 (시안 반영) */
         display: flex;
-        padding: 0; /* 패딩 0 강제 적용 데이터 */
-        gap: 10px; /* 좌우 박스 간격 */
-        box-sizing: border-box; /* 패딩이 전체 너비에 영향을 주지 않도록 설정 */
-        align-items: center; /* 높이 125px 요소의 수직 중앙 정렬 데이터 추가 */
-        justify-content: space-between; /* 양쪽 정렬(space-between) 데이터 변경 적용 */
+        padding: 0;
+        gap: 10px;
+        box-sizing: border-box;
+        align-items: center;
+        justify-content: space-between;
       }
 
-      /* footer 자식 박스 데이터 (수치 변경 적용) */
       .footer-left {
         width: 385px;
         height: 125px;
-        background-color: #5b6f16; /* 짙은 올리브/카키색 */
+        background-color: #5b6f16;
       }
       .footer-right {
         width: 775px;
         height: 125px;
-        background-color: #3c0485; /* 짙은 보라색 */
+        background-color: #3c0485;
       }
 
-      /* 메인 영역 내부 자식 박스 공통 속성 */
       .inner-box {
         width: 100%;
-        box-sizing: border-box; /* 테두리 두께를 포함하여 너비 계산 */
+        box-sizing: border-box;
       }
 
-      /* 자식 박스 개별 비율(높이) 및 배경색 데이터 (기획 반영) */
+      /* 1) 반찬 박스 영역 레이아웃 구조화 */
       .box-side-dish {
-        height: 1000px;
-        background-color: #a4b644;
-      } /* 1) 반찬 박스 */
+        min-height: 1256px;
+        /* background-color: #a4b644; */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 60px 16px 16px 16px;
+      }
+
+      /* 반찬 박스 내부 타이틀 데이터 */
+      .section-title {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+      .section-title h2 {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 900;
+        color: #111;
+      }
+      .section-title p {
+        margin: 10px 0 0 0;
+        font-size: 15px;
+        color: #444;
+      }
+
+      /* 카드 4열 Grid 레이아웃 데이터 */
+      .card-list {
+        display: grid;
+        grid-template-columns: repeat(4, 280px);
+        gap: 16px;
+        width: 100%;
+      }
+
+      /* 개별 카드 스타일 데이터 */
+      .card-item {
+        width: 280px;
+        height: 532px;
+        background-color: #ffffff;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .card-image {
+        width: 100%;
+        height: 370px;
+        flex-shrink: 0; /* Flexbox 자동 축소 방지 데이터 추가 */
+        background-color: #f0f0f0;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #999;
+      }
+
+      .card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .card-info {
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1; /* 잉여 세로 공간을 100% 채우도록 데이터 추가 */
+        gap: 6px;
+      }
+
+      /* 카드 내부 텍스트 및 가격 요소 데이터 */
+      .card-tag {
+        font-size: 12px;
+        font-weight: bold;
+        color: #e93f33;
+        background-color: #fbeae9; /* 추가: 시안 기반 옅은 붉은색 배경(Fill) 데이터 */
+        padding: 4px 6px; /* 추가: 배경 적용을 위한 내부 여백 데이터 */
+        border-radius: 2px; /* 추가: 모서리 곡률 데이터 */
+        width: fit-content; /* 추가: 텍스트 길이만큼만 배경이 채워지도록 너비 제한 */
+      }
+      .card-name {
+        font-size: 17px;
+        font-weight: bold;
+        color: #222;
+        margin: 4px 0 0 0;
+        line-height: 1.4;
+      }
+      .card-desc {
+        font-size: 13px;
+        color: #888;
+        margin-bottom: 8px;
+      }
+
+      /* 가격 영역 최하단 고정 데이터 추가 (margin-top: auto) */
+      .card-price-wrap {
+        display: flex;
+        flex-direction: column;
+        margin-top: auto;
+      }
+      .card-price-row {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .card-discount {
+        font-size: 18px;
+        font-weight: bold;
+        color: #e93f33;
+      }
+      .card-price {
+        font-size: 18px;
+        font-weight: bold;
+        color: #222;
+      }
+
+      .card-original-price {
+        font-size: 13px;
+        color: #b5b5b5;
+        text-decoration: line-through;
+        margin-top: 4px;
+      }
+
       .box-regular-sub {
         height: 600px;
         background-color: #a4fa8c;
-      } /* 2) 정기적 반찬 박스 */
+      }
       .box-new-product {
         height: 1000px;
         background-color: #f7b38d;
-      } /* 3) 신제품 반찬 박스 */
+      }
       .box-sub-banner {
         height: 200px;
         background-color: #8da1f8;
-      } /* 4) 배너 박스 */
+      }
       .box-md-pick {
         height: 1000px;
         background-color: #e32dfb;
-      } /* 5) md 추천반찬 박스 */
+      }
     </style>
   </head>
   <body>
-    <!-- 불필요한 컨테이너(shape-container)를 제거하여 레이아웃 연산 오차 방지 -->
     <header class="block-red">
-      <!-- 헤더 영역 내부 자식 박스 3개 생성 (사이즈 및 역할 변경) -->
       <div class="box-search"></div>
       <div class="box-logo"></div>
       <div class="box-right"></div>
@@ -130,21 +239,184 @@
     <section class="banner"></section>
 
     <main class="block-purple">
-      <!-- 메인 영역 내부 자식 박스 분할 구조 -->
-      <div class="inner-box box-side-dish"></div>
-      <!-- 1) 반찬 박스: 1000px -->
+      <!-- 1) 반찬 박스: Grid 레이아웃 및 8개 카드 삽입 -->
+      <div class="inner-box box-side-dish">
+        <div class="section-title">
+          <h2>부담없는 알뜰 반찬</h2>
+          <p>착한 가격으로 챙기는 든든한 한끼</p>
+        </div>
+
+        <div class="card-list">
+          <!-- 카드 1 (할인 적용 데이터 반영) -->
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_235_ZIP_P_0214_A.png"
+                alt="쭈꾸미 풋마늘 파스타"
+              />
+            </div>
+            <div class="card-info">
+              <span class="card-tag">신제품</span>
+              <strong class="card-name">쭈꾸미 풋마늘 파스타</strong>
+              <span class="card-desc"
+                >봄기운 가득! 쭈꾸미와 풋마늘의 찰떡 궁합</span
+              >
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-discount">7%</span>
+                  <span class="card-price">12,800원</span>
+                </div>
+                <span class="card-original-price">13,800원</span>
+              </div>
+            </div>
+          </div>
+          <!-- 카드 2 (할인 적용 데이터 반영) -->
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_236_ZIP_P_0213_A.png"
+                alt="쭈꾸미 미나리 파스타"
+              />
+            </div>
+            <div class="card-info">
+              <span class="card-tag">신제품</span>
+              <strong class="card-name">쭈꾸미 미나리 파스타</strong>
+              <span class="card-desc">지금이 제철! 쭈꾸미와 미나리의 만남</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-discount">7%</span>
+                  <span class="card-price">12,800원</span>
+                </div>
+                <span class="card-original-price">13,800원</span>
+              </div>
+            </div>
+          </div>
+          <!-- 카드 3 (할인 미적용 데이터 반영) -->
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_237_main_5.jpg"
+                alt="잡채"
+              />
+            </div>
+            <div class="card-info">
+              <span class="card-tag">신제품</span>
+              <strong class="card-name">잡채</strong>
+              <span class="card-desc">탱글한 면발과 맛깔진 고명이 가득</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">12,800원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 카드 4 (할인 미적용 데이터 반영) -->
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_238_main_37.jpg"
+                alt="한끼 한돈제육_완조리"
+              />
+            </div>
+            <div class="card-info">
+              <span class="card-tag">신제품</span>
+              <strong class="card-name">한끼 한돈제육_완조리</strong>
+              <span class="card-desc">혼자 먹기 딱 좋은 1인분 제육볶음</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">6,800원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 카드 5 (할인 적용 데이터 삭제 및 텍스트 반영) -->
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_239_ZIP_P_8073_A.jpg"
+                alt="[원더스푼] 된장국"
+              />
+            </div>
+            <div class="card-info">
+              <span class="card-tag">신제품</span>
+              <strong class="card-name">[원더스푼] 된장국</strong>
+              <span class="card-desc">매일먹어도 좋은 담백한 된장국</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">3,300원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 카드 6 (할인 미적용 데이터 유지 및 텍스트 반영) -->
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_240_ZIP_P_8075_A.jpg"
+                alt="한끼 한돈제육_완조리"
+              />
+            </div>
+            <div class="card-info">
+              <span class="card-tag">신제품</span>
+              <strong class="card-name">한끼 한돈제육_완조리</strong>
+              <span class="card-desc">혼자 먹기 딱 좋은 1인분 제육볶음</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">6,800원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 카드 7 (할인 적용 데이터 삭제 및 텍스트 반영) -->
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_241_ZIP_P_8067_A.jpg"
+                alt="[원더스푼] 맑은 순두부찌개"
+              />
+            </div>
+            <div class="card-info">
+              <span class="card-tag">신제품</span>
+              <strong class="card-name">[원더스푼] 맑은 순두부찌개</strong>
+              <span class="card-desc">맵지 않은 순두부찌개, 아이도 OK</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">4,300원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 카드 8 (할인 미적용 데이터 유지 및 텍스트 반영) -->
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_242_ZIP_P_8066_A.jpg"
+                alt="[원더스푼] 맛살 계란 덮밥"
+              />
+            </div>
+            <div class="card-info">
+              <span class="card-tag">신제품</span>
+              <strong class="card-name">[원더스푼] 맛살 계란 덮밥</strong>
+              <span class="card-desc"
+                >고소한 맛살, 폭신한계란 부드러운 조합</span
+              >
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">4,300원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="inner-box box-regular-sub"></div>
-      <!-- 2) 정기적 반찬 박스: 600px -->
       <div class="inner-box box-new-product"></div>
-      <!-- 3) 신제품 반찬 박스: 1000px -->
       <div class="inner-box box-sub-banner"></div>
-      <!-- 4) 배너 박스: 200px -->
       <div class="inner-box box-md-pick"></div>
-      <!-- 5) md 추천반찬 박스: 1000px -->
     </main>
 
     <footer class="block-magenta">
-      <!-- 푸터 영역 내부 자식 박스 2개 생성 (수치 데이터 반영) -->
       <div class="footer-left"></div>
       <div class="footer-right"></div>
     </footer>
