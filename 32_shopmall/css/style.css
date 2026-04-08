@@ -226,7 +226,7 @@ main .day-banchan .tit p {
   font-size: 16px;
   font-weight: 600;
   color: #827c77;
-  margin-bottom: 16px;
+  margin-bottom: 42px;
 }
 main .day-banchan .product {
   width: 1168px;
@@ -245,6 +245,7 @@ main .day-banchan .product .card .imgbox {
 main .day-banchan .product .card .imgbox .photo {
   width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 main .day-banchan .product .card .imgbox .sale {
   position: absolute;
