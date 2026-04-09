@@ -6,7 +6,7 @@ body {
 .box {
   width: 710px;
   height: 140px;
-  box-shadow: 4px 4px 4px gray;
+  box-shadow: 0 0 10px rgba(0,0,0,0.6);
   border-radius: 24px;
   border: 1px solid black;
 }
@@ -15,16 +15,19 @@ body {
   width: 710px;
   height: 140px;
   background: black;
-  font-size: 45px;
+  font-size: 60px;
+  font-weight: 600;
   color: black;
-  text-shadow: 2px 2px 2px white;
+  text-shadow: 3px 3px 2px white;
   text-align: center;
+  
 }
 
 .text .text1 {
   color: black;
-  text-shadow: 2px 2px 2px rgba(255, 255, 255, 0.3);
+  text-shadow: 1px 4px 16px  rgba(255, 255, 255, 0.8);
   line-height: 130px;
+  
 }
 
 .gra {
@@ -40,4 +43,5 @@ body {
     navy,
     purple
   );
+  margin-top: 50px;
 }
