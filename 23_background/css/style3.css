@@ -24,6 +24,7 @@ body {
 .text .text1 {
   color: black;
   text-shadow: 2px 2px 2px rgba(255, 255, 255, 0.3);
+  line-height: 130px;
 }
 
 .gra {
