@@ -106,13 +106,13 @@
         margin-bottom: 40px;
       }
       .section-title h2 {
-        margin: 0;
+        margin: 50px 0 0 0; /* margin-top 50px 데이터 반영 */
         font-size: 28px;
         font-weight: 900;
         color: #111;
       }
       .section-title p {
-        margin: 10px 0 0 0;
+        margin: 16px 0 41px 0; /* margin-top 16px, margin-bottom 41px 데이터 반영 */
         font-size: 15px;
         color: #444;
       }
@@ -128,15 +128,16 @@
       /* 개별 카드 스타일 데이터 */
       .card-item {
         width: 280px;
-        height: 532px;
+        height: 538px; /* 높이 데이터 532px에서 538px로 변경 반영 */
         background-color: #ffffff;
         display: flex;
         flex-direction: column;
       }
 
       .card-image {
+        position: relative; /* 추가: 내부 뱃지/버튼의 절대 위치 기준점 데이터 */
         width: 100%;
-        height: 370px;
+        height: 380px; /* 높이 데이터 370px에서 380px로 변경 반영 */
         flex-shrink: 0; /* Flexbox 자동 축소 방지 데이터 추가 */
         background-color: #f0f0f0;
         overflow: hidden;
@@ -152,11 +153,34 @@
         object-fit: cover;
       }
 
+      /* 시안 분석 기반 추가: 원형 뱃지 및 장바구니 버튼 이미지 데이터 */
+      .card-image img.badge-circle {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: contain;
+        z-index: 10;
+      }
+
+      .card-image img.btn-cart {
+        position: absolute;
+        bottom: 16px; /* 위치 데이터 변경: 10px -> 16px */
+        right: 16px; /* 위치 데이터 변경: 10px -> 16px */
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+        object-fit: contain;
+        z-index: 10;
+      }
+
       .card-info {
-        padding: 20px 16px; /* 세로(상하) 20px, 가로(좌우) 16px 데이터 반영 */
+        padding: 16px 16px 20px 16px; /* 상단 16px, 좌/우 16px 데이터 반영 (하단 20px 유지) */
         display: flex;
         flex-direction: column;
-        gap: 6px;
+        gap: 8px; /* 간격 데이터 변경: 6px -> 8px */
       }
 
       /* 복수 태그 배치를 위한 래퍼(Wrapper) 데이터 */
@@ -193,12 +217,13 @@
         font-weight: bold;
         color: #222;
         margin: 4px 0 0 0;
-        line-height: 1.4;
+        line-height: 1; /* 1.4에서 1로 수정하여 잉여 여백 제거 */
       }
       .card-desc {
         font-size: 13px;
         color: #888;
         margin-bottom: 8px;
+        line-height: 1; /* 추가하여 잉여 여백 제거 */
       }
 
       .card-price-wrap {
@@ -229,8 +254,12 @@
       }
 
       .box-regular-sub {
-        height: 600px;
+        min-height: 714px; /* 고정 높이에서 최소 높이로 변경하여 가변 확장 데이터 반영 */
         background-color: #a4fa8c;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 60px 16px 16px 16px; /* 하단 16px 패딩 데이터 유지 */
       }
       .box-new-product {
         height: 1000px;
@@ -451,7 +480,153 @@
         </div>
       </div>
 
-      <div class="inner-box box-regular-sub"></div>
+      <!-- 2) 두번째 정찬 박스 영역: 시안 기반 레이아웃 추가 -->
+      <div class="inner-box box-regular-sub">
+        <div class="section-title">
+          <h2>집밥 한 끼</h2>
+          <p>맛있는 한끼를 위한 제안</p>
+        </div>
+
+        <div class="card-list">
+          <!-- 카드 1 -->
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                class="badge-circle"
+                src="./images/home/percent.png"
+                alt="11% 뱃지"
+              />
+              <img
+                src="./images/home/imgi_113_2442_ZIP_P_4111_T_2.jpg"
+                alt="메추리알 곤약조림"
+              />
+              <img
+                class="btn-cart"
+                src="./images/home/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <!-- <span class="tag-item tag-new">신제품</span> -->
+              </div>
+              <strong class="card-name">메추리알 간장조림</strong>
+              <!-- <span class="card-desc">탱글한 곤약과 메추리알의 만남</span> -->
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-discount">11%</span>
+                  <span class="card-price">3,400원</span>
+                </div>
+                <span class="card-original-price">3,800원</span>
+              </div>
+            </div>
+          </div>
+          <!-- 카드 2 -->
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                class="badge-circle"
+                src="./images/home/sale2.png"
+                alt="12% 뱃지"
+              />
+              <img
+                src="./images/home/imgi_215_ZIP_P_8068_T.jpg"
+                alt="한우야채카레"
+              />
+              <img
+                class="btn-cart"
+                src="./images/home/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+              </div>
+              <strong class="card-name">한우야채카레</strong>
+              <span class="card-desc">담백하고 부드러운 야채들로 풍성하게</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-discount">12%</span>
+                  <span class="card-price">3,800원</span>
+                </div>
+                <span class="card-original-price">4,300원</span>
+              </div>
+            </div>
+          </div>
+          <!-- 카드 3 -->
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                class="badge-circle"
+                src="./images/home/percent.png"
+                alt="11% 뱃지"
+              />
+              <img
+                src="./images/home/imgi_213_ZIP_P_8078_T.jpg"
+                alt="한우 소고기미역국"
+              />
+              <img
+                class="btn-cart"
+                src="./images/home/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
+              <strong class="card-name">[원더스푼] 한우 소고기 미역국</strong>
+              <span class="card-desc">영양가득 든든한 한우 어린이 미역국</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-discount">11%</span>
+                  <span class="card-price">4,700원</span>
+                </div>
+                <span class="card-original-price">5,300원</span>
+              </div>
+            </div>
+          </div>
+          <!-- 카드 4 -->
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                class="badge-circle"
+                src="./images/home/sale2.png"
+                alt="12% 뱃지"
+              />
+              <img
+                src="./images/home/imgi_149_1356_ZIP_P_0102_T.jpg"
+                alt="한끼 한돈 김치두루치기_완조리"
+              />
+              <img
+                class="btn-cart"
+                src="./images/home/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <!-- <span class="tag-item tag-new">신제품</span> -->
+                <!-- <span class="tag-item tag-mild">맵지않음</span> -->
+              </div>
+              <strong class="card-name">한끼 한돈 김치두루치기_완조리</strong>
+              <span class="card-desc"
+                >국내산 한돈으로 만든 든든한 한끼 두루치기</span
+              >
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-discount">12%</span>
+                  <span class="card-price">6,400원</span>
+                </div>
+                <span class="card-original-price">7,300원</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="inner-box box-new-product"></div>
       <div class="inner-box box-sub-banner"></div>
       <div class="inner-box box-md-pick"></div>
