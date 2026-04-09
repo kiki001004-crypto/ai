@@ -1,0 +1,39 @@
+@charset "utf-8";
+body {
+  font-family: "맑은 고딕";
+}
+
+/* 글자 그림자 */
+h1 {
+  text-shadow: 4px 4px 5px gray;
+}
+/* 그림자 효과 중첩 */
+h2 {
+  font-size: 90px;
+  color: white;
+  text-shadow:
+    0 0 2px red,
+    0 0 6px blue,
+    0 0 10px green;
+}
+/* 박스에 그림자 효과 */
+.box {
+  width: 200px;
+  height: 200px;
+  background: gold;
+  box-shadow: 10px 10px 3px gray;
+  border-radius: 24px;
+  border-radius: 16px 24px 32px 48px;
+  border-radius: 200px;
+}
+/* 그라디언트 효과 */
+.gra1 {
+  width: 600px;
+  height: 200px;
+  background: red;
+  /* 직선 그라디언트 */
+  /* 그라디언트 시작방향 설정 to 각도(deg) */
+  background-image: linear-gradient(-45deg, red, yellow, blue);
+  /* 원형 그라디언트 */
+  background-image: radial-gradient(red, yellow, blue);
+}

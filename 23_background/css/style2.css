@@ -1,0 +1,44 @@
+@charset "utf-8";
+body {
+  font-family: "맑은 고딕";
+}
+img {
+  width: 64px;
+  height: 64px;
+}
+
+.box {
+  width: 1000px;
+  height: 600px;
+  border: 10px solid red;
+  margin: 0 auto;
+  /* 배경이미지 삽입 */
+  /* 배경 이미지 삽입은 css로 */
+  /* 반복해서 삽입 */
+  background-image: url("../images/icon.png");
+  /* 반복 횟수 x축 */
+  background-repeat: repeat-x;
+  /* 반복 횟수 y축으로 조절 */
+  background-repeat: repeat-y;
+  /* 배경이미지 반복 적용 안할때 */
+  background-repeat: no-repeat;
+
+  /* 배경이미지를 원하는 위치에 배치 */
+  background-position: 50px 100px;
+  /* 배경 이미지를 가운데 정렬 */
+  background-position: 50% 50%;
+  /* 배경이미지를 정렬 */
+  background-position: right bottom;
+  /* 배경이미지 삽입시 크기조절시  */
+  background-size: 64px 64px;
+  background-color: green;
+}
+/* 약식방식 */
+.box1 {
+  width: 1000px;
+  height: 600px;
+  border: 10px solid red;
+  margin: 0 auto;
+  background: green url("../images/icon.png") no-repeat right bottom;
+  background-size: 64px 64px;
+}
