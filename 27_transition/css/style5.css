@@ -30,14 +30,16 @@ div p {
   /* left: 0; */
   /* 박스 밖으로 위치 조정 */
   /* left: -100%; */
-  top: 50%;
-  /* margin-top: -45px; */
+  /* top: 100%; */
+  /* margin-top: 0; */
   /* 부드럽게 중간 과정 만들기 */
+  bottom: -100%;
+  left: 0;
   transition: all 1s ease-in-out;
-  top: 100%;
+  /* top: 100%; */
 }
 /* div박스에 마우스를  호버하면 p 근데, 호버에는 트렌지션 no p에서   */
 div:hover p {
   /* left: 0; */
-  top: 50%;
+  bottom: 0;
 }
