@@ -1,0 +1,47 @@
+@charset "utf-8";
+body {
+  font-family: "맑은 고딕";
+}
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+.box1 {
+  width: 1000px;
+  height: 300px;
+  border: 1px solid #7f017f;
+  margin: 0 auto;
+  position: relative;
+}
+.box1 .box2 {
+  width: 100px;
+  height: 100px;
+  background: #7f017f;
+  position: absolute;
+  left: 0;
+  top: 0;
+  animation: box-ani 2s ease-in-out infinite forwards;
+}
+
+@keyframes box-ani {
+  0% {
+    left: 0;
+  }
+  25% {
+    left: 900px;
+    top: 0;
+  }
+  50% {
+    left: 900px;
+    top: 200px;
+  }
+  75% {
+    left: 0;
+    top: 200px;
+  }
+  100% {
+    left: 0;
+    top: 0;
+  }
+}

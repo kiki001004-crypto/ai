@@ -1,0 +1,41 @@
+@charset "utf-8";
+body {
+  font-family: "맑은 고딕";
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+div {
+  width: 100px;
+  height: 100px;
+  background: red;
+  position: absolute;
+  left: 0;
+  top: 0;
+  /* 애니메이션 실행 명령 */
+  /* animation-name: box; */
+  /* 애니메이션 실행시간 */
+  /* animation-duration: 3s; */
+  /* 애니메이션 가속도 */
+  /* animation-timing-function: ease-in-out; */
+  /* 애니메이션 실행시 원래대로 돌아가는거 방지 */
+  /* animation-fill-mode: forwards; */
+  /* 애니메이션 무한반복 실행 */
+  /* animation-iteration-count: infinite; */
+  /* 애니메이션 그네 */
+  /* animation-direction: alternate; */
+  /* 애니메이션 지연시간 */
+  /* animation-delay: 10s; */
+  animation: box 2s 5s ease-in-out forwards infinite alternate;
+}
+/* 애니메이션 설정 */
+@keyframes box {
+  from {
+    left: 0;
+  }
+  to {
+    left: 1000px;
+  }
+}
