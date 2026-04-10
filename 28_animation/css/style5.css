@@ -1,0 +1,113 @@
+@charset "utf-8";
+body {
+  font-family: "맑은 고딕";
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.box {
+  width: 1000px;
+  height: 1003px;
+  border: 5px solid red;
+  margin: 100px auto 0;
+  position: relative;
+}
+.box .tit {
+  position: absolute;
+  /* 가로 가운데/ 세로가운데 정렬 */
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+.box .tit h2 {
+  font-size: 36px;
+  color: #333;
+  font-weight: 900;
+  opacity: 0;
+  /* 애니메이션 실행 */
+  animation: h2-ani 1s ease-in-out forwards 2s;
+}
+/* 애니메이션 설정 */
+@keyframes h2-ani {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.box .tit p {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ccc;
+  margin: 24px 0;
+  opacity: 0;
+  animation: p-ani 1s ease-in-out forwards 2.5s;
+}
+
+/* 애니메이션 설정 */
+@keyframes p-ani {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.box .left {
+  position: absolute;
+  left: 50%;
+  margin-left: -73px;
+  top: 50%;
+  margin-top: -501.5px;
+  animation: left-ani 2s ease-in-out forwards;
+}
+/* 애니메이션 설정 */
+@keyframes left-ani {
+  0% {
+    left: 50%;
+  }
+  100% {
+    left: 20%;
+  }
+}
+
+.box .right {
+  position: absolute;
+  right: 50%;
+  top: 50%;
+  margin-right: -73px;
+  margin-top: -501.5px;
+  animation: right-ani 2s ease-in-out forwards;
+}
+/* 애니메이션 설정 */
+@keyframes right-ani {
+  form {
+    right: 50%;
+  }
+  to {
+    right: 20%;
+  }
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0;
+  animation: button-ani 1s ease-in-out forwards 3s;
+}
+
+@keyframes button-ani {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
