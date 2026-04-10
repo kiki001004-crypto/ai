@@ -10,7 +10,7 @@ body {
 .box1 {
   width: 1000px;
   height: 300px;
-  border: 1px solid red;
+  border: 3px solid red;
   margin: 0 auto;
   position: relative;
 }
