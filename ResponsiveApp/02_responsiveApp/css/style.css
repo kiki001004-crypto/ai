@@ -128,7 +128,7 @@ a {
 
 /* tablet 기기일때 */
 @media (min-width: 768px) and (max-width: 991px) {
-  .warp {
+  .wrap {
     width: 96%;
   }
   .wrap header {
