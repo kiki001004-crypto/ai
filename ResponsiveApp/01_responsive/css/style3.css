@@ -52,6 +52,9 @@ body {
   }
 }
 @media (min-width: 320px) and (max-width: 767px) {
+  .wrap {
+    width: 100%;
+  }
   .wrap .blue {
     position: static;
     width: 100%;
