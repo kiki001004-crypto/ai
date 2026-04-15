@@ -42,7 +42,6 @@
       let avg = tot / 4;
       //  평점을 구함
       let remark = "";
-
       if (avg >= 90) {
         remark = "수";
       } else if (avg >= 80) {
@@ -62,7 +61,7 @@
         mark = "A";
       } else if (avg >= 85) {
         mark = "B+";
-      } else if (avg <= 80) {
+      } else if (avg >= 80) {
         mark = "B";
       } else if (avg >= 75) {
         mark = "C+";
