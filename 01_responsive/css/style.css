@@ -1,0 +1,80 @@
+@charset "utf-8";
+body {
+}
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* pc기기일때 */
+.wrap {
+  width: 1000px;
+  margin: 0 auto;
+}
+.wrap .red {
+  width: 100%;
+  height: 150px;
+  background: red;
+}
+
+.wrap .blue-green {
+  width: 100%;
+  display: flex;
+}
+.wrap .blue {
+  width: 50%;
+  height: 120px;
+  background: blue;
+}
+.wrap .green {
+  width: 50%;
+  height: 120px;
+  background: green;
+}
+
+/* notebook 기기 일때 */
+/* 노트북기기 해상도 */
+@media (min-width: 992px) and (max-width: 1119px) {
+  .wrap {
+    width: 100%;
+  }
+  body {
+    padding: 0 24px;
+  }
+}
+
+/* tablet 기기 일때 */
+/* tablet기기 해상도 */
+@media (min-width: 768px) and (max-width: 991px) {
+  .wrap {
+    width: 100%;
+  }
+  .wrap .blue-green .blue {
+    height: 300px;
+  }
+  .wrap .blue-green .green {
+    height: 300px;
+  }
+}
+/* mobile 기기 일때 */
+/* 모바일 기기 해상도 */
+@media (min-width: 320px) and (max-width: 767px) {
+  .wrap {
+    width: 100%;
+  }
+  .wrap .blue-green {
+    flex-direction: column;
+  }
+  .wrap .red {
+    height: 300px;
+  }
+  .wrap .blue-green .blue {
+    height: 300px;
+    width: 100%;
+  }
+  .wrap .blue-green .green {
+    height: 300px;
+    width: 100%;
+  }
+}
