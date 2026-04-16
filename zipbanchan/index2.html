@@ -1,0 +1,1735 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shape Layout</title>
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="./css/main.css" />
+    <style>
+      /* ================= reset.css (원본 유지) ================= */
+      @charset "utf-8";
+      /* 여백초기화 */
+      * {
+        margin: 0;
+        padding: 0;
+        /* padding이나 border 크기가 영향 안가게 초기화 */
+        box-sizing: border-box;
+      }
+      /* li앞에 특수문자 초기화 */
+      li {
+        list-style: none;
+      }
+      /* 글자에 하이퍼링크 아래 밑줄 초기화 */
+      a {
+        text-decoration: none;
+      }
+      /* 버튼 초기화 */
+      button {
+        border: none;
+        background: none;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #ffffff;
+        padding-top: 150px; /* 고정형 헤더 높이(150px)만큼 시작 위치 보정 데이터 반영 */
+        overflow-x: hidden; /* 모바일 가로스크롤 방지 */
+        width: 100%;
+        min-width: 1920px;
+      }
+
+      /* ================= common.css (원본 유지) ================= */
+      /* 헤더 상단 고정 래퍼(Wrapper) 추가 및 테두리 데이터 반영 */
+      .header-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        min-width: 1920px;
+        height: 150px;
+        background-color: #ffffff;
+        border-bottom: 1px solid #e0e0e0; /* 1px 얇은 선 데이터 반영 */
+        display: flex;
+        justify-content: center;
+        z-index: 1000;
+      }
+
+      /* 각 블록의 데이터 속성 */
+      .block-red {
+        width: 1200px;
+        height: 100%; /* 부모 래퍼 높이 상속 */
+        padding: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-sizing: border-box;
+      }
+
+      .box-search {
+        width: 350px;
+        height: 46px;
+        background-color: #ffffff;
+        border: 2px solid #e5e5e5;
+        border-radius: 8px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+        padding-left: 0;
+      }
+      .search-input {
+        flex: 1;
+        border: none;
+        outline: none;
+        padding: 0 8px;
+        font-size: 14px;
+        color: #ccc;
+      }
+      .search-input::placeholder {
+        color: #ccc;
+      }
+      .search-btn {
+        width: 46px;
+        height: 100%;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .icon-search {
+        width: 36px;
+        height: 36px;
+        object-fit: contain;
+      }
+
+      .box-logo {
+        width: 260px;
+        height: 70px;
+        background-color: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .logo-img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+      }
+
+      .box-right {
+        width: 350px;
+        height: 70px;
+        background-color: transparent;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .right-top-bar {
+        width: 100%;
+        height: 24px;
+        background-color: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 24px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #333;
+      }
+      .right-top-bar span {
+        cursor: pointer;
+      }
+      .right-bottom-bar {
+        width: 100%;
+        height: 38px;
+        background-color: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 6px;
+        color: #333;
+        font-size: 17px;
+      }
+      .util-item {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        cursor: pointer;
+      }
+      .icon-util {
+        width: 18px;
+        height: 18px;
+        object-fit: contain;
+      }
+
+      .banner {
+        width: 1920px;
+        height: 450px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      .banner-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .block-purple {
+        width: 1200px;
+        min-height: 600px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* 푸터 화면 전체 넓이 상단 선을 위한 래퍼(Wrapper) 데이터 신설 */
+      .footer-wrapper {
+        width: 100%;
+        min-width: 1920px;
+        border-top: 1px solid #e0e0e0; /* 화면 끝까지 이어지는 1px 얇은 선 데이터 반영 */
+        background-color: #ffffff;
+        display: flex;
+        justify-content: center;
+      }
+
+      /* Footer Layout & Styling 시안 기반 정밀 데이터 반영 */
+      .block-magenta {
+        width: 1200px;
+        min-height: 200px;
+        /* border-top 제거 (wrapper로 이동) */
+        display: flex;
+        padding: 50px 0 70px 0; /* 상/하 여백 시안 맞춤 조정 */
+        gap: 40px;
+        box-sizing: border-box;
+        align-items: flex-start;
+        justify-content: space-between;
+      }
+
+      /* 좌측 고객센터 영역 데이터 */
+      .footer-left {
+        width: 385px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px; /* 내용 블록 간의 간격 15px 고정 데이터 반영 */
+        padding-left: 16px; /* 좌패딩 16px 데이터 추가 */
+        box-sizing: border-box; /* 레이아웃 너비 유지 데이터 추가 */
+      }
+      .cs-heading {
+        margin: 0;
+        padding: 0;
+        font-size: 14px;
+        font-weight: 600;
+        color: #333;
+        line-height: 1.4; /* 내부 줄바꿈 간격 원래대로 복구 */
+      }
+      .cs-email {
+        font-size: 12px;
+        font-weight: 600;
+        color: #333;
+      }
+      .cs-hours {
+        margin: 0;
+        padding: 0;
+        font-size: 12px;
+        font-weight: 600; /* 세미볼드 데이터 추가 반영 */
+        color: #757575;
+        line-height: 1.6; /* 내부 줄바꿈 간격 원래대로 복구 */
+      }
+
+      /* 우측 기업정보 영역 데이터 */
+      .footer-right {
+        width: 775px;
+        display: flex;
+        flex-direction: column;
+      }
+      .company-title {
+        font-size: 12px; /* 글자크기 12px 데이터 반영 */
+        font-weight: 600; /* 세미볼드 데이터 반영 */
+        color: #757575; /* 글자색 #757575 데이터 반영 */
+        margin: 0 0 15px 0; /* 한줄띄고 데이터 반영 */
+        line-height: 15px; /* 전체 줄간격 15px 데이터 반영 */
+      }
+      .footer-company-info {
+        font-size: 12px; /* 글자크기 12px 데이터 반영 */
+        font-weight: 600; /* 세미볼드 데이터 추가 */
+        color: #333333; /* 글자색 #333333 데이터 반영 */
+        margin: 0 0 15px 0; /* 한줄띄고 데이터 반영 */
+        line-height: 15px; /* 전체 줄간격 15px 데이터 반영 */
+      }
+      .footer-bottom-info {
+        font-size: 12px; /* 기본 글자크기 상속 유지 */
+        font-weight: 600; /* 세미볼드 데이터 다시 반영 */
+        color: #cccccc; /* 글자색 #cccccc 데이터 반영 */
+        margin: 0;
+        line-height: 15px; /* 전체 줄간격 15px 데이터 반영 */
+      }
+
+      /* ================= main.css (원본 유지) ================= */
+      .inner-box {
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      /* 1) 반찬 박스 영역 레이아웃 구조화 */
+      .box-side-dish {
+        min-height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 60px 16px 16px 16px;
+      }
+
+      /* 반찬 박스 내부 타이틀 데이터 */
+      .section-title {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+      .section-title h2 {
+        margin: 50px 0 0 0;
+        font-size: 28px;
+        font-weight: 600;
+        color: #111;
+      }
+      .section-title p {
+        margin: 16px 0 41px 0;
+        font-size: 15px;
+        color: #444;
+      }
+
+      /* 카드 4열 Grid 레이아웃 데이터 */
+      .card-list {
+        display: grid;
+        grid-template-columns: repeat(4, 280px);
+        gap: 16px; /* gap 16px 데이터 유지 */
+        width: 100%;
+      }
+
+      /* 개별 카드 스타일 데이터 */
+      .card-item {
+        width: 280px;
+        height: 532px; /* 세로 532px 데이터 반영 */
+        background-color: #ffffff;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .card-image {
+        position: relative;
+        width: 100%;
+        height: 370px; /* 높이 370px 데이터 반영 (기존 380px에서 변경) */
+        flex-shrink: 0;
+        background-color: #f0f0f0;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #999;
+      }
+
+      .card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .card-image img.badge-circle {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: contain;
+        z-index: 10;
+      }
+
+      .card-image img.btn-cart {
+        position: absolute;
+        bottom: 16px;
+        right: 16px;
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+        object-fit: contain;
+        z-index: 10;
+      }
+
+      .card-info {
+        padding: 16px 16px 20px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      /* 새로 나온 반찬 영역 card-info 내부 줄간격 16px 데이터 반영 */
+      .box-new-product .card-info {
+        width: 280px; /* 가로 280px 데이터 반영 */
+        height: 162px; /* 세로 162px 데이터 반영 */
+        box-sizing: border-box; /* 패딩 포함 크기 유지 */
+        gap: 16px;
+      }
+
+      /* MD 추천 반찬 영역 card-info 상하 패딩 및 줄간격 데이터 반영 */
+      .box-md-pick .card-info {
+        width: 280px;
+        height: 162px;
+        box-sizing: border-box;
+        padding: 16px; /* 상하 패딩 16px (전체 16px) 데이터 반영 */
+        gap: 8px; /* 줄간격 8px 데이터 반영 */
+      }
+
+      /* card-list 패딩 데이터 반영 수정 (중복 패딩 제거) */
+      .box-new-product .card-list,
+      .box-md-pick .card-list {
+        padding: 0 0 16px 0; /* 좌, 우 중복 패딩 제거하여 상위 컨테이너와 정렬 일치 */
+        box-sizing: border-box;
+      }
+
+      /* 기존 margin 간섭 방지 초기화 */
+      .box-new-product .card-desc,
+      .box-md-pick .card-desc {
+        margin: 0;
+      }
+
+      /* card tag 라인 하단 간격 4px 강제 적용 (부모 flex gap 데이터 수치 상쇄) */
+      .box-new-product .card-name {
+        margin: -12px 0 0 0; /* 부모 gap 16px - 12px = 4px 간격 렌더링 */
+      }
+      .box-md-pick .card-name {
+        margin: -4px 0 0 0; /* 부모 gap 8px - 4px = 4px 간격 렌더링 */
+      }
+
+      .card-tags {
+        display: flex;
+        gap: 4px;
+      }
+
+      .tag-item {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        line-height: 1;
+        white-space: nowrap;
+        font-size: 12px;
+        font-weight: bold;
+        padding: 4px 6px;
+        border-radius: 2px;
+      }
+
+      .tag-new {
+        color: #e93f33;
+        background-color: #fbeae9;
+      }
+      .tag-mild {
+        width: 50px;
+        height: 24px;
+        padding: 2px 4px;
+        font-size: 13px;
+        font-weight: bold;
+        color: #f39f1a;
+        background-color: #fdf0dc;
+        border-radius: 4px;
+      }
+      .tag-best {
+        width: 31px;
+        height: 20px;
+        padding: 2px 4px;
+        font-size: 13px;
+        font-weight: bold;
+        color: #316f35;
+        background-color: #dbe6dc;
+        border-radius: 4px;
+      }
+      /* MD 추천 반찬 영역 등 2글자 주황색 태그를 위한 신규 데이터 클래스 추가 */
+      .tag-sale {
+        width: 31px;
+        height: 20px;
+        padding: 2px 4px;
+        font-size: 13px;
+        font-weight: bold;
+        color: #f39f1a;
+        background-color: #fdf0dc;
+        border-radius: 4px;
+      }
+
+      .card-name {
+        font-size: 16px;
+        font-weight: 500;
+        color: #222;
+        margin: 4px 0 0 0;
+        line-height: 1;
+      }
+      .card-desc {
+        font-size: 13px;
+        color: #888;
+        margin-bottom: 8px;
+        line-height: 1;
+      }
+
+      .card-price-wrap {
+        display: flex;
+        flex-direction: column;
+      }
+      .card-price-row {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .card-discount {
+        font-size: 16px;
+        font-weight: 500;
+        color: #e93f33;
+      }
+      .card-price {
+        font-size: 16px;
+        font-weight: 600;
+        color: #222;
+      }
+
+      .card-original-price {
+        font-size: 13px;
+        color: #b5b5b5;
+        text-decoration: line-through;
+        margin-top: 4px;
+      }
+
+      .box-regular-sub {
+        min-height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 60px 16px 16px 16px;
+      }
+
+      /* 2) 새로 나온 반찬 영역 시안 반영 */
+      .box-new-product {
+        min-height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 60px 16px 16px 16px; /* 기존 집밥 한끼와 패딩 동기화 */
+      }
+
+      /* 3) 서브 배너 영역 데이터 교정 (치우침 현상 해결) */
+      .box-sub-banner {
+        width: 1200px;
+        height: 200px;
+        background-color: transparent;
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 0 16px; /* 기존 0에서 위아래 박스와 동일한 좌우 16px 패딩 데이터 추가 */
+        box-sizing: border-box;
+      }
+      .sub-banner-item {
+        flex: 1; /* 가용공간(1168px) 내에서 3등분(약 378.66px)되도록 정밀 분할 데이터 적용 */
+        height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 24px;
+        margin-top: 25px;
+        margin-bottom: 25px;
+        border: 1px solid #e5e5e5;
+        border-radius: 16px;
+        background-color: #ffffff;
+        box-sizing: border-box;
+        cursor: pointer;
+        background: yellowgreen;
+      }
+
+      .sub-banner-text {
+        display: flex;
+        flex-direction: column;
+      }
+      .sub-banner-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: #333333;
+        margin-bottom: 16px;
+        line-height: 1;
+      }
+      .sub-banner-desc {
+        font-size: 24px;
+        font-weight: 600;
+        color: #333333;
+        line-height: 1;
+      }
+      .sub-banner-icon {
+        width: 48px;
+        height: 48px;
+        background: #0d5611;
+        padding: 9px;
+        box-sizing: border-box;
+        object-fit: contain;
+      }
+
+      /* 4) MD 추천 반찬 영역 시안 반영 */
+      .box-md-pick {
+        min-height: auto;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 60px 16px 16px 16px; /* 새로 나온 반찬과 동일한 패딩 데이터 반영 */
+      }
+
+      /* MD 추천 반찬 탭 데이터 추가 */
+      .md-tab-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 42px 0; /* 상품 이미지 카드와의 간격 42px 데이터 반영 */
+        display: flex;
+        gap: 16px; /* gap 16px 데이터 반영 */
+        justify-content: center;
+        align-items: center; /* 세로 53px 지정에 따른 수직 중앙 정렬 데이터 추가 */
+      }
+      .md-tab-item {
+        padding: 16px 24px; /* 상하 16px, 좌우 24px 데이터 반영 */
+        border-radius: 20px;
+        background-color: #ffffff;
+        border: 1px solid #e5e5e5;
+        font-size: 14px;
+        font-weight: 600;
+        color: #666666;
+        cursor: pointer;
+        transition:
+          background-color 0.2s ease,
+          color 0.2s ease; /* Hover 애니메이션 추가 */
+      }
+      .md-tab-item.active {
+        background-color: #0d5611; /* 요청된 #0D5611 데이터 반영 */
+        border-color: #0d5611; /* 요청된 #0D5611 데이터 반영 */
+        color: #ffffff;
+      }
+
+      /* 탭 그룹 전체에 마우스 오버 시 기존 active(비빔밥) 탭의 색상 비활성화 */
+      .md-tab-list:hover .md-tab-item.active {
+        background-color: #ffffff;
+        border-color: #e5e5e5;
+        color: #666666;
+      }
+
+      /* 마우스가 실제로 올라간 개별 탭에 active(비빔밥) 색상 활성화 */
+      .md-tab-list:hover .md-tab-item:hover {
+        background-color: #0d5611;
+        border-color: #0d5611;
+        color: #ffffff;
+      }
+
+      /* ================= 모바일 전용 HTML 요소 PC 강제 숨김 처리 ================= */
+      .btn-more-wrap {
+        display: none; /* PC 환경에서는 더보기 영역 완벽 숨김 */
+      }
+
+      /* ================= Media Query (모바일 전용 시안 완벽 구현) ================= */
+      /* ※ PC 버전 구조(1920px 고정)를 유지하며 태블릿(1200px) 분기는 삭제. 오직 모바일(768px 이하)일 때만 작동합니다. */
+
+      @media screen and (max-width: 768px) {
+        body {
+          padding-top: 100px; /* 변경된 모바일 헤더 높이에 맞춰 여백 축소 */
+          min-width: 100%;
+          width: 100%;
+          overflow-x: hidden;
+        }
+
+        /* 1. 모바일 헤더 정밀 최적화 (CSS Grid 활용하여 줌인 시안 100% 일치) */
+        .header-wrapper {
+          height: 100px;
+          padding: 15px 16px;
+          border-bottom: 1px solid #f0f0f0; /* 모바일 전용 옅은 경계선 */
+          min-width: 100%;
+          width: 100%;
+        }
+
+        /* HTML 구조 변경 없이 CSS만으로 좌측 로고 전체 높이 할당 & 우측 2단 분할 */
+        .block-red {
+          display: grid;
+          grid-template-columns: 140px 1fr; /* 좌측 로고 영역 140px 확보 */
+          grid-template-rows: 30px 34px; /* 위:유틸 30px, 아래:검색창 34px */
+          column-gap: 16px;
+          row-gap: 6px; /* 전체 높이 30+34+6 = 70px */
+          height: 70px;
+          width: 100%;
+          padding: 0;
+        }
+
+        /* 좌측 영역: 로고 (상하 전체 70px 높이 점유) */
+        .block-red > a {
+          grid-column: 1 / 2;
+          grid-row: 1 / 3; /* 헤더의 1번째 줄부터 2번째 줄 끝까지 꽉 채움 */
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          height: 100%;
+        }
+        .box-logo {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+        }
+        .logo-img {
+          width: 100%;
+          height: auto;
+          max-height: 100%;
+          object-fit: contain;
+          object-position: left center;
+        }
+
+        /* 우측 상단 영역: 로그인, 장바구니, 햄버거 메뉴 */
+        .box-right {
+          grid-column: 2 / 3;
+          grid-row: 1 / 2;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: flex-end;
+          gap: 12px;
+        }
+        .right-top-bar {
+          width: auto;
+          height: auto;
+          gap: 0;
+        }
+        .right-top-bar span:not(:first-child) {
+          display: none;
+        } /* 로그인 외 숨김 */
+        .right-top-bar span:first-child {
+          font-size: 13px;
+          font-weight: 500;
+          color: #444;
+          display: flex;
+          align-items: center;
+        }
+        /* 로그인 아이콘 SVG 삽입 (CSS Background 방식) - 방향 전환(우측 지향) 및 20px 데이터 반영 */
+        .right-top-bar span:first-child::before {
+          content: "";
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          margin-right: 4px;
+          background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="%23999"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>')
+            no-repeat center/contain;
+        }
+
+        .right-bottom-bar {
+          width: auto;
+          height: auto;
+          gap: 0;
+        }
+        .right-bottom-bar span:not(:last-child) {
+          display: none;
+        } /* 장바구니 외 숨김 */
+        .right-bottom-bar span:last-child {
+          font-size: 13px;
+          font-weight: 500;
+          color: #444;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+        }
+        /* 모바일 장바구니 아이콘 (필터 공식을 활용하여 로그인 아이콘과 완벽한 색상 일치율 #999 계산 반영) */
+        .right-bottom-bar span:last-child img {
+          margin: 0;
+          width: 20px;
+          height: 20px;
+          filter: brightness(0) invert(60%);
+        }
+        /* 우측 끝 햄버거 메뉴 (SVG 추가) */
+        .box-right::after {
+          content: "";
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          margin-left: 4px;
+          cursor: pointer;
+          background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="%23bbbbbb"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>')
+            no-repeat center/contain;
+        }
+
+        /* 우측 하단 영역: 검색창 (로고 높이에 맞춰 배치 완료) */
+        .box-search {
+          grid-column: 2 / 3;
+          grid-row: 2 / 3;
+          width: 100%;
+          height: 34px;
+          border-radius: 4px; /* 시안 둥근 모서리 반영 */
+          border: 1px solid #e0e0e0;
+          background-color: #ffffff;
+          padding-left: 8px;
+          padding-right: 3px; /* 녹색 버튼 우측 여백 */
+          align-self: center;
+        }
+        .search-input {
+          font-size: 12px;
+          background-color: transparent;
+        }
+        /* 요청사항 반영: 녹색 둥근 사각형 버튼 안의 PC 돋보기 아이콘(24px) 그대로 사용 */
+        .search-btn {
+          width: 32px;
+          height: 28px;
+          background-color: #0d5611;
+          border-radius: 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .icon-search {
+          width: 24px !important;
+          height: 24px !important;
+          filter: none; /* 필터 없이 PC 아이콘 색상 원본 그대로 반영 */
+        }
+
+        /* 2. 메인 배너 유동성 확보 */
+        .banner {
+          min-width: 100%;
+          width: 100%;
+          height: auto;
+          aspect-ratio: 4 / 3;
+          max-height: none;
+        }
+
+        /* 3. 모바일 공통 넓이 고정 해제 및 강제 상속(!important) 데이터 반영 */
+        .block-purple,
+        .block-magenta,
+        .box-sub-banner,
+        .footer-wrapper {
+          width: 100% !important;
+          min-width: 100% !important;
+          box-sizing: border-box;
+        }
+        .box-side-dish,
+        .box-regular-sub,
+        .box-new-product,
+        .box-md-pick {
+          padding: 30px 16px 20px 16px !important;
+          min-height: auto !important;
+          width: 100% !important;
+          box-sizing: border-box !important;
+        }
+        .section-title {
+          margin-bottom: 20px;
+        }
+        .section-title h2 {
+          font-size: 20px;
+          margin-top: 0;
+        }
+        .section-title p {
+          font-size: 13px;
+          margin: 6px 0 0 0;
+        }
+
+        /* 4. 상품 카드 2열 정밀 레이아웃 및 강제 크기 제어(!important) */
+        .card-list {
+          display: grid !important;
+          grid-template-columns: repeat(2, 1fr) !important;
+          gap: 20px 8px !important; /* 세로 가로 간격 조정 */
+          padding-bottom: 0 !important;
+          width: 100% !important;
+        }
+        .card-item {
+          width: 100% !important;
+          height: auto !important;
+          min-height: auto !important;
+        }
+        .card-image {
+          width: 100% !important;
+          height: auto !important;
+          aspect-ratio: 1 / 1 !important; /* 모바일 이미지 1:1 정방형 핏 유지 */
+          border-radius: 6px !important;
+        }
+        .card-image img.badge-circle {
+          width: 32px !important;
+          height: 32px !important;
+          top: 8px !important;
+          left: 8px !important;
+        }
+        .card-image img.btn-cart {
+          width: 28px !important;
+          height: 28px !important;
+          bottom: 8px !important;
+          right: 8px !important;
+        }
+
+        /* 모바일 텍스트 밀집도 상승 (여백 최소화 및 집밥 한끼 완벽 제어 포함) */
+        .card-info,
+        .box-new-product .card-info,
+        .box-md-pick .card-info,
+        .box-regular-sub .card-info {
+          width: 100% !important;
+          padding: 10px 0 0 0 !important;
+          height: auto !important;
+          gap: 4px !important;
+        }
+        .tag-item {
+          font-size: 10px !important;
+          padding: 2px 4px !important;
+          height: auto !important;
+          width: auto !important; /* PC 고정 넓이 강제 무력화 */
+        }
+        .card-name,
+        .box-new-product .card-name,
+        .box-md-pick .card-name,
+        .box-regular-sub .card-name {
+          font-size: 14px !important;
+          margin-top: 0 !important;
+          white-space: normal !important;
+          display: -webkit-box !important;
+          -webkit-line-clamp: 2 !important;
+          -webkit-box-orient: vertical !important;
+          overflow: hidden !important;
+          line-height: 1.3 !important;
+        }
+        .card-desc {
+          font-size: 12px !important;
+          margin: 0 !important;
+          white-space: nowrap !important;
+          overflow: hidden !important;
+          text-overflow: ellipsis !important;
+        }
+        .card-price-row {
+          gap: 4px !important;
+          flex-wrap: wrap !important;
+          align-items: flex-end !important;
+        }
+        .card-discount,
+        .card-price {
+          font-size: 15px !important;
+        }
+        .card-original-price {
+          font-size: 12px !important;
+          margin-top: 0 !important;
+        }
+
+        /* 5. 터치 가능한 모바일 전용 '더보기' 버튼 (PC에서 숨김 처리됨) */
+        .btn-more-wrap {
+          display: flex;
+          justify-content: center;
+          width: 100%;
+          margin-top: 24px;
+        }
+        .btn-more {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          width: 100%;
+          max-width: 320px;
+          height: 44px;
+          border: 1px solid #e0e0e0;
+          border-radius: 22px; /* 둥근 모서리 최적화 */
+          background-color: #ffffff;
+          font-size: 13px;
+          font-weight: 500;
+          color: #444;
+          text-decoration: none; /* 클릭할 수 있게 a태그로 작성되었으므로 밑줄 제거 */
+          cursor: pointer;
+        }
+
+        /* 6. 서브 배너 3열 정밀 시안 대응 (가로 배치, 좌측 텍스트/우측 아이콘) */
+        .box-sub-banner {
+          height: auto;
+          flex-direction: row;
+          padding: 0 16px !important;
+          gap: 8px; /* 시안의 좁은 간격 적용 */
+          margin: 16px 0 24px 0;
+        }
+        .sub-banner-item {
+          flex: 1 1 0; /* 동일한 너비 분할 */
+          height: auto;
+          padding: 10px 8px; /* 줌인 시안에 맞춘 상하좌우 패딩 */
+          margin: 0;
+          flex-direction: row; /* 텍스트를 좌측에, 아이콘을 우측에 가로 배치 */
+          justify-content: space-between;
+          align-items: center;
+          text-align: left;
+          border-radius: 8px;
+          gap: 6px;
+        }
+        .sub-banner-text {
+          align-items: flex-start; /* 텍스트 좌측 정렬 유지 */
+          gap: 2px;
+          width: calc(
+            100% - 30px
+          ); /* 아이콘 크기를 제외한 나머지 영역 텍스트 할당 */
+        }
+        .sub-banner-title {
+          font-size: 10px;
+          margin: 0;
+          white-space: nowrap; /* 줄바꿈 방지 */
+          overflow: hidden;
+          text-overflow: ellipsis; /* 넘칠 경우 줄임표 처리 */
+          width: 100%;
+          color: #333;
+          letter-spacing: -0.5px;
+        }
+        .sub-banner-desc {
+          font-size: 13px; /* 줌인 시안처럼 아래 글씨를 조금 더 크고 강조되게 설정 */
+          font-weight: 700;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          width: 100%;
+          color: #333;
+          letter-spacing: -0.5px;
+        }
+        .sub-banner-icon {
+          width: 26px;
+          height: 26px;
+          padding: 5px; /* 진녹색 배경 사각형 박스와 내부 아이콘의 비율 조절 */
+          margin-top: 0; /* PC버전에 있던 margin 초기화 */
+          flex-shrink: 0; /* 아이콘 영역 찌그러짐 방지 */
+          border-radius: 2px; /* 살짝 각진 모서리 처리 */
+        }
+
+        /* 7. MD 추천 가로 스와이프 탭 메뉴 */
+        .md-tab-list {
+          flex-wrap: nowrap;
+          justify-content: flex-start;
+          overflow-x: auto;
+          width: calc(100% + 32px) !important;
+          margin-left: -16px;
+          margin-bottom: 20px !important;
+          padding: 0 16px 8px 16px !important;
+          gap: 8px;
+          border: none;
+          border-radius: 0;
+        }
+        .md-tab-list::-webkit-scrollbar {
+          display: none;
+        }
+        .md-tab-item {
+          flex: 0 0 auto;
+          padding: 8px 16px;
+          font-size: 13px;
+          border: 1px solid #e5e5e5;
+          border-radius: 20px;
+        }
+
+        /* 8. 모바일 푸터 */
+        .block-magenta {
+          flex-direction: column;
+          padding: 40px 16px;
+          gap: 30px;
+        }
+        .footer-left,
+        .footer-right {
+          width: 100%;
+          padding-left: 0;
+        }
+        .company-title,
+        .footer-company-info,
+        .footer-bottom-info {
+          line-height: 1.6;
+          word-break: keep-all;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="header-wrapper">
+      <header class="block-red">
+        <div class="box-search">
+          <input
+            type="text"
+            placeholder="반찬을 입력해주세요."
+            class="search-input"
+          />
+          <button class="search-btn">
+            <img
+              src="./images/icons/imgi_27_icon-search-f5f5f5-18 1.png"
+              alt="검색"
+              class="icon-search"
+            />
+          </button>
+        </div>
+        <a href="./index.html">
+          <div class="box-logo">
+            <img
+              src="./images/icons/imgi_13_logo_pc 1.png"
+              alt="집반찬연구소 로고"
+              class="logo-img"
+            />
+          </div>
+        </a>
+        <div class="box-right">
+          <div class="right-top-bar">
+            <span>로그인</span>
+            <span>회원가입</span>
+            <span>내정보</span>
+          </div>
+          <div class="right-bottom-bar">
+            <span class="util-item"
+              ><img
+                src="./images/icons/imgi_28_icon-tel2 1.png"
+                alt="전화주문"
+                class="icon-util"
+              />
+              전화주문</span
+            >
+            <span class="util-item"
+              ><img
+                src="./images/icons/imgi_29_icon-document-d4d4d4-28 1.png"
+                alt="브랜드"
+                class="icon-util"
+              />
+              브랜드</span
+            >
+            <span class="util-item"
+              ><img
+                src="./images/icons/imgi_30_icon-list-d4d4d4-28 1.png"
+                alt="반찬보기"
+                class="icon-util"
+              />
+              반찬보기</span
+            >
+            <span class="util-item"
+              ><img
+                src="./images/icons/imgi_31_icon-cart-d4d4d4-28 1.png"
+                alt="장바구니"
+                class="icon-util"
+              />
+              장바구니</span
+            >
+          </div>
+        </div>
+      </header>
+    </div>
+
+    <section class="banner">
+      <img
+        src="./images/banner/banner_fc9385c24511a68c7a252e6329bed0ce.jpg"
+        alt="메인 배너"
+        class="banner-img"
+      />
+    </section>
+
+    <main class="block-purple">
+      <!-- 1. 부담없는 알뜰 반찬 -->
+      <div class="inner-box box-side-dish">
+        <div class="section-title">
+          <h2>부담없는 알뜰 반찬</h2>
+          <p>착한 가격으로 챙기는 든든한 한끼</p>
+        </div>
+
+        <div class="card-list">
+          <a href="./sub1.html" style="display: block; width: 100%">
+            <div class="card-item">
+              <div class="card-image">
+                <img
+                  src="./images/04_md_banchan/imgi_235_ZIP_P_0214_A.png"
+                  alt="쭈꾸미 풋마늘 파스타"
+                />
+              </div>
+              <div class="card-info">
+                <div class="card-tags">
+                  <span class="tag-item tag-new">신제품</span>
+                  <span class="tag-item tag-mild">맵지않음</span>
+                </div>
+                <strong class="card-name">쭈꾸미 풋마늘 파스타</strong>
+                <span class="card-desc"
+                  >봄기운 가득! 쭈꾸미와 풋마늘의 찰떡 궁합</span
+                >
+                <div class="card-price-wrap">
+                  <div class="card-price-row">
+                    <span class="card-discount">7%</span>
+                    <span class="card-price">12,800원</span>
+                  </div>
+                  <span class="card-original-price">13,800원</span>
+                </div>
+              </div>
+            </div>
+          </a>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_236_ZIP_P_0213_A.png"
+                alt="쭈꾸미 미나리 파스타"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
+              <strong class="card-name">쭈꾸미 미나리 파스타</strong>
+              <span class="card-desc">지금이 제철! 쭈꾸미와 미나리의 만남</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-discount">7%</span>
+                  <span class="card-price">12,800원</span>
+                </div>
+                <span class="card-original-price">13,800원</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_237_main_5.jpg"
+                alt="잡채"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-best">인기</span>
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
+              <strong class="card-name">잡채</strong>
+              <span class="card-desc">탱글한 면발과 맛깔진 고명이 가득</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">12,800원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_238_main_37.jpg"
+                alt="한끼 한돈제육_완조리"
+              />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">한끼 한돈제육_완조리</strong>
+              <span class="card-desc">혼자 먹기 딱 좋은 1인분 제육볶음</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">6,800원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 더보기 버튼 (모바일 노출, 전체 클릭 가능하도록 <a>태그로 감싸고 SVG 아이콘 삽입) -->
+        <div class="btn-more-wrap">
+          <a href="javascript:void(0);" class="btn-more">
+            더보기
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#444"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- 2. 집밥 한 끼 -->
+      <div class="inner-box box-regular-sub">
+        <div class="section-title">
+          <h2>집밥 한 끼</h2>
+          <p>맛있는 한끼를 위한 제안</p>
+        </div>
+
+        <div class="card-list">
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                class="badge-circle"
+                src="./images/home/percent.png"
+                alt="11% 뱃지"
+              />
+              <img
+                src="./images/home/imgi_113_2442_ZIP_P_4111_T_2.jpg"
+                alt="메추리알 곤약조림"
+              />
+              <img
+                class="btn-cart"
+                src="./images/home/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags"></div>
+              <strong class="card-name">메추리알 간장조림</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-discount">11%</span>
+                  <span class="card-price">3,400원</span>
+                </div>
+                <span class="card-original-price">3,800원</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                class="badge-circle"
+                src="./images/home/sale2.png"
+                alt="12% 뱃지"
+              />
+              <img
+                src="./images/home/imgi_215_ZIP_P_8068_T.jpg"
+                alt="한우야채카레"
+              />
+              <img
+                class="btn-cart"
+                src="./images/home/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+              </div>
+              <strong class="card-name">한우야채카레</strong>
+              <span class="card-desc">담백하고 부드러운 야채들로 풍성하게</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-discount">12%</span>
+                  <span class="card-price">3,800원</span>
+                </div>
+                <span class="card-original-price">4,300원</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                class="badge-circle"
+                src="./images/home/percent.png"
+                alt="11% 뱃지"
+              />
+              <img
+                src="./images/home/imgi_213_ZIP_P_8078_T.jpg"
+                alt="한우 소고기미역국"
+              />
+              <img
+                class="btn-cart"
+                src="./images/home/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
+              <strong class="card-name">[원더스푼] 한우 소고기 미역국</strong>
+              <span class="card-desc">영양가득 든든한 한우 어린이 미역국</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-discount">11%</span>
+                  <span class="card-price">4,700원</span>
+                </div>
+                <span class="card-original-price">5,300원</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                class="badge-circle"
+                src="./images/home/sale2.png"
+                alt="12% 뱃지"
+              />
+              <img
+                src="./images/home/imgi_149_1356_ZIP_P_0102_T.jpg"
+                alt="한끼 한돈 김치두루치기_완조리"
+              />
+              <img
+                class="btn-cart"
+                src="./images/home/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags"></div>
+              <strong class="card-name">한끼 한돈 김치두루치기_완조리</strong>
+              <span class="card-desc"
+                >국내산 한돈으로 만든 든든한 한끼 두루치기</span
+              >
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-discount">12%</span>
+                  <span class="card-price">6,400원</span>
+                </div>
+                <span class="card-original-price">7,300원</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 더보기 버튼 추가 (모바일 노출 / PC 숨김) -->
+        <div class="btn-more-wrap">
+          <a href="javascript:void(0);" class="btn-more">
+            더보기
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#444"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- 3. 새로 나온 반찬 -->
+      <div class="inner-box box-new-product">
+        <div class="section-title">
+          <h2>새로 나온 반찬</h2>
+          <p>따끈따끈한 신메뉴 출시</p>
+        </div>
+
+        <div class="card-list">
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/new_banchan/new1.png"
+                alt="[원더스푼] 두부덮밥"
+              />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
+              <strong class="card-name">[원더스푼] 두부덮밥</strong>
+              <span class="card-desc">아이들도 입맛 없는 날 뚝딱 한 그릇</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">3,500원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/new_banchan/new2.png"
+                alt="[원더스푼] 한돈 순두부 덮밥"
+              />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
+              <strong class="card-name">[원더스푼] 한돈 순두부 덮밥</strong>
+              <span class="card-desc">몽글몽글 부드러운 한돈 순두부 소스</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">3,800원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/new_banchan/new3.png"
+                alt="[원더스푼] 한우 하이라이스 덮밥"
+              />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
+              <strong class="card-name">[원더스푼] 한우 하이라이스 덮밥</strong>
+              <span class="card-desc"
+                >부드럽게 끓여낸 한우 하이라이스 소스</span
+              >
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">4,300원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/new_banchan/new4.png"
+                alt="[원더스푼] 한우 삼색 소보로 덮밥"
+              />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
+              <strong class="card-name"
+                >[원더스푼] 한우 삼색 소보로 덮밥</strong
+              >
+              <span class="card-desc">알록달록 색감까지 맛있는 삼색 덮밥</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">4,800원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 더보기 버튼 추가 (모바일 노출 / PC 숨김) -->
+        <div class="btn-more-wrap">
+          <a href="javascript:void(0);" class="btn-more">
+            더보기
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#444"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- 4. 서브 배너 영역 -->
+      <div class="inner-box box-sub-banner">
+        <div class="sub-banner-item">
+          <div class="sub-banner-text">
+            <span class="sub-banner-title">1588-1234</span>
+            <span class="sub-banner-desc">전화주문 바로가기</span>
+          </div>
+          <img
+            src="./images/icons/tell.png"
+            alt="전화 상담"
+            class="sub-banner-icon"
+          />
+        </div>
+
+        <div class="sub-banner-item" style="background: yellow">
+          <div class="sub-banner-text">
+            <span class="sub-banner-title">우리가족 건강하게</span>
+            <span class="sub-banner-desc">우리아이 영양식단 레벨업</span>
+          </div>
+          <img
+            src="./images/icons/kid.png"
+            alt="우리아이 영양식단"
+            class="sub-banner-icon"
+          />
+        </div>
+
+        <div class="sub-banner-item">
+          <div class="sub-banner-text">
+            <span class="sub-banner-title">프리미엄 온라인 반찬가게</span>
+            <span class="sub-banner-desc">집반찬 연구소의 이야기</span>
+          </div>
+          <img
+            src="./images/icons/food.png"
+            alt="온라인반찬가게"
+            class="sub-banner-icon"
+          />
+        </div>
+      </div>
+
+      <!-- 5. MD 추천 반찬 -->
+      <div class="inner-box box-md-pick">
+        <div class="section-title">
+          <h2>MD 추천 반찬</h2>
+          <p style="margin-bottom: 42px">
+            이번 주 가장 추천하는 제품만 골라드려요.
+          </p>
+        </div>
+        <ul class="md-tab-list">
+          <li class="md-tab-item active">비빔밥</li>
+          <li class="md-tab-item">국 / 찌개 / 탕</li>
+          <li class="md-tab-item">어린이 반찬</li>
+          <li class="md-tab-item">볶음</li>
+          <li class="md-tab-item">무침</li>
+          <li class="md-tab-item">메인요리</li>
+          <li class="md-tab-item">조림</li>
+        </ul>
+        <div class="card-list">
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                class="badge-circle"
+                src="./images/icons/sale3.png"
+                alt="13% 뱃지"
+              />
+              <img src="./images/md_banchan/md5.png" alt="아이들 한우 비빔밥" />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
+              <strong class="card-name">아이들 한우 비빔밥</strong>
+              <span class="card-desc">아이들도 맛있게 먹는 비빔밥 출시!</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-discount">13%</span>
+                  <span class="card-price">9,400원</span>
+                </div>
+                <span class="card-original-price">10,800원</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img src="./images/md_banchan/md6.png" alt="나물 비빔밥" />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags"></div>
+              <strong class="card-name">나물 비빔밥</strong>
+              <span class="card-desc">가심비 가득, 정성 가득 비빔밥</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">10,800원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img src="./images/md_banchan/md7.png" alt="한우 비빔밥" />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-best">인기</span>
+              </div>
+              <strong class="card-name">한우 비빔밥</strong>
+              <span class="card-desc">고기를 더해 더 맛깔스러워진</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">12,800원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img src="./images/md_banchan/md8.png" alt="양념꼬막 비빔밥" />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags"></div>
+              <strong class="card-name">양념꼬막 비빔밥</strong>
+              <span class="card-desc">꼬막이 있꼬막</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">13,800원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 더보기 버튼 추가 (모바일 노출 / PC 숨김) -->
+        <div class="btn-more-wrap">
+          <a href="javascript:void(0);" class="btn-more">
+            더보기
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#444"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </main>
+    <div class="footer-wrapper">
+      <footer class="block-magenta">
+        <div class="footer-left">
+          <div class="cs-heading">
+            고객센터<br />
+            1588-3754<br />
+            <span class="cs-email">zipbanchan@sannamchon.co.kr</span>
+          </div>
+          <div class="cs-hours">
+            평일 08:30~17:30 / 토요일 08:30~12:00<br />
+            점심시간 12:00~13:00<br />
+            일요일, 공휴일은 휴무입니다.
+          </div>
+        </div>
+        <div class="footer-right">
+          <div class="company-title">집반찬연구소</div>
+          <div class="footer-company-info">
+            인천광역시 서구 가석로 26(가좌동)
+            집반찬연구소&nbsp;&nbsp;&nbsp;&nbsp;대표자 : 박종철<br />
+            사업자등록번호 : 121-86-17743&nbsp;&nbsp;&nbsp;&nbsp;통신판매업
+            신고번호 : 제 2023-인천서구-3834
+            호&nbsp;&nbsp;&nbsp;&nbsp;개인정보보호책임자 : 정문채<br />
+            제휴 문의 : zipbanchan@sannamchon.co.kr
+          </div>
+          <div class="footer-bottom-info">
+            집반찬연구소 소개&nbsp;&nbsp;이용약관&nbsp;&nbsp;개인정보처리방침<br />
+            Copyright ⓒ SANNAMCHON CORP. All Rights Reserved.
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
