@@ -799,13 +799,9 @@
           justify-content: center;
         }
         .icon-search {
-          width: 14px !important;
-          height: 14px !important;
-          object-fit: contain !important;
-          display: block !important;
-          opacity: 1 !important;
-          overflow: visible !important;
-          flex-shrink: 0 !important;
+          width: 24px !important;
+          height: 24px !important;
+          filter: none;
         }
 
         /* 2. 메인 배너 유동성 확보 */
@@ -1007,23 +1003,23 @@
           min-width: 0;
           width: 100%;
           height: auto;
-          padding: 8px 6px;
+          padding: 8px 5px;
           margin: 0;
           flex-direction: row;
           justify-content: space-between;
           align-items: center;
           text-align: left;
           border-radius: 8px;
-          gap: 4px;
+          gap: 3px;
           overflow: hidden;
         }
         .sub-banner-text {
           align-items: flex-start;
           gap: 1px;
-          width: calc(100% - 20px);
+          width: calc(100% - 18px);
           min-width: 0;
           flex: 1 1 auto;
-          padding-right: 2px;
+          padding-right: 1px;
         }
         .sub-banner-title {
           font-size: 7px;
@@ -1050,12 +1046,20 @@
           word-break: keep-all;
         }
         .sub-banner-icon {
-          width: 18px;
-          height: 18px;
-          padding: 3px;
+          width: 16px;
+          height: 16px;
+          padding: 2px;
           margin-top: 0;
           flex-shrink: 0;
           border-radius: 2px;
+        }
+        .box-sub-banner .sub-banner-item:nth-child(2) .sub-banner-title {
+          font-size: 6px;
+          letter-spacing: -0.4px;
+        }
+        .box-sub-banner .sub-banner-item:nth-child(2) .sub-banner-desc {
+          font-size: 7px;
+          letter-spacing: -0.8px;
         }
 
         /* 7. MD 추천 가로 스와이프 탭 메뉴 */
