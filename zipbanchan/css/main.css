@@ -1,0 +1,449 @@
+@charset "utf-8";
+
+.inner-box {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 1) 반찬 박스 영역 레이아웃 구조화 */
+.box-side-dish {
+  min-height: 1256px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 16px 16px 16px;
+}
+
+/* 반찬 박스 내부 타이틀 데이터 */
+.section-title {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.section-title h2 {
+  margin: 50px 0 0 0;
+  font-size: 28px;
+  font-weight: 600;
+  color: #111;
+}
+.section-title p {
+  margin: 16px 0 41px 0;
+  font-size: 15px;
+  color: #444;
+}
+
+/* 카드 4열 Grid 레이아웃 데이터 */
+.card-list {
+  display: grid;
+  grid-template-columns: repeat(4, 280px);
+  gap: 16px; /* gap 16px 데이터 유지 */
+  width: 100%;
+}
+
+/* 개별 카드 스타일 데이터 */
+.card-item {
+  width: 280px;
+  height: 532px; /* 세로 532px 데이터 반영 */
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-image {
+  position: relative;
+  width: 100%;
+  height: 370px; /* 높이 370px 데이터 반영 (기존 380px에서 변경) */
+  flex-shrink: 0;
+  background-color: #f0f0f0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-image img.badge-circle {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: contain;
+  z-index: 10;
+}
+
+.card-image img.btn-cart {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  object-fit: contain;
+  z-index: 10;
+}
+
+.card-info {
+  padding: 16px 16px 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* 새로 나온 반찬 영역 card-info 내부 줄간격 16px 데이터 반영 */
+.box-new-product .card-info {
+  width: 280px; /* 가로 280px 데이터 반영 */
+  height: 162px; /* 세로 162px 데이터 반영 */
+  box-sizing: border-box; /* 패딩 포함 크기 유지 */
+  gap: 16px;
+}
+
+/* MD 추천 반찬 영역 card-info 상하 패딩 및 줄간격 데이터 반영 */
+.box-md-pick .card-info {
+  width: 280px;
+  height: 162px;
+  box-sizing: border-box;
+  padding: 16px; /* 상하 패딩 16px (전체 16px) 데이터 반영 */
+  gap: 8px; /* 줄간격 8px 데이터 반영 */
+}
+
+/* card-list 패딩 데이터 반영 수정 (중복 패딩 제거) */
+.box-new-product .card-list,
+.box-md-pick .card-list {
+  padding: 0 0 16px 0; /* 좌, 우 중복 패딩 제거하여 상위 컨테이너와 정렬 일치 */
+  box-sizing: border-box;
+}
+
+/* 기존 margin 간섭 방지 초기화 */
+.box-new-product .card-desc,
+.box-md-pick .card-desc {
+  margin: 0;
+}
+
+/* card tag 라인 하단 간격 4px 강제 적용 (부모 flex gap 데이터 수치 상쇄) */
+.box-new-product .card-name {
+  margin: -12px 0 0 0; /* 부모 gap 16px - 12px = 4px 간격 렌더링 */
+}
+.box-md-pick .card-name {
+  margin: -4px 0 0 0; /* 부모 gap 8px - 4px = 4px 간격 렌더링 */
+}
+
+.card-tags {
+  display: flex;
+  gap: 4px;
+}
+
+.tag-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  line-height: 1;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 4px 6px;
+  border-radius: 2px;
+}
+
+.tag-new {
+  color: #e93f33;
+  background-color: #fbeae9;
+}
+.tag-mild {
+  width: 50px;
+  height: 24px;
+  padding: 2px 4px;
+  font-size: 13px;
+  font-weight: bold;
+  color: #f39f1a;
+  background-color: #fdf0dc;
+  border-radius: 4px;
+}
+.tag-best {
+  width: 31px;
+  height: 20px;
+  padding: 2px 4px;
+  font-size: 13px;
+  font-weight: bold;
+  color: #316f35;
+  background-color: #dbe6dc;
+  border-radius: 4px;
+}
+/* MD 추천 반찬 영역 등 2글자 주황색 태그를 위한 신규 데이터 클래스 추가 */
+.tag-sale {
+  width: 31px;
+  height: 20px;
+  padding: 2px 4px;
+  font-size: 13px;
+  font-weight: bold;
+  color: #f39f1a;
+  background-color: #fdf0dc;
+  border-radius: 4px;
+}
+
+.card-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: #222;
+  margin: 4px 0 0 0;
+  line-height: 1;
+}
+.card-desc {
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 8px;
+  line-height: 1;
+}
+
+.card-price-wrap {
+  display: flex;
+  flex-direction: column;
+}
+.card-price-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.card-discount {
+  font-size: 16px;
+  font-weight: 500;
+  color: #e93f33;
+}
+.card-price {
+  font-size: 16px;
+  font-weight: 600;
+  color: #222;
+}
+
+.card-original-price {
+  font-size: 13px;
+  color: #b5b5b5;
+  text-decoration: line-through;
+  margin-top: 4px;
+}
+
+.box-regular-sub {
+  width: 1200px;
+  min-height: 714px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 0 16px;
+}
+
+/* 2) 새로 나온 반찬 영역 시안 반영 */
+.box-new-product {
+  min-height: 1256px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 16px 16px 16px; /* 기존 집밥 한끼와 패딩 동기화 */
+}
+
+/* 3) 서브 배너 영역 데이터 교정 (치우침 현상 해결) */
+.box-sub-banner {
+  width: 1200px;
+  height: 200px;
+  background-color: transparent;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 16px; /* 기존 0에서 위아래 박스와 동일한 좌우 16px 패딩 데이터 추가 */
+  box-sizing: border-box;
+}
+.sub-banner-item {
+  flex: 1; /* 가용공간(1168px) 내에서 3등분(약 378.66px)되도록 정밀 분할 데이터 적용 */
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  border: 1px solid #e5e5e5;
+  border-radius: 16px;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  cursor: pointer;
+  background: yellowgreen;
+}
+
+.sub-banner-text {
+  display: flex;
+  flex-direction: column;
+}
+.sub-banner-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 16px;
+  line-height: 1;
+}
+.sub-banner-desc {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333333;
+  line-height: 1;
+}
+.sub-banner-icon {
+  width: 48px;
+  height: 48px;
+  background: #0d5611;
+  padding: 9px;
+  box-sizing: border-box;
+  object-fit: contain;
+}
+
+/* 4) MD 추천 반찬 영역 시안 반영 */
+.box-md-pick {
+  min-height: 1256px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 16px 16px 16px; /* 새로 나온 반찬과 동일한 패딩 데이터 반영 */
+}
+
+/* MD 추천 반찬 탭 데이터 추가 */
+.md-tab-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 42px 0; /* 상품 이미지 카드와의 간격 42px 데이터 반영 */
+  display: flex;
+  gap: 16px; /* gap 16px 데이터 반영 */
+  justify-content: center;
+  align-items: center; /* 세로 53px 지정에 따른 수직 중앙 정렬 데이터 추가 */
+}
+.md-tab-item {
+  padding: 16px 24px; /* 상하 16px, 좌우 24px 데이터 반영 */
+  border-radius: 20px;
+  background-color: #ffffff;
+  border: 1px solid #e5e5e5;
+  font-size: 14px;
+  font-weight: 600;
+  color: #666666;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease; /* Hover 애니메이션 추가 */
+}
+.md-tab-item.active {
+  background-color: #0d5611; /* 요청된 #0D5611 데이터 반영 */
+  border-color: #0d5611; /* 요청된 #0D5611 데이터 반영 */
+  color: #ffffff;
+}
+
+/* 탭 그룹 전체에 마우스 오버 시 기존 active(비빔밥) 탭의 색상 비활성화 */
+.md-tab-list:hover .md-tab-item.active {
+  background-color: #ffffff;
+  border-color: #e5e5e5;
+  color: #666666;
+}
+
+/* 마우스가 실제로 올라간 개별 탭에 active(비빔밥) 색상 활성화 */
+.md-tab-list:hover .md-tab-item:hover {
+  background-color: #0d5611;
+  border-color: #0d5611;
+  color: #ffffff;
+}
+
+.box-regular-sub {
+  width: 1200px;
+  min-height: 714px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 0 16px;
+  overflow: visible;
+}
+
+.box-regular-sub .section-title {
+  width: 100%;
+  text-align: center;
+}
+
+.box-regular-sub .card-slider {
+  position: relative;
+  width: 1200px;
+  overflow: visible;
+}
+
+.box-regular-sub .card-slider-viewport {
+  width: 1200px;
+  overflow: hidden;
+}
+
+.box-regular-sub .card-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  gap: 16px;
+  width: max-content;
+  padding: 0;
+  margin: 0;
+  transition: transform 0.4s ease;
+  will-change: transform;
+}
+
+.box-regular-sub .card-item {
+  flex: 0 0 288px;
+  width: 288px;
+  max-width: 288px;
+}
+
+.box-regular-sub .card-image {
+  position: relative;
+  width: 288px;
+  height: 370px;
+  overflow: hidden;
+}
+
+.box-regular-sub .card-slider-btn {
+  position: absolute;
+  top: 185px;
+  transform: translateY(-50%);
+  display: block;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  z-index: 30;
+}
+
+.box-regular-sub .card-slider-btn.prev {
+  left: -22px;
+}
+
+.box-regular-sub .card-slider-btn.next {
+  right: -22px;
+}
+
+.box-regular-sub .card-slider-btn::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid #666;
+  border-right: 2px solid #666;
+}
+
+.box-regular-sub .card-slider-btn.prev::before {
+  transform: translate(-35%, -50%) rotate(-135deg);
+}
+
+.box-regular-sub .card-slider-btn.next::before {
+  transform: translate(-65%, -50%) rotate(45deg);
+}
