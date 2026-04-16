@@ -777,19 +777,23 @@
           grid-row: 2 / 3;
           width: 100%;
           height: 34px;
-          border-radius: 4px; /* 시안 둥근 모서리 반영 */
+          border-radius: 4px;
           border: 1px solid #e0e0e0;
           background-color: #ffffff;
           padding-left: 8px;
-          padding-right: 3px; /* 녹색 버튼 우측 여백 */
+          padding-right: 3px;
           align-self: center;
+          display: flex;
+          align-items: center;
         }
         .search-input {
+          flex: 1 1 auto;
+          min-width: 0;
           font-size: 12px;
           background-color: transparent;
         }
-        /* 요청사항 반영: 녹색 둥근 사각형 버튼 안의 PC 돋보기 아이콘(24px) 그대로 사용 */
         .search-btn {
+          flex: 0 0 32px;
           width: 32px;
           height: 28px;
           background-color: #0d5611;
@@ -797,11 +801,15 @@
           display: flex;
           align-items: center;
           justify-content: center;
+          overflow: hidden;
         }
         .icon-search {
-          width: 24px !important;
-          height: 24px !important;
-          filter: none;
+          width: 16px !important;
+          height: 16px !important;
+          display: block !important;
+          object-fit: contain !important;
+          flex-shrink: 0 !important;
+          filter: none !important;
         }
 
         /* 2. 메인 배너 유동성 확보 */
@@ -1053,13 +1061,26 @@
           flex-shrink: 0;
           border-radius: 2px;
         }
+        .box-sub-banner .sub-banner-item:nth-child(2) {
+          padding: 8px 4px 8px 6px;
+          gap: 2px;
+        }
+        .box-sub-banner .sub-banner-item:nth-child(2) .sub-banner-text {
+          width: calc(100% - 15px);
+          padding-right: 0;
+        }
         .box-sub-banner .sub-banner-item:nth-child(2) .sub-banner-title {
-          font-size: 6px;
-          letter-spacing: -0.4px;
+          font-size: 7px;
+          letter-spacing: -0.35px;
         }
         .box-sub-banner .sub-banner-item:nth-child(2) .sub-banner-desc {
-          font-size: 7px;
-          letter-spacing: -0.8px;
+          font-size: 8px;
+          letter-spacing: -0.55px;
+        }
+        .box-sub-banner .sub-banner-item:nth-child(2) .sub-banner-icon {
+          width: 14px;
+          height: 14px;
+          padding: 2px;
         }
 
         /* 7. MD 추천 가로 스와이프 탭 메뉴 */
