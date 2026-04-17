@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>html과 javascript와 연동</title>
+  </head>
+  <body>
+    <ul>
+      <li>data1</li>
+      <li>data2</li>
+      <li>data3</li>
+      <li>data4</li>
+      <li>data5</li>
+      <li>data6</li>
+      <li>data7</li>
+      <li>data8</li>
+      <li>data9</li>
+      <li>data10</li>
+      <li>data11</li>
+      <li>data12</li>
+      <li>data13</li>
+      <li>data14</li>
+      <li>data15</li>
+      <li>data16</li>
+      <li>data17</li>
+      <li>data18</li>
+      <li>data19</li>
+      <li>data20</li>
+    </ul>
+    <hr />
+    <!-- 자바스크립트를 사용하여 반복 -->
+    <script>
+      let output = "<ul>";
+      for (let i = 1; i <= 100; i++) {
+        output = output + "<li>" + "data" + i + "</li>";
+      }
+      output = output + "</ul>";
+      document.write(output);
+    </script>
+  </body>
+</html>
