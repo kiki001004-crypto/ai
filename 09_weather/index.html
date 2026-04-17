@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>전 세계 날씨 앱</title>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="top-header">
+        <div class="title-wrap">
+          <h1>전 세계 날씨</h1>
+          <p>현재 위치 + 도시 검색으로 전세계 날씨 조회</p>
+        </div>
+        <button type="button" class="location-btn" id="locationBtn">
+          내위치
+        </button>
+      </header>
+
+      <section class="search-panel">
+        <form class="search-form" id="searchForm">
+          <div class="search-input-wrap">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle
+                cx="11"
+                cy="11"
+                r="7"
+                stroke="white"
+                stroke-width="2"
+              ></circle>
+              <path
+                d="M20 20L16.65 16.65"
+                stroke="white"
+                stroke-width="2"
+                stroke-linecap="round"
+              ></path>
+            </svg>
+            <input
+              type="text"
+              class="search-input"
+              id="cityInput"
+              placeholder="도시명을 입력하세요(예:seoul,tokyo)"
+              autocomplete="off"
+            />
+          </div>
+          <button type="submit" class="search-btn">검색</button>
+        </form>
+      </section>
+
+      <section class="weather-card" id="weatherCard">
+        <div class="weather-head">
+          <div>
+            <h2 class="city-name" id="cityName">도시명</h2>
+            <p class="weather-desc" id="weatherDesc">
+              날씨 정보를 불러와 주세요.
+            </p>
+          </div>
+          <div class="weather-temp" id="temperature">15°</div>
+        </div>
+
+        <div class="info-grid">
+          <article class="info-box">
+            <p class="info-label">풍속</p>
+            <p class="info-value"><strong id="windSpeed">6.69</strong> m/s</p>
+          </article>
+
+          <article class="info-box">
+            <p class="info-label">습도</p>
+            <p class="info-value"><strong id="humidity">100</strong> %</p>
+          </article>
+
+          <article class="info-box">
+            <p class="info-label">체감기온</p>
+            <p class="info-value"><strong id="feelsLike">15</strong> °C</p>
+          </article>
+
+          <article class="info-box">
+            <p class="info-label">오존(O₃)</p>
+            <p class="info-value"><strong id="ozone">111</strong> ug/m²</p>
+          </article>
+        </div>
+
+        <p class="message" id="message">
+          도시를 검색하면 날씨 정보가 표시됩니다.
+        </p>
+      </section>
+    </main>
+
+    <script src="./script/script.js"></script>
+  </body>
+</html>
