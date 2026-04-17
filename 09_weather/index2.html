@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>제주 자전거길 날씨 앱</title>
+    <link rel="stylesheet" href="./css/style2.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="hero">
+        <div class="top-actions">
+          <button class="icon-btn" id="openSearchBtn" aria-label="검색 열기">
+            <span class="hamburger" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
+          </button>
+        </div>
+
+        <div class="hero-copy">
+          <h1><span id="userName">이지연</span>님 안녕하세요.</h1>
+          <p>즐거운 자전거 여행되세요</p>
+        </div>
+      </header>
+
+      <main>
+        <section class="section">
+          <div class="stats">
+            <article class="card weather-card">
+              <div class="weather-meta">
+                <strong id="weatherTitle">맑음</strong>
+                <div class="temp"><span id="tempValue">20</span>°</div>
+              </div>
+              <div
+                class="weather-icon partly"
+                id="weatherIcon"
+                aria-hidden="true"
+              >
+                <div class="sun"></div>
+                <div class="cloud"></div>
+              </div>
+            </article>
+
+            <div class="mini-column">
+              <article class="card mini-card">
+                <div class="label">완주코스</div>
+                <div class="value">
+                  <span id="courseNo">1</span><small>/10</small>
+                </div>
+              </article>
+              <article class="card mini-card">
+                <div class="label">이동거리</div>
+                <div class="value">
+                  <span id="distanceValue">15</span><small>km</small>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <h2 class="title">검색한 자전거길 정보</h2>
+          <article class="card route-card">
+            <h3 class="route-name" id="routeName">
+              제주 환상 자전거길 · 용두암 ~ 애월
+            </h3>
+            <p class="route-desc" id="routeDesc">
+              해안 절경을 따라 달리는 초급~중급 코스입니다. 바람 영향을 많이
+              받는 구간이라 출발 전 풍속 확인이 중요합니다.
+            </p>
+            <p class="route-extra" id="routeExtra">
+              추천 시간: 오전 8시 ~ 11시 · 난이도: 보통 · 보급 포인트: 3곳
+            </p>
+            <div class="data-badge" id="dataBadge">데이터: 샘플 모드</div>
+          </article>
+
+          <h2 class="title">제주도 자전거 여행정보 가이드</h2>
+          <div class="guide-slider-wrap">
+            <div class="guide-slider" id="guideSlider">
+              <div class="guide-track" id="guideTrack">
+                <div class="guide-item">
+                  <div class="guide-thumb">
+                    <img
+                      src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=700&q=80"
+                      alt="자전거길 숲길"
+                    />
+                  </div>
+                  <div class="guide-caption">숲길 코스 추천</div>
+                </div>
+                <div class="guide-item">
+                  <div class="guide-thumb">
+                    <img
+                      src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=700&q=80"
+                      alt="폭포 풍경"
+                    />
+                  </div>
+                  <div class="guide-caption">중간 쉼터 명소</div>
+                </div>
+                <div class="guide-item">
+                  <div class="guide-thumb">
+                    <img
+                      src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=700&q=80"
+                      alt="해변 풍경"
+                    />
+                  </div>
+                  <div class="guide-caption">해안 일몰 포인트</div>
+                </div>
+                <div class="guide-item">
+                  <div class="guide-thumb">
+                    <img
+                      src="https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=700&q=80"
+                      alt="제주 바다"
+                    />
+                  </div>
+                  <div class="guide-caption">바람 강한 해안 구간</div>
+                </div>
+                <div class="guide-item">
+                  <div class="guide-thumb">
+                    <img
+                      src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=700&q=80"
+                      alt="오름 풍경"
+                    />
+                  </div>
+                  <div class="guide-caption">오름 인근 업힐 코스</div>
+                </div>
+                <div class="guide-item">
+                  <div class="guide-thumb">
+                    <img
+                      src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=700&q=80"
+                      alt="휴식 풍경"
+                    />
+                  </div>
+                  <div class="guide-caption">휴식 좋은 뷰포인트</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <aside class="search-panel" id="searchPanel" aria-hidden="true">
+        <div class="search-drawer">
+          <div class="drawer-top">
+            <h2>코스 검색</h2>
+            <button
+              class="close-btn"
+              id="closeSearchBtn"
+              aria-label="검색 닫기"
+            >
+              ×
+            </button>
+          </div>
+
+          <form class="search-form" id="searchForm">
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="예: 애월, 성산, 서귀포, 제주"
+            />
+            <button type="submit">검색</button>
+          </form>
+
+          <p class="hint">
+            지역 또는 코스를 검색하면 관련 자전거길 목록이 표시됩니다. 목록을
+            누르면 메인 카드 정보가 변경됩니다.
+          </p>
+
+          <div class="quick-tags">
+            <button type="button" data-keyword="제주">제주</button>
+            <button type="button" data-keyword="애월">애월</button>
+            <button type="button" data-keyword="성산">성산</button>
+            <button type="button" data-keyword="서귀포">서귀포</button>
+            <button type="button" data-keyword="한림">한림</button>
+            <button type="button" data-keyword="표선">표선</button>
+          </div>
+
+          <div class="course-result-box">
+            <h3 class="drawer-subtitle">검색 결과</h3>
+            <div class="course-list" id="courseList"></div>
+          </div>
+        </div>
+      </aside>
+
+      <nav class="bottom-nav">
+        <button class="nav-item active" type="button" id="homeNavBtn">
+          <span class="nav-icon">⌂</span><span>홈</span>
+        </button>
+        <button class="nav-item" type="button">
+          <span class="nav-icon">▣</span><span>커뮤니티</span>
+        </button>
+        <button class="nav-item" type="button" id="courseNavBtn">
+          <span class="nav-icon">⌖</span><span>코스</span>
+        </button>
+        <button class="nav-item" type="button">
+          <span class="nav-icon">♛</span><span>뱃징</span>
+        </button>
+        <button class="nav-item" type="button">
+          <span class="nav-icon">●</span><span>마이</span>
+        </button>
+      </nav>
+
+      <div class="home-indicator"></div>
+    </div>
+
+    <script src="./script/script2.js"></script>
+  </body>
+</html>
