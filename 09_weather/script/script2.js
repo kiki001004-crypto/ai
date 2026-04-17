@@ -1,5 +1,7 @@
 const searchPanel = document.getElementById("searchPanel");
 const openSearchBtn = document.getElementById("openSearchBtn");
+const locationWeatherBtn = document.getElementById("locationWeatherBtn");
+const locationWeatherText = document.getElementById("locationWeatherText");
 const closeSearchBtn = document.getElementById("closeSearchBtn");
 const homeNavBtn = document.getElementById("homeNavBtn");
 const courseNavBtn = document.getElementById("courseNavBtn");
@@ -138,6 +140,7 @@ function clearSearchInput() {
 }
 
 openSearchBtn.addEventListener("click", openSearch);
+locationWeatherBtn.addEventListener("click", applyCurrentLocationWeather);
 courseNavBtn.addEventListener("click", openSearch);
 homeNavBtn.addEventListener("click", () => setActiveNav(homeNavBtn));
 closeSearchBtn.addEventListener("click", () => closeSearch());
@@ -265,13 +268,11 @@ function buildPublicWeatherURL(nx, ny) {
 
 async function fetchPublicWeather(nx, ny) {
   const url = buildPublicWeatherURL(nx, ny);
-
   if (!url) {
     return null;
   }
 
   const response = await fetch(url);
-
   if (!response.ok) {
     throw new Error(`날씨 API 요청 실패: ${response.status}`);
   }
@@ -298,7 +299,6 @@ async function fetchPublicWeather(nx, ny) {
 async function getWeatherData(course) {
   try {
     const liveWeather = await fetchPublicWeather(course.nx, course.ny);
-
     if (liveWeather) {
       return {
         weather: liveWeather,
@@ -328,6 +328,101 @@ async function applyCourseData(course) {
   updateWeatherIcon(weatherData.weather.title);
 }
 
+function convertToGrid(lat, lon) {
+  const RE = 6371.00877;
+  const GRID = 5.0;
+  const SLAT1 = 30.0;
+  const SLAT2 = 60.0;
+  const OLON = 126.0;
+  const OLAT = 38.0;
+  const XO = 43;
+  const YO = 136;
+
+  const DEGRAD = Math.PI / 180.0;
+  const re = RE / GRID;
+  const slat1 = SLAT1 * DEGRAD;
+  const slat2 = SLAT2 * DEGRAD;
+  const olon = OLON * DEGRAD;
+  const olat = OLAT * DEGRAD;
+
+  let sn =
+    Math.tan(Math.PI * 0.25 + slat2 * 0.5) /
+    Math.tan(Math.PI * 0.25 + slat1 * 0.5);
+  sn = Math.log(Math.cos(slat1) / Math.cos(slat2)) / Math.log(sn);
+  let sf = Math.tan(Math.PI * 0.25 + slat1 * 0.5);
+  sf = (Math.pow(sf, sn) * Math.cos(slat1)) / sn;
+  let ro = Math.tan(Math.PI * 0.25 + olat * 0.5);
+  ro = (re * sf) / Math.pow(ro, sn);
+  let ra = Math.tan(Math.PI * 0.25 + lat * DEGRAD * 0.5);
+  ra = (re * sf) / Math.pow(ra, sn);
+  let theta = lon * DEGRAD - olon;
+
+  if (theta > Math.PI) theta -= 2.0 * Math.PI;
+  if (theta < -Math.PI) theta += 2.0 * Math.PI;
+  theta *= sn;
+
+  return {
+    nx: Math.floor(ra * Math.sin(theta) + XO + 0.5),
+    ny: Math.floor(ro - ra * Math.cos(theta) + YO + 0.5),
+  };
+}
+
+function findNearestCourseByGrid(nx, ny) {
+  let nearest = courseDB[0];
+  let minGap = Number.POSITIVE_INFINITY;
+
+  courseDB.forEach((course) => {
+    const gap = Math.abs(course.nx - nx) + Math.abs(course.ny - ny);
+    if (gap < minGap) {
+      minGap = gap;
+      nearest = course;
+    }
+  });
+
+  return nearest;
+}
+
+async function applyCurrentLocationWeather() {
+  if (!navigator.geolocation) {
+    locationWeatherText.textContent = "위치 지원 안 됨";
+    return;
+  }
+
+  locationWeatherText.textContent = "내 위치 확인 중...";
+
+  navigator.geolocation.getCurrentPosition(
+    async (position) => {
+      try {
+        const { latitude, longitude } = position.coords;
+        const grid = convertToGrid(latitude, longitude);
+        const nearestCourse = findNearestCourseByGrid(grid.nx, grid.ny);
+        const liveWeather = await fetchPublicWeather(grid.nx, grid.ny);
+        const weather = liveWeather || nearestCourse.weather;
+
+        weatherTitle.textContent = weather.title;
+        tempValue.textContent = weather.temp;
+        updateWeatherIcon(weather.title);
+        dataBadge.textContent = liveWeather
+          ? "데이터: 내 위치 실시간 연동"
+          : "데이터: 내 위치 샘플 모드";
+        locationWeatherText.textContent = `내 위치 · ${weather.title} ${weather.temp}°`;
+      } catch (error) {
+        console.warn("내 위치 날씨 호출 실패:", error);
+        locationWeatherText.textContent = "내 위치 날씨 불러오기";
+      }
+    },
+    () => {
+      locationWeatherText.textContent = "위치 권한 필요";
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 8000,
+      maximumAge: 300000,
+    },
+  );
+}
+
 buildInfiniteSlider();
 renderCourseList(courseDB.slice(0, 4));
 updateWeatherIcon(weatherTitle.textContent);
+applyCurrentLocationWeather();
