@@ -710,6 +710,14 @@
             <button class="secondary-btn" id="scroll-review-btn" type="button">
               리뷰 작성
             </button>
+            <a
+              class="secondary-btn"
+              id="route-btn"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              >길찾기</a
+            >
             <button
               class="icon-btn favorite"
               id="detail-favorite-btn"
@@ -862,6 +870,7 @@
         itemsPerPage: 10,
         map: null,
         marker: null,
+        reviewStore: loadReviews(),
       };
 
       const el = {
@@ -897,6 +906,7 @@
         reviewList: document.getElementById("review-list"),
         detailRatingStars: document.getElementById("detail-rating-stars"),
         detailRatingSummary: document.getElementById("detail-rating-summary"),
+        routeBtn: document.getElementById("route-btn"),
       };
 
       document.addEventListener("DOMContentLoaded", init);
@@ -931,15 +941,23 @@
           if (state.selectedItem) toggleFavorite(state.selectedItem.UC_SEQ);
         });
 
-        el.scrollReviewBtn.addEventListener("click", () => {
-          el.reviewSection.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
+        if (el.scrollReviewBtn) {
+          el.scrollReviewBtn.addEventListener("click", () => {
+            el.reviewSection.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+            setTimeout(() => el.reviewAuthor.focus(), 200);
           });
-          setTimeout(() => el.reviewAuthor.focus(), 200);
-        });
+        }
 
-        el.reviewForm.addEventListener("submit", handleReviewSubmit);
+        if (el.routeBtn) {
+          el.routeBtn.addEventListener("click", handleRouteClick);
+        }
+
+        if (el.reviewForm) {
+          el.reviewForm.addEventListener("submit", handleReviewSubmit);
+        }
 
         el.navButtons.forEach((btn) => {
           btn.addEventListener("click", () => setTab(btn.dataset.tab));
@@ -958,15 +976,18 @@
           const districts = Array.from(
             new Set(state.allItems.map((item) => item.GUGUN_NM || "기타")),
           ).sort((a, b) => a.localeCompare(b, "ko"));
+
           renderDistricts(districts);
           applyFilters();
         } catch (error) {
           console.error(error);
           state.allItems = normalizeItems(getMockItems());
           state.currentPage = 1;
+
           const districts = Array.from(
             new Set(state.allItems.map((item) => item.GUGUN_NM || "기타")),
           ).sort((a, b) => a.localeCompare(b, "ko"));
+
           renderDistricts(districts);
           applyFilters();
           el.statusText.textContent =
@@ -995,6 +1016,7 @@
           data && data.getFoodKr && Array.isArray(data.getFoodKr.item)
             ? data.getFoodKr.item
             : null;
+
         if (!items) {
           throw new Error("예상한 응답 형식이 아닙니다.");
         }
@@ -1014,7 +1036,6 @@
           USAGE_DAY_WEEK_AND_TIME:
             item.USAGE_DAY_WEEK_AND_TIME || "운영시간 정보 없음",
           MAIN_IMG_NORMAL: normalizeImageUrl(item.MAIN_IMG_NORMAL),
-          MAIN_IMG_THUMB: normalizeImageUrl(item.MAIN_IMG_THUMB),
           LAT: Number(item.LAT) || 35.1796,
           LNG: Number(item.LNG) || 129.0756,
           HOMEPAGE_URL: normalizeHomepage(item.HOMEPAGE_URL),
@@ -1037,18 +1058,19 @@
       }
 
       function renderDistricts(districts) {
-        const all = ["전체"].concat(districts);
-        el.districtToolbar.innerHTML = all
-          .map(
-            (name) =>
+        const list = ["전체"].concat(districts);
+        el.districtToolbar.innerHTML = list
+          .map((name) => {
+            return (
               '<button class="chip ' +
               (state.selectedDistrict === name ? "active" : "") +
               '" data-district="' +
               escapeHtml(name) +
               '">' +
               escapeHtml(name) +
-              "</button>",
-          )
+              "</button>"
+            );
+          })
           .join("");
 
         el.districtToolbar.querySelectorAll(".chip").forEach((button) => {
@@ -1078,8 +1100,8 @@
         }
 
         if (keyword) {
-          source = source.filter((item) =>
-            [
+          source = source.filter((item) => {
+            return [
               item.MAIN_TITLE,
               item.ADDR1,
               item.RPRSNTV_MENU,
@@ -1088,8 +1110,8 @@
             ]
               .join(" ")
               .toLowerCase()
-              .includes(keyword),
-          );
+              .includes(keyword);
+          });
         }
 
         state.filteredItems = source;
@@ -1146,16 +1168,20 @@
               "</p>" +
               "</div>" +
               '<div class="card-actions">' +
-              '<button class="mini-icon view-detail" title="상세보기" aria-label="상세보기" data-id="' +
+              '<button class="mini-icon view-detail" type="button" title="상세보기" aria-label="상세보기" data-id="' +
               escapeHtml(item.UC_SEQ) +
-              '"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg></button>' +
+              '">' +
+              '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>' +
+              "</button>" +
               '<button class="mini-icon favorite ' +
               (isFavorite ? "active" : "") +
-              '" title="즐겨찾기" aria-label="즐겨찾기" data-id="' +
+              '" type="button" title="즐겨찾기" aria-label="즐겨찾기" data-id="' +
               escapeHtml(item.UC_SEQ) +
-              '"><svg width="24" height="24" viewBox="0 0 24 24" fill="' +
+              '">' +
+              '<svg width="24" height="24" viewBox="0 0 24 24" fill="' +
               (isFavorite ? "currentColor" : "none") +
-              '" stroke="currentColor" stroke-width="2"><path d="m12 21-1.45-1.32C5.4 15.02 2 11.93 2 8.14 2 5.05 4.42 2.75 7.4 2.75c1.74 0 3.41.81 4.6 2.09 1.19-1.28 2.86-2.09 4.6-2.09 2.98 0 5.4 2.3 5.4 5.39 0 3.79-3.4 6.88-8.55 11.54z"/></svg></button>' +
+              '" stroke="currentColor" stroke-width="2"><path d="m12 21-1.45-1.32C5.4 15.02 2 11.93 2 8.14 2 5.05 4.42 2.75 7.4 2.75c1.74 0 3.41.81 4.6 2.09 1.19-1.28 2.86-2.09 4.6-2.09 2.98 0 5.4 2.3 5.4 5.39 0 3.79-3.4 6.88-8.55 11.54z"></path></svg>' +
+              "</button>" +
               "</div>" +
               "</article>"
             );
@@ -1202,7 +1228,7 @@
         const html = [];
 
         html.push(
-          '<button class="page-btn" data-page="prev" ' +
+          '<button class="page-btn" type="button" data-page="prev" ' +
             (state.currentPage === 1 ? "disabled" : "") +
             ">‹</button>",
         );
@@ -1210,7 +1236,7 @@
           html.push(
             '<button class="page-btn ' +
               (page === state.currentPage ? "active" : "") +
-              '" data-page="' +
+              '" type="button" data-page="' +
               page +
               '">' +
               page +
@@ -1218,7 +1244,7 @@
           );
         });
         html.push(
-          '<button class="page-btn" data-page="next" ' +
+          '<button class="page-btn" type="button" data-page="next" ' +
             (state.currentPage === totalPages ? "disabled" : "") +
             ">›</button>",
         );
@@ -1234,6 +1260,7 @@
             else if (!Number.isNaN(Number(action)))
               state.currentPage = Number(action);
             else return;
+
             applyFilters();
             window.scrollTo({ top: 0, behavior: "smooth" });
           });
@@ -1242,14 +1269,17 @@
 
       function getVisiblePages(totalPages, currentPage) {
         const windowSize = 5;
-        if (totalPages <= windowSize)
+        if (totalPages <= windowSize) {
           return Array.from({ length: totalPages }, (_, i) => i + 1);
+        }
+
         let start = Math.max(1, currentPage - 2);
         let end = start + windowSize - 1;
         if (end > totalPages) {
           end = totalPages;
           start = end - windowSize + 1;
         }
+
         return Array.from({ length: end - start + 1 }, (_, i) => start + i);
       }
 
@@ -1290,6 +1320,7 @@
         el.detailImage.onerror = () => {
           el.detailImage.src = CONFIG.FALLBACK_IMAGE;
         };
+
         el.detailName.textContent = item.MAIN_TITLE;
         el.detailAddress.textContent = item.ADDR1;
         el.detailDesc.textContent = cleanText(item.ITEMCNTNTS);
@@ -1305,10 +1336,16 @@
           el.homepageSection.style.display = "none";
         }
 
+        if (el.routeBtn) {
+          el.routeBtn.href = buildKakaoMapRouteUrl(item);
+        }
+
         updateDetailFavoriteButton();
         renderReviewSection(item.UC_SEQ);
+
         el.listScreen.classList.remove("active");
         el.detailScreen.classList.add("active");
+
         initKakaoMap(item);
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
@@ -1332,6 +1369,7 @@
         const next = new Set(state.favorites);
         if (next.has(id)) next.delete(id);
         else next.add(id);
+
         state.favorites = Array.from(next);
         localStorage.setItem(
           "busan-food-favorites",
@@ -1368,19 +1406,23 @@
         }
       }
 
-      function saveReviews(reviews) {
-        localStorage.setItem("busan-food-reviews", JSON.stringify(reviews));
+      function saveReviews() {
+        localStorage.setItem(
+          "busan-food-reviews",
+          JSON.stringify(state.reviewStore),
+        );
       }
 
       function getReviewsBySeq(seq) {
-        const reviews = loadReviews();
-        return Array.isArray(reviews[seq]) ? reviews[seq] : [];
+        return Array.isArray(state.reviewStore[seq])
+          ? state.reviewStore[seq]
+          : [];
       }
 
       function renderReviewSection(seq) {
-        const reviews = getReviewsBySeq(seq).sort(
-          (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
-        );
+        const reviews = getReviewsBySeq(seq)
+          .slice()
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         renderRatingSummary(reviews);
 
         if (!reviews.length) {
@@ -1445,15 +1487,16 @@
         return Array.from({ length: 5 }, (_, index) => {
           const active = index < score;
           return (
-            '<button type="button" class="star-btn ' +
+            '<span class="star-view ' +
             (active ? "active" : "") +
-            '" tabindex="-1" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5"><path d="M12 2.5l2.97 6.02 6.64.96-4.8 4.68 1.13 6.61L12 17.65 6.06 20.77l1.13-6.61-4.8-4.68 6.64-.96L12 2.5z"/></svg></button>'
+            '"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5"><path d="M12 2.5l2.97 6.02 6.64.96-4.8 4.68 1.13 6.61L12 17.65 6.06 20.77l1.13-6.61-4.8-4.68 6.64-.96L12 2.5z"></path></svg></span>'
           );
         }).join("");
       }
 
       function renderStarsText(score) {
-        return "★".repeat(score) + "☆".repeat(5 - score);
+        const safe = Math.max(0, Math.min(5, Number(score) || 0));
+        return "★".repeat(safe) + "☆".repeat(5 - safe);
       }
 
       function handleReviewSubmit(event) {
@@ -1469,9 +1512,8 @@
           return;
         }
 
-        const reviews = loadReviews();
         const seq = state.selectedItem.UC_SEQ;
-        const current = Array.isArray(reviews[seq]) ? reviews[seq] : [];
+        const current = getReviewsBySeq(seq).slice();
 
         current.push({
           id: Date.now() + "_" + Math.random().toString(36).slice(2, 8),
@@ -1481,8 +1523,8 @@
           createdAt: new Date().toISOString(),
         });
 
-        reviews[seq] = current;
-        saveReviews(reviews);
+        state.reviewStore[seq] = current;
+        saveReviews();
         el.reviewForm.reset();
         renderReviewSection(seq);
         alert("리뷰가 등록되었습니다.");
@@ -1490,10 +1532,10 @@
 
       function deleteReview(seq, reviewId) {
         if (!window.confirm("이 리뷰를 삭제할까요?")) return;
-        const reviews = loadReviews();
-        const current = Array.isArray(reviews[seq]) ? reviews[seq] : [];
-        reviews[seq] = current.filter((review) => review.id !== reviewId);
-        saveReviews(reviews);
+        state.reviewStore[seq] = getReviewsBySeq(seq).filter(
+          (review) => review.id !== reviewId,
+        );
+        saveReviews();
         renderReviewSection(seq);
       }
 
@@ -1504,6 +1546,65 @@
         const month = String(date.getMonth() + 1).padStart(2, "0");
         const day = String(date.getDate()).padStart(2, "0");
         return year + "." + month + "." + day;
+      }
+
+      function buildKakaoMapRouteUrl(item, startPosition) {
+        const name = encodeURIComponent(item.MAIN_TITLE || "목적지");
+        const lat = Number(item.LAT) || 35.1796;
+        const lng = Number(item.LNG) || 129.0756;
+
+        if (
+          startPosition &&
+          Number.isFinite(startPosition.lat) &&
+          Number.isFinite(startPosition.lng)
+        ) {
+          return (
+            "https://map.kakao.com/link/from/" +
+            encodeURIComponent("현재 위치") +
+            "," +
+            startPosition.lat +
+            "," +
+            startPosition.lng +
+            "/to/" +
+            name +
+            "," +
+            lat +
+            "," +
+            lng
+          );
+        }
+
+        return "https://map.kakao.com/link/to/" + name + "," + lat + "," + lng;
+      }
+
+      function handleRouteClick(event) {
+        if (!state.selectedItem) return;
+        event.preventDefault();
+
+        const fallbackUrl = buildKakaoMapRouteUrl(state.selectedItem);
+
+        if (!navigator.geolocation) {
+          window.open(fallbackUrl, "_blank", "noopener");
+          return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const url = buildKakaoMapRouteUrl(state.selectedItem, {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            });
+            window.open(url, "_blank", "noopener");
+          },
+          () => {
+            window.open(fallbackUrl, "_blank", "noopener");
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 60000,
+          },
+        );
       }
 
       async function initKakaoMap(item) {
@@ -1519,6 +1620,7 @@
         try {
           await loadKakaoMapScript();
           container.innerHTML = "";
+
           const position = new kakao.maps.LatLng(item.LAT, item.LNG);
 
           if (!state.map) {
@@ -1530,8 +1632,14 @@
             state.map.setCenter(position);
           }
 
-          if (state.marker) state.marker.setMap(null);
-          state.marker = new kakao.maps.Marker({ position, map: state.map });
+          if (state.marker) {
+            state.marker.setMap(null);
+          }
+
+          state.marker = new kakao.maps.Marker({
+            position,
+            map: state.map,
+          });
 
           const info = new kakao.maps.InfoWindow({
             content:
@@ -1564,6 +1672,7 @@
               },
               { once: true },
             );
+
             existing.addEventListener("error", reject, { once: true });
             return;
           }
@@ -1625,8 +1734,6 @@
             RPRSNTV_MENU: "따로국밥 ₩7,000 / 수육 ₩10,000",
             MAIN_IMG_NORMAL:
               "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1200&q=80",
-            MAIN_IMG_THUMB:
-              "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=600&q=80",
             ITEMCNTNTS:
               "80년 전통의 돼지국밥 전문점입니다. 맑은 국물과 부드러운 수육이 특징이며, 현지인과 관광객 모두에게 인기가 높습니다.",
             HOMEPAGE_URL: "",
@@ -1643,8 +1750,6 @@
             RPRSNTV_MENU: "모둠회 ₩45,000 / 매운탕 ₩8,000",
             MAIN_IMG_NORMAL:
               "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1200&q=80",
-            MAIN_IMG_THUMB:
-              "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=600&q=80",
             ITEMCNTNTS:
               "광안대교 야경과 함께 싱싱한 회를 즐길 수 있는 맛집입니다. 해산물의 선도가 좋고 관광객과 현지인 모두에게 인기가 높습니다.",
             HOMEPAGE_URL: "",
@@ -1661,8 +1766,6 @@
             RPRSNTV_MENU: "물밀면 ₩8,500 / 비빔밀면 ₩9,000",
             MAIN_IMG_NORMAL:
               "https://images.unsplash.com/photo-1617093727343-374698b1b08d?auto=format&fit=crop&w=1200&q=80",
-            MAIN_IMG_THUMB:
-              "https://images.unsplash.com/photo-1617093727343-374698b1b08d?auto=format&fit=crop&w=600&q=80",
             ITEMCNTNTS:
               "쫄깃한 면발과 깔끔한 육수가 조화를 이루는 밀면 전문점입니다. 해운대 관광 후 가볍게 들르기 좋습니다.",
             HOMEPAGE_URL: "",
