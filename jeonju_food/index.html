@@ -4,776 +4,1596 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>전주 로컬 맛집</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Phosphor Icons -->
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
-      /* 앱 UI 처럼 보이기 위한 컨테이너 스타일 */
-      body {
-        background-color: #f3f4f6;
-        display: flex;
-        justify-content: center;
-        margin: 0;
-        height: 100vh;
+      :root {
+        --bg: #f4f4f4;
+        --card: #ffffff;
+        --line: #e6e6e6;
+        --text: #111111;
+        --muted: #666666;
+        --primary: #1f1f1f;
+        --accent: #d35400;
+        --accent-soft: #fff1e8;
+        --shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+        --radius: 18px;
       }
-      #app {
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Apple SD Gothic Neo", "Malgun Gothic", Arial, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+      button,
+      input,
+      textarea,
+      select {
+        font: inherit;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      body {
+        overflow-x: hidden;
+      }
+
+      .app {
         width: 100%;
         max-width: 480px;
-        background-color: white;
-        height: 100%;
+        min-height: 100vh;
+        margin: 0 auto;
+        background: #efefef;
         position: relative;
         overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
       }
-      .hide-scrollbar::-webkit-scrollbar {
+
+      .screen {
         display: none;
+        min-height: 100vh;
       }
-      .hide-scrollbar {
-        -ms-overflow-style: none;
+      .screen.active {
+        display: block;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 16px 8px;
+      }
+
+      .title-wrap h1 {
+        margin: 0;
+        font-size: 28px;
+        line-height: 1.2;
+        font-weight: 800;
+      }
+
+      .title-wrap p {
+        margin: 2px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .icon-btn,
+      .back-btn,
+      .favorite-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: var(--shadow);
+        cursor: pointer;
+        font-size: 18px;
+      }
+
+      .favorite-btn.active {
+        background: #fff3f3;
+        color: #d83b52;
+      }
+
+      .search-box {
+        margin: 10px 16px 14px;
+        background: #fff;
+        border-radius: 24px;
+        padding: 12px 14px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+      }
+
+      .search-box input {
+        flex: 1;
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 15px;
+      }
+
+      .chips {
+        display: flex;
+        gap: 8px;
+        padding: 0 16px 6px;
+        overflow-x: auto;
         scrollbar-width: none;
       }
-      .line-clamp-2 {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
+      .chips::-webkit-scrollbar {
+        display: none;
+      }
+
+      .chip {
+        border: 1px solid #d9d9d9;
+        background: #fff;
+        padding: 8px 12px;
+        border-radius: 999px;
+        white-space: nowrap;
+        cursor: pointer;
+        color: #333;
+      }
+
+      .chip.active {
+        background: var(--primary);
+        color: #fff;
+        border-color: var(--primary);
+      }
+
+      .section {
+        padding: 8px 16px 12px;
+      }
+      .section h2 {
+        margin: 6px 0 12px;
+        font-size: 22px;
+      }
+
+      .hero-card,
+      .list-card,
+      .detail-card,
+      .review-card,
+      .pagination {
+        background: var(--card);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
         overflow: hidden;
       }
-      .badge {
-        background-color: #9ca3af;
-        color: white;
-        padding: 2px 10px;
+
+      .hero-card {
+        cursor: pointer;
+      }
+      .hero-image,
+      .thumb {
+        width: 100%;
+        object-fit: cover;
+        display: block;
+        background: #ddd;
+      }
+      .hero-image {
+        height: 225px;
+      }
+      .thumb {
+        width: 132px;
+        height: 100px;
+        border-radius: 14px;
+        flex-shrink: 0;
+      }
+
+      .hero-content,
+      .review-form,
+      .review-list {
+        padding: 14px;
+      }
+
+      .restaurant-name {
+        font-weight: 800;
+        font-size: 24px;
+        margin: 0 0 8px;
+      }
+
+      .meta,
+      .sub-meta {
+        display: flex;
+        gap: 18px;
+        flex-wrap: wrap;
+        color: var(--muted);
+        font-size: 14px;
+        align-items: center;
+      }
+
+      .section-label {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 66px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: #7b7b7b;
+        color: #fff;
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+
+      .list-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .list-card {
+        display: flex;
+        gap: 12px;
+        padding: 12px;
+        cursor: pointer;
+        position: relative;
+      }
+
+      .card-favorite {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 34px;
+        height: 34px;
+        border: none;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.94);
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+        cursor: pointer;
+        z-index: 2;
+      }
+
+      .card-favorite.active {
+        color: #d83b52;
+      }
+
+      .list-card h3 {
+        margin: 0 0 8px;
+        font-size: 19px;
+        padding-right: 36px;
+      }
+      .list-card p {
+        margin: 4px 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .badge-row {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-top: 6px;
+        color: #333;
+        font-size: 14px;
+      }
+
+      .pagination {
+        margin: 16px;
+        padding: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .page-btn {
+        min-width: 40px;
+        height: 40px;
+        border: 1px solid #dcdcdc;
+        background: #fff;
         border-radius: 12px;
-        font-size: 0.75rem;
-        font-weight: bold;
-        display: inline-block;
-        margin-bottom: 4px;
+        cursor: pointer;
+        padding: 0 12px;
+      }
+      .page-btn:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+      .page-btn.active {
+        background: var(--primary);
+        color: #fff;
+        border-color: var(--primary);
+      }
+
+      .floating-header {
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: linear-gradient(
+          180deg,
+          rgba(239, 239, 239, 0.98),
+          rgba(239, 239, 239, 0.88),
+          rgba(239, 239, 239, 0)
+        );
+        backdrop-filter: blur(8px);
+      }
+
+      .detail-hero {
+        padding: 0 16px;
+        margin-top: -6px;
+        position: relative;
+      }
+
+      .detail-hero img {
+        width: 100%;
+        height: 280px;
+        object-fit: cover;
+        border-radius: 22px;
+        display: block;
+        box-shadow: var(--shadow);
+        background: #ddd;
+      }
+
+      .hero-actions {
+        position: absolute;
+        top: 14px;
+        right: 28px;
+        display: flex;
+        gap: 8px;
+      }
+
+      .detail-card {
+        margin: 16px;
+        padding: 16px;
+      }
+
+      .detail-block {
+        margin-top: 14px;
+        padding-top: 14px;
+        border-top: 1px solid var(--line);
+      }
+
+      .detail-block:first-child {
+        margin-top: 0;
+        padding-top: 0;
+        border-top: none;
+      }
+
+      .detail-block ul {
+        margin: 0;
+        padding-left: 16px;
+        color: #333;
+        line-height: 1.6;
+      }
+      .detail-block p {
+        margin: 0;
+        line-height: 1.6;
+      }
+
+      .map-box {
+        width: 100%;
+        height: 260px;
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        background: #fafafa;
+      }
+
+      .action-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 12px;
+      }
+
+      .action-btn,
+      .submit-btn {
+        border: none;
+        border-radius: 14px;
+        padding: 14px 16px;
+        cursor: pointer;
+        font-weight: 700;
+      }
+
+      .action-btn.primary,
+      .submit-btn {
+        background: var(--primary);
+        color: #fff;
+      }
+      .action-btn.secondary {
+        background: var(--accent-soft);
+        color: var(--accent);
+      }
+
+      .review-card {
+        margin: 0 16px 16px;
+      }
+
+      .review-form input,
+      .review-form textarea,
+      .review-form select {
+        width: 100%;
+        border: 1px solid #dadada;
+        border-radius: 12px;
+        padding: 12px 14px;
+        margin-bottom: 10px;
+        background: #fff;
+        outline: none;
+      }
+
+      .review-form textarea {
+        min-height: 110px;
+        resize: vertical;
+      }
+
+      .review-item {
+        padding: 14px 0;
+        border-top: 1px solid var(--line);
+      }
+      .review-item:first-child {
+        border-top: none;
+      }
+      .review-item strong {
+        font-size: 16px;
+      }
+      .review-item p {
+        margin: 8px 0 0;
+        color: #333;
+        line-height: 1.55;
+      }
+
+      .rating {
+        letter-spacing: 2px;
+      }
+      .empty {
+        color: var(--muted);
+        text-align: center;
+        padding: 28px 14px;
+      }
+      .muted {
+        color: var(--muted);
+      }
+      .loader {
+        text-align: center;
+        padding: 24px 0;
+        color: var(--muted);
+      }
+
+      .notice {
+        margin: 0 16px 10px;
+        background: #fffbe9;
+        color: #7a5c00;
+        padding: 12px 14px;
+        border-radius: 14px;
+        border: 1px solid #f1e2a0;
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
+      .error {
+        margin: 16px;
+        background: #fff4f2;
+        color: #b33a2f;
+        padding: 14px;
+        border-radius: 14px;
+        border: 1px solid #f1d6d2;
+      }
+
+      .bottom-nav {
+        position: sticky;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0;
+        background: rgba(255, 255, 255, 0.96);
+        border-top: 1px solid #ddd;
+        backdrop-filter: blur(12px);
+        z-index: 30;
+      }
+
+      .nav-btn {
+        border: none;
+        background: transparent;
+        padding: 12px 4px 16px;
+        cursor: pointer;
+        color: var(--muted);
+        font-weight: 700;
+      }
+
+      .nav-btn.active {
+        color: var(--primary);
+      }
+
+      @media (min-width: 860px) {
+        body {
+          padding: 20px;
+        }
+        .app {
+          max-width: 1080px;
+          border-radius: 28px;
+          box-shadow: var(--shadow);
+          display: grid;
+          grid-template-columns: 420px 1fr;
+        }
+        #listScreen {
+          border-right: 1px solid var(--line);
+        }
+        .screen {
+          min-height: calc(100vh - 40px);
+        }
+        .screen.active {
+          display: block;
+        }
+        .floating-header {
+          position: static;
+          background: transparent;
+        }
+        .bottom-nav {
+          display: none;
+        }
       }
     </style>
   </head>
   <body>
-    <div id="app">
-      <!-- ==================== MAIN LIST VIEW ==================== -->
-      <div id="view-list" class="flex flex-col h-full w-full">
-        <!-- Header -->
-        <header class="px-4 pt-5 pb-3 bg-white sticky top-0 z-10">
-          <div class="flex justify-between items-center mb-3">
-            <h1 class="text-xl font-bold leading-tight">
-              전주 로컬 맛집<br /><span
-                class="text-base font-medium text-gray-600"
-                >(한옥마을부터 남부시장까지)</span
-              >
-            </h1>
-            <div class="flex gap-3 text-2xl">
-              <button><i class="ph ph-arrow-counter-clockwise"></i></button>
-              <button><i class="ph ph-heart"></i></button>
-            </div>
+    <div class="app">
+      <section class="screen active" id="listScreen">
+        <div class="topbar">
+          <div class="title-wrap">
+            <h1>전주 로컬 맛집</h1>
+            <p>(한옥마을부터 남부시장까지)</p>
           </div>
-          <!-- Search -->
-          <div class="relative">
-            <i
-              class="ph ph-magnifying-glass absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg"
-            ></i>
+          <button class="icon-btn" id="refreshBtn" title="새로고침">↻</button>
+        </div>
+
+        <div class="notice">
+          전주시 전주음식 OpenAPI 상세기능에는 전주음식 이미지목록, 백반집목록,
+          전주비빔밥목록, 콩나물국밥집 목록, 한정식목록, 막걸리집 목록, 한옥마을
+          맛집 목록이 제공됩니다. 다만 공개 페이지 파싱 결과에서 정확한
+          서비스URL은 이미지 목록(getFoodImgList)만 확인되어, 나머지 목록
+          엔드포인트는 아래 CONFIG.ENDPOINTS에서 교체 가능하도록 분리했습니다.
+        </div>
+
+        <div class="search-box">
+          <span>🔍</span>
+          <input type="text" id="searchInput" placeholder="맛집/메뉴 검색" />
+        </div>
+
+        <div class="chips" id="categoryChips"></div>
+
+        <div class="section">
+          <h2 id="featuredTitle">오늘의 추천</h2>
+          <div id="featuredArea"></div>
+        </div>
+
+        <div class="section">
+          <h2 id="listTitle">인기 맛집</h2>
+          <div id="errorArea"></div>
+          <div id="listArea" class="list-wrap"></div>
+        </div>
+
+        <div class="pagination" id="pagination"></div>
+
+        <nav class="bottom-nav">
+          <button class="nav-btn active" data-tab="all">☰<br />전체</button>
+          <button class="nav-btn" data-tab="favorite">♡<br />즐겨찾기</button>
+          <button class="nav-btn" data-tab="recommend">📍<br />추천</button>
+        </nav>
+      </section>
+
+      <section class="screen" id="detailScreen">
+        <div class="floating-header">
+          <button class="back-btn" id="backBtn">←</button>
+          <button class="icon-btn" id="routeTopBtn">길찾기</button>
+        </div>
+
+        <div class="detail-hero" id="detailHero"></div>
+        <div class="detailCardWrap">
+          <div class="detail-card" id="detailCard"></div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-form">
+            <div class="section-label">리뷰 작성</div>
             <input
               type="text"
-              placeholder="맛집/메뉴 검색"
-              class="w-full bg-gray-50 border border-gray-200 rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-gray-400"
+              id="reviewAuthor"
+              placeholder="작성자 이름"
+              maxlength="20"
             />
-          </div>
-          <!-- Categories -->
-          <div
-            class="flex gap-4 mt-4 overflow-x-auto hide-scrollbar text-sm font-medium text-gray-700 whitespace-nowrap px-1"
-          >
-            <span class="cursor-pointer font-bold border-b-2 border-black pb-1"
-              >[전체]</span
-            >
-            <span class="cursor-pointer">[비빔밥]</span>
-            <span class="cursor-pointer">[국밥]</span>
-            <span class="cursor-pointer">[한정식]</span>
-            <span class="cursor-pointer">[막걸리]</span>
-            <span class="cursor-pointer">[카페]</span>
-            <span class="cursor-pointer">[한옥마을]</span>
-          </div>
-        </header>
-
-        <!-- Content -->
-        <main class="flex-1 overflow-y-auto pb-20 px-4">
-          <!-- Today's Recommendation -->
-          <section class="mb-6">
-            <h2 class="text-lg font-bold mb-3">오늘의 추천</h2>
-            <div
-              class="border rounded-lg overflow-hidden cursor-pointer shadow-sm"
-              onclick="app.showDetail(1)"
-            >
-              <img
-                src="https://images.unsplash.com/photo-1553163147-622ab57be1c7?auto=format&fit=crop&q=80&w=600&h=300"
-                alt="전주 가족회관"
-                class="w-full h-48 object-cover"
-              />
-              <div class="p-3">
-                <h3 class="font-bold text-base">전주 가족회관</h3>
-                <p class="text-sm text-gray-600 truncate mt-1">
-                  전주비빔밥 (전주시 완산구 전라감영 5길 17 2층)
-                </p>
-                <p class="text-xs text-gray-500 mt-1">리뷰 128 · 길찾기 ></p>
-              </div>
-            </div>
-          </section>
-
-          <!-- Popular List -->
-          <section>
-            <h2 class="text-lg font-bold mb-3">인기 맛집</h2>
-            <div id="restaurant-list" class="flex flex-col gap-4">
-              <!-- List items will be injected here via JS -->
-            </div>
-
-            <!-- Pagination -->
-            <div class="flex justify-center items-center gap-4 mt-6 mb-4">
-              <button
-                id="btn-prev"
-                class="px-3 py-1 border rounded bg-white text-sm disabled:opacity-50"
-                onclick="app.prevPage()"
-              >
-                이전
-              </button>
-              <span id="page-info" class="text-sm font-medium">1 / 2</span>
-              <button
-                id="btn-next"
-                class="px-3 py-1 border rounded bg-white text-sm disabled:opacity-50"
-                onclick="app.nextPage()"
-              >
-                다음
-              </button>
-            </div>
-          </section>
-        </main>
-
-        <!-- Bottom Navigation -->
-        <nav
-          class="absolute bottom-0 w-full bg-white border-t flex justify-around py-2 text-xs text-gray-500"
-        >
-          <button class="flex flex-col items-center text-black font-bold">
-            <i class="ph ph-list text-2xl"></i>
-            <span>전체</span>
-          </button>
-          <button class="flex flex-col items-center hover:text-black">
-            <i class="ph ph-heart text-2xl"></i>
-            <span>즐겨찾기</span>
-          </button>
-          <button class="flex flex-col items-center hover:text-black">
-            <i class="ph ph-push-pin text-2xl"></i>
-            <span>추천</span>
-          </button>
-        </nav>
-      </div>
-
-      <!-- ==================== DETAIL VIEW ==================== -->
-      <div
-        id="view-detail"
-        class="absolute inset-0 bg-white z-20 hidden flex-col w-full h-full"
-      >
-        <!-- Header -->
-        <header
-          class="absolute top-0 w-full p-4 flex justify-between items-center z-30"
-        >
-          <button
-            onclick="app.showList()"
-            class="bg-gray-400/70 text-white w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-sm"
-          >
-            <i class="ph ph-caret-left text-xl"></i>
-          </button>
-          <div class="flex gap-2">
-            <button
-              onclick="app.openDirections()"
-              class="bg-gray-400/70 text-white px-3 h-8 rounded-full flex items-center justify-center text-sm font-medium backdrop-blur-sm"
-            >
-              길찾기
-            </button>
-            <button
-              class="bg-gray-400/70 text-white w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-sm"
-            >
-              <i class="ph ph-heart text-xl"></i>
+            <select id="reviewRating">
+              <option value="5">★★★★★ (5점)</option>
+              <option value="4">★★★★☆ (4점)</option>
+              <option value="3">★★★☆☆ (3점)</option>
+              <option value="2">★★☆☆☆ (2점)</option>
+              <option value="1">★☆☆☆☆ (1점)</option>
+            </select>
+            <textarea
+              id="reviewText"
+              placeholder="리뷰를 남겨주세요"
+            ></textarea>
+            <button class="submit-btn" id="submitReviewBtn">
+              리뷰 작성하기
             </button>
           </div>
-        </header>
-
-        <!-- Content -->
-        <main class="flex-1 overflow-y-auto pb-24">
-          <img id="detail-img" src="" alt="" class="w-full h-64 object-cover" />
-
-          <div class="p-5">
-            <div class="mb-6">
-              <span class="badge">상호</span>
-              <div class="flex items-end gap-3 mt-1">
-                <h1 id="detail-title" class="text-xl font-bold">상호명</h1>
-                <span id="detail-rating" class="text-sm font-medium"
-                  >★ 4.8</span
-                >
-                <span id="detail-review-count" class="text-sm text-gray-500"
-                  >리뷰 128</span
-                >
-              </div>
-            </div>
-
-            <div class="mb-6">
-              <span class="badge">대표메뉴</span>
-              <div
-                id="detail-menu"
-                class="mt-2 text-sm leading-relaxed whitespace-pre-line"
-              >
-                메뉴 정보
-              </div>
-            </div>
-
-            <div class="mb-6">
-              <span class="badge">소개</span>
-              <div
-                id="detail-intro"
-                class="mt-2 text-sm leading-relaxed text-gray-700 whitespace-pre-line"
-              >
-                소개 내용
-              </div>
-            </div>
-
-            <div class="mb-6">
-              <span class="badge">위치</span>
-              <div id="detail-address" class="mt-2 text-sm">주소</div>
-            </div>
-
-            <div class="mb-4">
-              <span class="badge">리뷰</span>
-              <div id="detail-reviews" class="mt-4 flex flex-col gap-4">
-                <!-- Reviews injected via JS -->
-              </div>
-            </div>
-          </div>
-        </main>
-
-        <!-- Sticky Bottom Button -->
-        <div class="absolute bottom-0 w-full p-4 bg-white border-t">
-          <button
-            onclick="app.openReviewModal()"
-            class="w-full bg-gray-300 text-gray-700 font-bold py-3 rounded-lg hover:bg-gray-400 transition"
-          >
-            리뷰 작성하기
-          </button>
+          <div class="review-list" id="reviewList"></div>
         </div>
-      </div>
-
-      <!-- Review Modal -->
-      <div
-        id="modal-review"
-        class="absolute inset-0 bg-black/60 z-40 hidden items-center justify-center p-4"
-      >
-        <div class="bg-white rounded-lg w-full max-w-sm p-5">
-          <h3 class="text-lg font-bold mb-4">리뷰 작성</h3>
-          <div class="mb-3 flex text-2xl text-yellow-400" id="star-selector">
-            <i class="ph-fill ph-star cursor-pointer" data-val="1"></i>
-            <i class="ph-fill ph-star cursor-pointer" data-val="2"></i>
-            <i class="ph-fill ph-star cursor-pointer" data-val="3"></i>
-            <i class="ph-fill ph-star cursor-pointer" data-val="4"></i>
-            <i class="ph-fill ph-star cursor-pointer" data-val="5"></i>
-          </div>
-          <textarea
-            id="review-text"
-            class="w-full border rounded p-2 text-sm h-24 mb-4 resize-none"
-            placeholder="리뷰를 작성해주세요."
-          ></textarea>
-          <div class="flex gap-2">
-            <button
-              onclick="app.closeReviewModal()"
-              class="flex-1 bg-gray-200 py-2 rounded font-bold"
-            >
-              취소
-            </button>
-            <button
-              onclick="app.submitReview()"
-              class="flex-1 bg-black text-white py-2 rounded font-bold"
-            >
-              등록
-            </button>
-          </div>
-        </div>
-      </div>
+      </section>
     </div>
 
     <script>
-      /**
-       * ==========================================
-       * 설정 (API KEY 및 환경변수)
-       * 아래 변수에 발급받은 API 키를 입력하세요.
-       * ==========================================
-       */
       const CONFIG = {
-        // 공공데이터포털(data.go.kr) 전주시 맛집 API 키
         JEONJU_API_KEY:
           "c396d7fec4c202142c2c83f4d72a60e831b50c2bea1f0db3df46ac266a8615aa",
-
-        // 카카오맵 API 키 (JavaScript 키)
-        KAKAO_MAP_API_KEY: "2631fbface8acace856d0e9bd3bddd6a",
+        KAKAO_JAVASCRIPT_KEY: "2631fbface8acace856d0e9bd3bddd6a",
+        API_BASE_URL: "https://openapi.jeonju.go.kr/rest/jeonjufood",
+        ITEMS_PER_PAGE: 10,
+        DEFAULT_IMAGE:
+          "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1200&q=80",
+        IMAGE_ENDPOINT: "getFoodImgList",
+        ENDPOINTS: {
+          all: "getHanokList",
+          baekban: "getBaekbanList",
+          bibimbap: "getBibimbapList",
+          gukbap: "getBeanSproutRiceSoupList",
+          hansik: "getHansikList",
+          makgeolli: "getMakgeolliList",
+          hanok: "getHanokList",
+        },
       };
 
-      // 카카오맵 스크립트 동적 로드 (키가 있을 경우에만)
-      if (CONFIG.KAKAO_MAP_API_KEY !== "YOUR_KAKAO_MAP_API_KEY_HERE") {
-        const script = document.createElement("script");
-        script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${CONFIG.KAKAO_MAP_API_KEY}&libraries=services`;
-        document.head.appendChild(script);
-      }
+      const STORAGE_KEYS = {
+        favorites: "jeonju-food-favorites",
+      };
 
-      /**
-       * ==========================================
-       * 애플리케이션 상태 및 목업 데이터
-       * (실제 API 연동 실패를 대비한 Fallback 데이터 포함)
-       * ==========================================
-       */
-      const mockData = [
-        {
-          id: 1,
-          name: "전주 가족회관",
-          category: "전주비빔밥",
-          area: "완산구",
-          address: "전주시 완산구 전라감영 5길 17 2층",
-          lat: 35.815,
-          lng: 127.147,
-          rating: 4.8,
-          reviewCnt: 128,
-          img: "https://images.unsplash.com/photo-1553163147-622ab57be1c7?auto=format&fit=crop&q=80&w=400",
-          menu: "· 전주 비빔밥 ₩15,000\n· 육회비빔밥 ₩18,000",
-          intro:
-            "· 전주 대표 비빔밥 맛집\n· 관광객/현지인 모두 인기\n· 한옥마을과 가까움",
-        },
-        {
-          id: 2,
-          name: "전주왱이 콩나물국밥",
-          category: "콩나물 국밥",
-          area: "완산구",
-          address: "전북 전주시 완산구 동문길 88",
-          lat: 35.816,
-          lng: 127.151,
-          rating: 4.8,
-          reviewCnt: 342,
-          img: "https://images.unsplash.com/photo-1605297864817-212d2cc238b6?auto=format&fit=crop&q=80&w=400",
-          menu: "· 콩나물국밥 ₩8,000\n· 모주 ₩2,000",
-          intro: "· 끓이지 않는 토렴식 콩나물국밥\n· 시원하고 깔끔한 국물",
-        },
-        {
-          id: 3,
-          name: "다문",
-          category: "한정식",
-          area: "덕진구",
-          address: "전북 전주시 완산구 은행로 74-8",
-          lat: 35.814,
-          lng: 127.152,
-          rating: 4.7,
-          reviewCnt: 89,
-          img: "https://images.unsplash.com/photo-1580651315530-69c8e0026377?auto=format&fit=crop&q=80&w=400",
-          menu: "· 다문 한정식 ₩30,000\n· 굴비정식 ₩25,000",
-          intro: "· 한옥에서 즐기는 정갈한 한정식\n· 상견례, 모임 장소로 추천",
-        },
-        {
-          id: 4,
-          name: "모주/디저트카페",
-          category: "전주한옥마을",
-          area: "완산구",
-          address: "전북 전주시 완산구 태조로",
-          lat: 35.814,
-          lng: 127.152,
-          rating: 4.5,
-          reviewCnt: 56,
-          img: "https://images.unsplash.com/photo-1514066558159-fc8c737ef259?auto=format&fit=crop&q=80&w=400",
-          menu: "· 모주 아이스크림 ₩4,500\n· 한복마카롱 ₩3,000",
-          intro: "· 이색적인 모주 디저트\n· 한옥마을 산책 시 필수 코스",
-        },
-        {
-          id: 5,
-          name: "베테랑 칼국수",
-          category: "칼국수",
-          area: "완산구",
-          address: "전북 전주시 완산구 경기전길 135",
-          lat: 35.813,
-          lng: 127.151,
-          rating: 4.6,
-          reviewCnt: 520,
-          img: "https://images.unsplash.com/photo-1552611052-33e04de081de?auto=format&fit=crop&q=80&w=400",
-          menu: "· 칼국수 ₩8,000\n· 쫄면 ₩7,000\n· 만두 ₩5,500",
-          intro: "· 들깨가루와 김가루가 듬뿍 들어간 고소한 칼국수",
-        },
-        {
-          id: 6,
-          name: "삼천동 막걸리골목 용진집",
-          category: "막걸리",
-          area: "완산구",
-          address: "전북 전주시 완산구 거마산로 14",
-          lat: 35.798,
-          lng: 127.125,
-          rating: 4.7,
-          reviewCnt: 210,
-          img: "https://images.unsplash.com/photo-1534353436294-0dbd4bdac845?auto=format&fit=crop&q=80&w=400",
-          menu: "· 막걸리 한주전자 ₩25,000\n· 추가 주전자 ₩15,000",
-          intro: "· 상다리가 부러지는 막걸리 안주 코스\n· 현지인 강력 추천",
-        },
-        {
-          id: 7,
-          name: "남부시장 조점례남문피순대",
-          category: "국밥",
-          area: "완산구",
-          address: "전북 전주시 완산구 풍남문2길 39",
-          lat: 35.812,
-          lng: 127.147,
-          rating: 4.5,
-          reviewCnt: 890,
-          img: "https://images.unsplash.com/photo-1590292418579-22cb153fbcc9?auto=format&fit=crop&q=80&w=400",
-          menu: "· 순대국밥 ₩9,000\n· 피순대 ₩15,000",
-          intro: "· 쫄깃하고 진한 맛의 피순대 전문점",
-        },
-        {
-          id: 8,
-          name: "피엔비 풍년제과 본점",
-          category: "베이커리",
-          area: "완산구",
-          address: "전북 전주시 완산구 팔달로 180",
-          lat: 35.816,
-          lng: 127.146,
-          rating: 4.4,
-          reviewCnt: 1050,
-          img: "https://images.unsplash.com/photo-1587314168485-3236d6710814?auto=format&fit=crop&q=80&w=400",
-          menu: "· 수제 초코파이 ₩2,300\n· 붓세 ₩2,300",
-          intro: "· 전주 명물 초코파이 원조집",
-        },
-        {
-          id: 9,
-          name: "교동떡갈비",
-          category: "한정식",
-          area: "완산구",
-          address: "전북 전주시 완산구 은행로 52",
-          lat: 35.815,
-          lng: 127.151,
-          rating: 4.3,
-          reviewCnt: 180,
-          img: "https://images.unsplash.com/photo-1620189507195-68309c04c4d0?auto=format&fit=crop&q=80&w=400",
-          menu: "· 떡갈비 정식 ₩18,000\n· 비빔밥 ₩10,000",
-          intro: "· 숯불향 가득한 부드러운 떡갈비",
-        },
-        {
-          id: 10,
-          name: "현대옥 본점",
-          category: "국밥",
-          area: "완산구",
-          address: "전북 전주시 완산구 화산천변2길 7-4",
-          lat: 35.811,
-          lng: 127.123,
-          rating: 4.6,
-          reviewCnt: 450,
-          img: "https://images.unsplash.com/photo-1605297864817-212d2cc238b6?auto=format&fit=crop&q=80&w=400",
-          menu: "· 남부시장식 콩나물국밥 ₩8,000\n· 끓이는식 콩나물국밥 ₩8,000",
-          intro: "· 전주 콩나물국밥의 양대산맥",
-        },
-        {
-          id: 11,
-          name: "외할머니솜씨",
-          category: "카페",
-          area: "완산구",
-          address: "전북 전주시 완산구 오목대길 81-8",
-          lat: 35.814,
-          lng: 127.154,
-          rating: 4.5,
-          reviewCnt: 320,
-          img: "https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&q=80&w=400",
-          menu: "· 흑임자 팥빙수 ₩8,000\n· 쌍화탕 ₩7,000",
-          intro: "· 고즈넉한 한옥에서 즐기는 전통 디저트",
-        },
-        {
-          id: 12,
-          name: "한국집",
-          category: "전주비빔밥",
-          area: "완산구",
-          address: "전북 전주시 완산구 어진길 119",
-          lat: 35.816,
-          lng: 127.15,
-          rating: 4.4,
-          reviewCnt: 290,
-          img: "https://images.unsplash.com/photo-1553163147-622ab57be1c7?auto=format&fit=crop&q=80&w=400",
-          menu: "· 전주비빔밥 ₩15,000\n· 돌솥비빔밥 ₩15,000",
-          intro: "· 미슐랭 가이드에 소개된 전통 비빔밥집",
-        },
+      const STATE = {
+        restaurants: [],
+        filteredRestaurants: [],
+        currentPage: 1,
+        currentCategory: "all",
+        currentTab: "all",
+        keyword: "",
+        selectedRestaurant: null,
+        map: null,
+        marker: null,
+        kakaoReady: false,
+      };
+
+      const CATEGORY_OPTIONS = [
+        { key: "all", label: "[전체]" },
+        { key: "baekban", label: "[백반]" },
+        { key: "bibimbap", label: "[비빔밥]" },
+        { key: "gukbap", label: "[국밥]" },
+        { key: "hansik", label: "[한정식]" },
+        { key: "makgeolli", label: "[막걸리]" },
+        { key: "hanok", label: "[한옥마을]" },
       ];
 
-      // 테스트 및 페이징 확인을 위해 맛집 리스트를 100개로 동적 확장
-      const baseLength = mockData.length;
-      for (let i = baseLength + 1; i <= 100; i++) {
-        const seed = mockData[i % baseLength];
-        mockData.push({
-          id: i,
-          name: `${seed.name} ${i}호점`,
-          category: seed.category,
-          area: seed.area,
-          address: `전북 전주시 임의의 주소 ${i}길`,
-          lat: seed.lat + (Math.random() - 0.5) * 0.02,
-          lng: seed.lng + (Math.random() - 0.5) * 0.02,
-          rating: parseFloat((Math.random() * (5.0 - 3.8) + 3.8).toFixed(1)),
-          reviewCnt: Math.floor(Math.random() * 500) + 10,
-          img: seed.img,
-          menu: seed.menu,
-          intro: seed.intro,
+      const els = {
+        listScreen: document.getElementById("listScreen"),
+        detailScreen: document.getElementById("detailScreen"),
+        searchInput: document.getElementById("searchInput"),
+        categoryChips: document.getElementById("categoryChips"),
+        featuredArea: document.getElementById("featuredArea"),
+        listArea: document.getElementById("listArea"),
+        pagination: document.getElementById("pagination"),
+        errorArea: document.getElementById("errorArea"),
+        detailHero: document.getElementById("detailHero"),
+        detailCard: document.getElementById("detailCard"),
+        reviewList: document.getElementById("reviewList"),
+        reviewAuthor: document.getElementById("reviewAuthor"),
+        reviewRating: document.getElementById("reviewRating"),
+        reviewText: document.getElementById("reviewText"),
+        featuredTitle: document.getElementById("featuredTitle"),
+        listTitle: document.getElementById("listTitle"),
+      };
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        renderCategoryChips();
+        bindEvents();
+        await loadKakaoMapSdk();
+        await loadRestaurants();
+      });
+
+      function bindEvents() {
+        document
+          .getElementById("refreshBtn")
+          .addEventListener("click", loadRestaurants);
+        document
+          .getElementById("backBtn")
+          .addEventListener("click", showListScreen);
+        document
+          .getElementById("routeTopBtn")
+          .addEventListener("click", openKakaoRoute);
+        document
+          .getElementById("submitReviewBtn")
+          .addEventListener("click", handleReviewSubmit);
+
+        els.searchInput.addEventListener("input", (e) => {
+          STATE.keyword = e.target.value.trim();
+          STATE.currentPage = 1;
+          applyFilters();
+        });
+
+        document.querySelectorAll(".nav-btn").forEach((button) => {
+          button.addEventListener("click", () => {
+            const tab = button.dataset.tab;
+            STATE.currentTab = tab;
+            STATE.currentPage = 1;
+            document
+              .querySelectorAll(".nav-btn")
+              .forEach((btn) =>
+                btn.classList.toggle("active", btn.dataset.tab === tab),
+              );
+            applyFilters();
+          });
         });
       }
 
-      // 초기 리뷰 데이터 구성
-      const mockReviews = {
-        1: [
-          { name: "이지*", rating: 5, text: "재료가 신선하고 깔끔했어요." },
-          { name: "박소*", rating: 5, text: "재료가 신선하고 깔끔했어요." },
-          { name: "진정*", rating: 5, text: "재료가 신선하고 깔끔했어요." },
-          { name: "진정*", rating: 5, text: "정말 맛있게 잘 먹고 갑니다." },
-        ],
-      };
+      function renderCategoryChips() {
+        els.categoryChips.innerHTML = CATEGORY_OPTIONS.map(
+          (category) => `
+        <button class="chip ${STATE.currentCategory === category.key ? "active" : ""}" data-category="${category.key}">${category.label}</button>
+      `,
+        ).join("");
 
-      const app = {
-        restaurants: [],
-        currentPage: 1,
-        itemsPerPage: 10,
-        currentDetailId: null,
-        selectedStar: 5,
+        document.querySelectorAll(".chip").forEach((button) => {
+          button.addEventListener("click", async () => {
+            const nextCategory = button.dataset.category;
+            if (STATE.currentCategory === nextCategory) return;
+            STATE.currentCategory = nextCategory;
+            STATE.currentPage = 1;
+            renderCategoryChips();
+            await loadRestaurants();
+          });
+        });
+      }
 
-        init: async function () {
-          await this.fetchData();
-          this.renderList();
-          this.setupStarSelector();
-        },
+      async function loadRestaurants() {
+        clearError();
+        els.listArea.innerHTML =
+          '<div class="loader">맛집 정보를 불러오는 중입니다...</div>';
+        els.featuredArea.innerHTML =
+          '<div class="loader">추천 맛집을 준비 중입니다...</div>';
 
-        // API 통신 및 Fallback
-        fetchData: async function () {
+        try {
+          const endpoint =
+            CONFIG.ENDPOINTS[STATE.currentCategory] || CONFIG.ENDPOINTS.all;
+          const rawList = await fetchRestaurantList(endpoint);
+          let list = normalizeRestaurantList(rawList);
+          list = await enrichRestaurantsWithImages(list);
+          STATE.restaurants = mergeStoredMeta(list);
+          applyFilters();
+        } catch (error) {
+          console.error(error);
+          showError(
+            "API 호출에 실패했습니다. 인증키, 실제 엔드포인트명, CORS 설정을 확인해주세요. 현재는 샘플 데이터로 표시합니다.",
+          );
+          STATE.restaurants = mergeStoredMeta(getFallbackRestaurants());
+          applyFilters();
+        }
+      }
+
+      async function fetchRestaurantList(endpointName) {
+        const url = `${CONFIG.API_BASE_URL}/${endpointName}?authApiKey=${encodeURIComponent(CONFIG.JEONJU_API_KEY)}`;
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const contentType = response.headers.get("content-type") || "";
+        const rawText = await response.text();
+        if (
+          contentType.includes("json") ||
+          rawText.trim().startsWith("{") ||
+          rawText.trim().startsWith("[")
+        ) {
+          return JSON.parse(rawText);
+        }
+        return parseXmlToJson(rawText);
+      }
+
+      async function fetchFoodImages(foodUid) {
+        if (!foodUid) return [];
+        const url = `${CONFIG.API_BASE_URL}/${CONFIG.IMAGE_ENDPOINT}?authApiKey=${encodeURIComponent(CONFIG.JEONJU_API_KEY)}&foodUid=${encodeURIComponent(foodUid)}`;
+        const response = await fetch(url);
+        if (!response.ok) return [];
+        const contentType = response.headers.get("content-type") || "";
+        const rawText = await response.text();
+        let payload;
+        if (
+          contentType.includes("json") ||
+          rawText.trim().startsWith("{") ||
+          rawText.trim().startsWith("[")
+        ) {
+          payload = JSON.parse(rawText);
+        } else {
+          payload = parseXmlToJson(rawText);
+        }
+        const list = extractList(payload);
+        return list.map((item) => ({
+          thumbUrl: pick(item, ["thumbUrl"]),
+          previewUrl: pick(item, ["privewUrl", "previewUrl"]),
+        }));
+      }
+
+      async function enrichRestaurantsWithImages(restaurants) {
+        const tasks = restaurants.slice(0, 12).map(async (restaurant) => {
+          if (!restaurant.foodUid || restaurant.image !== CONFIG.DEFAULT_IMAGE)
+            return restaurant;
           try {
-            // 실제 전주시 공공데이터 API 연동 규격
-            const apiUrl = `https://openapi.jeonju.go.kr/rest/jeonjufood?serviceKey=${CONFIG.JEONJU_API_KEY}&pageNo=1&numOfRows=20`;
-            // API키가 입력되지 않았거나, 통신 제약(CORS 등)이 있을 경우를 위해 MockData 우선 사용
-            if (CONFIG.JEONJU_API_KEY.includes("YOUR_"))
-              throw new Error("API Key not set");
-
-            const response = await fetch(apiUrl);
-            if (!response.ok) throw new Error("API Request Failed");
-
-            // XML 파싱 등의 로직이 필요하지만, 여기서는 데모를 위해 목업 사용으로 바로 넘깁니다.
-            // 실제 환경에서는 response.text() -> DOMParser 로 파싱하여 this.restaurants 배열을 채웁니다.
-            throw new Error("Using Mock Data for Demonstration");
+            const images = await fetchFoodImages(restaurant.foodUid);
+            if (images.length) {
+              restaurant.image =
+                images[0].previewUrl || images[0].thumbUrl || restaurant.image;
+            }
           } catch (error) {
-            console.log(
-              "공공데이터 로드 실패 또는 미설정. 내부 목업 데이터를 사용합니다.",
-              error.message,
-            );
-            this.restaurants = [...mockData];
+            console.warn("image load fail", error);
           }
-        },
+          return restaurant;
+        });
+        await Promise.all(tasks);
+        return restaurants;
+      }
 
-        renderList: function () {
-          const listContainer = document.getElementById("restaurant-list");
-          listContainer.innerHTML = "";
+      function parseXmlToJson(xmlText) {
+        const parser = new DOMParser();
+        const xml = parser.parseFromString(xmlText, "text/xml");
+        const errorNode = xml.querySelector("parsererror");
+        if (errorNode) throw new Error("XML 파싱 실패");
+        const items = Array.from(xml.querySelectorAll("list, item, row, data"));
+        if (!items.length) return xmlNodeToObject(xml.documentElement);
+        return items.map((item) => xmlNodeToObject(item));
+      }
 
-          // 페이징 계산
-          const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-          const endIndex = startIndex + this.itemsPerPage;
-          const pagedData = this.restaurants.slice(startIndex, endIndex);
-          const totalPages = Math.ceil(
-            this.restaurants.length / this.itemsPerPage,
-          );
+      function xmlNodeToObject(node) {
+        const obj = {};
+        Array.from(node.children).forEach((child) => {
+          const key = child.nodeName;
+          const value = child.children.length
+            ? xmlNodeToObject(child)
+            : child.textContent.trim();
+          if (obj[key] !== undefined) {
+            if (!Array.isArray(obj[key])) obj[key] = [obj[key]];
+            obj[key].push(value);
+          } else {
+            obj[key] = value;
+          }
+        });
+        return obj;
+      }
 
-          // 아이템 렌더링
-          pagedData.forEach((item) => {
-            // 인기 맛집 리스트 (2번째 아이템부터, 1번은 오늘의 추천)
-            if (item.id === 1 && this.currentPage === 1) return;
+      function normalizeRestaurantList(payload) {
+        const rawList = extractList(payload);
+        return rawList.map((item, index) => {
+          const foodUid = pick(item, ["foodUid", "uid", "id", "dataSid"]);
+          const name =
+            pick(item, [
+              "title",
+              "name",
+              "foodNm",
+              "restNm",
+              "bizName",
+              "subject",
+              "업소명",
+            ]) || `전주 맛집 ${index + 1}`;
+          const uid = foodUid || `${name}-${index}`;
+          const roadAddr = pick(item, ["roadAddr", "addrRoad", "도로명주소"]);
+          const jibunAddr = pick(item, ["jibunAddr", "지번주소"]);
+          const address =
+            pick(item, ["addr", "address", "addr1", "업소위치"]) ||
+            roadAddr ||
+            jibunAddr ||
+            "전주시 상세 주소 정보 없음";
+          const menu =
+            pick(item, [
+              "menu",
+              "mainMenu",
+              "foodMenu",
+              "signatureMenu",
+              "품목",
+            ]) || "대표 메뉴 정보 준비 중";
+          const tel =
+            pick(item, ["tel", "phone", "contact", "전화번호", "연락처"]) ||
+            "전화번호 정보 없음";
+          const intro =
+            pick(item, ["contents", "intro", "desc", "summary"]) ||
+            "전주의 로컬 맛집 정보를 제공합니다.";
+          const x =
+            toNumber(pick(item, ["lng", "mapX", "longitude", "x", "경도"])) ||
+            127.148;
+          const y =
+            toNumber(pick(item, ["lat", "mapY", "latitude", "y", "위도"])) ||
+            35.824;
+          const image =
+            pick(item, [
+              "thumbUrl",
+              "previewUrl",
+              "privewUrl",
+              "imgUrl",
+              "image",
+              "thumbnail",
+            ]) || CONFIG.DEFAULT_IMAGE;
+          const category = inferCategory(item, name, menu);
+          const reviews = getReviews(uid);
+          const stats = calculateReviewStats(reviews);
 
-            const div = document.createElement("div");
-            div.className =
-              "flex gap-3 cursor-pointer items-center border-b pb-3 mb-1";
-            div.onclick = () => this.showDetail(item.id);
+          return {
+            uid,
+            foodUid,
+            name,
+            address,
+            roadAddr,
+            jibunAddr,
+            menu,
+            tel,
+            intro,
+            image,
+            category,
+            avgRating: stats.avgRating,
+            ratingCount: stats.ratingCount,
+            reviewCount: reviews.length,
+            x,
+            y,
+            isFavorite: isFavorite(uid),
+            raw: item,
+          };
+        });
+      }
 
-            div.innerHTML = `
-                <img src="${item.img}" alt="${item.name}" class="w-32 h-24 object-cover rounded-lg">
-                <div class="flex-1">
-                    <h3 class="font-bold text-base">${item.name}</h3>
-                    <p class="text-sm text-gray-700">${item.category}</p>
-                    <p class="text-sm text-gray-600 mt-1">(${item.area}) · ★${item.rating}</p>
-                </div>
-            `;
-            listContainer.appendChild(div);
+      function extractList(payload) {
+        if (Array.isArray(payload)) return payload;
+        if (!payload || typeof payload !== "object") return [];
+        const candidates = [
+          payload.list,
+          payload.items,
+          payload.item,
+          payload.data,
+          payload.rows,
+          payload.result,
+          payload.body && payload.body.items,
+          payload.response &&
+            payload.response.body &&
+            payload.response.body.items,
+        ];
+        for (const candidate of candidates) {
+          if (Array.isArray(candidate)) return candidate;
+          if (candidate && Array.isArray(candidate.item)) return candidate.item;
+          if (candidate && Array.isArray(candidate.list)) return candidate.list;
+        }
+        const nestedArrays = findAllArrays(payload);
+        return nestedArrays[0] || [];
+      }
+
+      function findAllArrays(obj, found = []) {
+        if (!obj || typeof obj !== "object") return found;
+        Object.values(obj).forEach((value) => {
+          if (Array.isArray(value)) found.push(value);
+          else if (value && typeof value === "object")
+            findAllArrays(value, found);
+        });
+        return found;
+      }
+
+      function pick(obj, keys) {
+        if (!obj) return "";
+        const lowerMap = {};
+        Object.keys(obj).forEach((key) => {
+          lowerMap[key.toLowerCase()] = obj[key];
+        });
+        for (const key of keys) {
+          if (obj[key] !== undefined && obj[key] !== null && obj[key] !== "")
+            return obj[key];
+          const lower = key.toLowerCase();
+          if (
+            lowerMap[lower] !== undefined &&
+            lowerMap[lower] !== null &&
+            lowerMap[lower] !== ""
+          )
+            return lowerMap[lower];
+        }
+        return "";
+      }
+
+      function toNumber(value) {
+        const num = Number(String(value).replace(/,/g, "").trim());
+        return Number.isFinite(num) ? num : null;
+      }
+
+      function inferCategory(item, name, menu) {
+        const source = `${JSON.stringify(item)} ${name} ${menu}`;
+        if (/백반/.test(source)) return "백반";
+        if (/비빔밥/.test(source)) return "비빔밥";
+        if (/콩나물|국밥/.test(source)) return "국밥";
+        if (/막걸리/.test(source)) return "막걸리";
+        if (/한정식/.test(source)) return "한정식";
+        if (/한옥/.test(source)) return "전주한옥마을";
+        return "전주 로컬 맛집";
+      }
+
+      function applyFilters() {
+        const keyword = STATE.keyword.toLowerCase();
+        const favoriteOnly = STATE.currentTab === "favorite";
+        const recommendOnly = STATE.currentTab === "recommend";
+
+        let filtered = STATE.restaurants.filter((restaurant) => {
+          const matchKeyword =
+            !keyword ||
+            [
+              restaurant.name,
+              restaurant.address,
+              restaurant.menu,
+              restaurant.category,
+            ]
+              .join(" ")
+              .toLowerCase()
+              .includes(keyword);
+          const matchFavorite = !favoriteOnly || restaurant.isFavorite;
+          const matchRecommend = !recommendOnly || restaurant.avgRating >= 4.7;
+          return matchKeyword && matchFavorite && matchRecommend;
+        });
+
+        filtered.sort((a, b) => {
+          if (STATE.currentTab === "favorite")
+            return b.avgRating - a.avgRating || b.reviewCount - a.reviewCount;
+          if (STATE.currentTab === "recommend")
+            return b.avgRating - a.avgRating || b.reviewCount - a.reviewCount;
+          return b.avgRating - a.avgRating || b.reviewCount - a.reviewCount;
+        });
+
+        STATE.filteredRestaurants = filtered;
+        renderSectionTitles();
+        renderFeatured();
+        renderList();
+        renderPagination();
+      }
+
+      function renderSectionTitles() {
+        if (STATE.currentTab === "favorite") {
+          els.featuredTitle.textContent = "내 즐겨찾기 추천";
+          els.listTitle.textContent = "즐겨찾기 맛집";
+          return;
+        }
+        if (STATE.currentTab === "recommend") {
+          els.featuredTitle.textContent = "평점 높은 추천";
+          els.listTitle.textContent = "추천 맛집";
+          return;
+        }
+        els.featuredTitle.textContent = "오늘의 추천";
+        els.listTitle.textContent = "인기 맛집";
+      }
+
+      function renderFeatured() {
+        const item = STATE.filteredRestaurants[0];
+        if (!item) {
+          els.featuredArea.innerHTML =
+            '<div class="hero-card"><div class="hero-content">표시할 데이터가 없습니다.</div></div>';
+          return;
+        }
+
+        els.featuredArea.innerHTML = `
+        <article class="hero-card" data-uid="${item.uid}">
+          <img class="hero-image" src="${escapeHtmlAttr(item.image)}" alt="${escapeHtmlAttr(item.name)}" onerror="this.src='${CONFIG.DEFAULT_IMAGE}'" />
+          <div class="hero-content">
+            <div class="restaurant-name" style="font-size:26px; margin-bottom:6px;">${escapeHtml(item.name)}</div>
+            <div style="font-size:15px; color:#333; margin-bottom:6px;">${escapeHtml(item.menu)}</div>
+            <div class="sub-meta">
+              <span>${escapeHtml(item.address)}</span>
+              <span>리뷰 ${item.reviewCount}</span>
+              <span>평균 ★ ${item.avgRating.toFixed(1)}</span>
+              <span>${item.isFavorite ? "♥ 즐겨찾기" : ""}</span>
+            </div>
+          </div>
+        </article>
+      `;
+
+        els.featuredArea
+          .querySelector(".hero-card")
+          .addEventListener("click", () => openDetail(item.uid));
+      }
+
+      function renderList() {
+        if (!STATE.filteredRestaurants.length) {
+          const message =
+            STATE.currentTab === "favorite"
+              ? "즐겨찾기한 맛집이 없습니다."
+              : "검색 결과가 없습니다.";
+          els.listArea.innerHTML = `<div class="empty">${message}</div>`;
+          return;
+        }
+
+        const start = (STATE.currentPage - 1) * CONFIG.ITEMS_PER_PAGE;
+        const pageItems = STATE.filteredRestaurants.slice(
+          start,
+          start + CONFIG.ITEMS_PER_PAGE,
+        );
+
+        els.listArea.innerHTML = pageItems
+          .map(
+            (item) => `
+        <article class="list-card" data-uid="${item.uid}">
+          <button class="card-favorite ${item.isFavorite ? "active" : ""}" data-favorite="${item.uid}" title="즐겨찾기">${item.isFavorite ? "♥" : "♡"}</button>
+          <img class="thumb" src="${escapeHtmlAttr(item.image)}" alt="${escapeHtmlAttr(item.name)}" onerror="this.src='${CONFIG.DEFAULT_IMAGE}'" />
+          <div style="min-width:0; width:100%;">
+            <h3>${escapeHtml(item.name)}</h3>
+            <p>${escapeHtml(item.category)}</p>
+            <p>${escapeHtml(item.address)}</p>
+            <div class="badge-row">
+              <span>평균 ★ ${item.avgRating.toFixed(1)}</span>
+              <span>평점수 ${item.ratingCount}</span>
+              <span>리뷰 ${item.reviewCount}</span>
+            </div>
+          </div>
+        </article>
+      `,
+          )
+          .join("");
+
+        document.querySelectorAll(".list-card").forEach((card) => {
+          card.addEventListener("click", (e) => {
+            if (e.target.closest("[data-favorite]")) return;
+            openDetail(card.dataset.uid);
           });
+        });
 
-          // 페이징 UI 업데이트
-          document.getElementById("page-info").innerText =
-            `${this.currentPage} / ${totalPages}`;
-          document.getElementById("btn-prev").disabled = this.currentPage === 1;
-          document.getElementById("btn-next").disabled =
-            this.currentPage === totalPages;
-        },
-
-        nextPage: function () {
-          const totalPages = Math.ceil(
-            this.restaurants.length / this.itemsPerPage,
-          );
-          if (this.currentPage < totalPages) {
-            this.currentPage++;
-            this.renderList();
-            document.getElementById("view-list").scrollTo(0, 0);
-          }
-        },
-
-        prevPage: function () {
-          if (this.currentPage > 1) {
-            this.currentPage--;
-            this.renderList();
-            document.getElementById("view-list").scrollTo(0, 0);
-          }
-        },
-
-        showDetail: function (id) {
-          this.currentDetailId = id;
-          const item = this.restaurants.find((r) => r.id === id);
-          if (!item) return;
-
-          // 상세 정보 바인딩
-          document.getElementById("detail-img").src = item.img;
-          document.getElementById("detail-title").innerText = item.name;
-          document.getElementById("detail-rating").innerText =
-            `★ ${item.rating}`;
-          document.getElementById("detail-review-count").innerText =
-            `리뷰 ${item.reviewCnt}`;
-          document.getElementById("detail-menu").innerText = item.menu;
-          document.getElementById("detail-intro").innerText = item.intro;
-          document.getElementById("detail-address").innerText = item.address;
-
-          this.renderReviews();
-
-          // 화면 전환
-          document.getElementById("view-list").classList.add("hidden");
-          document.getElementById("view-list").classList.remove("flex");
-
-          const detailView = document.getElementById("view-detail");
-          detailView.classList.remove("hidden");
-          detailView.classList.add("flex");
-          detailView.scrollTo(0, 0);
-        },
-
-        showList: function () {
-          this.currentDetailId = null;
-          document.getElementById("view-detail").classList.add("hidden");
-          document.getElementById("view-detail").classList.remove("flex");
-
-          document.getElementById("view-list").classList.remove("hidden");
-          document.getElementById("view-list").classList.add("flex");
-        },
-
-        renderReviews: function () {
-          const container = document.getElementById("detail-reviews");
-          container.innerHTML = "";
-
-          const reviews = mockReviews[this.currentDetailId] || [];
-
-          if (reviews.length === 0) {
-            container.innerHTML =
-              '<p class="text-sm text-gray-500">첫 리뷰를 작성해주세요!</p>';
-            return;
-          }
-
-          reviews.forEach((rv) => {
-            let stars = "★".repeat(rv.rating) + "☆".repeat(5 - rv.rating);
-            container.innerHTML += `
-                <div class="border-b pb-3">
-                    <div class="flex items-center gap-3">
-                        <span class="font-bold text-sm">${rv.name}</span>
-                        <span class="text-black text-sm tracking-widest">${stars}</span>
-                    </div>
-                    <p class="text-sm text-gray-800 mt-1">${rv.text}</p>
-                </div>
-            `;
+        document.querySelectorAll("[data-favorite]").forEach((button) => {
+          button.addEventListener("click", (e) => {
+            e.stopPropagation();
+            toggleFavorite(button.dataset.favorite);
           });
-        },
+        });
+      }
 
-        openDirections: function () {
-          const item = this.restaurants.find(
-            (r) => r.id === this.currentDetailId,
-          );
-          if (!item) return;
+      function renderPagination() {
+        const totalPages = Math.max(
+          1,
+          Math.ceil(STATE.filteredRestaurants.length / CONFIG.ITEMS_PER_PAGE),
+        );
+        if (!STATE.filteredRestaurants.length) {
+          els.pagination.innerHTML = "";
+          return;
+        }
 
-          // 카카오맵 URL Scheme을 이용한 길찾기 (모바일 웹/앱 호환성이 가장 뛰어남)
-          // 출발지를 지정하지 않으면 사용자의 현재 위치가 출발지가 됩니다.
-          const kakaoMapUrl = `https://map.kakao.com/link/to/${item.name},${item.lat},${item.lng}`;
-          window.open(kakaoMapUrl, "_blank");
-        },
+        const pageNumbers = getVisiblePages(STATE.currentPage, totalPages, 5);
+        els.pagination.innerHTML = `
+        <button class="page-btn" ${STATE.currentPage === 1 ? "disabled" : ""} data-page="prev">이전</button>
+        ${pageNumbers.map((page) => `<button class="page-btn ${page === STATE.currentPage ? "active" : ""}" data-page="${page}">${page}</button>`).join("")}
+        <button class="page-btn" ${STATE.currentPage === totalPages ? "disabled" : ""} data-page="next">다음</button>
+      `;
 
-        // 리뷰 모달 관련
-        openReviewModal: function () {
-          document.getElementById("modal-review").classList.remove("hidden");
-          document.getElementById("modal-review").classList.add("flex");
-          this.selectedStar = 5;
-          this.updateStarUI();
-          document.getElementById("review-text").value = "";
-        },
-
-        closeReviewModal: function () {
-          document.getElementById("modal-review").classList.add("hidden");
-          document.getElementById("modal-review").classList.remove("flex");
-        },
-
-        setupStarSelector: function () {
-          const stars = document.querySelectorAll("#star-selector i");
-          stars.forEach((star) => {
-            star.addEventListener("click", (e) => {
-              this.selectedStar = parseInt(e.target.getAttribute("data-val"));
-              this.updateStarUI();
-            });
+        els.pagination.querySelectorAll(".page-btn").forEach((button) => {
+          button.addEventListener("click", () => {
+            const type = button.dataset.page;
+            if (type === "prev" && STATE.currentPage > 1)
+              STATE.currentPage -= 1;
+            else if (type === "next" && STATE.currentPage < totalPages)
+              STATE.currentPage += 1;
+            else if (!Number.isNaN(Number(type)))
+              STATE.currentPage = Number(type);
+            renderList();
+            renderPagination();
+            window.scrollTo({ top: 0, behavior: "smooth" });
           });
-        },
+        });
+      }
 
-        updateStarUI: function () {
-          const stars = document.querySelectorAll("#star-selector i");
-          stars.forEach((star, index) => {
-            if (index < this.selectedStar) {
-              star.classList.replace("ph", "ph-fill");
-            } else {
-              star.classList.replace("ph-fill", "ph");
+      function getVisiblePages(current, total, maxVisible) {
+        let start = Math.max(1, current - Math.floor(maxVisible / 2));
+        let end = Math.min(total, start + maxVisible - 1);
+        start = Math.max(1, end - maxVisible + 1);
+        const pages = [];
+        for (let i = start; i <= end; i += 1) pages.push(i);
+        return pages;
+      }
+
+      function openDetail(uid) {
+        const restaurant = STATE.restaurants.find(
+          (item) => String(item.uid) === String(uid),
+        );
+        if (!restaurant) return;
+        STATE.selectedRestaurant = restaurant;
+        renderDetail(restaurant);
+        renderReviews(restaurant.uid);
+        els.listScreen.classList.remove("active");
+        els.detailScreen.classList.add("active");
+        if (window.innerWidth >= 860) els.listScreen.classList.add("active");
+      }
+
+      function showListScreen() {
+        if (window.innerWidth < 860) {
+          els.detailScreen.classList.remove("active");
+          els.listScreen.classList.add("active");
+        }
+      }
+
+      function renderDetail(restaurant) {
+        const reviews = getReviews(restaurant.uid);
+        const stats = calculateReviewStats(reviews);
+        restaurant.avgRating = stats.avgRating;
+        restaurant.ratingCount = stats.ratingCount;
+        restaurant.reviewCount = reviews.length;
+        restaurant.isFavorite = isFavorite(restaurant.uid);
+
+        els.detailHero.innerHTML = `
+        <img src="${escapeHtmlAttr(restaurant.image)}" alt="${escapeHtmlAttr(restaurant.name)}" onerror="this.src='${CONFIG.DEFAULT_IMAGE}'" />
+        <div class="hero-actions">
+          <button class="favorite-btn ${restaurant.isFavorite ? "active" : ""}" id="detailFavoriteBtn" title="즐겨찾기">${restaurant.isFavorite ? "♥" : "♡"}</button>
+        </div>
+      `;
+
+        const menuList = restaurant.menu
+          .split(/\n|,|\//)
+          .map((menu) => menu.trim())
+          .filter(Boolean)
+          .slice(0, 5);
+
+        els.detailCard.innerHTML = `
+        <div class="detail-block">
+          <div class="section-label">상호</div>
+          <div class="restaurant-name">${escapeHtml(restaurant.name)}</div>
+          <div class="meta">
+            <span>평균 ★ ${restaurant.avgRating.toFixed(1)}</span>
+            <span>평점수 ${restaurant.ratingCount}</span>
+            <span>리뷰 ${reviews.length}</span>
+            <span>${escapeHtml(restaurant.category)}</span>
+          </div>
+        </div>
+
+        <div class="detail-block">
+          <div class="section-label">대표메뉴</div>
+          <ul>
+            ${menuList.length ? menuList.map((menu) => `<li>${escapeHtml(menu)}</li>`).join("") : "<li>대표 메뉴 정보가 없습니다.</li>"}
+          </ul>
+        </div>
+
+        <div class="detail-block">
+          <div class="section-label">소개</div>
+          <ul>
+            <li>${escapeHtml(restaurant.intro)}</li>
+            <li>전화번호: ${escapeHtml(restaurant.tel)}</li>
+          </ul>
+        </div>
+
+        <div class="detail-block">
+          <div class="section-label">위치</div>
+          <p style="margin-bottom:8px;">${escapeHtml(restaurant.address)}</p>
+          ${restaurant.roadAddr ? `<p class="muted" style="font-size:13px; margin-bottom:8px;">도로명주소: ${escapeHtml(restaurant.roadAddr)}</p>` : ""}
+          ${restaurant.jibunAddr ? `<p class="muted" style="font-size:13px; margin-bottom:12px;">지번주소: ${escapeHtml(restaurant.jibunAddr)}</p>` : ""}
+          <div id="map" class="map-box"></div>
+          <div class="action-row">
+            <button class="action-btn secondary" id="copyAddressBtn">주소 복사</button>
+            <button class="action-btn primary" id="routeBtn">카카오맵 길찾기</button>
+          </div>
+        </div>
+      `;
+
+        document
+          .getElementById("detailFavoriteBtn")
+          .addEventListener("click", () =>
+            toggleFavorite(restaurant.uid, true),
+          );
+        document
+          .getElementById("routeBtn")
+          .addEventListener("click", openKakaoRoute);
+        document
+          .getElementById("copyAddressBtn")
+          .addEventListener("click", async () => {
+            try {
+              await navigator.clipboard.writeText(restaurant.address);
+              alert("주소를 복사했습니다.");
+            } catch {
+              alert("주소 복사에 실패했습니다.");
             }
           });
-        },
 
-        submitReview: function () {
-          const text = document.getElementById("review-text").value.trim();
-          if (!text) {
-            alert("리뷰 내용을 입력해주세요.");
-            return;
-          }
+        renderMap(restaurant);
+      }
 
-          if (!mockReviews[this.currentDetailId]) {
-            mockReviews[this.currentDetailId] = [];
-          }
+      async function loadKakaoMapSdk() {
+        if (window.kakao && window.kakao.maps) {
+          STATE.kakaoReady = true;
+          return;
+        }
+        if (
+          !CONFIG.KAKAO_JAVASCRIPT_KEY ||
+          CONFIG.KAKAO_JAVASCRIPT_KEY.includes("YOUR_")
+        ) {
+          console.warn("카카오 JavaScript 키를 설정하지 않았습니다.");
+          return;
+        }
+        await new Promise((resolve, reject) => {
+          const script = document.createElement("script");
+          script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${CONFIG.KAKAO_JAVASCRIPT_KEY}&autoload=false`;
+          script.onload = () => {
+            window.kakao.maps.load(() => {
+              STATE.kakaoReady = true;
+              resolve();
+            });
+          };
+          script.onerror = reject;
+          document.head.appendChild(script);
+        });
+      }
 
-          // 새 리뷰 상단에 추가
-          mockReviews[this.currentDetailId].unshift({
-            name: "방문*", // 가상의 닉네임 마스킹
-            rating: this.selectedStar,
-            text: text,
-          });
+      function renderMap(restaurant) {
+        const mapContainer = document.getElementById("map");
+        if (!mapContainer) return;
+        if (!STATE.kakaoReady || !window.kakao || !window.kakao.maps) {
+          mapContainer.innerHTML =
+            '<div class="empty">카카오맵 키를 입력하면 지도와 길찾기가 동작합니다.</div>';
+          return;
+        }
+        const center = new kakao.maps.LatLng(restaurant.y, restaurant.x);
+        STATE.map = new kakao.maps.Map(mapContainer, { center, level: 3 });
+        STATE.marker = new kakao.maps.Marker({ position: center });
+        STATE.marker.setMap(STATE.map);
+        const info = new kakao.maps.InfoWindow({
+          content: `<div style="padding:8px 10px; font-size:13px;">${escapeHtml(restaurant.name)}</div>`,
+        });
+        info.open(STATE.map, STATE.marker);
+      }
 
-          // 리뷰 카운트 증가
-          const item = this.restaurants.find(
-            (r) => r.id === this.currentDetailId,
+      function openKakaoRoute() {
+        const restaurant = STATE.selectedRestaurant;
+        if (!restaurant) return;
+        const url = `https://map.kakao.com/link/to/${encodeURIComponent(restaurant.name)},${restaurant.y},${restaurant.x}`;
+        window.open(url, "_blank");
+      }
+
+      function handleReviewSubmit() {
+        const restaurant = STATE.selectedRestaurant;
+        if (!restaurant) return;
+        const author = els.reviewAuthor.value.trim();
+        const rating = Number(els.reviewRating.value);
+        const content = els.reviewText.value.trim();
+        if (!author || !content) {
+          alert("작성자와 리뷰 내용을 입력해주세요.");
+          return;
+        }
+
+        const reviews = getReviews(restaurant.uid);
+        reviews.unshift({
+          author,
+          rating,
+          content,
+          createdAt: new Date().toLocaleString("ko-KR"),
+        });
+        localStorage.setItem(
+          getReviewStorageKey(restaurant.uid),
+          JSON.stringify(reviews),
+        );
+
+        els.reviewAuthor.value = "";
+        els.reviewRating.value = "5";
+        els.reviewText.value = "";
+
+        updateRestaurantMeta(restaurant.uid);
+        renderReviews(restaurant.uid);
+        renderDetail(STATE.selectedRestaurant);
+        renderFeatured();
+        renderList();
+      }
+
+      function renderReviews(uid) {
+        const reviews = getReviews(uid);
+        if (!reviews.length) {
+          els.reviewList.innerHTML =
+            '<div class="empty">첫 리뷰를 남겨보세요.</div>';
+          return;
+        }
+
+        els.reviewList.innerHTML = reviews
+          .map(
+            (review) => `
+        <div class="review-item">
+          <div class="meta" style="justify-content:space-between; gap:10px;">
+            <strong>${escapeHtml(review.author)}</strong>
+            <span class="rating">${"★".repeat(review.rating)}${"☆".repeat(5 - review.rating)}</span>
+          </div>
+          <div class="muted" style="margin-top:6px;">${escapeHtml(review.createdAt)}</div>
+          <p>${escapeHtml(review.content)}</p>
+        </div>
+      `,
+          )
+          .join("");
+      }
+
+      function updateRestaurantMeta(uid) {
+        const restaurant = STATE.restaurants.find(
+          (item) => String(item.uid) === String(uid),
+        );
+        if (!restaurant) return;
+        const reviews = getReviews(uid);
+        const stats = calculateReviewStats(reviews);
+        restaurant.reviewCount = reviews.length;
+        restaurant.avgRating = stats.avgRating;
+        restaurant.ratingCount = stats.ratingCount;
+        restaurant.isFavorite = isFavorite(uid);
+        if (
+          STATE.selectedRestaurant &&
+          String(STATE.selectedRestaurant.uid) === String(uid)
+        ) {
+          STATE.selectedRestaurant = restaurant;
+        }
+        applyFilters();
+      }
+
+      function calculateReviewStats(reviews) {
+        if (!reviews.length) return { avgRating: 4.5, ratingCount: 0 };
+        const avg =
+          reviews.reduce((sum, review) => sum + Number(review.rating || 0), 0) /
+          reviews.length;
+        return {
+          avgRating: Math.round(avg * 10) / 10,
+          ratingCount: reviews.length,
+        };
+      }
+
+      function getReviewStorageKey(uid) {
+        return `jeonju-food-reviews-${uid}`;
+      }
+
+      function getReviews(uid) {
+        try {
+          return JSON.parse(
+            localStorage.getItem(getReviewStorageKey(uid)) || "[]",
           );
-          if (item) {
-            item.reviewCnt += 1;
-            document.getElementById("detail-review-count").innerText =
-              `리뷰 ${item.reviewCnt}`;
-          }
+        } catch {
+          return [];
+        }
+      }
 
-          this.renderReviews();
-          this.closeReviewModal();
-        },
-      };
+      function getFavorites() {
+        try {
+          return JSON.parse(
+            localStorage.getItem(STORAGE_KEYS.favorites) || "[]",
+          );
+        } catch {
+          return [];
+        }
+      }
 
-      // 앱 초기화
-      window.onload = () => {
-        app.init();
-      };
+      function isFavorite(uid) {
+        return getFavorites().includes(String(uid));
+      }
+
+      function toggleFavorite(uid, rerenderDetail = false) {
+        const favorites = new Set(getFavorites());
+        const key = String(uid);
+        if (favorites.has(key)) favorites.delete(key);
+        else favorites.add(key);
+        localStorage.setItem(
+          STORAGE_KEYS.favorites,
+          JSON.stringify([...favorites]),
+        );
+
+        STATE.restaurants.forEach((restaurant) => {
+          if (String(restaurant.uid) === key)
+            restaurant.isFavorite = favorites.has(key);
+        });
+
+        if (
+          STATE.selectedRestaurant &&
+          String(STATE.selectedRestaurant.uid) === key
+        ) {
+          STATE.selectedRestaurant.isFavorite = favorites.has(key);
+          if (rerenderDetail) renderDetail(STATE.selectedRestaurant);
+        }
+
+        applyFilters();
+      }
+
+      function mergeStoredMeta(restaurants) {
+        return restaurants.map((restaurant) => {
+          const reviews = getReviews(restaurant.uid);
+          const stats = calculateReviewStats(reviews);
+          return {
+            ...restaurant,
+            reviewCount: reviews.length,
+            avgRating: stats.avgRating,
+            ratingCount: stats.ratingCount,
+            isFavorite: isFavorite(restaurant.uid),
+          };
+        });
+      }
+
+      function showError(message) {
+        els.errorArea.innerHTML = `<div class="error">${escapeHtml(message)}</div>`;
+      }
+
+      function clearError() {
+        els.errorArea.innerHTML = "";
+      }
+
+      function escapeHtml(value) {
+        return String(value ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      function escapeHtmlAttr(value) {
+        return escapeHtml(value).replace(/`/g, "&#96;");
+      }
+
+      function getFallbackRestaurants() {
+        return [
+          {
+            uid: "fallback-1",
+            foodUid: "fallback-1",
+            name: "전주 가족회관",
+            address: "전주시 완산구 전라감영 5길 17 2층",
+            roadAddr: "전주시 완산구 전라감영 5길 17 2층",
+            jibunAddr: "",
+            menu: "전주 비빔밥 ₩15,000, 육회비빔밥 ₩18,000",
+            tel: "063-000-0000",
+            intro:
+              "전주 대표 비빔밥 맛집으로 관광객과 현지인 모두에게 인기입니다.",
+            image: CONFIG.DEFAULT_IMAGE,
+            category: "비빔밥",
+            x: 127.1467,
+            y: 35.8194,
+          },
+          {
+            uid: "fallback-2",
+            foodUid: "fallback-2",
+            name: "전주왱이 콩나물국밥",
+            address: "전주시 완산구 동문길 88",
+            roadAddr: "전주시 완산구 동문길 88",
+            jibunAddr: "",
+            menu: "콩나물국밥 ₩8,000",
+            tel: "063-000-0001",
+            intro: "해장으로도 유명한 전주식 콩나물국밥 전문점입니다.",
+            image:
+              "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=80",
+            category: "국밥",
+            x: 127.1502,
+            y: 35.8177,
+          },
+          {
+            uid: "fallback-3",
+            foodUid: "fallback-3",
+            name: "다문",
+            address: "전주시 덕진구 기린대로 700",
+            roadAddr: "전주시 덕진구 기린대로 700",
+            jibunAddr: "",
+            menu: "한정식 코스 ₩25,000",
+            tel: "063-000-0002",
+            intro: "한옥 감성으로 즐기는 전주식 한정식 코스 맛집입니다.",
+            image:
+              "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80",
+            category: "한정식",
+            x: 127.1214,
+            y: 35.8462,
+          },
+          {
+            uid: "fallback-4",
+            foodUid: "fallback-4",
+            name: "교동다원",
+            address: "전주시 완산구 은행로 74-11",
+            roadAddr: "전주시 완산구 은행로 74-11",
+            jibunAddr: "",
+            menu: "쌍화차 ₩9,000, 전통차 ₩8,000",
+            tel: "063-000-0003",
+            intro: "한옥마을 산책 뒤 들르기 좋은 전통 다과 공간입니다.",
+            image:
+              "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=80",
+            category: "전주한옥마을",
+            x: 127.1537,
+            y: 35.8153,
+          },
+        ].map((restaurant) => {
+          const reviews = getReviews(restaurant.uid);
+          const stats = calculateReviewStats(reviews);
+          return {
+            ...restaurant,
+            reviewCount: reviews.length,
+            avgRating: stats.avgRating,
+            ratingCount: stats.ratingCount,
+            isFavorite: isFavorite(restaurant.uid),
+          };
+        });
+      }
     </script>
   </body>
 </html>
