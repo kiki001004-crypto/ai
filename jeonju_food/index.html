@@ -1242,21 +1242,21 @@
       }
 
       function openDetail(uid) {
-        const restaurant = STATE.restaurants.find(
-          (item) => String(item.uid) === String(uid),
-        );
-        if (!restaurant) return;
+  const restaurant = STATE.restaurants.find((item) => String(item.uid) === String(uid));
+  if (!restaurant) return;
 
-        STATE.selectedRestaurant = restaurant;
-        renderDetail(restaurant);
-        renderReviews(restaurant.uid);
+  STATE.selectedRestaurant = restaurant;
 
-        els.listScreen.classList.remove("active");
-        els.detailScreen.classList.add("active");
+  els.listScreen.classList.remove('active');
+  els.detailScreen.classList.add('active');
 
-        if (window.innerWidth >= 860) {
-          els.listScreen.classList.add("active");
-        }
+  if (window.innerWidth >= 860) {
+    els.listScreen.classList.add('active');
+  }
+
+  renderDetail(restaurant);
+  renderReviews(restaurant.uid);
+}
       }
 
       function showListScreen() {
@@ -1383,26 +1383,36 @@
       }
 
       function renderMap(restaurant) {
-        const mapContainer = document.getElementById("map");
-        if (!mapContainer) return;
+  const mapContainer = document.getElementById('map');
+  if (!mapContainer) return;
 
-        if (!STATE.kakaoReady || !window.kakao || !window.kakao.maps) {
-          mapContainer.innerHTML =
-            '<div class="empty">카카오맵 키를 입력하면 지도와 길찾기가 동작합니다.</div>';
-          return;
-        }
+  if (!STATE.kakaoReady || !window.kakao || !window.kakao.maps) {
+    mapContainer.innerHTML = '<div class="empty">카카오맵 키를 입력하면 지도와 길찾기가 동작합니다.</div>';
+    return;
+  }
 
-        const center = new kakao.maps.LatLng(restaurant.y, restaurant.x);
-        STATE.map = new kakao.maps.Map(mapContainer, { center, level: 3 });
-        STATE.marker = new kakao.maps.Marker({ position: center });
-        STATE.marker.setMap(STATE.map);
+  const center = new kakao.maps.LatLng(restaurant.y, restaurant.x);
 
-        const info = new kakao.maps.InfoWindow({
-          content: `<div style="padding:8px 10px; font-size:13px;">${escapeHtml(restaurant.name)}</div>`,
-        });
+  STATE.map = new kakao.maps.Map(mapContainer, {
+    center,
+    level: 3
+  });
 
-        info.open(STATE.map, STATE.marker);
-      }
+  STATE.marker = new kakao.maps.Marker({
+    position: center
+  });
+  STATE.marker.setMap(STATE.map);
+
+  const info = new kakao.maps.InfoWindow({
+    content: `<div style="padding:8px 10px; font-size:13px;">${escapeHtml(restaurant.name)}</div>`
+  });
+  info.open(STATE.map, STATE.marker);
+
+  setTimeout(() => {
+    STATE.map.relayout();
+    STATE.map.setCenter(center);
+  }, 100);
+}
 
       function openKakaoRoute() {
         const restaurant = STATE.selectedRestaurant;
