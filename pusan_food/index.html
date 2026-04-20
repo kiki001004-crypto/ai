@@ -1,0 +1,1132 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>부산 맛집 서비스</title>
+    <style>
+      :root {
+        --bg: #f5f5f5;
+        --surface: #ffffff;
+        --text: #111111;
+        --muted: #6b7280;
+        --line: #e5e7eb;
+        --primary: #222222;
+        --primary-weak: #f0f0f0;
+        --accent: #111111;
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        --radius-xl: 22px;
+        --radius-lg: 16px;
+        --radius-md: 12px;
+        --max-width: 480px;
+        --nav-height: 88px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      img {
+        display: block;
+        max-width: 100%;
+      }
+
+      .app {
+        max-width: var(--max-width);
+        min-height: 100vh;
+        margin: 0 auto;
+        background: var(--bg);
+        position: relative;
+        padding-bottom: calc(var(--nav-height) + 24px);
+      }
+
+      .screen {
+        display: none;
+        padding: 18px 16px 0;
+      }
+
+      .screen.active {
+        display: block;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      .title-wrap h1 {
+        margin: 0;
+        font-size: 2rem;
+        line-height: 1.2;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+      }
+
+      .title-wrap p {
+        margin: 6px 0 0;
+        font-size: 0.95rem;
+        color: var(--muted);
+        font-weight: 600;
+      }
+
+      .icon-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding-top: 4px;
+      }
+
+      .icon-btn {
+        border: 0;
+        background: transparent;
+        width: 30px;
+        height: 30px;
+        border-radius: 999px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text);
+      }
+
+      .icon-btn:hover {
+        background: rgba(0, 0, 0, 0.05);
+      }
+
+      .search-box {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 14px 16px;
+        margin-bottom: 14px;
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
+      }
+
+      .search-box input {
+        width: 100%;
+        border: 0;
+        outline: none;
+        background: transparent;
+        font-size: 1rem;
+      }
+
+      .toolbar {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        padding-bottom: 8px;
+        margin-bottom: 6px;
+        scrollbar-width: none;
+      }
+
+      .toolbar::-webkit-scrollbar {
+        display: none;
+      }
+
+      .chip {
+        border: 1px solid var(--line);
+        background: #fff;
+        color: #333;
+        border-radius: 999px;
+        padding: 10px 14px;
+        white-space: nowrap;
+        cursor: pointer;
+        font-weight: 600;
+      }
+
+      .chip.active {
+        background: var(--primary);
+        color: #fff;
+        border-color: var(--primary);
+      }
+
+      .status {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin: 8px 0 12px;
+        color: var(--muted);
+        font-size: 0.94rem;
+      }
+
+      .list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .card {
+        background: var(--surface);
+        border: 1px solid #dbdbdb;
+        padding: 18px 16px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 10px 12px;
+        cursor: pointer;
+        transition:
+          transform 0.18s ease,
+          box-shadow 0.18s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-1px);
+        box-shadow: var(--shadow);
+      }
+
+      .card-main h3 {
+        margin: 0 0 10px;
+        font-size: 1.05rem;
+        line-height: 1.45;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+
+      .meta {
+        margin: 0;
+        color: #404040;
+        line-height: 1.55;
+        font-size: 0.98rem;
+        word-break: keep-all;
+      }
+
+      .meta + .meta {
+        margin-top: 4px;
+      }
+
+      .card-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        align-self: center;
+      }
+
+      .mini-icon {
+        border: 0;
+        background: transparent;
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: var(--text);
+      }
+
+      .mini-icon:hover {
+        background: rgba(0, 0, 0, 0.06);
+      }
+
+      .favorite.active svg {
+        fill: #111;
+      }
+
+      .empty,
+      .loading,
+      .error-box {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-lg);
+        padding: 20px 16px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .detail-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 14px;
+      }
+
+      .back-btn {
+        border: 0;
+        background: #fff;
+        border-radius: 999px;
+        width: 42px;
+        height: 42px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        cursor: pointer;
+      }
+
+      .hero {
+        border-radius: 18px;
+        overflow: hidden;
+        background: #ddd;
+        aspect-ratio: 16 / 9;
+        margin-bottom: 16px;
+      }
+
+      .hero img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .label {
+        display: inline-flex;
+        align-items: center;
+        background: #3a3a3a;
+        color: #fff;
+        border-radius: 4px;
+        padding: 10px 12px;
+        font-weight: 800;
+        margin: 0 0 10px;
+        line-height: 1;
+      }
+
+      .detail-title {
+        margin: 0 0 14px;
+        font-size: 2rem;
+        line-height: 1.28;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        word-break: keep-all;
+      }
+
+      .detail-section {
+        margin-bottom: 18px;
+      }
+
+      .detail-text {
+        margin: 0;
+        color: #3d3d3d;
+        line-height: 1.6;
+        font-size: 1.02rem;
+        word-break: keep-all;
+      }
+
+      .detail-link {
+        color: inherit;
+        text-decoration: none;
+        border-bottom: 1px solid #999;
+      }
+
+      .detail-link:hover {
+        color: #000;
+        border-bottom-color: #000;
+      }
+
+      #map {
+        width: 100%;
+        height: 220px;
+        border-radius: 0;
+        overflow: hidden;
+        background: #e9ecef;
+        border: 1px solid var(--line);
+      }
+
+      .bottom-nav {
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 0;
+        width: min(100%, var(--max-width));
+        background: var(--bg);
+        padding: 12px 16px 14px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        border-top: 1px solid #e6e6e6;
+      }
+
+      .nav-btn {
+        height: 46px;
+        border-radius: 10px;
+        border: 1px solid #d6d6d6;
+        background: #f3f3f3;
+        color: #222;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .nav-btn.active {
+        background: #2f2f2f;
+        color: #fff;
+        border-color: #2f2f2f;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      @media (max-width: 390px) {
+        .title-wrap h1,
+        .detail-title {
+          font-size: 1.7rem;
+        }
+        .meta {
+          font-size: 0.94rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <section id="list-screen" class="screen active">
+        <div class="topbar">
+          <div class="title-wrap">
+            <h1>부산 맛집 서비스</h1>
+            <p id="total-count">전체 0건</p>
+          </div>
+          <div class="icon-actions">
+            <button
+              class="icon-btn"
+              id="refresh-btn"
+              title="새로고침"
+              aria-label="새로고침"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M21 12a9 9 0 1 1-2.64-6.36" />
+                <path d="M21 3v6h-6" />
+              </svg>
+            </button>
+            <button
+              class="icon-btn"
+              id="header-favorite-btn"
+              title="즐겨찾기 보기"
+              aria-label="즐겨찾기 보기"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="m12 21-1.45-1.32C5.4 15.02 2 11.93 2 8.14 2 5.05 4.42 2.75 7.4 2.75c1.74 0 3.41.81 4.6 2.09 1.19-1.28 2.86-2.09 4.6-2.09 2.98 0 5.4 2.3 5.4 5.39 0 3.79-3.4 6.88-8.55 11.54z"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <label class="search-box" for="search-input">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m20 20-3.5-3.5"></path>
+          </svg>
+          <span class="sr-only">검색</span>
+          <input
+            id="search-input"
+            type="text"
+            placeholder="가게명/주소/메뉴로 검색"
+          />
+        </label>
+
+        <div class="toolbar" id="district-toolbar"></div>
+
+        <div class="status">
+          <span id="status-text">데이터를 불러오는 중...</span>
+          <span id="page-info"></span>
+        </div>
+
+        <div id="list-container" class="list"></div>
+      </section>
+
+      <section id="detail-screen" class="screen">
+        <div class="detail-header">
+          <button class="back-btn" id="back-btn" aria-label="뒤로가기">
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </button>
+          <button
+            class="icon-btn favorite"
+            id="detail-favorite-btn"
+            aria-label="즐겨찾기 추가/해제"
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="m12 21-1.45-1.32C5.4 15.02 2 11.93 2 8.14 2 5.05 4.42 2.75 7.4 2.75c1.74 0 3.41.81 4.6 2.09 1.19-1.28 2.86-2.09 4.6-2.09 2.98 0 5.4 2.3 5.4 5.39 0 3.79-3.4 6.88-8.55 11.54z"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <div class="hero">
+          <img id="detail-image" alt="맛집 이미지" />
+        </div>
+
+        <div class="detail-section">
+          <div class="label">상호명</div>
+          <h2 class="detail-title" id="detail-name">-</h2>
+        </div>
+
+        <div class="detail-section">
+          <div class="label">주소</div>
+          <p class="detail-text" id="detail-address">-</p>
+        </div>
+
+        <div class="detail-section">
+          <div class="label">소개</div>
+          <p class="detail-text" id="detail-desc">-</p>
+        </div>
+
+        <div class="detail-section">
+          <div class="label">대표메뉴</div>
+          <p class="detail-text" id="detail-menu">-</p>
+        </div>
+
+        <div class="detail-section">
+          <div class="label">연락처</div>
+          <p class="detail-text" id="detail-phone">-</p>
+        </div>
+
+        <div class="detail-section">
+          <div class="label">운영 및 시간</div>
+          <p class="detail-text" id="detail-hours">-</p>
+        </div>
+
+        <div class="detail-section" id="homepage-section" style="display: none">
+          <div class="label">홈페이지</div>
+          <p class="detail-text">
+            <a
+              id="detail-homepage"
+              class="detail-link"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              >바로가기</a
+            >
+          </p>
+        </div>
+
+        <div id="map" aria-label="카카오맵"></div>
+      </section>
+
+      <nav class="bottom-nav">
+        <button class="nav-btn active" data-tab="all">맛집</button>
+        <button class="nav-btn" data-tab="favorites">즐겨찾기</button>
+      </nav>
+    </div>
+
+    <script>
+      /* =========================
+       설정값 - 여기에 키를 넣어 사용하세요.
+       ========================= */
+      const CONFIG = {
+        // 공공데이터포털 일반 인증키(Encoding/Decoding 중 일반적으로 Encoding 키 사용)
+        FOOD_API_KEY:
+          "c396d7fec4c202142c2c83f4d72a60e831b50c2bea1f0db3df46ac266a8615aa",
+
+        // 카카오맵 JavaScript 키
+        KAKAO_MAP_KEY: "2631fbface8acace856d0e9bd3bddd6a",
+
+        // 공공데이터 API 기본 주소
+        FOOD_API_BASE_URL:
+          "https://apis.data.go.kr/6260000/FoodService/getFoodKr",
+
+        // 기본 조회 건수
+        PAGE_SIZE: 200,
+
+        // 상세 이미지가 없을 때 사용할 기본 이미지
+        FALLBACK_IMAGE:
+          "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=80",
+      };
+
+      /*
+      참고
+      - 부산 맛집 정보 서비스는 data.go.kr에서 제공되며 REST, JSON/XML 형식을 지원합니다.
+      - 국문 조회 기능 요청주소는 getFoodKr 이고,
+        pageNo, numOfRows, ServiceKey, resultType, UC_SEQ 등을 사용합니다.
+      - 응답 주요 필드는 UC_SEQ, MAIN_TITLE, GUGUN_NM, LAT, LNG, ADDR1, CNTCT_TEL,
+        USAGE_DAY_WEEK_AND_TIME, RPRSNTV_MENU, MAIN_IMG_NORMAL, ITEMCNTNTS 등입니다.
+    */
+
+      const state = {
+        allItems: [],
+        filteredItems: [],
+        favorites: loadFavorites(),
+        selectedDistrict: "전체",
+        searchKeyword: "",
+        currentTab: "all",
+        selectedItem: null,
+        map: null,
+        marker: null,
+        mapScriptLoaded: false,
+      };
+
+      const el = {
+        listScreen: document.getElementById("list-screen"),
+        detailScreen: document.getElementById("detail-screen"),
+        listContainer: document.getElementById("list-container"),
+        totalCount: document.getElementById("total-count"),
+        statusText: document.getElementById("status-text"),
+        pageInfo: document.getElementById("page-info"),
+        searchInput: document.getElementById("search-input"),
+        districtToolbar: document.getElementById("district-toolbar"),
+        refreshBtn: document.getElementById("refresh-btn"),
+        headerFavoriteBtn: document.getElementById("header-favorite-btn"),
+        backBtn: document.getElementById("back-btn"),
+        detailFavoriteBtn: document.getElementById("detail-favorite-btn"),
+        detailImage: document.getElementById("detail-image"),
+        detailName: document.getElementById("detail-name"),
+        detailAddress: document.getElementById("detail-address"),
+        detailDesc: document.getElementById("detail-desc"),
+        detailMenu: document.getElementById("detail-menu"),
+        detailPhone: document.getElementById("detail-phone"),
+        detailHours: document.getElementById("detail-hours"),
+        detailHomepage: document.getElementById("detail-homepage"),
+        homepageSection: document.getElementById("homepage-section"),
+        navButtons: document.querySelectorAll(".nav-btn"),
+      };
+
+      document.addEventListener("DOMContentLoaded", init);
+
+      async function init() {
+        bindEvents();
+        renderDistricts([]);
+        renderList([], "loading");
+        await loadFoodData();
+      }
+
+      function bindEvents() {
+        el.searchInput.addEventListener(
+          "input",
+          debounce((e) => {
+            state.searchKeyword = e.target.value.trim();
+            applyFilters();
+          }, 250),
+        );
+
+        el.refreshBtn.addEventListener("click", async () => {
+          await loadFoodData(true);
+        });
+
+        el.headerFavoriteBtn.addEventListener("click", () => {
+          setTab("favorites");
+        });
+
+        el.backBtn.addEventListener("click", () => {
+          showListScreen();
+        });
+
+        el.detailFavoriteBtn.addEventListener("click", () => {
+          if (!state.selectedItem) return;
+          toggleFavorite(state.selectedItem.UC_SEQ);
+        });
+
+        el.navButtons.forEach((btn) => {
+          btn.addEventListener("click", () => setTab(btn.dataset.tab));
+        });
+      }
+
+      async function loadFoodData(force = false) {
+        try {
+          el.statusText.textContent = "데이터를 불러오는 중...";
+          renderList([], "loading");
+
+          const items = await fetchFoodItems(force);
+          state.allItems = normalizeItems(items);
+
+          const districts = Array.from(
+            new Set(
+              state.allItems
+                .map((item) => item.GUGUN_NM || "기타")
+                .filter(Boolean),
+            ),
+          ).sort((a, b) => a.localeCompare(b, "ko"));
+
+          renderDistricts(districts);
+          applyFilters();
+        } catch (error) {
+          console.error(error);
+          state.allItems = normalizeItems(getMockItems());
+          renderDistricts(
+            Array.from(
+              new Set(state.allItems.map((item) => item.GUGUN_NM)),
+            ).sort((a, b) => a.localeCompare(b, "ko")),
+          );
+          applyFilters();
+          el.statusText.textContent =
+            "실데이터 호출에 실패해 예시 데이터로 표시 중";
+        }
+      }
+
+      async function fetchFoodItems() {
+        if (!CONFIG.FOOD_API_KEY || CONFIG.FOOD_API_KEY.includes("여기에_")) {
+          throw new Error("공공데이터 API 키가 설정되지 않았습니다.");
+        }
+
+        const url = new URL(CONFIG.FOOD_API_BASE_URL);
+        url.searchParams.set("ServiceKey", CONFIG.FOOD_API_KEY);
+        url.searchParams.set("pageNo", "1");
+        url.searchParams.set("numOfRows", String(CONFIG.PAGE_SIZE));
+        url.searchParams.set("resultType", "json");
+
+        const response = await fetch(url.toString());
+        if (!response.ok) {
+          throw new Error(`API 요청 실패: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const items = data?.getFoodKr?.item;
+
+        if (!Array.isArray(items)) {
+          throw new Error("예상한 응답 형식이 아닙니다.");
+        }
+
+        return items;
+      }
+
+      function normalizeItems(items) {
+        return items.map((item) => ({
+          ...item,
+          UC_SEQ: String(item.UC_SEQ ?? ""),
+          MAIN_TITLE: item.MAIN_TITLE || item.PLACE || "이름 없음",
+          ADDR1: item.ADDR1 || "주소 정보 없음",
+          RPRSNTV_MENU: item.RPRSNTV_MENU || "대표메뉴 정보 없음",
+          ITEMCNTNTS: item.ITEMCNTNTS || "소개 정보가 없습니다.",
+          CNTCT_TEL: item.CNTCT_TEL || "연락처 정보 없음",
+          USAGE_DAY_WEEK_AND_TIME:
+            item.USAGE_DAY_WEEK_AND_TIME || "운영시간 정보 없음",
+          MAIN_IMG_NORMAL: normalizeImageUrl(item.MAIN_IMG_NORMAL),
+          MAIN_IMG_THUMB: normalizeImageUrl(item.MAIN_IMG_THUMB),
+          LAT: Number(item.LAT) || 35.1796,
+          LNG: Number(item.LNG) || 129.0756,
+          HOMEPAGE_URL: normalizeHomepage(item.HOMEPAGE_URL),
+          GUGUN_NM: item.GUGUN_NM || "기타",
+        }));
+      }
+
+      function normalizeImageUrl(url) {
+        if (!url) return CONFIG.FALLBACK_IMAGE;
+        if (/^https?:\/\//i.test(url)) return url;
+        if (url.startsWith("//")) return `https:${url}`;
+        if (url.startsWith("/")) return `https://www.visitbusan.net${url}`;
+        return url;
+      }
+
+      function normalizeHomepage(url) {
+        if (!url) return "";
+        if (/^https?:\/\//i.test(url)) return url;
+        return `https://${url}`;
+      }
+
+      function renderDistricts(districts) {
+        const all = ["전체", ...districts];
+        el.districtToolbar.innerHTML = all
+          .map(
+            (name) => `
+        <button class="chip ${state.selectedDistrict === name ? "active" : ""}" data-district="${escapeHtml(name)}">${escapeHtml(name)}</button>
+      `,
+          )
+          .join("");
+
+        el.districtToolbar.querySelectorAll(".chip").forEach((button) => {
+          button.addEventListener("click", () => {
+            state.selectedDistrict = button.dataset.district;
+            renderDistricts(districts);
+            applyFilters();
+          });
+        });
+      }
+
+      function applyFilters() {
+        const keyword = state.searchKeyword.toLowerCase();
+        let source = [...state.allItems];
+
+        if (state.currentTab === "favorites") {
+          source = source.filter((item) =>
+            state.favorites.includes(item.UC_SEQ),
+          );
+        }
+
+        if (state.selectedDistrict !== "전체") {
+          source = source.filter(
+            (item) => item.GUGUN_NM === state.selectedDistrict,
+          );
+        }
+
+        if (keyword) {
+          source = source.filter((item) =>
+            [
+              item.MAIN_TITLE,
+              item.ADDR1,
+              item.RPRSNTV_MENU,
+              item.GUGUN_NM,
+              item.ITEMCNTNTS,
+            ]
+              .join(" ")
+              .toLowerCase()
+              .includes(keyword),
+          );
+        }
+
+        state.filteredItems = source;
+        renderList(source);
+        updateStatus();
+      }
+
+      function renderList(items, mode = "normal") {
+        if (mode === "loading") {
+          el.listContainer.innerHTML = `<div class="loading">맛집 정보를 불러오는 중입니다...</div>`;
+          return;
+        }
+
+        if (!items.length) {
+          el.listContainer.innerHTML = `<div class="empty">조건에 맞는 맛집이 없습니다. 검색어 또는 구군 필터를 바꿔보세요.</div>`;
+          return;
+        }
+
+        el.listContainer.innerHTML = items
+          .map((item) => {
+            const isFavorite = state.favorites.includes(item.UC_SEQ);
+            return `
+          <article class="card" data-id="${escapeHtml(item.UC_SEQ)}">
+            <div class="card-main">
+              <h3>${escapeHtml(item.MAIN_TITLE)}</h3>
+              <p class="meta"><strong>주소 :</strong> ${escapeHtml(item.ADDR1)}</p>
+              <p class="meta"><strong>메뉴 :</strong> ${escapeHtml(item.RPRSNTV_MENU)}</p>
+            </div>
+            <div class="card-actions">
+              <button class="mini-icon view-detail" title="상세보기" aria-label="상세보기" data-id="${escapeHtml(item.UC_SEQ)}">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+              </button>
+              <button class="mini-icon favorite ${isFavorite ? "active" : ""}" title="즐겨찾기" aria-label="즐겨찾기" data-id="${escapeHtml(item.UC_SEQ)}">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="${isFavorite ? "currentColor" : "none"}" stroke="currentColor" stroke-width="2"><path d="m12 21-1.45-1.32C5.4 15.02 2 11.93 2 8.14 2 5.05 4.42 2.75 7.4 2.75c1.74 0 3.41.81 4.6 2.09 1.19-1.28 2.86-2.09 4.6-2.09 2.98 0 5.4 2.3 5.4 5.39 0 3.79-3.4 6.88-8.55 11.54z"/></svg>
+              </button>
+            </div>
+          </article>
+        `;
+          })
+          .join("");
+
+        el.listContainer.querySelectorAll(".card").forEach((card) => {
+          card.addEventListener("click", (event) => {
+            const target = event.target.closest("button");
+            if (target?.classList.contains("favorite")) return;
+            const id = card.dataset.id;
+            const item = state.allItems.find((v) => v.UC_SEQ === id);
+            if (item) showDetail(item);
+          });
+        });
+
+        el.listContainer.querySelectorAll(".view-detail").forEach((button) => {
+          button.addEventListener("click", (event) => {
+            event.stopPropagation();
+            const id = button.dataset.id;
+            const item = state.allItems.find((v) => v.UC_SEQ === id);
+            if (item) showDetail(item);
+          });
+        });
+
+        el.listContainer.querySelectorAll(".favorite").forEach((button) => {
+          button.addEventListener("click", (event) => {
+            event.stopPropagation();
+            toggleFavorite(button.dataset.id);
+          });
+        });
+      }
+
+      function updateStatus() {
+        const total =
+          state.currentTab === "favorites"
+            ? state.filteredItems.length
+            : state.allItems.length;
+
+        el.totalCount.textContent = `전체 ${total}건`;
+        el.pageInfo.textContent =
+          state.currentTab === "favorites" ? "즐겨찾기 보기" : "";
+
+        if (state.currentTab === "favorites") {
+          el.statusText.textContent = `즐겨찾기 ${state.filteredItems.length}건`;
+        } else {
+          el.statusText.textContent = `검색 결과 ${state.filteredItems.length}건`;
+        }
+      }
+
+      function showDetail(item) {
+        state.selectedItem = item;
+        el.detailImage.src = item.MAIN_IMG_NORMAL || CONFIG.FALLBACK_IMAGE;
+        el.detailImage.onerror = () => {
+          el.detailImage.src = CONFIG.FALLBACK_IMAGE;
+        };
+        el.detailName.textContent = item.MAIN_TITLE;
+        el.detailAddress.textContent = item.ADDR1;
+        el.detailDesc.textContent = cleanText(item.ITEMCNTNTS);
+        el.detailMenu.textContent = item.RPRSNTV_MENU;
+        el.detailPhone.textContent = item.CNTCT_TEL;
+        el.detailHours.textContent = item.USAGE_DAY_WEEK_AND_TIME;
+
+        if (item.HOMEPAGE_URL) {
+          el.homepageSection.style.display = "block";
+          el.detailHomepage.href = item.HOMEPAGE_URL;
+          el.detailHomepage.textContent = item.HOMEPAGE_URL;
+        } else {
+          el.homepageSection.style.display = "none";
+        }
+
+        updateDetailFavoriteButton();
+        el.listScreen.classList.remove("active");
+        el.detailScreen.classList.add("active");
+        initKakaoMap(item);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function showListScreen() {
+        el.detailScreen.classList.remove("active");
+        el.listScreen.classList.add("active");
+      }
+
+      function setTab(tab) {
+        state.currentTab = tab;
+        el.navButtons.forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.tab === tab);
+        });
+        applyFilters();
+        showListScreen();
+      }
+
+      function toggleFavorite(id) {
+        const next = new Set(state.favorites);
+        if (next.has(id)) next.delete(id);
+        else next.add(id);
+        state.favorites = [...next];
+        localStorage.setItem(
+          "busan-food-favorites",
+          JSON.stringify(state.favorites),
+        );
+        updateDetailFavoriteButton();
+        applyFilters();
+      }
+
+      function updateDetailFavoriteButton() {
+        if (!state.selectedItem) return;
+        const active = state.favorites.includes(state.selectedItem.UC_SEQ);
+        el.detailFavoriteBtn.classList.toggle("active", active);
+        const svg = el.detailFavoriteBtn.querySelector("svg");
+        svg.setAttribute("fill", active ? "currentColor" : "none");
+      }
+
+      function loadFavorites() {
+        try {
+          return JSON.parse(
+            localStorage.getItem("busan-food-favorites") || "[]",
+          );
+        } catch {
+          return [];
+        }
+      }
+
+      async function initKakaoMap(item) {
+        const container = document.getElementById("map");
+        if (!container) return;
+
+        if (!CONFIG.KAKAO_MAP_KEY || CONFIG.KAKAO_MAP_KEY.includes("여기에_")) {
+          container.innerHTML = `<div style="display:flex;height:100%;align-items:center;justify-content:center;padding:16px;color:#6b7280;text-align:center;line-height:1.6;">카카오맵 키를 입력하면<br>이 위치에 지도가 표시됩니다.</div>`;
+          return;
+        }
+
+        try {
+          await loadKakaoMapScript();
+          container.innerHTML = "";
+
+          const position = new kakao.maps.LatLng(item.LAT, item.LNG);
+
+          if (!state.map) {
+            state.map = new kakao.maps.Map(container, {
+              center: position,
+              level: 3,
+            });
+          } else {
+            state.map.setCenter(position);
+          }
+
+          if (state.marker) {
+            state.marker.setMap(null);
+          }
+
+          state.marker = new kakao.maps.Marker({
+            position,
+            map: state.map,
+          });
+
+          const info = new kakao.maps.InfoWindow({
+            content: `<div style="padding:8px 10px;font-size:12px;word-break:keep-all;">${escapeHtml(item.MAIN_TITLE)}</div>`,
+          });
+          info.open(state.map, state.marker);
+        } catch (error) {
+          console.error(error);
+          container.innerHTML = `<div style="display:flex;height:100%;align-items:center;justify-content:center;padding:16px;color:#6b7280;text-align:center;line-height:1.6;">카카오맵을 불러오지 못했습니다.<br>앱 키와 도메인 설정을 확인해주세요.</div>`;
+        }
+      }
+
+      function loadKakaoMapScript() {
+        if (window.kakao?.maps) return Promise.resolve();
+
+        return new Promise((resolve, reject) => {
+          const existing = document.querySelector("script[data-kakao-map]");
+          if (existing) {
+            existing.addEventListener("load", () =>
+              window.kakao?.maps?.load(resolve),
+            );
+            existing.addEventListener("error", reject);
+            return;
+          }
+
+          const script = document.createElement("script");
+          script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${CONFIG.KAKAO_MAP_KEY}&autoload=false`;
+          script.async = true;
+          script.dataset.kakaoMap = "true";
+          script.onload = () => {
+            if (!window.kakao?.maps) {
+              reject(new Error("카카오맵 객체가 없습니다."));
+              return;
+            }
+            window.kakao.maps.load(resolve);
+          };
+          script.onerror = reject;
+          document.head.appendChild(script);
+        });
+      }
+
+      function cleanText(text) {
+        return String(text || "")
+          .replace(/<br\s*\/?>/gi, "\n")
+          .replace(/<[^>]*>/g, "")
+          .replace(/\s+/g, " ")
+          .trim();
+      }
+
+      function escapeHtml(value) {
+        return String(value ?? "")
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function debounce(fn, delay = 300) {
+        let timer;
+        return (...args) => {
+          clearTimeout(timer);
+          timer = setTimeout(() => fn(...args), delay);
+        };
+      }
+
+      function getMockItems() {
+        return [
+          {
+            UC_SEQ: "69",
+            MAIN_TITLE: "80년 전통 할매 국밥",
+            GUGUN_NM: "부산진구",
+            LAT: 35.1579,
+            LNG: 129.0592,
+            ADDR1: "부산 부산진구 서면로 68번길 33.",
+            CNTCT_TEL: "051-666-5555",
+            USAGE_DAY_WEEK_AND_TIME: "11:00 - 18:00",
+            RPRSNTV_MENU: "따로 국밥₩7,000 수육₩10,000",
+            MAIN_IMG_NORMAL:
+              "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1200&q=80",
+            MAIN_IMG_THUMB:
+              "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=600&q=80",
+            ITEMCNTNTS:
+              "80년 전통의 돼지 국밥 전문점으로, 웨이팅 기본이 1시간 이상을 기다려야하는 유명한 식당이다. 다른 국밥 집과는 다른 맑은 국물이 특징이며, 돼지 수육은 부드러운 맛이다. 국물과 고기가 따로 나오는 수육이 제일 인기가 좋다.",
+            HOMEPAGE_URL: "",
+          },
+          {
+            UC_SEQ: "70",
+            MAIN_TITLE: "광안리 바다횟집",
+            GUGUN_NM: "수영구",
+            LAT: 35.1532,
+            LNG: 129.1186,
+            ADDR1: "부산 수영구 광안해변로 219",
+            CNTCT_TEL: "051-123-4567",
+            USAGE_DAY_WEEK_AND_TIME: "12:00 - 22:00",
+            RPRSNTV_MENU: "모둠회 ₩45,000 매운탕 ₩8,000",
+            MAIN_IMG_NORMAL:
+              "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1200&q=80",
+            MAIN_IMG_THUMB:
+              "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=600&q=80",
+            ITEMCNTNTS:
+              "광안대교 야경과 함께 싱싱한 회를 즐길 수 있는 맛집입니다. 해산물의 선도가 좋고 관광객과 현지인 모두에게 인기가 높습니다.",
+            HOMEPAGE_URL: "",
+          },
+          {
+            UC_SEQ: "71",
+            MAIN_TITLE: "해운대 밀면 연구소",
+            GUGUN_NM: "해운대구",
+            LAT: 35.1631,
+            LNG: 129.1635,
+            ADDR1: "부산 해운대구 구남로 24번길 12",
+            CNTCT_TEL: "051-777-8888",
+            USAGE_DAY_WEEK_AND_TIME: "10:30 - 20:30",
+            RPRSNTV_MENU: "물밀면 ₩8,500 비빔밀면 ₩9,000",
+            MAIN_IMG_NORMAL:
+              "https://images.unsplash.com/photo-1617093727343-374698b1b08d?auto=format&fit=crop&w=1200&q=80",
+            MAIN_IMG_THUMB:
+              "https://images.unsplash.com/photo-1617093727343-374698b1b08d?auto=format&fit=crop&w=600&q=80",
+            ITEMCNTNTS:
+              "쫄깃한 면발과 깔끔한 육수가 조화를 이루는 밀면 전문점입니다. 해운대 관광 후 가볍게 들르기 좋습니다.",
+            HOMEPAGE_URL: "",
+          },
+        ];
+      }
+    </script>
+  </body>
+</html>
