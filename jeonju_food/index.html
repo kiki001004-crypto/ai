@@ -1241,23 +1241,23 @@
         return pages;
       }
 
-      function openDetail(uid) {
-        const restaurant = STATE.restaurants.find(
-          (item) => String(item.uid) === String(uid),
-        );
-        if (!restaurant) return;
+    function openDetail(uid) {
+  const restaurant = STATE.restaurants.find((item) => String(item.uid) === String(uid));
+  if (!restaurant) return;
 
-        STATE.selectedRestaurant = restaurant;
-        renderDetail(restaurant);
-        renderReviews(restaurant.uid);
+  STATE.selectedRestaurant = restaurant;
 
-        els.listScreen.classList.remove("active");
-        els.detailScreen.classList.add("active");
+  els.listScreen.classList.remove('active');
+  els.detailScreen.classList.add('active');
 
-        if (window.innerWidth >= 860) {
-          els.listScreen.classList.add("active");
-        }
-      }
+  if (window.innerWidth >= 860) {
+    els.listScreen.classList.add('active');
+    }
+
+  renderDetail(restaurant);
+  renderReviews(restaurant.uid);
+} 
+      
 
       function showListScreen() {
         if (window.innerWidth < 860) {
