@@ -604,537 +604,588 @@
     </div>
 
     <script>
-                const CONFIG = {
-                  JEONJU_API_KEY:
-                    "c396d7fec4c202142c2c83f4d72a60e831b50c2bea1f0db3df46ac266a8615aa",
-                  KAKAO_JAVASCRIPT_KEY: "2631fbface8acace856d0e9bd3bddd6a",
-                  API_BASE_URL: "https://openapi.jeonju.go.kr/rest/jeonjufood",
-                  IMAGE_API_BASE_URL: "http://openapi.jeonju.go.kr/rest/jeonjufood",
-                  ITEMS_PER_PAGE: 10,
-                  DEFAULT_IMAGE:
-                    "https://images.unsplash.com/photo-1590301157890-4810ed352733?auto=format&fit=crop&w=1200&q=80",
-                  IMAGE_ENDPOINT: "getFoodImgList",
-                  ENDPOINTS: {
-                    all: "getHanokList",
-                    baekban: "getBaekbanList",
-                    bibimbap: "getBibimbapList",
-                    gukbap: "getBeanSproutRiceSoupList",
-                    hansik: "getHansikList",
-                    makgeolli: "getMakgeolliList",
-                    hanok: "getHanokList",
-                  },
-                };
+      const CONFIG = {
+        JEONJU_API_KEY:
+          "c396d7fec4c202142c2c83f4d72a60e831b50c2bea1f0db3df46ac266a8615aa",
+        KAKAO_JAVASCRIPT_KEY: "2631fbface8acace856d0e9bd3bddd6a",
+        API_BASE_URL: "https://openapi.jeonju.go.kr/rest/jeonjufood",
+        ITEMS_PER_PAGE: 10,
+        DEFAULT_IMAGE:
+          "https://images.unsplash.com/photo-1590301157890-4810ed352733?auto=format&fit=crop&w=1200&q=80",
+        IMAGE_ENDPOINT: "getFoodImgList",
+        ENDPOINTS: {
+          all: "getHanokList",
+          baekban: "getBaekbanList",
+          bibimbap: "getBibimbapList",
+          gukbap: "getBeanSproutRiceSoupList",
+          hansik: "getHansikList",
+          makgeolli: "getMakgeolliList",
+          hanok: "getHanokList",
+        },
+      };
 
-                const STORAGE_KEYS = {
-                  favorites: "jeonju-food-favorites",
-                };
+      const STORAGE_KEYS = {
+        favorites: "jeonju-food-favorites",
+      };
 
-                const STATE = {
-                  restaurants: [],
-                  filteredRestaurants: [],
-                  currentPage: 1,
-                  currentCategory: "all",
-                  currentTab: "all",
-                  keyword: "",
-                  selectedRestaurant: null,
-                  map: null,
-                  marker: null,
-                  kakaoReady: false,
-                };
+      const STATE = {
+        restaurants: [],
+        filteredRestaurants: [],
+        currentPage: 1,
+        currentCategory: "all",
+        currentTab: "all",
+        keyword: "",
+        selectedRestaurant: null,
+        map: null,
+        marker: null,
+        kakaoReady: false,
+      };
 
-                const CATEGORY_OPTIONS = [
-                  { key: "all", label: "[전체]" },
-                  { key: "baekban", label: "[백반]" },
-                  { key: "bibimbap", label: "[비빔밥]" },
-                  { key: "gukbap", label: "[국밥]" },
-                  { key: "hansik", label: "[한정식]" },
-                  { key: "makgeolli", label: "[막걸리]" },
-                  { key: "hanok", label: "[한옥마을]" },
-                ];
+      const CATEGORY_OPTIONS = [
+        { key: "all", label: "[전체]" },
+        { key: "baekban", label: "[백반]" },
+        { key: "bibimbap", label: "[비빔밥]" },
+        { key: "gukbap", label: "[국밥]" },
+        { key: "hansik", label: "[한정식]" },
+        { key: "makgeolli", label: "[막걸리]" },
+        { key: "hanok", label: "[한옥마을]" },
+      ];
 
-                const els = {
-                  listScreen: document.getElementById("listScreen"),
-                  detailScreen: document.getElementById("detailScreen"),
-                  searchInput: document.getElementById("searchInput"),
-                  categoryChips: document.getElementById("categoryChips"),
-                  featuredArea: document.getElementById("featuredArea"),
-                  listArea: document.getElementById("listArea"),
-                  pagination: document.getElementById("pagination"),
-                  errorArea: document.getElementById("errorArea"),
-                  detailHero: document.getElementById("detailHero"),
-                  detailCard: document.getElementById("detailCard"),
-                  reviewList: document.getElementById("reviewList"),
-                  reviewAuthor: document.getElementById("reviewAuthor"),
-                  reviewRating: document.getElementById("reviewRating"),
-                  reviewText: document.getElementById("reviewText"),
-                  featuredTitle: document.getElementById("featuredTitle"),
-                  listTitle: document.getElementById("listTitle"),
-                };
+      const els = {
+        listScreen: document.getElementById("listScreen"),
+        detailScreen: document.getElementById("detailScreen"),
+        searchInput: document.getElementById("searchInput"),
+        categoryChips: document.getElementById("categoryChips"),
+        featuredArea: document.getElementById("featuredArea"),
+        listArea: document.getElementById("listArea"),
+        pagination: document.getElementById("pagination"),
+        errorArea: document.getElementById("errorArea"),
+        detailHero: document.getElementById("detailHero"),
+        detailCard: document.getElementById("detailCard"),
+        reviewList: document.getElementById("reviewList"),
+        reviewAuthor: document.getElementById("reviewAuthor"),
+        reviewRating: document.getElementById("reviewRating"),
+        reviewText: document.getElementById("reviewText"),
+        featuredTitle: document.getElementById("featuredTitle"),
+        listTitle: document.getElementById("listTitle"),
+      };
 
-                document.addEventListener("DOMContentLoaded", async () => {
-                  renderCategoryChips();
-                  bindEvents();
-                  await loadKakaoMapSdk();
-                  await loadRestaurants();
-                });
+      document.addEventListener("DOMContentLoaded", async () => {
+        renderCategoryChips();
+        bindEvents();
+        await loadKakaoMapSdk();
+        await loadRestaurants();
+      });
 
-                function bindEvents() {
-                  document
-                    .getElementById("refreshBtn")
-                    .addEventListener("click", loadRestaurants);
-                  document
-                    .getElementById("backBtn")
-                    .addEventListener("click", showListScreen);
-                  document
-                    .getElementById("routeTopBtn")
-                    .addEventListener("click", openKakaoRoute);
-                  document
-                    .getElementById("submitReviewBtn")
-                    .addEventListener("click", handleReviewSubmit);
+      function bindEvents() {
+        document
+          .getElementById("refreshBtn")
+          .addEventListener("click", loadRestaurants);
+        document
+          .getElementById("backBtn")
+          .addEventListener("click", showListScreen);
+        document
+          .getElementById("routeTopBtn")
+          .addEventListener("click", openKakaoRoute);
+        document
+          .getElementById("submitReviewBtn")
+          .addEventListener("click", handleReviewSubmit);
 
-                  els.searchInput.addEventListener("input", (e) => {
-                    STATE.keyword = e.target.value.trim();
-                    STATE.currentPage = 1;
-                    applyFilters();
-                  });
+        els.searchInput.addEventListener("input", (e) => {
+          STATE.keyword = e.target.value.trim();
+          STATE.currentPage = 1;
+          applyFilters();
+        });
 
-                  document.querySelectorAll(".nav-btn").forEach((button) => {
-                    button.addEventListener("click", () => {
-                      const tab = button.dataset.tab;
-                      STATE.currentTab = tab;
-                      STATE.currentPage = 1;
-                      document
-                        .querySelectorAll(".nav-btn")
-                        .forEach((btn) =>
-                          btn.classList.toggle("active", btn.dataset.tab === tab),
-                        );
-                      applyFilters();
-                    });
-                  });
-                }
+        document.querySelectorAll(".nav-btn").forEach((button) => {
+          button.addEventListener("click", () => {
+            const tab = button.dataset.tab;
+            STATE.currentTab = tab;
+            STATE.currentPage = 1;
+            document.querySelectorAll(".nav-btn").forEach((btn) => {
+              btn.classList.toggle("active", btn.dataset.tab === tab);
+            });
+            applyFilters();
+          });
+        });
+      }
 
-                function renderCategoryChips() {
-                  els.categoryChips.innerHTML = CATEGORY_OPTIONS.map(
-                    (category) => `
-                  <button class="chip ${STATE.currentCategory === category.key ? "active" : ""}" data-category="${category.key}">${category.label}</button>
-                `,
-                  ).join("");
+      function renderCategoryChips() {
+        els.categoryChips.innerHTML = CATEGORY_OPTIONS.map(
+          (category) => `
+      <button class="chip ${STATE.currentCategory === category.key ? "active" : ""}" data-category="${category.key}">
+        ${category.label}
+      </button>
+    `,
+        ).join("");
 
-                  document.querySelectorAll(".chip").forEach((button) => {
-                    button.addEventListener("click", async () => {
-                      const nextCategory = button.dataset.category;
-                      if (STATE.currentCategory === nextCategory) return;
-                      STATE.currentCategory = nextCategory;
-                      STATE.currentPage = 1;
-                      renderCategoryChips();
-                      await loadRestaurants();
-                    });
-                  });
-                }
+        document.querySelectorAll(".chip").forEach((button) => {
+          button.addEventListener("click", async () => {
+            const nextCategory = button.dataset.category;
+            if (STATE.currentCategory === nextCategory) return;
+            STATE.currentCategory = nextCategory;
+            STATE.currentPage = 1;
+            renderCategoryChips();
+            await loadRestaurants();
+          });
+        });
+      }
 
-                async function loadRestaurants() {
-                  clearError();
-                  els.listArea.innerHTML =
-                    '<div class="loader">맛집 정보를 불러오는 중입니다...</div>';
-                  els.featuredArea.innerHTML =
-                    '<div class="loader">추천 맛집을 준비 중입니다...</div>';
+      async function loadRestaurants() {
+        clearError();
+        els.listArea.innerHTML =
+          '<div class="loader">맛집 정보를 불러오는 중입니다...</div>';
+        els.featuredArea.innerHTML =
+          '<div class="loader">추천 맛집을 준비 중입니다...</div>';
 
-                  try {
-                    const endpoint =
-                      CONFIG.ENDPOINTS[STATE.currentCategory] || CONFIG.ENDPOINTS.all;
-                    const rawList = await fetchRestaurantList(endpoint);
-                    let list = normalizeRestaurantList(rawList);
-                    list = await enrichRestaurantsWithImages(list);
-                    STATE.restaurants = mergeStoredMeta(list);
-                    applyFilters();
-                  } catch (error) {
-                    console.error(error);
-                    showError(
-                      "API 호출에 실패했습니다. 인증키, 실제 엔드포인트명, CORS 설정을 확인해주세요. 현재는 샘플 데이터로 표시합니다.",
-                    );
-                    STATE.restaurants = mergeStoredMeta(getFallbackRestaurants());
-                    applyFilters();
-                  }
-                }
+        const hasApiKey =
+          CONFIG.JEONJU_API_KEY && !CONFIG.JEONJU_API_KEY.includes("YOUR_");
 
-                async function fetchRestaurantList(endpointName) {
-                  const url = `${CONFIG.API_BASE_URL}/${endpointName}?authApiKey=${encodeURIComponent(CONFIG.JEONJU_API_KEY)}`;
-                  const response = await fetch(url);
-                  if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                  const contentType = response.headers.get("content-type") || "";
-                  const rawText = await response.text();
-                  if (
-                    contentType.includes("json") ||
-                    rawText.trim().startsWith("{") ||
-                    rawText.trim().startsWith("[")
-                  ) {
-                    return JSON.parse(rawText);
-                  }
-                  return parseXmlToJson(rawText);
-                }
+        if (!hasApiKey) {
+          STATE.restaurants = mergeStoredMeta(getFallbackRestaurants());
+          applyFilters();
+          return;
+        }
 
-                async function fetchFoodImages(foodUid) {
-                  if (!foodUid) return [];
-                  const url = `${CONFIG.IMAGE_API_BASE_URL}/${CONFIG.IMAGE_ENDPOINT}?authApiKey=${encodeURIComponent(CONFIG.JEONJU_API_KEY)}&foodUid=${encodeURIComponent(foodUid)}`;
-                  const response = await fetch(url);
-                  if (!response.ok) return [];
-                  const contentType = response.headers.get("content-type") || "";
-                  const rawText = await response.text();
+        try {
+          const endpoint =
+            CONFIG.ENDPOINTS[STATE.currentCategory] || CONFIG.ENDPOINTS.all;
+          const rawList = await fetchRestaurantList(endpoint);
+          let list = normalizeRestaurantList(rawList);
+          list = await enrichRestaurantsWithImages(list);
+          STATE.restaurants = mergeStoredMeta(list);
+          applyFilters();
+        } catch (error) {
+          console.error(error);
 
-                  let payload;
-                  if (
-                    contentType.includes("json") ||
-                    rawText.trim().startsWith("{") ||
-                    rawText.trim().startsWith("[")
-                  ) {
-                    payload = JSON.parse(rawText);
-                  } else {
-                    payload = parseXmlToJson(rawText);
-                  }
+          const isFileProtocol = location.protocol === "file:";
+          const message = isFileProtocol
+            ? "현재 file:// 방식으로 실행 중이라 API 호출이 차단되었습니다. Live Server 또는 localhost 환경에서 실행해주세요."
+            : "실제 API 연결에 실패하여 샘플 데이터로 표시 중입니다. 인증키, 엔드포인트명, 브라우저 CORS 환경을 확인해주세요.";
 
-                  const list = extractList(payload);
-                  return list.map((item) => ({
-                    thumbUrl: pick(item, ["thumbUrl"]),
-                    previewUrl: pick(item, ["privewUrl", "previewUrl"]),
-                  }));
-                }
+          showError(message);
+          STATE.restaurants = mergeStoredMeta(getFallbackRestaurants());
+          applyFilters();
+        }
+      }
 
-                async function enrichRestaurantsWithImages(restaurants) {
-                  const tasks = restaurants.slice(0, 12).map(async (restaurant) => {
-                    if (!restaurant.foodUid || restaurant.image !== CONFIG.DEFAULT_IMAGE)
-                      return restaurant;
-                    try {
-                      const images = await fetchFoodImages(restaurant.foodUid);
-                      if (images.length) {
-                        restaurant.image =
-                          images[0].previewUrl || images[0].thumbUrl || restaurant.image;
-                      }
-                     } catch (error) {
-                  console.error(error);
+      async function fetchRestaurantList(endpointName) {
+        const url = `${CONFIG.API_BASE_URL}/${endpointName}?authApiKey=${encodeURIComponent(CONFIG.JEONJU_API_KEY)}`;
+        const response = await fetch(url);
 
-                  const isFileProtocol = location.protocol === 'file:';
-                  const corsMessage = isFileProtocol
-                    ? '현재 file:// 방식으로 실행 중이라 API 호출이 차단되었습니다. Live Server 또는 localhost 환경에서 실행해주세요.'
-                    : '전주시 API 서버의 CORS 정책 때문에 브라우저 직접 호출이 차단되었습니다. 프록시 서버가 필요합니다.';
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
 
-                  showError(corsMessage);
-                  STATE.restaurants = mergeStoredMeta(getFallbackRestaurants());
-                  applyFilters();
-                }
+        const contentType = response.headers.get("content-type") || "";
+        const rawText = await response.text();
 
-                function parseXmlToJson(xmlText) {
-                  const parser = new DOMParser();
-                  const xml = parser.parseFromString(xmlText, "text/xml");
-                  const errorNode = xml.querySelector("parsererror");
-                  if (errorNode) throw new Error("XML 파싱 실패");
-                  const items = Array.from(xml.querySelectorAll("list, item, row, data"));
-                  if (!items.length) return xmlNodeToObject(xml.documentElement);
-                  return items.map((item) => xmlNodeToObject(item));
-                }
+        if (
+          contentType.includes("json") ||
+          rawText.trim().startsWith("{") ||
+          rawText.trim().startsWith("[")
+        ) {
+          return JSON.parse(rawText);
+        }
 
-                function xmlNodeToObject(node) {
-                  const obj = {};
-                  Array.from(node.children).forEach((child) => {
-                    const key = child.nodeName;
-                    const value = child.children.length
-                      ? xmlNodeToObject(child)
-                      : child.textContent.trim();
-                    if (obj[key] !== undefined) {
-                      if (!Array.isArray(obj[key])) obj[key] = [obj[key]];
-                      obj[key].push(value);
-                    } else {
-                      obj[key] = value;
-                    }
-                  });
-                  return obj;
-                }
+        return parseXmlToJson(rawText);
+      }
 
-                function normalizeRestaurantList(payload) {
-                  const rawList = extractList(payload);
-                  return rawList.map((item, index) => {
-                    const foodUid = pick(item, ["foodUid", "uid", "id", "dataSid"]);
-                    const name =
-                      pick(item, [
-                        "title",
-                        "name",
-                        "foodNm",
-                        "restNm",
-                        "bizName",
-                        "subject",
-                        "업소명",
-                      ]) || `전주 맛집 ${index + 1}`;
-                    const uid = foodUid || `${name}-${index}`;
-                    const roadAddr = pick(item, ["roadAddr", "addrRoad", "도로명주소"]);
-                    const jibunAddr = pick(item, ["jibunAddr", "지번주소"]);
-                    const address =
-                      pick(item, ["addr", "address", "addr1", "업소위치"]) ||
-                      roadAddr ||
-                      jibunAddr ||
-                      "전주시 상세 주소 정보 없음";
-                    const menu =
-                      pick(item, [
-                        "menu",
-                        "mainMenu",
-                        "foodMenu",
-                        "signatureMenu",
-                        "품목",
-                      ]) || "대표 메뉴 정보 준비 중";
-                    const tel =
-                      pick(item, ["tel", "phone", "contact", "전화번호", "연락처"]) ||
-                      "전화번호 정보 없음";
-                    const intro =
-                      pick(item, ["contents", "intro", "desc", "summary"]) ||
-                      "전주의 로컬 맛집 정보를 제공합니다.";
-                    const x =
-                      toNumber(pick(item, ["lng", "mapX", "longitude", "x", "경도"])) ||
-                      127.148;
-                    const y =
-                      toNumber(pick(item, ["lat", "mapY", "latitude", "y", "위도"])) ||
-                      35.824;
-                    const image =
-                      pick(item, [
-                        "thumbUrl",
-                        "previewUrl",
-                        "privewUrl",
-                        "imgUrl",
-                        "image",
-                        "thumbnail",
-                      ]) || CONFIG.DEFAULT_IMAGE;
-                    const category = inferCategory(item, name, menu);
-                    const reviews = getReviews(uid);
-                    const stats = calculateReviewStats(reviews);
+      async function fetchFoodImages(foodUid) {
+        if (!foodUid) return [];
 
-                    return {
-                      uid,
-                      foodUid,
-                      name,
-                      address,
-                      roadAddr,
-                      jibunAddr,
-                      menu,
-                      tel,
-                      intro,
-                      image,
-                      category,
-                      avgRating: stats.avgRating,
-                      ratingCount: stats.ratingCount,
-                      reviewCount: reviews.length,
-                      x,
-                      y,
-                      isFavorite: isFavorite(uid),
-                      raw: item,
-                    };
-                  });
-                }
+        const url = `${CONFIG.API_BASE_URL}/${CONFIG.IMAGE_ENDPOINT}?authApiKey=${encodeURIComponent(CONFIG.JEONJU_API_KEY)}&foodUid=${encodeURIComponent(foodUid)}`;
+        const response = await fetch(url);
 
-                function extractList(payload) {
-                  if (Array.isArray(payload)) return payload;
-                  if (!payload || typeof payload !== "object") return [];
-                  const candidates = [
-                    payload.list,
-                    payload.items,
-                    payload.item,
-                    payload.data,
-                    payload.rows,
-                    payload.result,
-                    payload.body && payload.body.items,
-                    payload.response &&
-                      payload.response.body &&
-                      payload.response.body.items,
-                  ];
-                  for (const candidate of candidates) {
-                    if (Array.isArray(candidate)) return candidate;
-                    if (candidate && Array.isArray(candidate.item)) return candidate.item;
-                    if (candidate && Array.isArray(candidate.list)) return candidate.list;
-                  }
-                  const nestedArrays = findAllArrays(payload);
-                  return nestedArrays[0] || [];
-                }
+        if (!response.ok) return [];
 
-                function findAllArrays(obj, found = []) {
-                  if (!obj || typeof obj !== "object") return found;
-                  Object.values(obj).forEach((value) => {
-                    if (Array.isArray(value)) found.push(value);
-                    else if (value && typeof value === "object")
-                      findAllArrays(value, found);
-                  });
-                  return found;
-                }
+        const contentType = response.headers.get("content-type") || "";
+        const rawText = await response.text();
 
-                function pick(obj, keys) {
-                  if (!obj) return "";
-                  const lowerMap = {};
-                  Object.keys(obj).forEach((key) => {
-                    lowerMap[key.toLowerCase()] = obj[key];
-                  });
-                  for (const key of keys) {
-                    if (obj[key] !== undefined && obj[key] !== null && obj[key] !== "")
-                      return obj[key];
-                    const lower = key.toLowerCase();
-                    if (
-                      lowerMap[lower] !== undefined &&
-                      lowerMap[lower] !== null &&
-                      lowerMap[lower] !== ""
-                    )
-                      return lowerMap[lower];
-                  }
-                  return "";
-                }
+        let payload;
+        if (
+          contentType.includes("json") ||
+          rawText.trim().startsWith("{") ||
+          rawText.trim().startsWith("[")
+        ) {
+          payload = JSON.parse(rawText);
+        } else {
+          payload = parseXmlToJson(rawText);
+        }
 
-                function toNumber(value) {
-                  const num = Number(String(value).replace(/,/g, "").trim());
-                  return Number.isFinite(num) ? num : null;
-                }
+        const list = extractList(payload);
+        return list.map((item) => ({
+          thumbUrl: pick(item, ["thumbUrl"]),
+          previewUrl: pick(item, ["privewUrl", "previewUrl"]),
+        }));
+      }
 
-                function inferCategory(item, name, menu) {
-                  const source = `${JSON.stringify(item)} ${name} ${menu}`;
-                  if (/백반/.test(source)) return "백반";
-                  if (/비빔밥/.test(source)) return "비빔밥";
-                  if (/콩나물|국밥/.test(source)) return "국밥";
-                  if (/막걸리/.test(source)) return "막걸리";
-                  if (/한정식/.test(source)) return "한정식";
-                  if (/한옥/.test(source)) return "전주한옥마을";
-                  return "전주 로컬 맛집";
-                }
+      async function enrichRestaurantsWithImages(restaurants) {
+        const tasks = restaurants.slice(0, 12).map(async (restaurant) => {
+          if (!restaurant.foodUid || restaurant.image !== CONFIG.DEFAULT_IMAGE)
+            return restaurant;
 
-                function applyFilters() {
-                  const keyword = STATE.keyword.toLowerCase();
-                  const favoriteOnly = STATE.currentTab === "favorite";
-                  const recommendOnly = STATE.currentTab === "recommend";
+          try {
+            const images = await fetchFoodImages(restaurant.foodUid);
+            if (images.length) {
+              restaurant.image =
+                images[0].previewUrl || images[0].thumbUrl || restaurant.image;
+            }
+          } catch (error) {
+            console.warn("image load fail", error);
+          }
 
-                  let filtered = STATE.restaurants.filter((restaurant) => {
-                    const matchKeyword =
-                      !keyword ||
-                      [
-                        restaurant.name,
-                        restaurant.address,
-                        restaurant.menu,
-                        restaurant.category,
-                      ]
-                        .join(" ")
-                        .toLowerCase()
-                        .includes(keyword);
-                    const matchFavorite = !favoriteOnly || restaurant.isFavorite;
-                    const matchRecommend = !recommendOnly || restaurant.avgRating >= 4.7;
-                    return matchKeyword && matchFavorite && matchRecommend;
-                  });
+          return restaurant;
+        });
 
-                  filtered.sort((a, b) => {
-                    if (STATE.currentTab === "favorite")
-                      return b.avgRating - a.avgRating || b.reviewCount - a.reviewCount;
-                    if (STATE.currentTab === "recommend")
-                      return b.avgRating - a.avgRating || b.reviewCount - a.reviewCount;
-                    return b.avgRating - a.avgRating || b.reviewCount - a.reviewCount;
-                  });
+        await Promise.all(tasks);
+        return restaurants;
+      }
 
-                  STATE.filteredRestaurants = filtered;
-                  renderSectionTitles();
-                  renderFeatured();
-                  renderList();
-                  renderPagination();
-                }
+      function parseXmlToJson(xmlText) {
+        const parser = new DOMParser();
+        const xml = parser.parseFromString(xmlText, "text/xml");
+        const errorNode = xml.querySelector("parsererror");
 
-                function renderSectionTitles() {
-                  if (STATE.currentTab === "favorite") {
-                    els.featuredTitle.textContent = "내 즐겨찾기 추천";
-                    els.listTitle.textContent = "즐겨찾기 맛집";
-                    return;
-                  }
-                  if (STATE.currentTab === "recommend") {
-                    els.featuredTitle.textContent = "평점 높은 추천";
-                    els.listTitle.textContent = "추천 맛집";
-                    return;
-                  }
-                  els.featuredTitle.textContent = "오늘의 추천";
-                  els.listTitle.textContent = "인기 맛집";
-                }
+        if (errorNode) {
+          throw new Error("XML 파싱 실패");
+        }
 
-                function renderFeatured() {
-                  const item = STATE.filteredRestaurants[0];
-                  if (!item) {
-                    els.featuredArea.innerHTML =
-                      '<div class="hero-card"><div class="hero-content">표시할 데이터가 없습니다.</div></div>';
-                    return;
-                  }
+        const items = Array.from(xml.querySelectorAll("list, item, row, data"));
+        if (!items.length) {
+          return xmlNodeToObject(xml.documentElement);
+        }
 
-                  els.featuredArea.innerHTML = `
-                  <article class="hero-card" data-uid="${item.uid}">
-                    <img class="hero-image" src="${escapeHtmlAttr(item.image)}" alt="${escapeHtmlAttr(item.name)}" onerror="this.src='${CONFIG.DEFAULT_IMAGE}'" />
-                    <div class="hero-content">
-                      <div class="restaurant-name" style="font-size:26px; margin-bottom:6px;">${escapeHtml(item.name)}</div>
-                      <div style="font-size:15px; color:#333; margin-bottom:6px;">${escapeHtml(item.menu)}</div>
-                      <div class="sub-meta">
-                        <span>${escapeHtml(item.address)}</span>
-                        <span>리뷰 ${item.reviewCount}</span>
-                        <span>평균 ★ ${item.avgRating.toFixed(1)}</span>
-                        <span>${item.isFavorite ? "♥ 즐겨찾기" : ""}</span>
-                      </div>
-                    </div>
-                  </article>
-                `;
+        return items.map((item) => xmlNodeToObject(item));
+      }
 
-                  els.featuredArea
-                    .querySelector(".hero-card")
-                    .addEventListener("click", () => openDetail(item.uid));
-                }
+      function xmlNodeToObject(node) {
+        const obj = {};
 
-                function renderList() {
-                  if (!STATE.filteredRestaurants.length) {
-                    const message =
-                      STATE.currentTab === "favorite"
-                        ? "즐겨찾기한 맛집이 없습니다."
-                        : "검색 결과가 없습니다.";
-                    els.listArea.innerHTML = `<div class="empty">${message}</div>`;
-                    return;
-                  }
+        Array.from(node.children).forEach((child) => {
+          const key = child.nodeName;
+          const value = child.children.length
+            ? xmlNodeToObject(child)
+            : child.textContent.trim();
 
-                  const start = (STATE.currentPage - 1) * CONFIG.ITEMS_PER_PAGE;
-                  const pageItems = STATE.filteredRestaurants.slice(
-                    start,
-                    start + CONFIG.ITEMS_PER_PAGE,
-                  );
+          if (obj[key] !== undefined) {
+            if (!Array.isArray(obj[key])) obj[key] = [obj[key]];
+            obj[key].push(value);
+          } else {
+            obj[key] = value;
+          }
+        });
 
-                  els.listArea.innerHTML = pageItems
-                    .map(
-                      (item) => `
-                  <article class="list-card" data-uid="${item.uid}">
-                    <button class="card-favorite ${item.isFavorite ? "active" : ""}" data-favorite="${item.uid}" title="즐겨찾기">${item.isFavorite ? "♥" : "♡"}</button>
-                    <img class="thumb" src="${escapeHtmlAttr(item.image)}" alt="${escapeHtmlAttr(item.name)}" onerror="this.src='${CONFIG.DEFAULT_IMAGE}'" />
-                    <div style="min-width:0; width:100%;">
-                      <h3>${escapeHtml(item.name)}</h3>
-                      <p>${escapeHtml(item.category)}</p>
-                      <p>${escapeHtml(item.address)}</p>
-                      <div class="badge-row">
-                        <span>평균 ★ ${item.avgRating.toFixed(1)}</span>
-                        <span>평점수 ${item.ratingCount}</span>
-                        <span>리뷰 ${item.reviewCount}</span>
-                      </div>
-                    </div>
-                  </article>
-                `,
-                    )
-                    .join("");
+        return obj;
+      }
 
-                  document.querySelectorAll(".list-card").forEach((card) => {
-                    card.addEventListener("click", (e) => {
-                      if (e.target.closest("[data-favorite]")) return;
-                      openDetail(card.dataset.uid);
-                    });
-                  });
+      function normalizeRestaurantList(payload) {
+        const rawList = extractList(payload);
 
-                  document.querySelectorAll("[data-favorite]").forEach((button) => {
-                    button.addEventListener("click", (e) => {
-                      e.stopPropagation();
-                      toggleFavorite(button.dataset.favorite);
-                    });
-                  });
-                }
+        return rawList.map((item, index) => {
+          const foodUid = pick(item, ["foodUid", "uid", "id", "dataSid"]);
+          const name =
+            pick(item, [
+              "title",
+              "name",
+              "foodNm",
+              "restNm",
+              "bizName",
+              "subject",
+              "업소명",
+            ]) || `전주 맛집 ${index + 1}`;
+          const uid = foodUid || `${name}-${index}`;
+          const roadAddr = pick(item, ["roadAddr", "addrRoad", "도로명주소"]);
+          const jibunAddr = pick(item, ["jibunAddr", "지번주소"]);
+          const address =
+            pick(item, ["addr", "address", "addr1", "업소위치"]) ||
+            roadAddr ||
+            jibunAddr ||
+            "전주시 상세 주소 정보 없음";
+          const menu =
+            pick(item, [
+              "menu",
+              "mainMenu",
+              "foodMenu",
+              "signatureMenu",
+              "품목",
+            ]) || "대표 메뉴 정보 준비 중";
+          const tel =
+            pick(item, ["tel", "phone", "contact", "전화번호", "연락처"]) ||
+            "전화번호 정보 없음";
+          const intro =
+            pick(item, ["contents", "intro", "desc", "summary"]) ||
+            "전주의 로컬 맛집 정보를 제공합니다.";
+          const x =
+            toNumber(pick(item, ["lng", "mapX", "longitude", "x", "경도"])) ||
+            127.148;
+          const y =
+            toNumber(pick(item, ["lat", "mapY", "latitude", "y", "위도"])) ||
+            35.824;
+          const image =
+            pick(item, [
+              "thumbUrl",
+              "previewUrl",
+              "privewUrl",
+              "imgUrl",
+              "image",
+              "thumbnail",
+            ]) || CONFIG.DEFAULT_IMAGE;
+          const category = inferCategory(item, name, menu);
+          const reviews = getReviews(uid);
+          const stats = calculateReviewStats(reviews);
 
-                function renderPagination() {
-        const totalPages = Math.max(1, Math.ceil(STATE.filteredRestaurants.length / CONFIG.ITEMS_PER_PAGE));
+          return {
+            uid,
+            foodUid,
+            name,
+            address,
+            roadAddr,
+            jibunAddr,
+            menu,
+            tel,
+            intro,
+            image,
+            category,
+            avgRating: stats.avgRating,
+            ratingCount: stats.ratingCount,
+            reviewCount: reviews.length,
+            x,
+            y,
+            isFavorite: isFavorite(uid),
+            raw: item,
+          };
+        });
+      }
+
+      function extractList(payload) {
+        if (Array.isArray(payload)) return payload;
+        if (!payload || typeof payload !== "object") return [];
+
+        const candidates = [
+          payload.list,
+          payload.items,
+          payload.item,
+          payload.data,
+          payload.rows,
+          payload.result,
+          payload.body && payload.body.items,
+          payload.response &&
+            payload.response.body &&
+            payload.response.body.items,
+        ];
+
+        for (const candidate of candidates) {
+          if (Array.isArray(candidate)) return candidate;
+          if (candidate && Array.isArray(candidate.item)) return candidate.item;
+          if (candidate && Array.isArray(candidate.list)) return candidate.list;
+        }
+
+        const nestedArrays = findAllArrays(payload);
+        return nestedArrays[0] || [];
+      }
+
+      function findAllArrays(obj, found = []) {
+        if (!obj || typeof obj !== "object") return found;
+
+        Object.values(obj).forEach((value) => {
+          if (Array.isArray(value)) {
+            found.push(value);
+          } else if (value && typeof value === "object") {
+            findAllArrays(value, found);
+          }
+        });
+
+        return found;
+      }
+
+      function pick(obj, keys) {
+        if (!obj) return "";
+
+        const lowerMap = {};
+        Object.keys(obj).forEach((key) => {
+          lowerMap[key.toLowerCase()] = obj[key];
+        });
+
+        for (const key of keys) {
+          if (obj[key] !== undefined && obj[key] !== null && obj[key] !== "")
+            return obj[key];
+
+          const lower = key.toLowerCase();
+          if (
+            lowerMap[lower] !== undefined &&
+            lowerMap[lower] !== null &&
+            lowerMap[lower] !== ""
+          ) {
+            return lowerMap[lower];
+          }
+        }
+
+        return "";
+      }
+
+      function toNumber(value) {
+        const num = Number(String(value).replace(/,/g, "").trim());
+        return Number.isFinite(num) ? num : null;
+      }
+
+      function inferCategory(item, name, menu) {
+        const source = `${JSON.stringify(item)} ${name} ${menu}`;
+
+        if (/백반/.test(source)) return "백반";
+        if (/비빔밥/.test(source)) return "비빔밥";
+        if (/콩나물|국밥/.test(source)) return "국밥";
+        if (/막걸리/.test(source)) return "막걸리";
+        if (/한정식/.test(source)) return "한정식";
+        if (/한옥/.test(source)) return "전주한옥마을";
+
+        return "전주 로컬 맛집";
+      }
+
+      function applyFilters() {
+        const keyword = STATE.keyword.toLowerCase();
+        const favoriteOnly = STATE.currentTab === "favorite";
+        const recommendOnly = STATE.currentTab === "recommend";
+
+        let filtered = STATE.restaurants.filter((restaurant) => {
+          const matchKeyword =
+            !keyword ||
+            [
+              restaurant.name,
+              restaurant.address,
+              restaurant.menu,
+              restaurant.category,
+            ]
+              .join(" ")
+              .toLowerCase()
+              .includes(keyword);
+
+          const matchFavorite = !favoriteOnly || restaurant.isFavorite;
+          const matchRecommend = !recommendOnly || restaurant.avgRating >= 4.7;
+
+          return matchKeyword && matchFavorite && matchRecommend;
+        });
+
+        filtered.sort((a, b) => {
+          return b.avgRating - a.avgRating || b.reviewCount - a.reviewCount;
+        });
+
+        STATE.filteredRestaurants = filtered;
+        renderSectionTitles();
+        renderFeatured();
+        renderList();
+        renderPagination();
+      }
+
+      function renderSectionTitles() {
+        if (STATE.currentTab === "favorite") {
+          els.featuredTitle.textContent = "내 즐겨찾기 추천";
+          els.listTitle.textContent = "즐겨찾기 맛집";
+          return;
+        }
+
+        if (STATE.currentTab === "recommend") {
+          els.featuredTitle.textContent = "평점 높은 추천";
+          els.listTitle.textContent = "추천 맛집";
+          return;
+        }
+
+        els.featuredTitle.textContent = "오늘의 추천";
+        els.listTitle.textContent = "인기 맛집";
+      }
+
+      function renderFeatured() {
+        const item = STATE.filteredRestaurants[0];
+
+        if (!item) {
+          els.featuredArea.innerHTML =
+            '<div class="hero-card"><div class="hero-content">표시할 데이터가 없습니다.</div></div>';
+          return;
+        }
+
+        els.featuredArea.innerHTML = `
+      <article class="hero-card" data-uid="${item.uid}">
+        <img class="hero-image" src="${escapeHtmlAttr(item.image)}" alt="${escapeHtmlAttr(item.name)}" onerror="this.src='${CONFIG.DEFAULT_IMAGE}'" />
+        <div class="hero-content">
+          <div class="restaurant-name" style="font-size:26px; margin-bottom:6px;">${escapeHtml(item.name)}</div>
+          <div style="font-size:15px; color:#333; margin-bottom:6px;">${escapeHtml(item.menu)}</div>
+          <div class="sub-meta">
+            <span>${escapeHtml(shortAddress(item.address))}</span>
+            <span>리뷰 ${item.reviewCount}</span>
+            <span>평균 ★ ${Number(item.avgRating).toFixed(1)}</span>
+            ${item.isFavorite ? "<span>♥ 즐겨찾기</span>" : ""}
+          </div>
+        </div>
+      </article>
+    `;
+
+        els.featuredArea
+          .querySelector(".hero-card")
+          .addEventListener("click", () => openDetail(item.uid));
+      }
+
+      function renderList() {
+        if (!STATE.filteredRestaurants.length) {
+          const message =
+            STATE.currentTab === "favorite"
+              ? "즐겨찾기한 맛집이 없습니다."
+              : "검색 결과가 없습니다.";
+          els.listArea.innerHTML = `<div class="empty">${message}</div>`;
+          return;
+        }
+
+        const start = (STATE.currentPage - 1) * CONFIG.ITEMS_PER_PAGE;
+        const pageItems = STATE.filteredRestaurants.slice(
+          start,
+          start + CONFIG.ITEMS_PER_PAGE,
+        );
+
+        els.listArea.innerHTML = pageItems
+          .map(
+            (item) => `
+      <article class="list-card" data-uid="${item.uid}">
+        <button class="card-favorite ${item.isFavorite ? "active" : ""}" data-favorite="${item.uid}" title="즐겨찾기">
+          ${item.isFavorite ? "♥" : "♡"}
+        </button>
+        <img class="thumb" src="${escapeHtmlAttr(item.image)}" alt="${escapeHtmlAttr(item.name)}" onerror="this.src='${CONFIG.DEFAULT_IMAGE}'" />
+        <div style="min-width:0; width:100%;">
+          <h3>${escapeHtml(item.name)}</h3>
+          <p>${escapeHtml(item.category)}</p>
+          <p>${escapeHtml(shortAddress(item.address))}</p>
+          <div class="badge-row">
+            <span>평균 ★ ${Number(item.avgRating).toFixed(1)}</span>
+            <span>평점수 ${item.ratingCount}</span>
+            <span>리뷰 ${item.reviewCount}</span>
+          </div>
+        </div>
+      </article>
+    `,
+          )
+          .join("");
+
+        document.querySelectorAll(".list-card").forEach((card) => {
+          card.addEventListener("click", (e) => {
+            if (e.target.closest("[data-favorite]")) return;
+            openDetail(card.dataset.uid);
+          });
+        });
+
+        document.querySelectorAll("[data-favorite]").forEach((button) => {
+          button.addEventListener("click", (e) => {
+            e.stopPropagation();
+            toggleFavorite(button.dataset.favorite);
+          });
+        });
+      }
+
+      function renderPagination() {
+        const totalPages = Math.max(
+          1,
+          Math.ceil(STATE.filteredRestaurants.length / CONFIG.ITEMS_PER_PAGE),
+        );
 
         if (!STATE.filteredRestaurants.length) {
-          els.pagination.innerHTML = '';
+          els.pagination.innerHTML = "";
           return;
         }
 
@@ -1143,20 +1194,28 @@
         const showNextGroup = pageNumbers[pageNumbers.length - 1] < totalPages;
 
         els.pagination.innerHTML = `
-          <button class="page-btn" ${STATE.currentPage === 1 ? 'disabled' : ''} data-page="prev">이전</button>
-          ${showPrevGroup ? `<button class="page-btn" data-page="${pageNumbers[0] - 1}">...</button>` : ''}
-          ${pageNumbers.map((page) => `<button class="page-btn ${page === STATE.currentPage ? 'active' : ''}" data-page="${page}">${page}</button>`).join('')}
-          ${showNextGroup ? `<button class="page-btn" data-page="${pageNumbers[pageNumbers.length - 1] + 1}">...</button>` : ''}
-          <button class="page-btn" ${STATE.currentPage === totalPages ? 'disabled' : ''} data-page="next">다음</button>
-        `;
+      <button class="page-btn" ${STATE.currentPage === 1 ? "disabled" : ""} data-page="prev">이전</button>
+      ${showPrevGroup ? `<button class="page-btn" data-page="${pageNumbers[0] - 1}">...</button>` : ""}
+      ${pageNumbers
+        .map(
+          (page) => `
+        <button class="page-btn ${page === STATE.currentPage ? "active" : ""}" data-page="${page}">
+          ${page}
+        </button>
+      `,
+        )
+        .join("")}
+      ${showNextGroup ? `<button class="page-btn" data-page="${pageNumbers[pageNumbers.length - 1] + 1}">...</button>` : ""}
+      <button class="page-btn" ${STATE.currentPage === totalPages ? "disabled" : ""} data-page="next">다음</button>
+    `;
 
-        els.pagination.querySelectorAll('.page-btn').forEach((button) => {
-          button.addEventListener('click', () => {
+        els.pagination.querySelectorAll(".page-btn").forEach((button) => {
+          button.addEventListener("click", () => {
             const type = button.dataset.page;
 
-            if (type === 'prev' && STATE.currentPage > 1) {
+            if (type === "prev" && STATE.currentPage > 1) {
               STATE.currentPage -= 1;
-            } else if (type === 'next' && STATE.currentPage < totalPages) {
+            } else if (type === "next" && STATE.currentPage < totalPages) {
               STATE.currentPage += 1;
             } else if (!Number.isNaN(Number(type))) {
               STATE.currentPage = Number(type);
@@ -1164,11 +1223,12 @@
 
             renderList();
             renderPagination();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({ top: 0, behavior: "smooth" });
           });
         });
       }
-                function getVisiblePages(current, total, maxVisible) {
+
+      function getVisiblePages(current, total, maxVisible) {
         const groupIndex = Math.floor((current - 1) / maxVisible);
         const start = groupIndex * maxVisible + 1;
         const end = Math.min(total, start + maxVisible - 1);
@@ -1177,419 +1237,481 @@
         for (let i = start; i <= end; i += 1) {
           pages.push(i);
         }
+
         return pages;
       }
 
-                function openDetail(uid) {
-                  const restaurant = STATE.restaurants.find(
-                    (item) => String(item.uid) === String(uid),
-                  );
-                  if (!restaurant) return;
-                  STATE.selectedRestaurant = restaurant;
-                  renderDetail(restaurant);
-                  renderReviews(restaurant.uid);
-                  els.listScreen.classList.remove("active");
-                  els.detailScreen.classList.add("active");
-                  if (window.innerWidth >= 860) els.listScreen.classList.add("active");
-                }
+      function openDetail(uid) {
+        const restaurant = STATE.restaurants.find(
+          (item) => String(item.uid) === String(uid),
+        );
+        if (!restaurant) return;
 
-                function showListScreen() {
-                  if (window.innerWidth < 860) {
-                    els.detailScreen.classList.remove("active");
-                    els.listScreen.classList.add("active");
-                  }
-                }
+        STATE.selectedRestaurant = restaurant;
+        renderDetail(restaurant);
+        renderReviews(restaurant.uid);
 
-                function renderDetail(restaurant) {
-                  const reviews = getReviews(restaurant.uid);
-                  const stats = calculateReviewStats(reviews);
-                  restaurant.avgRating = stats.avgRating;
-                  restaurant.ratingCount = stats.ratingCount;
-                  restaurant.reviewCount = reviews.length;
-                  restaurant.isFavorite = isFavorite(restaurant.uid);
+        els.listScreen.classList.remove("active");
+        els.detailScreen.classList.add("active");
 
-                  els.detailHero.innerHTML = `
-                  <img src="${escapeHtmlAttr(restaurant.image)}" alt="${escapeHtmlAttr(restaurant.name)}" onerror="this.src='${CONFIG.DEFAULT_IMAGE}'" />
-                  <div class="hero-actions">
-                    <button class="favorite-btn ${restaurant.isFavorite ? "active" : ""}" id="detailFavoriteBtn" title="즐겨찾기">${restaurant.isFavorite ? "♥" : "♡"}</button>
-                  </div>
-                `;
+        if (window.innerWidth >= 860) {
+          els.listScreen.classList.add("active");
+        }
+      }
 
-                  const menuList = restaurant.menu
-                    .split(/\n|,|\//)
-                    .map((menu) => menu.trim())
-                    .filter(Boolean)
-                    .slice(0, 5);
+      function showListScreen() {
+        if (window.innerWidth < 860) {
+          els.detailScreen.classList.remove("active");
+          els.listScreen.classList.add("active");
+        }
+      }
 
-                  els.detailCard.innerHTML = `
-                  <div class="detail-block">
-                    <div class="section-label">상호</div>
-                    <div class="restaurant-name">${escapeHtml(restaurant.name)}</div>
-                    <div class="meta">
-                      <span>평균 ★ ${restaurant.avgRating.toFixed(1)}</span>
-                      <span>평점수 ${restaurant.ratingCount}</span>
-                      <span>리뷰 ${reviews.length}</span>
-                      <span>${escapeHtml(restaurant.category)}</span>
-                    </div>
-                  </div>
+      function renderDetail(restaurant) {
+        const reviews = getReviews(restaurant.uid);
+        const stats = calculateReviewStats(reviews);
 
-                  <div class="detail-block">
-                    <div class="section-label">대표메뉴</div>
-                    <ul>
-                      ${menuList.length ? menuList.map((menu) => `<li>${escapeHtml(menu)}</li>`).join("") : "<li>대표 메뉴 정보가 없습니다.</li>"}
-                    </ul>
-                  </div>
+        restaurant.avgRating = stats.avgRating;
+        restaurant.ratingCount = stats.ratingCount;
+        restaurant.reviewCount = reviews.length;
+        restaurant.isFavorite = isFavorite(restaurant.uid);
 
-                  <div class="detail-block">
-                    <div class="section-label">소개</div>
-                    <ul>
-                      <li>${escapeHtml(restaurant.intro)}</li>
-                      <li>전화번호: ${escapeHtml(restaurant.tel)}</li>
-                    </ul>
-                  </div>
+        els.detailHero.innerHTML = `
+      <img src="${escapeHtmlAttr(restaurant.image)}" alt="${escapeHtmlAttr(restaurant.name)}" onerror="this.src='${CONFIG.DEFAULT_IMAGE}'" />
+      <div class="hero-actions">
+        <button class="favorite-btn ${restaurant.isFavorite ? "active" : ""}" id="detailFavoriteBtn" title="즐겨찾기">
+          ${restaurant.isFavorite ? "♥" : "♡"}
+        </button>
+      </div>
+    `;
 
-                  <div class="detail-block">
-                    <div class="section-label">위치</div>
-                    <p style="margin-bottom:8px;">${escapeHtml(restaurant.address)}</p>
-                    ${restaurant.roadAddr ? `<p class="muted" style="font-size:13px; margin-bottom:8px;">도로명주소: ${escapeHtml(restaurant.roadAddr)}</p>` : ""}
-                    ${restaurant.jibunAddr ? `<p class="muted" style="font-size:13px; margin-bottom:12px;">지번주소: ${escapeHtml(restaurant.jibunAddr)}</p>` : ""}
-                    <div id="map" class="map-box"></div>
-                    <div class="action-row">
-                      <button class="action-btn secondary" id="copyAddressBtn">주소 복사</button>
-                      <button class="action-btn primary" id="routeBtn">카카오맵 길찾기</button>
-                    </div>
-                  </div>
-                `;
+        const menuList = restaurant.menu
+          .split(/\n|,|\//)
+          .map((menu) => menu.trim())
+          .filter(Boolean)
+          .slice(0, 5);
 
-                  document
-                    .getElementById("detailFavoriteBtn")
-                    .addEventListener("click", () =>
-                      toggleFavorite(restaurant.uid, true),
-                    );
-                  document
-                    .getElementById("routeBtn")
-                    .addEventListener("click", openKakaoRoute);
-                  document
-                    .getElementById("copyAddressBtn")
-                    .addEventListener("click", async () => {
-                      try {
-                        await navigator.clipboard.writeText(restaurant.address);
-                        alert("주소를 복사했습니다.");
-                      } catch {
-                        alert("주소 복사에 실패했습니다.");
-                      }
-                    });
+        els.detailCard.innerHTML = `
+      <div class="detail-block">
+        <div class="section-label">상호</div>
+        <div class="restaurant-name">${escapeHtml(restaurant.name)}</div>
+        <div class="meta">
+          <span>평균 ★ ${restaurant.avgRating.toFixed(1)}</span>
+          <span>평점수 ${restaurant.ratingCount}</span>
+          <span>리뷰 ${reviews.length}</span>
+          <span>${escapeHtml(restaurant.category)}</span>
+        </div>
+      </div>
 
-                  renderMap(restaurant);
-                }
+      <div class="detail-block">
+        <div class="section-label">대표메뉴</div>
+        <ul>
+          ${menuList.length ? menuList.map((menu) => `<li>${escapeHtml(menu)}</li>`).join("") : "<li>대표 메뉴 정보가 없습니다.</li>"}
+        </ul>
+      </div>
 
-                async function loadKakaoMapSdk() {
-                  if (window.kakao && window.kakao.maps) {
-                    STATE.kakaoReady = true;
-                    return;
-                  }
-                  if (
-                    !CONFIG.KAKAO_JAVASCRIPT_KEY ||
-                    CONFIG.KAKAO_JAVASCRIPT_KEY.includes("YOUR_")
-                  ) {
-                    console.warn("카카오 JavaScript 키를 설정하지 않았습니다.");
-                    return;
-                  }
-                  await new Promise((resolve, reject) => {
-                    const script = document.createElement("script");
-                    script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${CONFIG.KAKAO_JAVASCRIPT_KEY}&autoload=false`;
-                    script.onload = () => {
-                      window.kakao.maps.load(() => {
-                        STATE.kakaoReady = true;
-                        resolve();
-                      });
-                    };
-                    script.onerror = reject;
-                    document.head.appendChild(script);
-                  });
-                }
+      <div class="detail-block">
+        <div class="section-label">소개</div>
+        <ul>
+          <li>${escapeHtml(restaurant.intro)}</li>
+          <li>전화번호: ${escapeHtml(restaurant.tel)}</li>
+        </ul>
+      </div>
 
-                function renderMap(restaurant) {
-                  const mapContainer = document.getElementById("map");
-                  if (!mapContainer) return;
-                  if (!STATE.kakaoReady || !window.kakao || !window.kakao.maps) {
-                    mapContainer.innerHTML =
-                      '<div class="empty">카카오맵 키를 입력하면 지도와 길찾기가 동작합니다.</div>';
-                    return;
-                  }
-                  const center = new kakao.maps.LatLng(restaurant.y, restaurant.x);
-                  STATE.map = new kakao.maps.Map(mapContainer, { center, level: 3 });
-                  STATE.marker = new kakao.maps.Marker({ position: center });
-                  STATE.marker.setMap(STATE.map);
-                  const info = new kakao.maps.InfoWindow({
-                    content: `<div style="padding:8px 10px; font-size:13px;">${escapeHtml(restaurant.name)}</div>`,
-                  });
-                  info.open(STATE.map, STATE.marker);
-                }
+      <div class="detail-block">
+        <div class="section-label">위치</div>
+        <p style="margin-bottom:8px;">${escapeHtml(restaurant.address)}</p>
+        ${restaurant.roadAddr ? `<p class="muted" style="font-size:13px; margin-bottom:8px;">도로명주소: ${escapeHtml(restaurant.roadAddr)}</p>` : ""}
+        ${restaurant.jibunAddr ? `<p class="muted" style="font-size:13px; margin-bottom:12px;">지번주소: ${escapeHtml(restaurant.jibunAddr)}</p>` : ""}
+        <div id="map" class="map-box"></div>
+        <div class="action-row">
+          <button class="action-btn secondary" id="copyAddressBtn">주소 복사</button>
+          <button class="action-btn primary" id="routeBtn">카카오맵 길찾기</button>
+        </div>
+      </div>
+    `;
 
-                function openKakaoRoute() {
-                  const restaurant = STATE.selectedRestaurant;
-                  if (!restaurant) return;
-                  const url = `https://map.kakao.com/link/to/${encodeURIComponent(restaurant.name)},${restaurant.y},${restaurant.x}`;
-                  window.open(url, "_blank");
-                }
+        document
+          .getElementById("detailFavoriteBtn")
+          .addEventListener("click", () =>
+            toggleFavorite(restaurant.uid, true),
+          );
+        document
+          .getElementById("routeBtn")
+          .addEventListener("click", openKakaoRoute);
+        document
+          .getElementById("copyAddressBtn")
+          .addEventListener("click", async () => {
+            try {
+              await navigator.clipboard.writeText(restaurant.address);
+              alert("주소를 복사했습니다.");
+            } catch {
+              alert("주소 복사에 실패했습니다.");
+            }
+          });
 
-                function handleReviewSubmit() {
-                  const restaurant = STATE.selectedRestaurant;
-                  if (!restaurant) return;
-                  const author = els.reviewAuthor.value.trim();
-                  const rating = Number(els.reviewRating.value);
-                  const content = els.reviewText.value.trim();
-                  if (!author || !content) {
-                    alert("작성자와 리뷰 내용을 입력해주세요.");
-                    return;
-                  }
+        renderMap(restaurant);
+      }
 
-                  const reviews = getReviews(restaurant.uid);
-                  reviews.unshift({
-                    author,
-                    rating,
-                    content,
-                    createdAt: new Date().toLocaleString("ko-KR"),
-                  });
-                  localStorage.setItem(
-                    getReviewStorageKey(restaurant.uid),
-                    JSON.stringify(reviews),
-                  );
+      async function loadKakaoMapSdk() {
+        if (window.kakao && window.kakao.maps) {
+          STATE.kakaoReady = true;
+          return;
+        }
 
-                  els.reviewAuthor.value = "";
-                  els.reviewRating.value = "5";
-                  els.reviewText.value = "";
+        if (
+          !CONFIG.KAKAO_JAVASCRIPT_KEY ||
+          CONFIG.KAKAO_JAVASCRIPT_KEY.includes("YOUR_")
+        ) {
+          console.warn("카카오 JavaScript 키를 설정하지 않았습니다.");
+          return;
+        }
 
-                  updateRestaurantMeta(restaurant.uid);
-                  renderReviews(restaurant.uid);
-                  renderDetail(STATE.selectedRestaurant);
-                  renderFeatured();
-                  renderList();
-                }
+        await new Promise((resolve, reject) => {
+          const script = document.createElement("script");
+          script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${CONFIG.KAKAO_JAVASCRIPT_KEY}&autoload=false`;
 
-                function renderReviews(uid) {
-                  const reviews = getReviews(uid);
-                  if (!reviews.length) {
-                    els.reviewList.innerHTML =
-                      '<div class="empty">첫 리뷰를 남겨보세요.</div>';
-                    return;
-                  }
+          script.onload = () => {
+            window.kakao.maps.load(() => {
+              STATE.kakaoReady = true;
+              resolve();
+            });
+          };
 
-                  els.reviewList.innerHTML = reviews
-                    .map(
-                      (review) => `
-                  <div class="review-item">
-                    <div class="meta" style="justify-content:space-between; gap:10px;">
-                      <strong>${escapeHtml(review.author)}</strong>
-                      <span class="rating">${"★".repeat(review.rating)}${"☆".repeat(5 - review.rating)}</span>
-                    </div>
-                    <div class="muted" style="margin-top:6px;">${escapeHtml(review.createdAt)}</div>
-                    <p>${escapeHtml(review.content)}</p>
-                  </div>
-                `,
-                    )
-                    .join("");
-                }
+          script.onerror = reject;
+          document.head.appendChild(script);
+        });
+      }
 
-                function updateRestaurantMeta(uid) {
-                  const restaurant = STATE.restaurants.find(
-                    (item) => String(item.uid) === String(uid),
-                  );
-                  if (!restaurant) return;
-                  const reviews = getReviews(uid);
-                  const stats = calculateReviewStats(reviews);
-                  restaurant.reviewCount = reviews.length;
-                  restaurant.avgRating = stats.avgRating;
-                  restaurant.ratingCount = stats.ratingCount;
-                  restaurant.isFavorite = isFavorite(uid);
-                  if (
-                    STATE.selectedRestaurant &&
-                    String(STATE.selectedRestaurant.uid) === String(uid)
-                  ) {
-                    STATE.selectedRestaurant = restaurant;
-                  }
-                  applyFilters();
-                }
+      function renderMap(restaurant) {
+        const mapContainer = document.getElementById("map");
+        if (!mapContainer) return;
 
-                function calculateReviewStats(reviews) {
-                  if (!reviews.length) return { avgRating: 4.5, ratingCount: 0 };
-                  const avg =
-                    reviews.reduce((sum, review) => sum + Number(review.rating || 0), 0) /
-                    reviews.length;
-                  return {
-                    avgRating: Math.round(avg * 10) / 10,
-                    ratingCount: reviews.length,
-                  };
-                }
+        if (!STATE.kakaoReady || !window.kakao || !window.kakao.maps) {
+          mapContainer.innerHTML =
+            '<div class="empty">카카오맵 키를 입력하면 지도와 길찾기가 동작합니다.</div>';
+          return;
+        }
 
-                function getReviewStorageKey(uid) {
-                  return `jeonju-food-reviews-${uid}`;
-                }
+        const center = new kakao.maps.LatLng(restaurant.y, restaurant.x);
+        STATE.map = new kakao.maps.Map(mapContainer, { center, level: 3 });
+        STATE.marker = new kakao.maps.Marker({ position: center });
+        STATE.marker.setMap(STATE.map);
 
-                function getReviews(uid) {
-                  try {
-                    return JSON.parse(
-                      localStorage.getItem(getReviewStorageKey(uid)) || "[]",
-                    );
-                  } catch {
-                    return [];
-                  }
-                }
+        const info = new kakao.maps.InfoWindow({
+          content: `<div style="padding:8px 10px; font-size:13px;">${escapeHtml(restaurant.name)}</div>`,
+        });
 
-                function getFavorites() {
-                  try {
-                    return JSON.parse(
-                      localStorage.getItem(STORAGE_KEYS.favorites) || "[]",
-                    );
-                  } catch {
-                    return [];
-                  }
-                }
+        info.open(STATE.map, STATE.marker);
+      }
 
-                function isFavorite(uid) {
-                  return getFavorites().includes(String(uid));
-                }
+      function openKakaoRoute() {
+        const restaurant = STATE.selectedRestaurant;
+        if (!restaurant) return;
 
-                function toggleFavorite(uid, rerenderDetail = false) {
-                  const favorites = new Set(getFavorites());
-                  const key = String(uid);
-                  if (favorites.has(key)) favorites.delete(key);
-                  else favorites.add(key);
-                  localStorage.setItem(
-                    STORAGE_KEYS.favorites,
-                    JSON.stringify([...favorites]),
-                  );
+        const url = `https://map.kakao.com/link/to/${encodeURIComponent(restaurant.name)},${restaurant.y},${restaurant.x}`;
+        window.open(url, "_blank");
+      }
 
-                  STATE.restaurants.forEach((restaurant) => {
-                    if (String(restaurant.uid) === key)
-                      restaurant.isFavorite = favorites.has(key);
-                  });
+      function handleReviewSubmit() {
+        const restaurant = STATE.selectedRestaurant;
+        if (!restaurant) return;
 
-                  if (
-                    STATE.selectedRestaurant &&
-                    String(STATE.selectedRestaurant.uid) === key
-                  ) {
-                    STATE.selectedRestaurant.isFavorite = favorites.has(key);
-                    if (rerenderDetail) renderDetail(STATE.selectedRestaurant);
-                  }
+        const author = els.reviewAuthor.value.trim();
+        const rating = Number(els.reviewRating.value);
+        const content = els.reviewText.value.trim();
 
-                  applyFilters();
-                }
+        if (!author || !content) {
+          alert("작성자와 리뷰 내용을 입력해주세요.");
+          return;
+        }
 
-                function mergeStoredMeta(restaurants) {
-                  return restaurants.map((restaurant) => {
-                    const reviews = getReviews(restaurant.uid);
-                    const stats = calculateReviewStats(reviews);
-                    return {
-                      ...restaurant,
-                      reviewCount: reviews.length,
-                      avgRating: stats.avgRating,
-                      ratingCount: stats.ratingCount,
-                      isFavorite: isFavorite(restaurant.uid),
-                    };
-                  });
-                }
+        const reviews = getReviews(restaurant.uid);
+        reviews.unshift({
+          author,
+          rating,
+          content,
+          createdAt: new Date().toLocaleString("ko-KR"),
+        });
 
-                function showError(message) {
-                  els.errorArea.innerHTML = `<div class="error">${escapeHtml(message)}</div>`;
-                }
+        localStorage.setItem(
+          getReviewStorageKey(restaurant.uid),
+          JSON.stringify(reviews),
+        );
 
-                function clearError() {
-                  els.errorArea.innerHTML = "";
-                }
+        els.reviewAuthor.value = "";
+        els.reviewRating.value = "5";
+        els.reviewText.value = "";
 
-                function escapeHtml(value) {
-                  return String(value ?? "")
-                    .replace(/&/g, "&amp;")
-                    .replace(/</g, "&lt;")
-                    .replace(/>/g, "&gt;")
-                    .replace(/"/g, "&quot;")
-                    .replace(/'/g, "&#39;");
-                }
+        updateRestaurantMeta(restaurant.uid);
+        renderReviews(restaurant.uid);
+        renderDetail(STATE.selectedRestaurant);
+        renderFeatured();
+        renderList();
+      }
 
-                function escapeHtmlAttr(value) {
-                  return escapeHtml(value).replace(/`/g, "&#96;");
-                }
+      function renderReviews(uid) {
+        const reviews = getReviews(uid);
 
-                function getFallbackRestaurants() {
-                  return [
-                    {
-                      uid: "fallback-1",
-                      foodUid: "fallback-1",
-                      name: "전주 가족회관",
-                      address: "전주시 완산구 전라감영 5길 17 2층",
-                      roadAddr: "전주시 완산구 전라감영 5길 17 2층",
-                      jibunAddr: "",
-                      menu: "전주 비빔밥 ₩15,000, 육회비빔밥 ₩18,000",
-                      tel: "063-000-0000",
-                      intro:
-                        "전주 대표 비빔밥 맛집으로 관광객과 현지인 모두에게 인기입니다.",
-                      image: CONFIG.DEFAULT_IMAGE,
-                      category: "비빔밥",
-                      x: 127.1467,
-                      y: 35.8194,
-                    },
-                    {
-                      uid: "fallback-2",
-                      foodUid: "fallback-2",
-                      name: "전주왱이 콩나물국밥",
-                      address: "전주시 완산구 동문길 88",
-                      roadAddr: "전주시 완산구 동문길 88",
-                      jibunAddr: "",
-                      menu: "콩나물국밥 ₩8,000",
-                      tel: "063-000-0001",
-                      intro: "해장으로도 유명한 전주식 콩나물국밥 전문점입니다.",
-                      image:
-                        "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=80",
-                      category: "국밥",
-                      x: 127.1502,
-                      y: 35.8177,
-                    },
-                    {
-                      uid: "fallback-3",
-                      foodUid: "fallback-3",
-                      name: "다문",
-                      address: "전주시 덕진구 기린대로 700",
-                      roadAddr: "전주시 덕진구 기린대로 700",
-                      jibunAddr: "",
-                      menu: "한정식 코스 ₩25,000",
-                      tel: "063-000-0002",
-                      intro: "한옥 감성으로 즐기는 전주식 한정식 코스 맛집입니다.",
-                      image:
-                        "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80",
-                      category: "한정식",
-                      x: 127.1214,
-                      y: 35.8462,
-                    },
-                    {
-                      uid: "fallback-4",
-                      foodUid: "fallback-4",
-                      name: "교동다원",
-                      address: "전주시 완산구 은행로 74-11",
-                      roadAddr: "전주시 완산구 은행로 74-11",
-                      jibunAddr: "",
-                      menu: "쌍화차 ₩9,000, 전통차 ₩8,000",
-                      tel: "063-000-0003",
-                      intro: "한옥마을 산책 뒤 들르기 좋은 전통 다과 공간입니다.",
-                      image:
-                        "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=80",
-                      category: "전주한옥마을",
-                      x: 127.1537,
-                      y: 35.8153,
-                    },
-                  ].map((restaurant) => {
-                    const reviews = getReviews(restaurant.uid);
-                    const stats = calculateReviewStats(reviews);
-                    return {
-                      ...restaurant,
-                      reviewCount: reviews.length,
-                      avgRating: stats.avgRating,
-                      ratingCount: stats.ratingCount,
-                      isFavorite: isFavorite(restaurant.uid),
-                    };
-                  });
-                }
+        if (!reviews.length) {
+          els.reviewList.innerHTML =
+            '<div class="empty">첫 리뷰를 남겨보세요.</div>';
+          return;
+        }
+
+        els.reviewList.innerHTML = reviews
+          .map(
+            (review) => `
+      <div class="review-item">
+        <div class="meta" style="justify-content:space-between; gap:10px;">
+          <strong>${escapeHtml(review.author)}</strong>
+          <span class="rating">${"★".repeat(review.rating)}${"☆".repeat(5 - review.rating)}</span>
+        </div>
+        <div class="muted" style="margin-top:6px;">${escapeHtml(review.createdAt)}</div>
+        <p>${escapeHtml(review.content)}</p>
+      </div>
+    `,
+          )
+          .join("");
+      }
+
+      function updateRestaurantMeta(uid) {
+        const restaurant = STATE.restaurants.find(
+          (item) => String(item.uid) === String(uid),
+        );
+        if (!restaurant) return;
+
+        const reviews = getReviews(uid);
+        const stats = calculateReviewStats(reviews);
+
+        restaurant.reviewCount = reviews.length;
+        restaurant.avgRating = stats.avgRating;
+        restaurant.ratingCount = stats.ratingCount;
+        restaurant.isFavorite = isFavorite(uid);
+
+        if (
+          STATE.selectedRestaurant &&
+          String(STATE.selectedRestaurant.uid) === String(uid)
+        ) {
+          STATE.selectedRestaurant = restaurant;
+        }
+
+        applyFilters();
+      }
+
+      function calculateReviewStats(reviews) {
+        if (!reviews.length) {
+          return { avgRating: 4.5, ratingCount: 0 };
+        }
+
+        const avg =
+          reviews.reduce((sum, review) => sum + Number(review.rating || 0), 0) /
+          reviews.length;
+        return {
+          avgRating: Math.round(avg * 10) / 10,
+          ratingCount: reviews.length,
+        };
+      }
+
+      function getReviewStorageKey(uid) {
+        return `jeonju-food-reviews-${uid}`;
+      }
+
+      function getReviews(uid) {
+        try {
+          return JSON.parse(
+            localStorage.getItem(getReviewStorageKey(uid)) || "[]",
+          );
+        } catch {
+          return [];
+        }
+      }
+
+      function getFavorites() {
+        try {
+          return JSON.parse(
+            localStorage.getItem(STORAGE_KEYS.favorites) || "[]",
+          );
+        } catch {
+          return [];
+        }
+      }
+
+      function isFavorite(uid) {
+        return getFavorites().includes(String(uid));
+      }
+
+      function toggleFavorite(uid, rerenderDetail = false) {
+        const favorites = new Set(getFavorites());
+        const key = String(uid);
+
+        if (favorites.has(key)) {
+          favorites.delete(key);
+        } else {
+          favorites.add(key);
+        }
+
+        localStorage.setItem(
+          STORAGE_KEYS.favorites,
+          JSON.stringify([...favorites]),
+        );
+
+        STATE.restaurants.forEach((restaurant) => {
+          if (String(restaurant.uid) === key) {
+            restaurant.isFavorite = favorites.has(key);
+          }
+        });
+
+        if (
+          STATE.selectedRestaurant &&
+          String(STATE.selectedRestaurant.uid) === key
+        ) {
+          STATE.selectedRestaurant.isFavorite = favorites.has(key);
+          if (rerenderDetail) {
+            renderDetail(STATE.selectedRestaurant);
+          }
+        }
+
+        applyFilters();
+      }
+
+      function mergeStoredMeta(restaurants) {
+        return restaurants.map((restaurant) => {
+          const reviews = getReviews(restaurant.uid);
+          const stats = calculateReviewStats(reviews);
+
+          return {
+            ...restaurant,
+            reviewCount: reviews.length,
+            avgRating: stats.avgRating,
+            ratingCount: stats.ratingCount,
+            isFavorite: isFavorite(restaurant.uid),
+          };
+        });
+      }
+
+      function showError(message) {
+        els.errorArea.innerHTML = `<div class="error">${escapeHtml(message)}</div>`;
+      }
+
+      function clearError() {
+        els.errorArea.innerHTML = "";
+      }
+
+      function escapeHtml(value) {
+        return String(value ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      function escapeHtmlAttr(value) {
+        return escapeHtml(value).replace(/`/g, "&#96;");
+      }
+
+      function shortAddress(value) {
+        const text = String(value || "").trim();
+        if (!text) return "";
+        return text.length > 26 ? `${text.slice(0, 26)}...` : text;
+      }
+
+      function getFallbackRestaurants() {
+        return [
+          {
+            uid: "fallback-1",
+            foodUid: "fallback-1",
+            name: "전주 가족회관",
+            address: "전주시 완산구 전라감영 5길 17 2층",
+            roadAddr: "전주시 완산구 전라감영 5길 17 2층",
+            jibunAddr: "",
+            menu: "전주 비빔밥 ₩15,000, 육회비빔밥 ₩18,000",
+            tel: "063-000-0000",
+            intro:
+              "전주 대표 비빔밥 맛집으로 관광객과 현지인 모두에게 인기입니다.",
+            image:
+              "https://images.unsplash.com/photo-1590301157890-4810ed352733?auto=format&fit=crop&w=1200&q=80",
+            category: "비빔밥",
+            x: 127.1467,
+            y: 35.8194,
+          },
+          {
+            uid: "fallback-2",
+            foodUid: "fallback-2",
+            name: "현대옥 남부시장점",
+            address: "전주시 완산구 풍남문2길 63",
+            roadAddr: "전주시 완산구 풍남문2길 63",
+            jibunAddr: "",
+            menu: "콩나물국밥 ₩9,000",
+            tel: "063-000-0001",
+            intro: "전주식 콩나물국밥으로 유명한 대표 로컬 맛집입니다.",
+            image:
+              "https://images.unsplash.com/photo-1600335895229-6e75511892c8?auto=format&fit=crop&w=1200&q=80",
+            category: "국밥",
+            x: 127.1495,
+            y: 35.8148,
+          },
+          {
+            uid: "fallback-3",
+            foodUid: "fallback-3",
+            name: "다문",
+            address: "전주시 덕진구 기린대로 700",
+            roadAddr: "전주시 덕진구 기린대로 700",
+            jibunAddr: "",
+            menu: "한정식 코스 ₩25,000",
+            tel: "063-000-0002",
+            intro: "반찬 구성이 풍성한 전주식 한정식 맛집입니다.",
+            image:
+              "https://images.unsplash.com/photo-1553163147-622ab57be1c7?auto=format&fit=crop&w=1200&q=80",
+            category: "한정식",
+            x: 127.1214,
+            y: 35.8462,
+          },
+          {
+            uid: "fallback-4",
+            foodUid: "fallback-4",
+            name: "삼천동막걸리골목",
+            address: "전주시 완산구 삼천동 일대",
+            roadAddr: "전주시 완산구 삼천동 일대",
+            jibunAddr: "",
+            menu: "막걸리 한상 ₩20,000",
+            tel: "063-000-0003",
+            intro: "전주 특유의 푸짐한 막걸리 한상을 즐길 수 있는 곳입니다.",
+            image:
+              "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1200&q=80",
+            category: "막걸리",
+            x: 127.1149,
+            y: 35.7907,
+          },
+          {
+            uid: "fallback-5",
+            foodUid: "fallback-5",
+            name: "교동다원",
+            address: "전주시 완산구 은행로 74-11",
+            roadAddr: "전주시 완산구 은행로 74-11",
+            jibunAddr: "",
+            menu: "쌍화차 ₩9,000, 전통차 ₩8,000",
+            tel: "063-000-0004",
+            intro: "한옥마을 산책 뒤 들르기 좋은 전통 다과 공간입니다.",
+            image:
+              "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=80",
+            category: "전주한옥마을",
+            x: 127.1537,
+            y: 35.8153,
+          },
+        ].map((restaurant) => {
+          const reviews = getReviews(restaurant.uid);
+          const stats = calculateReviewStats(reviews);
+
+          return {
+            ...restaurant,
+            reviewCount: reviews.length,
+            avgRating: stats.avgRating,
+            ratingCount: stats.ratingCount,
+            isFavorite: isFavorite(restaurant.uid),
+          };
+        });
+      }
     </script>
   </body>
 </html>
