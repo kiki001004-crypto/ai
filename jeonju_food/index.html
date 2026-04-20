@@ -1108,7 +1108,9 @@
         <img class="hero-image" src="${escapeHtmlAttr(item.image)}" alt="${escapeHtmlAttr(item.name)}" onerror="this.src='${CONFIG.DEFAULT_IMAGE}'" />
         <div class="hero-content">
           <div class="restaurant-name" style="font-size:26px; margin-bottom:6px;">${escapeHtml(item.name)}</div>
-          <div style="font-size:15px; color:#333; margin-bottom:6px;">${escapeHtml(item.menu)}</div>
+          <div style="font-size:15px; color:#333; margin-bottom:6px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+  ${escapeHtml(item.menu)}
+</div>
           <div class="sub-meta">
             <span>${escapeHtml(shortAddress(item.address))}</span>
             <span>리뷰 ${item.reviewCount}</span>
