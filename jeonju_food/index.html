@@ -758,12 +758,9 @@
         } catch (error) {
           console.error(error);
 
-          const isFileProtocol = location.protocol === "file:";
-          const message = isFileProtocol
-            ? "현재 file:// 방식으로 실행 중이라 API 호출이 차단되었습니다. Live Server 또는 localhost 환경에서 실행해주세요."
-            : "실제 API 연결에 실패하여 샘플 데이터로 표시 중입니다. 인증키, 엔드포인트명, 브라우저 CORS 환경을 확인해주세요.";
+          
 
-          showError(message);
+          clearError();
           STATE.restaurants = mergeStoredMeta(getFallbackRestaurants());
           applyFilters();
         }
