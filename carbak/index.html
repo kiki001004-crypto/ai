@@ -1028,19 +1028,25 @@
         syncBottomNav();
 
         if (name === "results" && state.resultsMap && window.kakao?.maps) {
-          setTimeout(
-            () => kakao.maps.event.trigger(state.resultsMap, "resize"),
-            120,
-          );
+          setTimeout(() => {
+            state.resultsMap.relayout();
+            kakao.maps.event.trigger(state.resultsMap, "resize");
+          }, 120);
         }
+
         if (name === "detail" && state.detailMap && window.kakao?.maps) {
-          setTimeout(
-            () => kakao.maps.event.trigger(state.detailMap, "resize"),
-            120,
-          );
+          setTimeout(() => {
+            state.detailMap.relayout();
+            if (state.selectedItem?.mapY && state.selectedItem?.mapX) {
+              const pos = new kakao.maps.LatLng(
+                Number(state.selectedItem.mapY),
+                Number(state.selectedItem.mapX),
+              );
+              state.detailMap.setCenter(pos);
+            }
+          }, 120);
         }
       }
-
       function getRecentKeywords() {
         try {
           return (
@@ -1575,23 +1581,33 @@
       }
 
       function updateDetailMap(item) {
-        if (!state.detailMap || !window.kakao?.maps || !item.mapY || !item.mapX)
-          return;
+        if (!window.kakao?.maps || !item.mapY || !item.mapX) return;
 
+        const container = document.getElementById("detailMap");
         const position = new kakao.maps.LatLng(
           Number(item.mapY),
           Number(item.mapX),
         );
-        state.detailMap.setCenter(position);
-        state.detailMap.setLevel(4);
 
-        if (state.detailMarker) state.detailMarker.setMap(null);
-        state.detailMarker = new kakao.maps.Marker({ position });
-        state.detailMarker.setMap(state.detailMap);
+        if (!state.detailMap) {
+          state.detailMap = new kakao.maps.Map(container, {
+            center: position,
+            level: 4,
+          });
+        }
 
         setTimeout(() => {
-          kakao.maps.event.trigger(state.detailMap, "resize");
-        }, 60);
+          state.detailMap.relayout();
+          state.detailMap.setCenter(position);
+          state.detailMap.setLevel(4);
+
+          if (state.detailMarker) {
+            state.detailMarker.setMap(null);
+          }
+
+          state.detailMarker = new kakao.maps.Marker({ position });
+          state.detailMarker.setMap(state.detailMap);
+        }, 120);
       }
 
       async function fetchCampImages(contentId) {
