@@ -42,6 +42,16 @@
         background: linear-gradient(180deg, #f8f9fd 0%, #f3f5fb 100%);
         position: relative;
         overflow: hidden;
+        transition:
+          opacity 0.22s ease,
+          transform 0.22s ease;
+      }
+      body.page-leaving .app {
+        opacity: 0;
+        transform: translateY(10px);
+        transition:
+          opacity 0.22s ease,
+          transform 0.22s ease;
       }
 
       .screen {
@@ -563,6 +573,10 @@
         padding: 0;
       }
 
+      .bottom-nav .nav-item {
+        text-decoration: none;
+      }
+
       .nav-item.active {
         color: #5a73bd;
       }
@@ -608,6 +622,36 @@
           height: 92px;
         }
       }
+      .line-icon-btn {
+        color: var(--primary);
+        background: #fff;
+        box-shadow: 0 6px 16px rgba(76, 102, 176, 0.1);
+      }
+
+      .line-icon-btn svg {
+        width: 21px;
+        height: 21px;
+        display: block;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 1.9;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .map-full-card {
+        height: calc(100vh - 120px - var(--safe-bottom));
+        background: var(--surface);
+        border-radius: 22px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        border: 1px solid rgba(95, 115, 170, 0.08);
+      }
+
+      #nationalMap {
+        width: 100%;
+        height: 100%;
+        background: #edf2ff;
+      }
     </style>
   </head>
   <body>
@@ -624,14 +668,31 @@
               autocomplete="off"
             />
           </div>
-          <button type="submit" class="icon-btn" title="검색">↵</button>
+
           <button
             type="button"
-            id="locationSearchBtn"
-            class="icon-btn"
-            title="내 위치 주변 검색"
+            id="nationalMapBtn"
+            class="icon-btn line-icon-btn"
+            title="전국캠핑장지도"
+            aria-label="전국캠핑장지도"
           >
-            🗺️
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3.5 6.5 8 4l8 2 4.5-2v13.5L16 20l-8-2-4.5 2z"></path>
+              <path d="M8 4v14"></path>
+              <path d="M16 6v14"></path>
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            id="favoritesQuickBtn"
+            class="icon-btn line-icon-btn"
+            title="즐겨찾기"
+            aria-label="즐겨찾기"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6.5 3.5h11v17l-5.5-3-5.5 3z"></path>
+            </svg>
           </button>
         </form>
 
@@ -736,6 +797,19 @@
           >
             더 보기
           </button>
+        </div>
+      </section>
+      <section id="nationalMapScreen" class="screen">
+        <div class="topbar">
+          <button class="nav-back" data-back="search" type="button">‹</button>
+          <div class="title">전국캠핑장지도</div>
+          <button class="ghost-btn" type="button" id="nationalMapRefreshBtn">
+            ↻
+          </button>
+        </div>
+
+        <div class="map-full-card">
+          <div id="nationalMap"></div>
         </div>
       </section>
 
@@ -848,21 +922,15 @@
       </section>
 
       <nav class="bottom-nav" aria-label="하단 메뉴">
-        <button
-          class="nav-item"
-          type="button"
-          data-nav="home"
-          data-href="index3.html"
-          aria-label="홈"
-        >
+        <a class="nav-item nav-link" href="index3.html#main" aria-label="홈">
           <div class="nav-icon">
             <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M3 10.5 12 3l9 7.5"></path>
-              <path d="M5.5 9.5V21h13V9.5"></path>
+              <path d="M4 10.5 12 4l8 6.5"></path>
+              <path d="M7 10v8h10v-8"></path>
             </svg>
           </div>
-          <span class="nav-label">홈</span>
-        </button>
+          <div class="nav-label">홈</div>
+        </a>
 
         <button
           class="nav-item active"
@@ -964,6 +1032,8 @@
         lastSearchMode: "keyword",
         allBookmarkedItems: [],
         detailBackTarget: "results",
+        nationalMap: null,
+        nationalMarkers: [],
       };
 
       const els = {
@@ -973,6 +1043,8 @@
         favoritesScreen: document.getElementById("favoritesScreen"),
         searchForm: document.getElementById("searchForm"),
         keywordInput: document.getElementById("keywordInput"),
+        nationalMapBtn: document.getElementById("nationalMapBtn"),
+        favoritesQuickBtn: document.getElementById("favoritesQuickBtn"),
         recentKeywords: document.getElementById("recentKeywords"),
         clearRecentBtn: document.getElementById("clearRecentBtn"),
         locationSearchBtn: document.getElementById("locationSearchBtn"),
@@ -1003,6 +1075,8 @@
         favoritesCount: document.getElementById("favoritesCount"),
         favoritesContent: document.getElementById("favoritesContent"),
         bottomNavItems: document.querySelectorAll(".nav-item"),
+        nationalMapScreen: document.getElementById("nationalMapScreen"),
+        nationalMapRefreshBtn: document.getElementById("nationalMapRefreshBtn"),
       };
 
       function init() {
@@ -1016,37 +1090,6 @@
       }
 
       function bindEvents() {
-        els.keywordInput.addEventListener("focus", () => {
-          els.keywordInput.value = "";
-        });
-
-        els.keywordInput.addEventListener("click", () => {
-          els.keywordInput.value = "";
-        });
-
-        els.searchForm.addEventListener("submit", (e) => {
-          e.preventDefault();
-          const keyword = els.keywordInput.value.trim();
-          if (!keyword) {
-            alert("검색어를 입력해주세요.");
-            return;
-          }
-          searchByKeyword(keyword);
-        });
-
-        document.querySelectorAll(".quick-keyword").forEach((button) => {
-          button.addEventListener("click", () => {
-            const keyword = button.dataset.keyword;
-            els.keywordInput.value = keyword;
-            searchByKeyword(keyword);
-          });
-        });
-
-        els.clearRecentBtn.addEventListener("click", () => {
-          localStorage.removeItem(CONFIG.RECENT_KEYWORDS_KEY);
-          renderRecentKeywords();
-        });
-
         els.locationSearchBtn.addEventListener("click", getNearbyCampings);
         els.loadMoreBtn.addEventListener("click", loadMoreResults);
         els.searchAgainBtn.addEventListener("click", () =>
@@ -1063,14 +1106,11 @@
           switchScreen(state.detailBackTarget),
         );
 
-        document.querySelectorAll(".nav-back").forEach((btn) => {
-          if (btn.id === "detailBackBtn") return;
-          btn.addEventListener("click", () => switchScreen(btn.dataset.back));
-        });
-
-        els.bottomNavItems.forEach((btn) => {
-          btn.addEventListener("click", () => handleBottomNav(btn.dataset.nav));
-        });
+        els.nationalMapBtn.addEventListener("click", openNationalCampingMap);
+        els.nationalMapRefreshBtn.addEventListener(
+          "click",
+          openNationalCampingMap,
+        );
       }
 
       function initKakaoMaps() {
@@ -1085,6 +1125,13 @@
         kakao.maps.load(() => {
           state.resultsMap = new kakao.maps.Map(
             document.getElementById("resultsMap"),
+            {
+              center: new kakao.maps.LatLng(36.5, 127.8),
+              level: 13,
+            },
+          );
+          state.nationalMap = new kakao.maps.Map(
+            document.getElementById("nationalMap"),
             {
               center: new kakao.maps.LatLng(36.5, 127.8),
               level: 13,
@@ -1105,21 +1152,29 @@
         state.currentView = name;
         els.searchScreen.classList.toggle("active", name === "search");
         els.resultsScreen.classList.toggle("active", name === "results");
+        els.nationalMapScreen.classList.toggle(
+          "active",
+          name === "nationalMap",
+        );
         els.detailScreen.classList.toggle("active", name === "detail");
         els.favoritesScreen.classList.toggle("active", name === "favorites");
         syncBottomNav();
 
         if (name === "results" && state.resultsMap && window.kakao?.maps) {
-          requestAnimationFrame(() => {
-            setTimeout(() => {
-              state.resultsMap.relayout();
-            }, 80);
-          });
+          setTimeout(() => {
+            state.resultsMap.relayout();
+          }, 120);
+        }
+
+        if (name === "nationalMap" && state.nationalMap && window.kakao?.maps) {
+          setTimeout(() => {
+            state.nationalMap.relayout();
+          }, 120);
         }
 
         if (name === "detail" && state.detailMap && window.kakao?.maps) {
           setTimeout(() => {
-            kakao.maps.event.trigger(state.detailMap, "resize");
+            state.detailMap.relayout();
           }, 120);
         }
       }
@@ -1157,8 +1212,8 @@
         els.recentKeywords.innerHTML = keywords
           .map(
             (keyword) => `
-        <button class="chip gray recent-chip" type="button" data-keyword="${escapeHtml(keyword)}">${escapeHtml(keyword)}</button>
-      `,
+                    <button class="chip gray recent-chip" type="button" data-keyword="${escapeHtml(keyword)}">${escapeHtml(keyword)}</button>
+                  `,
           )
           .join("");
 
@@ -1276,6 +1331,69 @@
         );
       }
 
+      async function openNationalCampingMap() {
+        switchScreen("nationalMap");
+
+        if (!state.nationalMap || !window.kakao?.maps) return;
+
+        try {
+          const data = await requestCampingApi("searchList", {
+            keyword: "캠핑장",
+            pageNo: 1,
+            numOfRows: 80,
+            _type: "json",
+          });
+
+          state.items = Array.isArray(data?.items?.item)
+            ? data.items.item
+            : data?.items?.item
+              ? [data.items.item]
+              : [];
+
+          renderNationalMapMarkers();
+        } catch (error) {
+          console.error(error);
+          alert("전국 캠핑장 지도를 불러오지 못했습니다.");
+        }
+      }
+
+      function clearNationalMarkers() {
+        state.nationalMarkers.forEach((marker) => marker.setMap(null));
+        state.nationalMarkers = [];
+      }
+
+      function renderNationalMapMarkers() {
+        if (!state.nationalMap || !window.kakao?.maps) return;
+
+        clearNationalMarkers();
+
+        const validItems = state.items.filter((item) => item.mapY && item.mapX);
+        if (!validItems.length) return;
+
+        const bounds = new kakao.maps.LatLngBounds();
+
+        validItems.forEach((item) => {
+          const position = new kakao.maps.LatLng(
+            Number(item.mapY),
+            Number(item.mapX),
+          );
+          bounds.extend(position);
+
+          const marker = new kakao.maps.Marker({ position });
+          marker.setMap(state.nationalMap);
+          state.nationalMarkers.push(marker);
+
+          kakao.maps.event.addListener(marker, "click", () =>
+            openDetail(item, "nationalMap"),
+          );
+        });
+
+        setTimeout(() => {
+          state.nationalMap.relayout();
+          state.nationalMap.setBounds(bounds);
+        }, 120);
+      }
+
       async function loadMoreResults() {
         if (state.favoritesOnly) return;
 
@@ -1378,26 +1496,26 @@
             );
 
             return `
-        <article class="list-card" data-id="${item.contentId}">
-          <img
-            class="list-thumb"
-            src="${item.firstImageUrl || makeFallbackImage(item.facltNm)}"
-            alt="${escapeHtml(item.facltNm)}"
-            onerror="this.src='${makeFallbackImage(item.facltNm)}'"
-          />
-          <div class="list-body">
-            <h3 class="list-name">${escapeHtml(item.facltNm || "-")}</h3>
-            <div class="list-addr">${escapeHtml(address || "-")}</div>
-            <div class="tag-row">${tags || '<span class="mini-tag">캠핑장</span>'}</div>
-          </div>
-          <div class="bookmark-col">
-            <button class="bookmark-btn result-bookmark" type="button" data-id="${item.contentId}">
-              ${isBookmarked ? "★" : "☆"}
-            </button>
-            <div class="distance">${distanceText}</div>
-          </div>
-        </article>
-      `;
+                    <article class="list-card" data-id="${item.contentId}">
+                      <img
+                        class="list-thumb"
+                        src="${item.firstImageUrl || makeFallbackImage(item.facltNm)}"
+                        alt="${escapeHtml(item.facltNm)}"
+                        onerror="this.src='${makeFallbackImage(item.facltNm)}'"
+                      />
+                      <div class="list-body">
+                        <h3 class="list-name">${escapeHtml(item.facltNm || "-")}</h3>
+                        <div class="list-addr">${escapeHtml(address || "-")}</div>
+                        <div class="tag-row">${tags || '<span class="mini-tag">캠핑장</span>'}</div>
+                      </div>
+                      <div class="bookmark-col">
+                        <button class="bookmark-btn result-bookmark" type="button" data-id="${item.contentId}">
+                          ${isBookmarked ? "★" : "☆"}
+                        </button>
+                        <div class="distance">${distanceText}</div>
+                      </div>
+                    </article>
+                  `;
           })
           .join("");
 
@@ -1640,11 +1758,11 @@
         els.detailInfoGrid.innerHTML = infoItems
           .map(
             ([label, value]) => `
-        <div class="info-box">
-          <div class="label">${escapeHtml(label)}</div>
-          <div class="value">${escapeHtml(value)}</div>
-        </div>
-      `,
+                    <div class="info-box">
+                      <div class="label">${escapeHtml(label)}</div>
+                      <div class="value">${escapeHtml(value)}</div>
+                    </div>
+                  `,
           )
           .join("");
 
@@ -1660,11 +1778,11 @@
         els.facilityGrid.innerHTML = facilities
           .map(
             ([label, value]) => `
-        <div class="facility-item">
-          <strong>${escapeHtml(value)}</strong>
-          <span>${escapeHtml(label)}</span>
-        </div>
-      `,
+                    <div class="facility-item">
+                      <strong>${escapeHtml(value)}</strong>
+                      <span>${escapeHtml(label)}</span>
+                    </div>
+                  `,
           )
           .join("");
 
@@ -1876,24 +1994,24 @@
               .join(" ");
 
             return `
-        <article class="list-card favorite-list-card" data-id="${item.contentId}">
-          <img
-            class="list-thumb"
-            src="${item.firstImageUrl || makeFallbackImage(item.facltNm)}"
-            alt="${escapeHtml(item.facltNm)}"
-            onerror="this.src='${makeFallbackImage(item.facltNm)}'"
-          />
-          <div class="list-body">
-            <h3 class="list-name">${escapeHtml(item.facltNm || "-")}</h3>
-            <div class="list-addr">${escapeHtml(address || "-")}</div>
-            <div class="tag-row">${tags || '<span class="mini-tag">캠핑장</span>'}</div>
-          </div>
-          <div class="bookmark-col">
-            <button class="bookmark-btn favorite-bookmark" type="button" data-id="${item.contentId}">★</button>
-            <div class="distance">저장됨</div>
-          </div>
-        </article>
-      `;
+                    <article class="list-card favorite-list-card" data-id="${item.contentId}">
+                      <img
+                        class="list-thumb"
+                        src="${item.firstImageUrl || makeFallbackImage(item.facltNm)}"
+                        alt="${escapeHtml(item.facltNm)}"
+                        onerror="this.src='${makeFallbackImage(item.facltNm)}'"
+                      />
+                      <div class="list-body">
+                        <h3 class="list-name">${escapeHtml(item.facltNm || "-")}</h3>
+                        <div class="list-addr">${escapeHtml(address || "-")}</div>
+                        <div class="tag-row">${tags || '<span class="mini-tag">캠핑장</span>'}</div>
+                      </div>
+                      <div class="bookmark-col">
+                        <button class="bookmark-btn favorite-bookmark" type="button" data-id="${item.contentId}">★</button>
+                        <div class="distance">저장됨</div>
+                      </div>
+                    </article>
+                  `;
           })
           .join("");
 
