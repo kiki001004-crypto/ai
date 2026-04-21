@@ -1115,7 +1115,7 @@
         favoritesSearchBtn: document.getElementById("favoritesSearchBtn"),
         favoritesCount: document.getElementById("favoritesCount"),
         favoritesContent: document.getElementById("favoritesContent"),
-        bottomNavItems: document.querySelectorAll(".nav-item"),
+        bottomNavItems: document.querySelectorAll(".nav-item[data-nav]"),
         nationalMapScreen: document.getElementById("nationalMapScreen"),
         nationalMapRefreshBtn: document.getElementById("nationalMapRefreshBtn"),
         
@@ -2156,7 +2156,7 @@ if (els.nationalMapRefreshBtn) {
       }
 
       function handleBottomNav(type) {
-        if (type === "search" || type === "home") {
+        if (type === "search") {
           switchScreen("search");
           return;
         }
@@ -2167,7 +2167,9 @@ if (els.nationalMapRefreshBtn) {
           return;
         }
 
-        alert("데모 화면에서는 검색과 MY 즐겨찾기만 구현되어 있습니다.");
+        if (type === "group" || type === "live") {
+          return;
+        }
       }
 
       function syncBottomNav() {
