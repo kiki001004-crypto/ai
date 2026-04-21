@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>CARBAK 모바일 온보딩</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+    <style>
+      :root {
+        --bg: #fff;
+        --primary: #5a73bd;
+        --primary-dark: #3d558f;
+        --text-main: #334b87;
+        --text-sub: #8fa0d1;
+        --line: #d8dbe6;
+        --white: #ffffff;
+      }
+
+      * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        font-family:
+          "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+        background: var(--bg);
+        color: var(--text-main);
+        overflow: hidden;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .app {
+        position: relative;
+        width: 100%;
+        max-width: 430px;
+        height: 100dvh;
+        background: var(--bg);
+        overflow: hidden;
+      }
+
+      .screen {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--bg);
+        transition:
+          transform 0.35s ease,
+          opacity 0.35s ease,
+          visibility 0.35s ease;
+      }
+
+      .screen.hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: translateX(-8%);
+      }
+
+      .swiper {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+
+      .swiper-slide {
+        padding: 72px 24px 170px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        width: 100%;
+        min-height: 100%;
+      }
+
+      .copy {
+        margin-top: 8px;
+      }
+
+      .eyebrow {
+        font-size: 24px;
+        line-height: 1.35;
+        font-weight: 700;
+        color: #6b83bf;
+        letter-spacing: -0.03em;
+      }
+
+      .headline {
+        margin-top: 2px;
+        font-size: 28px;
+        line-height: 1.28;
+        font-weight: 800;
+        letter-spacing: -0.045em;
+        color: var(--text-main);
+        word-break: keep-all;
+      }
+
+      .headline .light {
+        color: #6b83bf;
+        font-weight: 700;
+      }
+
+      .desc {
+        margin-top: 14px;
+        font-size: 16px;
+        line-height: 1.55;
+        letter-spacing: -0.03em;
+        color: var(--text-sub);
+        word-break: keep-all;
+      }
+
+      .visual-wrap {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 28px 0 0;
+        min-height: 340px;
+      }
+
+      .visual-wrap img {
+        display: block;
+        width: min(100%, 320px);
+        height: auto;
+        object-fit: contain;
+        user-select: none;
+        pointer-events: none;
+      }
+
+      .slide-animate .copy,
+      .slide-animate .visual-wrap,
+      .slide-animate .visual-wrap img {
+        opacity: 1;
+        transform: none;
+        filter: none;
+        transition: none;
+        will-change: auto;
+      }
+
+      .bottom-ui {
+        display: none;
+      }
+
+      .onboarding-footer {
+        position: absolute;
+        left: 24px;
+        right: 24px;
+        bottom: 34px;
+        z-index: 30;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 24px;
+        pointer-events: none;
+      }
+
+      .onboarding-footer .swiper-pagination,
+      .onboarding-footer .cta {
+        pointer-events: auto;
+      }
+
+      .swiper-pagination {
+        position: static;
+        transform: none;
+        z-index: 20;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+      }
+
+      .swiper-pagination-bullet {
+        width: 10px;
+        height: 10px;
+        margin: 0 !important;
+        background: #d8dceb;
+        opacity: 1;
+        transition:
+          transform 0.3s ease,
+          background 0.3s ease,
+          opacity 0.3s ease;
+      }
+
+      .swiper-pagination-bullet-active {
+        background: var(--primary);
+        transform: scale(1.12);
+      }
+
+      .cta {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 56px;
+        border: 0;
+        border-radius: 14px;
+        background: var(--primary);
+        color: var(--white);
+        text-decoration: none;
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        box-shadow: 0 8px 20px rgba(90, 115, 189, 0.18);
+        transition:
+          transform 0.18s ease,
+          background 0.18s ease;
+      }
+
+      .cta:active {
+        transform: scale(0.985);
+        background: #4e67af;
+      }
+
+      .login-screen {
+        padding: 44px 24px 36px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .brand {
+        display: flex;
+        justify-content: center;
+        margin-top: 34px;
+        margin-bottom: 62px;
+      }
+
+      .brand img {
+        width: 172px;
+        height: auto;
+        object-fit: contain;
+      }
+
+      .field-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+
+      .field-label {
+        font-size: 16px;
+        color: var(--primary);
+        font-weight: 500;
+        letter-spacing: -0.03em;
+      }
+
+      .field {
+        width: 100%;
+        height: 48px;
+        border: 0;
+        border-bottom: 1px solid #cfd5e4;
+        background: transparent;
+        outline: none;
+        font-size: 16px;
+        color: var(--text-main);
+        padding: 0 0 6px;
+      }
+
+      .field::placeholder {
+        color: #b0bad8;
+      }
+
+      .btn {
+        width: 100%;
+        height: 56px;
+        border-radius: 14px;
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        margin-top: 26px;
+        border: none;
+        background: var(--primary);
+        color: var(--white);
+      }
+
+      .btn-outline {
+        margin-top: 18px;
+        border: 1.5px solid var(--primary);
+        background: transparent;
+        color: var(--primary);
+      }
+
+      .links {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 14px;
+        margin-top: 18px;
+        color: #6174a8;
+        font-size: 14px;
+        letter-spacing: -0.03em;
+      }
+
+      .links a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .simple-login {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-top: 42px;
+        color: var(--primary);
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: -0.03em;
+      }
+
+      .simple-login::before,
+      .simple-login::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: #9fb0dd;
+      }
+
+      .socials {
+        display: flex;
+        justify-content: center;
+        gap: 22px;
+        margin-top: 30px;
+      }
+
+      .social-btn {
+        width: 42px;
+        height: 42px;
+        border: 0;
+        background: transparent;
+        padding: 0;
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+      }
+
+      .social-btn img {
+        width: 32px;
+        height: 32px;
+        object-fit: contain;
+      }
+
+      @media (min-width: 431px) {
+        body {
+          background: #fff;
+        }
+
+        .app {
+          border-radius: 26px;
+          box-shadow: 0 22px 60px rgba(35, 49, 86, 0.18);
+          height: min(100dvh, 900px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <section id="onboarding" class="screen onboarding-screen">
+        <div class="swiper onboardingSwiper">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide slide-animate">
+              <div class="copy">
+                <div class="eyebrow">차박</div>
+                <div class="headline">
+                  어디로 <span class="light">떠나야할지 모르겠나요</span>
+                </div>
+                <div class="desc">
+                  지도기반 위치 앱 및 키워드 검색으로 내가 원하는 장소를 한번에
+                </div>
+              </div>
+              <div class="visual-wrap">
+                <img src="./images/work1-1.png" alt="차박 장소 추천 일러스트" />
+              </div>
+              <div class="bottom-ui">
+                <a href="#login" class="cta start-link">시작하기</a>
+              </div>
+            </div>
+
+            <div class="swiper-slide slide-animate">
+              <div class="copy">
+                <div class="eyebrow">차만 있다면</div>
+                <div class="headline">
+                  장비는 <span class="light">부담적은</span> 렌탈로
+                </div>
+                <div class="desc">차박에 필요한 용품들을 용도별로 둘러봐요</div>
+              </div>
+              <div class="visual-wrap">
+                <img src="./images/work2-1.png" alt="차박 장비 렌탈 일러스트" />
+              </div>
+              <div class="bottom-ui">
+                <a href="#login" class="cta start-link">시작하기</a>
+              </div>
+            </div>
+
+            <div class="swiper-slide slide-animate">
+              <div class="copy">
+                <div class="eyebrow">일상이 바쁠 땐 실시간</div>
+                <div class="headline">라이브로 대리만족하세요</div>
+                <div class="desc">
+                  라이브로 나를 뽐내고 시청자들과 소통하는 즐거움!
+                </div>
+              </div>
+              <div class="visual-wrap">
+                <img src="./images/work3-1.png" alt="차박 라이브 일러스트" />
+              </div>
+              <div class="bottom-ui">
+                <a href="#login" class="cta start-link">시작하기</a>
+              </div>
+            </div>
+          </div>
+          <div class="onboarding-footer">
+            <div class="swiper-pagination"></div>
+            <a href="#login" class="cta start-link">시작하기</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="login" class="screen login-screen hidden" aria-hidden="true">
+        <div class="brand">
+          <img src="./images/splash.png" alt="CARBAK 로그인" />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="userId">아이디</label>
+          <input
+            id="userId"
+            class="field"
+            type="text"
+            autocomplete="username"
+          />
+        </div>
+
+        <div class="field-group" style="margin-top: 8px">
+          <label class="field-label" for="userPw">비밀번호</label>
+          <input
+            id="userPw"
+            class="field"
+            type="password"
+            autocomplete="current-password"
+          />
+        </div>
+
+        <button class="btn btn-primary" type="button">로그인</button>
+        <button class="btn btn-outline" type="button">회원가입</button>
+
+        <div class="links">
+          <a href="javascript:void(0)">아이디 찾기</a>
+          <span>|</span>
+          <a href="javascript:void(0)">비밀번호 찾기</a>
+          <span>|</span>
+          <a href="javascript:void(0)">둘러보기</a>
+        </div>
+
+        <div class="simple-login">간편로그인</div>
+
+        <div class="socials">
+          <button class="social-btn" type="button" aria-label="카카오 로그인">
+            <img
+              alt="카카오"
+              src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='64' height='64' rx='6' fill='%23FEE500'/><path d='M32 14c-10.493 0-19 6.717-19 15 0 5.24 3.402 9.85 8.554 12.529l-2.167 7.927c-.191.698.61 1.256 1.223.85l9.47-6.275c.966.097 1.944.147 2.92.147 10.493 0 19-6.716 19-15S42.493 14 32 14z' fill='%231D1A1A'/></svg>"
+            />
+          </button>
+          <button class="social-btn" type="button" aria-label="네이버 로그인">
+            <img
+              alt="네이버"
+              src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='64' height='64' rx='6' fill='%2303C75A'/><path d='M23 18h8l10 15V18h8v28h-8L31 31v15h-8z' fill='white'/></svg>"
+            />
+          </button>
+          <button class="social-btn" type="button" aria-label="구글 로그인">
+            <img
+              alt="구글"
+              src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'><rect width='64' height='64' rx='6' fill='white'/><path d='M56 32.7c0-1.7-.15-3.33-.43-4.9H32v9.28h13.47c-.58 3-2.28 5.54-4.87 7.24v6.02h7.87C53.08 46.06 56 39.98 56 32.7z' fill='%234285F4'/><path d='M32 57c6.75 0 12.42-2.24 16.56-6.08l-7.87-6.02c-2.18 1.46-4.97 2.32-8.69 2.32-6.68 0-12.34-4.51-14.36-10.58H9.5v6.25A24.99 24.99 0 0032 57z' fill='%2334A853'/><path d='M17.64 36.64A14.99 14.99 0 0116.84 32c0-1.61.28-3.18.8-4.64v-6.25H9.5A24.98 24.98 0 007 32c0 3.99.95 7.77 2.5 10.89l8.14-6.25z' fill='%23FBBC05'/><path d='M32 16.78c3.67 0 6.96 1.26 9.55 3.74l7.16-7.16C44.41 9.33 38.75 7 32 7A24.99 24.99 0 009.5 21.11l8.14 6.25C19.66 21.29 25.32 16.78 32 16.78z' fill='%23EA4335'/></svg>"
+            />
+          </button>
+          <button class="social-btn" type="button" aria-label="페이스북 로그인">
+            <img
+              alt="페이스북"
+              src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='64' height='64' rx='6' fill='%231877F2'/><path d='M37.8 52V35.6h5.5l.8-6.4h-6.3v-4.1c0-1.85.52-3.1 3.17-3.1H44V16.3c-.53-.07-2.35-.23-4.47-.23-4.42 0-7.45 2.7-7.45 7.66v5.47H27v6.4h5.08V52z' fill='white'/></svg>"
+            />
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+      const onboardingScreen = document.getElementById("onboarding");
+      const loginScreen = document.getElementById("login");
+
+      const swiper = new Swiper(".onboardingSwiper", {
+        loop: false,
+        effect: "slide",
+        speed: 700,
+        allowTouchMove: true,
+        autoplay: {
+          delay: 1000,
+          disableOnInteraction: false,
+          stopOnLastSlide: true,
+        },
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+        },
+        a11y: {
+          enabled: true,
+        },
+      });
+
+      function showLoginScreen() {
+        onboardingScreen.classList.add("hidden");
+        onboardingScreen.setAttribute("aria-hidden", "true");
+        loginScreen.classList.remove("hidden");
+        loginScreen.setAttribute("aria-hidden", "false");
+        swiper.autoplay.stop();
+        history.replaceState(null, "", "#login");
+      }
+
+      function showOnboardingScreen() {
+        loginScreen.classList.add("hidden");
+        loginScreen.setAttribute("aria-hidden", "true");
+        onboardingScreen.classList.remove("hidden");
+        onboardingScreen.setAttribute("aria-hidden", "false");
+        swiper.autoplay.start();
+        history.replaceState(null, "", "#onboarding");
+      }
+
+      document.querySelectorAll(".start-link").forEach((button) => {
+        button.addEventListener("click", (event) => {
+          event.preventDefault();
+          showLoginScreen();
+        });
+      });
+
+      window.addEventListener("hashchange", () => {
+        if (location.hash === "#login") {
+          showLoginScreen();
+        } else {
+          showOnboardingScreen();
+        }
+      });
+
+      if (location.hash === "#login") {
+        showLoginScreen();
+      } else {
+        history.replaceState(null, "", "#onboarding");
+      }
+    </script>
+  </body>
+</html>
