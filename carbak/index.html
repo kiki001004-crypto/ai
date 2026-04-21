@@ -652,6 +652,38 @@
         height: 100%;
         background: #edf2ff;
       }
+
+      .line-icon-btn {
+  color: var(--primary);
+  background: #fff;
+  box-shadow: 0 6px 16px rgba(76, 102, 176, 0.1);
+}
+
+.line-icon-btn svg {
+  width: 21px;
+  height: 21px;
+  display: block;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.map-full-card {
+  height: calc(100vh - 120px - var(--safe-bottom));
+  background: var(--surface);
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(95, 115, 170, 0.08);
+}
+
+#nationalMap {
+  width: 100%;
+  height: 100%;
+  background: #edf2ff;
+}
     </style>
   </head>
   <body>
@@ -659,48 +691,49 @@
       <section id="searchScreen" class="screen active">
         <div class="status-spacer"></div>
         <form id="searchForm" class="searchbar-wrap">
-          <div class="searchbar">
-            <span>🔎</span>
-            <input
-              id="keywordInput"
-              type="text"
-              placeholder="지역 또는 키워드를 입력하세요."
-              autocomplete="off"
-            />
-          </div>
+  <div class="searchbar">
+    <span>🔎</span>
+    <input
+      id="keywordInput"
+      type="text"
+      placeholder="지역 또는 키워드를 입력하세요."
+      autocomplete="off"
+    />
+  </div>
 
-          <button
-            type="button"
-            id="nationalMapBtn"
-            class="icon-btn line-icon-btn"
-            title="전국캠핑장지도"
-            aria-label="전국캠핑장지도"
-          >
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M3.5 6.5 8 4l8 2 4.5-2v13.5L16 20l-8-2-4.5 2z"></path>
-              <path d="M8 4v14"></path>
-              <path d="M16 6v14"></path>
-            </svg>
-          </button>
+  <button
+    type="button"
+    id="nationalMapBtn"
+    class="icon-btn line-icon-btn"
+    title="전국 캠핑장 지도보기"
+    aria-label="전국 캠핑장 지도보기"
+  >
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M3.5 6.5 8 4l8 2 4.5-2v13.5L16 20l-8-2-4.5 2z"></path>
+      <path d="M8 4v14"></path>
+      <path d="M16 6v14"></path>
+    </svg>
+  </button>
 
-          <button
-            type="button"
-            id="favoritesQuickBtn"
-            class="icon-btn line-icon-btn"
-            title="즐겨찾기"
-            aria-label="즐겨찾기"
-          >
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M6.5 3.5h11v17l-5.5-3-5.5 3z"></path>
-            </svg>
-          </button>
-        </form>
+  <button
+    type="button"
+    id="favoritesQuickBtn"
+    class="icon-btn line-icon-btn"
+    title="즐겨찾기 목록"
+    aria-label="즐겨찾기 목록"
+  >
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M6.5 3.5h11v17l-5.5-3-5.5 3z"></path>
+    </svg>
+  </button>
+</form>
 
         <div class="section-title">
           <span>최근 검색어</span>
           <button id="clearRecentBtn" class="text-button" type="button">
             삭제
           </button>
+          
         </div>
         <div id="recentKeywords" class="chips"></div>
 
@@ -799,6 +832,8 @@
           </button>
         </div>
       </section>
+
+    
       <section id="nationalMapScreen" class="screen">
         <div class="topbar">
           <button class="nav-back" data-back="search" type="button">‹</button>
@@ -1077,6 +1112,7 @@
         bottomNavItems: document.querySelectorAll(".nav-item"),
         nationalMapScreen: document.getElementById("nationalMapScreen"),
         nationalMapRefreshBtn: document.getElementById("nationalMapRefreshBtn"),
+        
       };
 
       function init() {
@@ -1090,28 +1126,109 @@
       }
 
       function bindEvents() {
-        els.locationSearchBtn.addEventListener("click", getNearbyCampings);
-        els.loadMoreBtn.addEventListener("click", loadMoreResults);
-        els.searchAgainBtn.addEventListener("click", () =>
-          switchScreen("search"),
-        );
-        els.favoritesSearchBtn.addEventListener("click", () =>
-          switchScreen("search"),
-        );
-        els.shareBtn.addEventListener("click", shareCurrentCamp);
-        els.detailBookmarkBtn.addEventListener("click", toggleSelectedBookmark);
-        els.mapToggleBtn.addEventListener("click", toggleResultsMapManually);
-        els.favoritesFilterBtn.addEventListener("click", toggleFavoritesFilter);
-        els.detailBackBtn.addEventListener("click", () =>
-          switchScreen(state.detailBackTarget),
-        );
+  if (els.keywordInput) {
+    els.keywordInput.addEventListener("focus", () => {
+      els.keywordInput.value = "";
+    });
 
-        els.nationalMapBtn.addEventListener("click", openNationalCampingMap);
-        els.nationalMapRefreshBtn.addEventListener(
-          "click",
-          openNationalCampingMap,
-        );
+    els.keywordInput.addEventListener("click", () => {
+      els.keywordInput.value = "";
+    });
+  }
+
+  if (els.searchForm) {
+    els.searchForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const keyword = els.keywordInput.value.trim();
+      if (!keyword) {
+        alert("검색어를 입력해주세요.");
+        return;
       }
+      searchByKeyword(keyword);
+    });
+  }
+
+  document.querySelectorAll(".quick-keyword").forEach((button) => {
+    button.addEventListener("click", () => {
+      const keyword = button.dataset.keyword;
+      if (els.keywordInput) els.keywordInput.value = keyword;
+      searchByKeyword(keyword);
+    });
+  });
+
+  if (els.clearRecentBtn) {
+    els.clearRecentBtn.addEventListener("click", () => {
+      localStorage.removeItem(CONFIG.RECENT_KEYWORDS_KEY);
+      renderRecentKeywords();
+    });
+  }
+
+  if (els.nationalMapBtn) {
+  els.nationalMapBtn.addEventListener("click", openNationalCampingMap);
+}
+
+if (els.favoritesQuickBtn) {
+  els.favoritesQuickBtn.addEventListener("click", () => {
+    renderFavoritesPage();
+    switchScreen("favorites");
+  });
+}
+
+if (els.nationalMapRefreshBtn) {
+  els.nationalMapRefreshBtn.addEventListener("click", openNationalCampingMap);
+}
+
+  if (els.locationSearchBtn) {
+    els.locationSearchBtn.addEventListener("click", getNearbyCampings);
+  }
+
+  if (els.loadMoreBtn) {
+    els.loadMoreBtn.addEventListener("click", loadMoreResults);
+  }
+
+  if (els.searchAgainBtn) {
+    els.searchAgainBtn.addEventListener("click", () => switchScreen("search"));
+  }
+
+  if (els.favoritesSearchBtn) {
+    els.favoritesSearchBtn.addEventListener("click", () =>
+      switchScreen("search")
+    );
+  }
+
+  if (els.shareBtn) {
+    els.shareBtn.addEventListener("click", shareCurrentCamp);
+  }
+
+  if (els.detailBookmarkBtn) {
+    els.detailBookmarkBtn.addEventListener("click", toggleSelectedBookmark);
+  }
+
+  if (els.mapToggleBtn) {
+    els.mapToggleBtn.addEventListener("click", toggleResultsMapManually);
+  }
+
+  if (els.favoritesFilterBtn) {
+    els.favoritesFilterBtn.addEventListener("click", toggleFavoritesFilter);
+  }
+
+  if (els.detailBackBtn) {
+    els.detailBackBtn.addEventListener("click", () =>
+      switchScreen(state.detailBackTarget)
+    );
+  }
+
+  document.querySelectorAll(".nav-back").forEach((btn) => {
+    if (btn.id === "detailBackBtn") return;
+    btn.addEventListener("click", () => switchScreen(btn.dataset.back));
+  });
+
+  if (els.bottomNavItems) {
+    els.bottomNavItems.forEach((btn) => {
+      btn.addEventListener("click", () => handleBottomNav(btn.dataset.nav));
+    });
+  }
+}
 
       function initKakaoMaps() {
         if (!window.kakao || !window.kakao.maps) {
@@ -1558,60 +1675,53 @@
       }
 
       function updateResultsMap() {
-        if (!state.resultsMap || !window.kakao?.maps) {
-          hideResultsMap();
-          return;
-        }
+  if (!state.resultsMap || !window.kakao?.maps) {
+    hideResultsMap();
+    return;
+  }
 
-        const validItems = getVisibleItems().filter(
-          (item) => item.mapY && item.mapX,
-        );
+  const validItems = getVisibleItems().filter((item) => item.mapY && item.mapX);
 
-        if (!validItems.length || !state.isMapVisible) {
-          clearResultMarkers();
-          hideResultsMap();
-          return;
-        }
+  if (!validItems.length || !state.isMapVisible) {
+    clearResultMarkers();
+    hideResultsMap();
+    return;
+  }
 
-        showResultsMap();
-        clearResultMarkers();
+  showResultsMap();
+  clearResultMarkers();
 
-        const bounds = new kakao.maps.LatLngBounds();
+  const bounds = new kakao.maps.LatLngBounds();
 
-        validItems.forEach((item) => {
-          const position = new kakao.maps.LatLng(
-            Number(item.mapY),
-            Number(item.mapX),
-          );
-          bounds.extend(position);
+  validItems.forEach((item) => {
+    const position = new kakao.maps.LatLng(Number(item.mapY), Number(item.mapX));
+    bounds.extend(position);
 
-          const marker = new kakao.maps.Marker({ position });
-          marker.setMap(state.resultsMap);
-          state.resultMarkers.push(marker);
+    const marker = new kakao.maps.Marker({ position });
+    marker.setMap(state.resultsMap);
+    state.resultMarkers.push(marker);
 
-          kakao.maps.event.addListener(marker, "click", () =>
-            openDetail(item, "results"),
-          );
-        });
+    kakao.maps.event.addListener(marker, "click", () => openDetail(item, "results"));
+  });
 
-        if (state.currentLocation) {
-          const currentPosition = new kakao.maps.LatLng(
-            state.currentLocation.mapY,
-            state.currentLocation.mapX,
-          );
-          const myMarker = new kakao.maps.Marker({ position: currentPosition });
-          myMarker.setMap(state.resultsMap);
-          state.resultMarkers.push(myMarker);
-          bounds.extend(currentPosition);
-        }
+  if (state.currentLocation) {
+    const currentPosition = new kakao.maps.LatLng(
+      state.currentLocation.mapY,
+      state.currentLocation.mapX
+    );
+    const myMarker = new kakao.maps.Marker({ position: currentPosition });
+    myMarker.setMap(state.resultsMap);
+    state.resultMarkers.push(myMarker);
+    bounds.extend(currentPosition);
+  }
 
-        requestAnimationFrame(() => {
-          setTimeout(() => {
-            state.resultsMap.relayout();
-            state.resultsMap.setBounds(bounds);
-          }, 100);
-        });
-      }
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      state.resultsMap.relayout();
+      state.resultsMap.setBounds(bounds);
+    }, 100);
+  });
+}
 
       function clearResultMarkers() {
         state.resultMarkers.forEach((marker) => marker.setMap(null));
@@ -1623,16 +1733,16 @@
       }
 
       function showResultsMap() {
-        els.resultsMapCard.classList.remove("is-hidden");
+  els.resultsMapCard.classList.remove("is-hidden");
 
-        if (state.resultsMap && window.kakao?.maps) {
-          requestAnimationFrame(() => {
-            setTimeout(() => {
-              state.resultsMap.relayout();
-            }, 80);
-          });
-        }
-      }
+  if (state.resultsMap && window.kakao?.maps) {
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        state.resultsMap.relayout();
+      }, 80);
+    });
+  }
+}
 
       function toggleResultsMapVisibility() {
         const hasMap = !!state.resultsMap && !!window.kakao?.maps;
@@ -1645,35 +1755,33 @@
       }
 
       function toggleResultsMapManually() {
-        const hasCoords = getVisibleItems().some(
-          (item) => item.mapY && item.mapX,
-        );
+  const hasCoords = getVisibleItems().some((item) => item.mapY && item.mapX);
 
-        if (!hasCoords) {
-          alert("지도로 표시할 좌표 정보가 없습니다.");
-          return;
-        }
+  if (!hasCoords) {
+    alert("지도로 표시할 좌표 정보가 없습니다.");
+    return;
+  }
 
-        state.isMapVisible = !state.isMapVisible;
-        syncToolbarButtons();
+  state.isMapVisible = !state.isMapVisible;
+  syncToolbarButtons();
 
-        if (!state.isMapVisible) {
-          hideResultsMap();
-          clearResultMarkers();
-          return;
-        }
+  if (!state.isMapVisible) {
+    hideResultsMap();
+    clearResultMarkers();
+    return;
+  }
 
-        showResultsMap();
+  showResultsMap();
 
-        requestAnimationFrame(() => {
-          setTimeout(() => {
-            if (state.resultsMap) {
-              state.resultsMap.relayout();
-            }
-            updateResultsMap();
-          }, 100);
-        });
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      if (state.resultsMap) {
+        state.resultsMap.relayout();
       }
+      updateResultsMap();
+    }, 100);
+  });
+}
 
       function toggleFavoritesFilter() {
         state.favoritesOnly = !state.favoritesOnly;
