@@ -1,0 +1,1872 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>전국 캠핑장 검색</title>
+    <style>
+      :root {
+        --bg: #f4f6fb;
+        --surface: #ffffff;
+        --primary: #4e68b5;
+        --primary-dark: #3b549e;
+        --text: #1a1f2c;
+        --muted: #71788a;
+        --line: #e5e9f2;
+        --shadow: 0 12px 30px rgba(45, 62, 109, 0.12);
+        --safe-bottom: env(safe-area-inset-bottom, 0px);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--bg);
+        font-family:
+          "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+        color: var(--text);
+      }
+      body {
+        display: flex;
+        justify-content: center;
+        min-height: 100vh;
+      }
+
+      .app {
+        width: 100%;
+        max-width: 430px;
+        min-height: 100vh;
+        background: linear-gradient(180deg, #f8f9fd 0%, #f3f5fb 100%);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .screen {
+        display: none;
+        min-height: 100vh;
+        padding: 20px 18px calc(92px + var(--safe-bottom));
+      }
+      .screen.active {
+        display: block;
+      }
+
+      .status-spacer {
+        height: 14px;
+      }
+
+      .section-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 24px 4px 12px;
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+      }
+
+      .text-button {
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        border: 0;
+        background: transparent;
+        padding: 0;
+      }
+
+      .searchbar-wrap {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 8px;
+      }
+
+      .searchbar {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        height: 54px;
+        padding: 0 16px;
+        background: var(--surface);
+        border: 2px solid #7085c7;
+        border-radius: 16px;
+        box-shadow: 0 8px 20px rgba(88, 110, 177, 0.08);
+      }
+
+      .searchbar input {
+        flex: 1;
+        border: 0;
+        outline: none;
+        background: transparent;
+        font-size: 15px;
+        color: var(--text);
+      }
+
+      .searchbar input::placeholder {
+        color: #a0a8ba;
+      }
+
+      .icon-btn {
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        border: 0;
+        background: var(--surface);
+        box-shadow: 0 6px 16px rgba(76, 102, 176, 0.12);
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+      }
+
+      .chips,
+      .keyword-grid,
+      .facility-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .chip {
+        border: 0;
+        border-radius: 12px;
+        padding: 10px 14px;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        cursor: pointer;
+        transition:
+          transform 0.15s ease,
+          opacity 0.15s ease;
+      }
+
+      .chip:active {
+        transform: scale(0.97);
+      }
+      .chip.gray {
+        background: #8d8d95;
+        color: #fff;
+      }
+      .chip.primary {
+        background: var(--primary);
+        color: #fff;
+        box-shadow: 0 8px 18px rgba(78, 104, 181, 0.22);
+      }
+      .chip.outline {
+        background: #fff;
+        border: 1.5px solid #7c92cf;
+        color: var(--primary-dark);
+      }
+
+      .banner {
+        position: relative;
+        margin-top: 34px;
+        border-radius: 22px;
+        overflow: hidden;
+        min-height: 140px;
+        background: linear-gradient(
+          135deg,
+          #5d79c8 0%,
+          #8aa8eb 55%,
+          #b7d0ff 100%
+        );
+        box-shadow: var(--shadow);
+        padding: 22px;
+        color: #fff;
+      }
+
+      .banner::after {
+        content: "⛺";
+        position: absolute;
+        right: 18px;
+        bottom: 12px;
+        font-size: 68px;
+        opacity: 0.25;
+      }
+
+      .banner h2 {
+        margin: 34px 0 8px;
+        font-size: 28px;
+        line-height: 1.18;
+        letter-spacing: -0.04em;
+      }
+
+      .banner p {
+        margin: 0;
+        font-size: 13px;
+        opacity: 0.92;
+        font-weight: 600;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin: 2px 0 16px;
+      }
+
+      .topbar .title {
+        flex: 1;
+        text-align: center;
+        font-size: 20px;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        transform: translateX(-18px);
+      }
+
+      .nav-back,
+      .ghost-btn {
+        border: 0;
+        background: transparent;
+        color: var(--text);
+        font-size: 22px;
+        cursor: pointer;
+        padding: 6px;
+      }
+
+      .results-summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 14px;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .results-toolbar {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+
+      .toolbar-btn {
+        flex: 1;
+        height: 44px;
+        border-radius: 14px;
+        border: 1.5px solid #d7def1;
+        background: #fff;
+        color: var(--primary-dark);
+        font-size: 13px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: all 0.18s ease;
+      }
+
+      .toolbar-btn.active {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: #fff;
+        box-shadow: 0 8px 18px rgba(78, 104, 181, 0.22);
+      }
+
+      .map-card {
+        background: var(--surface);
+        border-radius: 22px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        border: 1px solid rgba(95, 115, 170, 0.08);
+        margin-bottom: 16px;
+      }
+
+      .results-map-card.is-hidden {
+        display: none;
+      }
+
+      #resultsMap {
+        width: 100%;
+        height: 220px;
+        background: #edf2ff;
+      }
+
+      .map-hint {
+        padding: 12px 14px;
+        font-size: 12px;
+        color: var(--muted);
+        background: #fbfcff;
+        border-top: 1px solid var(--line);
+      }
+
+      .list-card {
+        display: grid;
+        grid-template-columns: 96px 1fr auto;
+        gap: 14px;
+        background: var(--surface);
+        border-radius: 22px;
+        padding: 14px;
+        box-shadow: 0 8px 20px rgba(46, 67, 125, 0.08);
+        border: 1px solid rgba(95, 115, 170, 0.08);
+        margin-bottom: 14px;
+        cursor: pointer;
+      }
+
+      .list-thumb {
+        width: 96px;
+        height: 96px;
+        border-radius: 18px;
+        object-fit: cover;
+        background: #dde4f7;
+      }
+
+      .list-body {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .list-name {
+        margin: 2px 0 5px;
+        font-size: 17px;
+        font-weight: 900;
+        letter-spacing: -0.04em;
+        color: #111827;
+        line-height: 1.28;
+      }
+
+      .list-addr {
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.45;
+        word-break: keep-all;
+      }
+
+      .tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .mini-tag {
+        padding: 9px 13px;
+        background: var(--primary);
+        color: white;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+        box-shadow: 0 8px 16px rgba(78, 104, 181, 0.18);
+      }
+
+      .bookmark-col {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 10px;
+        min-width: 48px;
+        padding-top: 2px;
+      }
+
+      .bookmark-btn {
+        border: 0;
+        background: transparent;
+        font-size: 28px;
+        color: #cad1df;
+        cursor: pointer;
+        line-height: 1;
+        padding: 0;
+      }
+
+      .distance {
+        color: var(--primary);
+        font-size: 14px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .hero-image {
+        width: calc(100% + 36px);
+        margin: 0 -18px 18px;
+        aspect-ratio: 16 / 10;
+        object-fit: cover;
+        background: #dfe7fa;
+        display: block;
+      }
+
+      .detail-card {
+        background: var(--surface);
+        border-radius: 24px;
+        padding: 18px;
+        box-shadow: var(--shadow);
+        margin-top: -26px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .detail-name {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 900;
+        letter-spacing: -0.05em;
+      }
+
+      .detail-address {
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.45;
+      }
+
+      .detail-actions {
+        display: flex;
+        gap: 10px;
+        margin: 18px 0 14px;
+        flex-wrap: wrap;
+      }
+
+      .action-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 14px;
+        border: 1.5px solid #6f86c5;
+        color: var(--primary-dark);
+        border-radius: 14px;
+        background: #fff;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .detail-section {
+        margin-top: 18px;
+      }
+
+      .detail-section h3 {
+        margin: 0 0 10px;
+        font-size: 17px;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+      }
+
+      .detail-text {
+        color: #364052;
+        line-height: 1.65;
+        font-size: 14px;
+        white-space: pre-line;
+      }
+
+      .facility-item {
+        background: #f7f9ff;
+        border: 1px solid #e1e8fb;
+        border-radius: 16px;
+        padding: 12px;
+        min-width: 86px;
+        text-align: center;
+      }
+
+      .facility-item strong {
+        display: block;
+        font-size: 18px;
+        margin-bottom: 4px;
+        color: var(--primary-dark);
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .info-box {
+        padding: 14px;
+        border-radius: 16px;
+        background: #f8faff;
+        border: 1px solid #e6ecfb;
+      }
+
+      .info-box .label {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .info-box .value {
+        margin-top: 6px;
+        font-size: 14px;
+        font-weight: 800;
+        line-height: 1.45;
+      }
+
+      .loading,
+      .empty,
+      .error-box {
+        background: var(--surface);
+        border-radius: 22px;
+        padding: 22px;
+        text-align: center;
+        color: var(--muted);
+        box-shadow: var(--shadow);
+        line-height: 1.6;
+      }
+
+      .favorites-hero {
+        background: linear-gradient(135deg, #5d79c8 0%, #87a3e2 100%);
+        color: #fff;
+        border-radius: 24px;
+        padding: 22px;
+        box-shadow: var(--shadow);
+        margin-bottom: 18px;
+      }
+
+      .favorites-hero h2 {
+        margin: 0 0 8px;
+        font-size: 24px;
+        font-weight: 900;
+        letter-spacing: -0.04em;
+      }
+
+      .favorites-hero p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.55;
+        opacity: 0.95;
+      }
+
+      .bottom-nav {
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 0;
+        width: 100%;
+        max-width: 430px;
+        height: calc(76px + var(--safe-bottom));
+        padding-bottom: var(--safe-bottom);
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(14px);
+        border-top: 1px solid rgba(137, 148, 178, 0.2);
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        z-index: 20;
+      }
+
+      .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        color: #c0c5d1;
+        font-size: 11px;
+        font-weight: 700;
+        user-select: none;
+        cursor: pointer;
+        border: 0;
+        background: transparent;
+        padding: 0;
+      }
+
+      .nav-item.active {
+        color: var(--primary);
+      }
+      .nav-icon {
+        font-size: 20px;
+      }
+
+      @media (max-width: 380px) {
+        .list-card {
+          grid-template-columns: 92px 1fr;
+        }
+        .bookmark-col {
+          grid-column: 2;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+        }
+        .list-thumb {
+          width: 92px;
+          height: 92px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <section id="searchScreen" class="screen active">
+        <div class="status-spacer"></div>
+        <form id="searchForm" class="searchbar-wrap">
+          <div class="searchbar">
+            <span>🔎</span>
+            <input
+              id="keywordInput"
+              type="text"
+              placeholder="지역 또는 키워드를 입력하세요."
+              autocomplete="off"
+            />
+          </div>
+          <button type="submit" class="icon-btn" title="검색">↵</button>
+          <button
+            type="button"
+            id="locationSearchBtn"
+            class="icon-btn"
+            title="내 위치 주변 검색"
+          >
+            🗺️
+          </button>
+        </form>
+
+        <div class="section-title">
+          <span>최근 검색어</span>
+          <button id="clearRecentBtn" class="text-button" type="button">
+            삭제
+          </button>
+        </div>
+        <div id="recentKeywords" class="chips"></div>
+
+        <div class="section-title">
+          <span>인기 키워드</span>
+        </div>
+        <div class="keyword-grid">
+          <button
+            class="chip primary quick-keyword"
+            type="button"
+            data-keyword="글램핑"
+          >
+            글램핑
+          </button>
+          <button
+            class="chip primary quick-keyword"
+            type="button"
+            data-keyword="차박"
+          >
+            차박
+          </button>
+          <button
+            class="chip primary quick-keyword"
+            type="button"
+            data-keyword="오토캠핑"
+          >
+            오토캠핑
+          </button>
+          <button
+            class="chip primary quick-keyword"
+            type="button"
+            data-keyword="반려견"
+          >
+            반려견
+          </button>
+          <button
+            class="chip primary quick-keyword"
+            type="button"
+            data-keyword="계곡"
+          >
+            계곡
+          </button>
+          <button
+            class="chip primary quick-keyword"
+            type="button"
+            data-keyword="바다"
+          >
+            바다
+          </button>
+        </div>
+
+        <div class="banner">
+          <p>#전국캠핑장 #차박추천 #가족여행</p>
+          <h2>여름 차박지 기획전</h2>
+          <p>지금 떠나기 좋은 캠핑장을 한 번에 찾아보세요.</p>
+        </div>
+      </section>
+
+      <section id="resultsScreen" class="screen">
+        <div class="topbar">
+          <button class="nav-back" data-back="search" type="button">‹</button>
+          <div class="title">검색 결과</div>
+          <button id="searchAgainBtn" class="ghost-btn" type="button">⌕</button>
+        </div>
+
+        <div class="results-summary">
+          <span id="resultsLabel">검색 결과</span>
+          <span id="resultsCount">0건</span>
+        </div>
+
+        <div class="results-toolbar">
+          <button id="mapToggleBtn" class="toolbar-btn" type="button">
+            지도보기
+          </button>
+          <button id="favoritesFilterBtn" class="toolbar-btn" type="button">
+            즐겨찾기만
+          </button>
+        </div>
+
+        <div id="resultsMapCard" class="map-card results-map-card is-hidden">
+          <div id="resultsMap"></div>
+          <div class="map-hint">
+            지도 마커를 누르거나 아래 리스트를 선택하면 상세 화면으로
+            이동합니다.
+          </div>
+        </div>
+
+        <div id="resultsContent"></div>
+        <div id="loadMoreWrap" style="display: none; margin-top: 8px">
+          <button
+            id="loadMoreBtn"
+            class="chip outline"
+            style="width: 100%; padding: 14px 16px"
+          >
+            더 보기
+          </button>
+        </div>
+      </section>
+
+      <section id="detailScreen" class="screen">
+        <div class="topbar">
+          <button
+            id="detailBackBtn"
+            class="nav-back"
+            data-back="results"
+            type="button"
+          >
+            ‹
+          </button>
+          <div class="title" id="detailTopTitle">상세 정보</div>
+          <button id="shareBtn" class="ghost-btn" type="button">⤴︎</button>
+        </div>
+
+        <img id="detailHero" class="hero-image" alt="캠핑장 대표 이미지" />
+
+        <div class="detail-card">
+          <div
+            style="
+              display: flex;
+              align-items: flex-start;
+              justify-content: space-between;
+              gap: 12px;
+            "
+          >
+            <div>
+              <h1 id="detailName" class="detail-name"></h1>
+              <div id="detailAddr" class="detail-address"></div>
+            </div>
+            <button id="detailBookmarkBtn" class="bookmark-btn" type="button">
+              ☆
+            </button>
+          </div>
+
+          <div class="detail-actions">
+            <a
+              id="openNaverMap"
+              class="action-pill"
+              href="#"
+              target="_blank"
+              rel="noreferrer"
+              >📍 길찾기</a
+            >
+            <a id="callLink" class="action-pill" href="#">📞 전화하기</a>
+            <a
+              id="homepageLink"
+              class="action-pill"
+              href="#"
+              target="_blank"
+              rel="noreferrer"
+              >🏕️ 홈페이지</a
+            >
+          </div>
+
+          <div class="detail-section">
+            <h3>키워드</h3>
+            <div id="detailKeywords" class="chips"></div>
+          </div>
+
+          <div class="detail-section">
+            <h3>기본 정보</h3>
+            <div class="info-grid" id="detailInfoGrid"></div>
+          </div>
+
+          <div class="detail-section">
+            <h3>시설 정보</h3>
+            <div class="facility-grid" id="facilityGrid"></div>
+          </div>
+
+          <div class="detail-section">
+            <h3>소개</h3>
+            <div id="detailIntro" class="detail-text"></div>
+          </div>
+
+          <div class="detail-section">
+            <h3>상세 지도</h3>
+            <div class="map-card" style="margin: 0; box-shadow: none">
+              <div id="detailMap" style="width: 100%; height: 240px"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="favoritesScreen" class="screen">
+        <div class="topbar">
+          <button class="nav-back" data-back="search" type="button">‹</button>
+          <div class="title">MY 즐겨찾기</div>
+          <button id="favoritesSearchBtn" class="ghost-btn" type="button">
+            ⌕
+          </button>
+        </div>
+
+        <div class="favorites-hero">
+          <h2>저장한 캠핑장</h2>
+          <p>
+            즐겨찾기한 캠핑장을 한 곳에서 모아보고, 바로 상세 화면으로 이동할 수
+            있어요.
+          </p>
+        </div>
+
+        <div class="results-summary">
+          <span>즐겨찾기 목록</span>
+          <span id="favoritesCount">0건</span>
+        </div>
+
+        <div id="favoritesContent"></div>
+      </section>
+
+      <nav class="bottom-nav" aria-label="하단 메뉴">
+        <button class="nav-item" type="button" data-nav="home">
+          <div class="nav-icon">⌂</div>
+          <div>홈</div>
+        </button>
+        <button class="nav-item active" type="button" data-nav="search">
+          <div class="nav-icon">⌕</div>
+          <div>검색</div>
+        </button>
+        <button class="nav-item" type="button" data-nav="group">
+          <div class="nav-icon">◎</div>
+          <div>모임</div>
+        </button>
+        <button class="nav-item" type="button" data-nav="live">
+          <div class="nav-icon">▷</div>
+          <div>라이브</div>
+        </button>
+        <button class="nav-item" type="button" data-nav="favorites">
+          <div class="nav-icon">★</div>
+          <div>MY</div>
+        </button>
+      </nav>
+    </div>
+
+    <!--
+    1) YOUR_KAKAO_JAVASCRIPT_KEY 를 카카오맵 JavaScript 키로 바꾸세요.
+    2) CONFIG.SERVICE_KEY 에 공공데이터 API 키를 넣으세요.
+  -->
+    <script src="2631fbface8acace856d0e9bd3bddd6a"></script>
+    <script>
+      const CONFIG = {
+        SERVICE_KEY:
+          "c396d7fec4c202142c2c83f4d72a60e831b50c2bea1f0db3df46ac266a8615aa",
+        BASE_URL: "https://apis.data.go.kr/B551011/GoCamping",
+        MOBILE_OS: "ETC",
+        MOBILE_APP: "CampingSearchWeb",
+        ROWS: 10,
+        RECENT_KEYWORDS_KEY: "gocamping_recent_keywords_v1",
+        BOOKMARK_KEY: "gocamping_bookmarks_v1",
+        BOOKMARK_ITEMS_KEY: "gocamping_bookmarked_items_v1",
+      };
+
+      const state = {
+        currentView: "search",
+        keyword: "",
+        pageNo: 1,
+        totalCount: 0,
+        items: [],
+        selectedItem: null,
+        currentLocation: null,
+        resultsMap: null,
+        detailMap: null,
+        resultMarkers: [],
+        detailMarker: null,
+        isMapVisible: false,
+        favoritesOnly: false,
+        lastSearchMode: "keyword",
+        allBookmarkedItems: [],
+        detailBackTarget: "results",
+      };
+
+      const els = {
+        searchScreen: document.getElementById("searchScreen"),
+        resultsScreen: document.getElementById("resultsScreen"),
+        detailScreen: document.getElementById("detailScreen"),
+        favoritesScreen: document.getElementById("favoritesScreen"),
+        searchForm: document.getElementById("searchForm"),
+        keywordInput: document.getElementById("keywordInput"),
+        recentKeywords: document.getElementById("recentKeywords"),
+        clearRecentBtn: document.getElementById("clearRecentBtn"),
+        locationSearchBtn: document.getElementById("locationSearchBtn"),
+        resultsLabel: document.getElementById("resultsLabel"),
+        resultsCount: document.getElementById("resultsCount"),
+        resultsContent: document.getElementById("resultsContent"),
+        loadMoreWrap: document.getElementById("loadMoreWrap"),
+        loadMoreBtn: document.getElementById("loadMoreBtn"),
+        resultsMapCard: document.getElementById("resultsMapCard"),
+        mapToggleBtn: document.getElementById("mapToggleBtn"),
+        favoritesFilterBtn: document.getElementById("favoritesFilterBtn"),
+        detailTopTitle: document.getElementById("detailTopTitle"),
+        detailBackBtn: document.getElementById("detailBackBtn"),
+        detailName: document.getElementById("detailName"),
+        detailAddr: document.getElementById("detailAddr"),
+        detailHero: document.getElementById("detailHero"),
+        detailKeywords: document.getElementById("detailKeywords"),
+        detailInfoGrid: document.getElementById("detailInfoGrid"),
+        facilityGrid: document.getElementById("facilityGrid"),
+        detailIntro: document.getElementById("detailIntro"),
+        openNaverMap: document.getElementById("openNaverMap"),
+        callLink: document.getElementById("callLink"),
+        homepageLink: document.getElementById("homepageLink"),
+        detailBookmarkBtn: document.getElementById("detailBookmarkBtn"),
+        shareBtn: document.getElementById("shareBtn"),
+        searchAgainBtn: document.getElementById("searchAgainBtn"),
+        favoritesSearchBtn: document.getElementById("favoritesSearchBtn"),
+        favoritesCount: document.getElementById("favoritesCount"),
+        favoritesContent: document.getElementById("favoritesContent"),
+        bottomNavItems: document.querySelectorAll(".nav-item"),
+      };
+
+      function init() {
+        bindEvents();
+        renderRecentKeywords();
+        restoreBookmarkedItems();
+        renderFavoritesPage();
+        initKakaoMaps();
+        syncBottomNav();
+        syncToolbarButtons();
+      }
+
+      function bindEvents() {
+        els.keywordInput.addEventListener("focus", () => {
+          els.keywordInput.value = "";
+        });
+
+        els.keywordInput.addEventListener("click", () => {
+          els.keywordInput.value = "";
+        });
+
+        els.searchForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const keyword = els.keywordInput.value.trim();
+          if (!keyword) {
+            alert("검색어를 입력해주세요.");
+            return;
+          }
+          searchByKeyword(keyword);
+        });
+
+        document.querySelectorAll(".quick-keyword").forEach((button) => {
+          button.addEventListener("click", () => {
+            const keyword = button.dataset.keyword;
+            els.keywordInput.value = keyword;
+            searchByKeyword(keyword);
+          });
+        });
+
+        els.clearRecentBtn.addEventListener("click", () => {
+          localStorage.removeItem(CONFIG.RECENT_KEYWORDS_KEY);
+          renderRecentKeywords();
+        });
+
+        els.locationSearchBtn.addEventListener("click", getNearbyCampings);
+        els.loadMoreBtn.addEventListener("click", loadMoreResults);
+        els.searchAgainBtn.addEventListener("click", () =>
+          switchScreen("search"),
+        );
+        els.favoritesSearchBtn.addEventListener("click", () =>
+          switchScreen("search"),
+        );
+        els.shareBtn.addEventListener("click", shareCurrentCamp);
+        els.detailBookmarkBtn.addEventListener("click", toggleSelectedBookmark);
+        els.mapToggleBtn.addEventListener("click", toggleResultsMapManually);
+        els.favoritesFilterBtn.addEventListener("click", toggleFavoritesFilter);
+        els.detailBackBtn.addEventListener("click", () =>
+          switchScreen(state.detailBackTarget),
+        );
+
+        document.querySelectorAll(".nav-back").forEach((btn) => {
+          if (btn.id === "detailBackBtn") return;
+          btn.addEventListener("click", () => switchScreen(btn.dataset.back));
+        });
+
+        els.bottomNavItems.forEach((btn) => {
+          btn.addEventListener("click", () => handleBottomNav(btn.dataset.nav));
+        });
+      }
+
+      function initKakaoMaps() {
+        if (!window.kakao || !window.kakao.maps) {
+          console.warn(
+            "카카오맵 SDK가 로드되지 않았습니다. appkey를 확인해주세요.",
+          );
+          hideResultsMap();
+          return;
+        }
+
+        kakao.maps.load(() => {
+          state.resultsMap = new kakao.maps.Map(
+            document.getElementById("resultsMap"),
+            {
+              center: new kakao.maps.LatLng(36.5, 127.8),
+              level: 13,
+            },
+          );
+
+          state.detailMap = new kakao.maps.Map(
+            document.getElementById("detailMap"),
+            {
+              center: new kakao.maps.LatLng(37.5665, 126.978),
+              level: 4,
+            },
+          );
+        });
+      }
+
+      function switchScreen(name) {
+        state.currentView = name;
+        els.searchScreen.classList.toggle("active", name === "search");
+        els.resultsScreen.classList.toggle("active", name === "results");
+        els.detailScreen.classList.toggle("active", name === "detail");
+        els.favoritesScreen.classList.toggle("active", name === "favorites");
+        syncBottomNav();
+
+        if (name === "results" && state.resultsMap && window.kakao?.maps) {
+          setTimeout(
+            () => kakao.maps.event.trigger(state.resultsMap, "resize"),
+            120,
+          );
+        }
+        if (name === "detail" && state.detailMap && window.kakao?.maps) {
+          setTimeout(
+            () => kakao.maps.event.trigger(state.detailMap, "resize"),
+            120,
+          );
+        }
+      }
+
+      function getRecentKeywords() {
+        try {
+          return (
+            JSON.parse(localStorage.getItem(CONFIG.RECENT_KEYWORDS_KEY)) || []
+          );
+        } catch {
+          return [];
+        }
+      }
+
+      function saveRecentKeyword(keyword) {
+        const trimmed = keyword.trim();
+        if (!trimmed) return;
+
+        let items = getRecentKeywords().filter((item) => item !== trimmed);
+        items.unshift(trimmed);
+
+        localStorage.setItem(CONFIG.RECENT_KEYWORDS_KEY, JSON.stringify(items));
+        renderRecentKeywords();
+      }
+
+      function renderRecentKeywords() {
+        const keywords = getRecentKeywords();
+
+        if (!keywords.length) {
+          els.recentKeywords.innerHTML =
+            '<div style="color:#a0a8ba; font-size:13px; padding:6px 2px;">아직 최근 검색어가 없어요.</div>';
+          return;
+        }
+
+        els.recentKeywords.innerHTML = keywords
+          .map(
+            (keyword) => `
+        <button class="chip gray recent-chip" type="button" data-keyword="${escapeHtml(keyword)}">${escapeHtml(keyword)}</button>
+      `,
+          )
+          .join("");
+
+        els.recentKeywords.querySelectorAll(".recent-chip").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const keyword = btn.dataset.keyword;
+            els.keywordInput.value = keyword;
+            searchByKeyword(keyword);
+          });
+        });
+      }
+
+      async function searchByKeyword(keyword) {
+        state.keyword = keyword;
+        state.pageNo = 1;
+        state.items = [];
+        state.currentLocation = null;
+        state.favoritesOnly = false;
+        state.isMapVisible = false;
+
+        saveRecentKeyword(keyword);
+        switchScreen("results");
+        syncToolbarButtons();
+
+        els.resultsLabel.textContent = `“${keyword}” 검색 결과`;
+        els.resultsContent.innerHTML =
+          '<div class="loading">검색 중입니다...<br />잠시만 기다려주세요.</div>';
+
+        hideResultsMap();
+
+        try {
+          const data = await requestCampingApi("searchList", {
+            keyword,
+            pageNo: state.pageNo,
+            numOfRows: CONFIG.ROWS,
+            _type: "json",
+          });
+
+          state.totalCount = Number(data?.totalCount || 0);
+          state.items = Array.isArray(data?.items?.item)
+            ? data.items.item
+            : data?.items?.item
+              ? [data.items.item]
+              : [];
+
+          renderResults();
+          updateResultsMap();
+        } catch (error) {
+          console.error(error);
+          els.resultsContent.innerHTML =
+            '<div class="error-box">검색 결과를 불러오지 못했습니다.<br />API 키, 엔드포인트, CORS 설정을 확인해주세요.</div>';
+        }
+      }
+
+      async function getNearbyCampings() {
+        if (!navigator.geolocation) {
+          alert("이 브라우저에서는 위치 기능을 지원하지 않습니다.");
+          return;
+        }
+
+        state.favoritesOnly = false;
+        state.isMapVisible = false;
+        syncToolbarButtons();
+
+        switchScreen("results");
+        els.resultsLabel.textContent = "내 주변 캠핑장";
+        els.resultsContent.innerHTML =
+          '<div class="loading">현재 위치를 확인하고 있어요...</div>';
+
+        hideResultsMap();
+
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const mapX = position.coords.longitude;
+            const mapY = position.coords.latitude;
+
+            state.currentLocation = { mapX, mapY };
+            state.keyword = "내 주변 캠핑장";
+            state.pageNo = 1;
+
+            try {
+              const data = await requestCampingApi("locationBasedList", {
+                mapX,
+                mapY,
+                radius: 20000,
+                numOfRows: CONFIG.ROWS,
+                pageNo: state.pageNo,
+                _type: "json",
+              });
+
+              state.totalCount = Number(data?.totalCount || 0);
+              state.items = Array.isArray(data?.items?.item)
+                ? data.items.item
+                : data?.items?.item
+                  ? [data.items.item]
+                  : [];
+
+              renderResults();
+              updateResultsMap();
+            } catch (error) {
+              console.error(error);
+              els.resultsContent.innerHTML =
+                '<div class="error-box">주변 캠핑장을 불러오지 못했습니다.<br />API 키와 위치 권한을 확인해주세요.</div>';
+            }
+          },
+          () => {
+            els.resultsContent.innerHTML =
+              '<div class="error-box">위치 권한이 필요합니다. 브라우저에서 위치 접근을 허용해주세요.</div>';
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 60000,
+          },
+        );
+      }
+
+      async function loadMoreResults() {
+        if (state.favoritesOnly) return;
+
+        state.pageNo += 1;
+        els.loadMoreBtn.disabled = true;
+        els.loadMoreBtn.textContent = "불러오는 중...";
+
+        try {
+          const endpoint = state.currentLocation
+            ? "locationBasedList"
+            : "searchList";
+          const params = state.currentLocation
+            ? {
+                mapX: state.currentLocation.mapX,
+                mapY: state.currentLocation.mapY,
+                radius: 20000,
+                pageNo: state.pageNo,
+                numOfRows: CONFIG.ROWS,
+                _type: "json",
+              }
+            : {
+                keyword: state.keyword,
+                pageNo: state.pageNo,
+                numOfRows: CONFIG.ROWS,
+                _type: "json",
+              };
+
+          const data = await requestCampingApi(endpoint, params);
+          const moreItems = Array.isArray(data?.items?.item)
+            ? data.items.item
+            : data?.items?.item
+              ? [data.items.item]
+              : [];
+
+          state.items = [...state.items, ...moreItems];
+          renderResults();
+          updateResultsMap();
+        } catch (error) {
+          console.error(error);
+          alert("추가 데이터를 불러오지 못했습니다.");
+        } finally {
+          els.loadMoreBtn.disabled = false;
+          els.loadMoreBtn.textContent = "더 보기";
+        }
+      }
+
+      async function requestCampingApi(endpoint, params = {}) {
+        const query = new URLSearchParams({
+          serviceKey: CONFIG.SERVICE_KEY,
+          MobileOS: CONFIG.MOBILE_OS,
+          MobileApp: CONFIG.MOBILE_APP,
+          ...params,
+        });
+
+        const url = `${CONFIG.BASE_URL}/${endpoint}?${query.toString()}`;
+        const response = await fetch(url);
+
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        const json = await response.json();
+        const body = json?.response?.body;
+        if (!body) throw new Error("유효하지 않은 응답입니다.");
+
+        return body;
+      }
+
+      function renderResults() {
+        const visibleItems = getVisibleItems();
+        const visibleCount = state.favoritesOnly
+          ? visibleItems.length
+          : state.totalCount;
+
+        els.resultsCount.textContent = `${visibleCount.toLocaleString()}건`;
+        syncToolbarButtons();
+        toggleResultsMapVisibility();
+
+        if (!visibleItems.length) {
+          els.resultsContent.innerHTML = state.favoritesOnly
+            ? '<div class="empty">즐겨찾기한 캠핑장이 없습니다.<br />리스트에서 별 아이콘을 눌러 저장해보세요.</div>'
+            : '<div class="empty">검색 결과가 없습니다.<br />다른 키워드로 다시 검색해보세요.</div>';
+
+          els.loadMoreWrap.style.display = "none";
+          return;
+        }
+
+        els.resultsContent.innerHTML = visibleItems
+          .map((item) => {
+            const distanceText = getDistanceText(item.mapY, item.mapX);
+            const tags = buildTagList(item)
+              .slice(0, 3)
+              .map((tag) => `<span class="mini-tag">${escapeHtml(tag)}</span>`)
+              .join("");
+
+            const address = [item.doNm, item.sigunguNm, item.addr1]
+              .filter(Boolean)
+              .join(" ");
+
+            const isBookmarked = getBookmarks().includes(
+              String(item.contentId),
+            );
+
+            return `
+        <article class="list-card" data-id="${item.contentId}">
+          <img
+            class="list-thumb"
+            src="${item.firstImageUrl || makeFallbackImage(item.facltNm)}"
+            alt="${escapeHtml(item.facltNm)}"
+            onerror="this.src='${makeFallbackImage(item.facltNm)}'"
+          />
+          <div class="list-body">
+            <h3 class="list-name">${escapeHtml(item.facltNm || "-")}</h3>
+            <div class="list-addr">${escapeHtml(address || "-")}</div>
+            <div class="tag-row">${tags || '<span class="mini-tag">캠핑장</span>'}</div>
+          </div>
+          <div class="bookmark-col">
+            <button class="bookmark-btn result-bookmark" type="button" data-id="${item.contentId}">
+              ${isBookmarked ? "★" : "☆"}
+            </button>
+            <div class="distance">${distanceText}</div>
+          </div>
+        </article>
+      `;
+          })
+          .join("");
+
+        els.resultsContent.querySelectorAll(".list-card").forEach((card) => {
+          card.addEventListener("click", (event) => {
+            if (event.target.classList.contains("result-bookmark")) return;
+
+            const id = card.dataset.id;
+            const item = visibleItems.find(
+              (camp) => String(camp.contentId) === String(id),
+            );
+            if (item) openDetail(item, "results");
+          });
+        });
+
+        els.resultsContent
+          .querySelectorAll(".result-bookmark")
+          .forEach((btn) => {
+            btn.addEventListener("click", (event) => {
+              event.stopPropagation();
+
+              const targetItem =
+                visibleItems.find(
+                  (camp) => String(camp.contentId) === String(btn.dataset.id),
+                ) ||
+                state.items.find(
+                  (camp) => String(camp.contentId) === String(btn.dataset.id),
+                );
+
+              toggleBookmark(btn.dataset.id, targetItem);
+              renderResults();
+              updateResultsMap();
+            });
+          });
+
+        els.loadMoreWrap.style.display =
+          !state.favoritesOnly && state.items.length < state.totalCount
+            ? "block"
+            : "none";
+      }
+
+      function updateResultsMap() {
+        if (!state.resultsMap || !window.kakao?.maps) {
+          hideResultsMap();
+          return;
+        }
+
+        clearResultMarkers();
+
+        const validItems = getVisibleItems().filter(
+          (item) => item.mapY && item.mapX,
+        );
+        if (!validItems.length || !state.isMapVisible) {
+          hideResultsMap();
+          return;
+        }
+
+        showResultsMap();
+        const bounds = new kakao.maps.LatLngBounds();
+
+        validItems.forEach((item) => {
+          const position = new kakao.maps.LatLng(
+            Number(item.mapY),
+            Number(item.mapX),
+          );
+          bounds.extend(position);
+
+          const marker = new kakao.maps.Marker({ position });
+          marker.setMap(state.resultsMap);
+          state.resultMarkers.push(marker);
+
+          kakao.maps.event.addListener(marker, "click", () =>
+            openDetail(item, "results"),
+          );
+        });
+
+        if (state.currentLocation) {
+          const currentPosition = new kakao.maps.LatLng(
+            state.currentLocation.mapY,
+            state.currentLocation.mapX,
+          );
+          const myMarker = new kakao.maps.Marker({ position: currentPosition });
+          myMarker.setMap(state.resultsMap);
+          state.resultMarkers.push(myMarker);
+          bounds.extend(currentPosition);
+        }
+
+        setTimeout(() => {
+          kakao.maps.event.trigger(state.resultsMap, "resize");
+          state.resultsMap.setBounds(bounds);
+        }, 60);
+      }
+
+      function clearResultMarkers() {
+        state.resultMarkers.forEach((marker) => marker.setMap(null));
+        state.resultMarkers = [];
+      }
+
+      function hideResultsMap() {
+        els.resultsMapCard.classList.add("is-hidden");
+      }
+
+      function showResultsMap() {
+        els.resultsMapCard.classList.remove("is-hidden");
+      }
+
+      function toggleResultsMapVisibility() {
+        const hasMap = !!state.resultsMap && !!window.kakao?.maps;
+        const hasCoords = getVisibleItems().some(
+          (item) => item.mapY && item.mapX,
+        );
+
+        if (hasMap && hasCoords && state.isMapVisible) showResultsMap();
+        else hideResultsMap();
+      }
+
+      function toggleResultsMapManually() {
+        const hasCoords = getVisibleItems().some(
+          (item) => item.mapY && item.mapX,
+        );
+        if (!hasCoords) {
+          alert("지도로 표시할 좌표 정보가 없습니다.");
+          return;
+        }
+
+        state.isMapVisible = !state.isMapVisible;
+        syncToolbarButtons();
+        toggleResultsMapVisibility();
+        updateResultsMap();
+      }
+
+      function toggleFavoritesFilter() {
+        state.favoritesOnly = !state.favoritesOnly;
+        state.isMapVisible = false;
+        syncToolbarButtons();
+        renderResults();
+        updateResultsMap();
+      }
+
+      function syncToolbarButtons() {
+        els.mapToggleBtn.classList.toggle("active", state.isMapVisible);
+        els.mapToggleBtn.textContent = state.isMapVisible
+          ? "지도닫기"
+          : "지도보기";
+
+        els.favoritesFilterBtn.classList.toggle("active", state.favoritesOnly);
+        els.favoritesFilterBtn.textContent = state.favoritesOnly
+          ? "전체보기"
+          : "즐겨찾기만";
+      }
+
+      function getVisibleItems() {
+        if (!state.favoritesOnly) return state.items;
+
+        const bookmarks = getBookmarks();
+        return state.items.filter((item) =>
+          bookmarks.includes(String(item.contentId)),
+        );
+      }
+
+      async function openDetail(item, sourceView = "results") {
+        state.selectedItem = item;
+        state.detailBackTarget = sourceView;
+
+        switchScreen("detail");
+        renderDetail(item);
+
+        try {
+          const images = await fetchCampImages(item.contentId);
+          if (images.length) {
+            els.detailHero.src = images[0].imageUrl;
+          }
+        } catch (error) {
+          console.warn("추가 이미지를 불러오지 못했습니다.", error);
+        }
+      }
+
+      function renderDetail(item) {
+        els.detailTopTitle.textContent = item.facltNm || "상세 정보";
+        els.detailName.textContent = item.facltNm || "-";
+        els.detailAddr.textContent = `${item.addr1 || "-"} ${item.lineIntro ? "· " + item.lineIntro : ""}`;
+
+        els.detailHero.src =
+          item.firstImageUrl || makeFallbackImage(item.facltNm);
+        els.detailHero.onerror = () => {
+          els.detailHero.src = makeFallbackImage(item.facltNm);
+        };
+
+        els.detailIntro.textContent =
+          [item.intro, item.featureNm].filter(Boolean).join("\n\n") ||
+          "등록된 소개 정보가 없습니다.";
+
+        const keywords = buildTagList(item);
+        els.detailKeywords.innerHTML = keywords.length
+          ? keywords
+              .map(
+                (tag) =>
+                  `<span class="chip outline">#${escapeHtml(tag)}</span>`,
+              )
+              .join("")
+          : '<span class="chip outline">#캠핑장</span>';
+
+        const infoItems = [
+          ["캠핑 유형", item.induty],
+          ["입지", item.lctCl],
+          ["운영기간", item.operPdCl],
+          ["운영일", item.operDeCl],
+          ["반려동물", item.animalCmgCl],
+          ["전화번호", item.tel],
+        ].filter(([, value]) => value && String(value).trim());
+
+        els.detailInfoGrid.innerHTML = infoItems
+          .map(
+            ([label, value]) => `
+        <div class="info-box">
+          <div class="label">${escapeHtml(label)}</div>
+          <div class="value">${escapeHtml(value)}</div>
+        </div>
+      `,
+          )
+          .join("");
+
+        const facilities = [
+          ["화장실", item.toiletCo || "0"],
+          ["샤워실", item.swrmCo || "0"],
+          ["개수대", item.wtrplCo || "0"],
+          ["소화기", item.extshrCo || "0"],
+          ["화로대", item.brazierCl || "-"],
+          ["부대시설", item.sbrsCl || "-"],
+        ];
+
+        els.facilityGrid.innerHTML = facilities
+          .map(
+            ([label, value]) => `
+        <div class="facility-item">
+          <strong>${escapeHtml(value)}</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+      `,
+          )
+          .join("");
+
+        const encodedName = encodeURIComponent(item.facltNm || "캠핑장");
+        els.openNaverMap.href = `https://map.kakao.com/link/to/${encodedName},${Number(item.mapY) || 37.5665},${Number(item.mapX) || 126.978}`;
+        els.callLink.href = item.tel
+          ? `tel:${item.tel.replace(/[^0-9]/g, "")}`
+          : "#";
+        els.callLink.style.opacity = item.tel ? "1" : ".45";
+        els.homepageLink.href = item.homepage || "#";
+        els.homepageLink.style.opacity = item.homepage ? "1" : ".45";
+        els.detailBookmarkBtn.textContent = getBookmarks().includes(
+          String(item.contentId),
+        )
+          ? "★"
+          : "☆";
+
+        updateDetailMap(item);
+      }
+
+      function updateDetailMap(item) {
+        if (!state.detailMap || !window.kakao?.maps || !item.mapY || !item.mapX)
+          return;
+
+        const position = new kakao.maps.LatLng(
+          Number(item.mapY),
+          Number(item.mapX),
+        );
+        state.detailMap.setCenter(position);
+        state.detailMap.setLevel(4);
+
+        if (state.detailMarker) state.detailMarker.setMap(null);
+        state.detailMarker = new kakao.maps.Marker({ position });
+        state.detailMarker.setMap(state.detailMap);
+
+        setTimeout(() => {
+          kakao.maps.event.trigger(state.detailMap, "resize");
+        }, 60);
+      }
+
+      async function fetchCampImages(contentId) {
+        const body = await requestCampingApi("imageList", {
+          contentId,
+          numOfRows: 10,
+          pageNo: 1,
+          _type: "json",
+        });
+
+        return Array.isArray(body?.items?.item)
+          ? body.items.item
+          : body?.items?.item
+            ? [body.items.item]
+            : [];
+      }
+
+      function buildTagList(item) {
+        return [item.lctCl, item.induty, item.sbrsCl, item.themaEnvrnCl]
+          .filter(Boolean)
+          .flatMap((value) => String(value).split(/,|\s*\/\s*/))
+          .map((value) => value.trim())
+          .filter(Boolean)
+          .slice(0, 6);
+      }
+
+      function getDistanceText(mapY, mapX) {
+        if (!state.currentLocation || !mapY || !mapX) return "전국";
+
+        const km = getDistanceFromLatLonInKm(
+          state.currentLocation.mapY,
+          state.currentLocation.mapX,
+          Number(mapY),
+          Number(mapX),
+        );
+
+        return `${km.toFixed(1)}km`;
+      }
+
+      function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+        const R = 6371;
+        const dLat = deg2rad(lat2 - lat1);
+        const dLon = deg2rad(lon2 - lon1);
+
+        const a =
+          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos(deg2rad(lat1)) *
+            Math.cos(deg2rad(lat2)) *
+            Math.sin(dLon / 2) *
+            Math.sin(dLon / 2);
+
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+      }
+
+      function deg2rad(deg) {
+        return deg * (Math.PI / 180);
+      }
+
+      function getBookmarks() {
+        try {
+          return JSON.parse(localStorage.getItem(CONFIG.BOOKMARK_KEY)) || [];
+        } catch {
+          return [];
+        }
+      }
+
+      function toggleBookmark(contentId, itemData = null) {
+        const id = String(contentId);
+        let bookmarks = getBookmarks();
+        const exists = bookmarks.includes(id);
+
+        bookmarks = exists
+          ? bookmarks.filter((item) => item !== id)
+          : [...bookmarks, id];
+
+        localStorage.setItem(CONFIG.BOOKMARK_KEY, JSON.stringify(bookmarks));
+
+        if (!exists && itemData) upsertBookmarkedItem(itemData);
+        if (exists) removeBookmarkedItem(id);
+
+        renderFavoritesPage();
+      }
+
+      function toggleSelectedBookmark() {
+        if (!state.selectedItem) return;
+
+        toggleBookmark(state.selectedItem.contentId, state.selectedItem);
+
+        const isSaved = getBookmarks().includes(
+          String(state.selectedItem.contentId),
+        );
+        els.detailBookmarkBtn.textContent = isSaved ? "★" : "☆";
+
+        renderResults();
+        updateResultsMap();
+      }
+
+      function getStoredBookmarkedItems() {
+        try {
+          return (
+            JSON.parse(localStorage.getItem(CONFIG.BOOKMARK_ITEMS_KEY)) || []
+          );
+        } catch {
+          return [];
+        }
+      }
+
+      function restoreBookmarkedItems() {
+        state.allBookmarkedItems = getStoredBookmarkedItems();
+      }
+
+      function persistBookmarkedItems() {
+        localStorage.setItem(
+          CONFIG.BOOKMARK_ITEMS_KEY,
+          JSON.stringify(state.allBookmarkedItems),
+        );
+      }
+
+      function upsertBookmarkedItem(item) {
+        if (!item?.contentId) return;
+
+        state.allBookmarkedItems = state.allBookmarkedItems.filter(
+          (saved) => String(saved.contentId) !== String(item.contentId),
+        );
+
+        state.allBookmarkedItems.unshift({ ...item });
+        persistBookmarkedItems();
+      }
+
+      function removeBookmarkedItem(contentId) {
+        state.allBookmarkedItems = state.allBookmarkedItems.filter(
+          (item) => String(item.contentId) !== String(contentId),
+        );
+
+        persistBookmarkedItems();
+      }
+
+      function renderFavoritesPage() {
+        const bookmarks = getBookmarks();
+        const favoriteItems = state.allBookmarkedItems.filter((item) =>
+          bookmarks.includes(String(item.contentId)),
+        );
+
+        els.favoritesCount.textContent = `${favoriteItems.length.toLocaleString()}건`;
+
+        if (!favoriteItems.length) {
+          els.favoritesContent.innerHTML =
+            '<div class="empty">아직 저장된 즐겨찾기가 없습니다.<br />검색 결과에서 별 아이콘을 눌러 추가해보세요.</div>';
+          return;
+        }
+
+        els.favoritesContent.innerHTML = favoriteItems
+          .map((item) => {
+            const tags = buildTagList(item)
+              .slice(0, 3)
+              .map((tag) => `<span class="mini-tag">${escapeHtml(tag)}</span>`)
+              .join("");
+
+            const address = [item.doNm, item.sigunguNm, item.addr1]
+              .filter(Boolean)
+              .join(" ");
+
+            return `
+        <article class="list-card favorite-list-card" data-id="${item.contentId}">
+          <img
+            class="list-thumb"
+            src="${item.firstImageUrl || makeFallbackImage(item.facltNm)}"
+            alt="${escapeHtml(item.facltNm)}"
+            onerror="this.src='${makeFallbackImage(item.facltNm)}'"
+          />
+          <div class="list-body">
+            <h3 class="list-name">${escapeHtml(item.facltNm || "-")}</h3>
+            <div class="list-addr">${escapeHtml(address || "-")}</div>
+            <div class="tag-row">${tags || '<span class="mini-tag">캠핑장</span>'}</div>
+          </div>
+          <div class="bookmark-col">
+            <button class="bookmark-btn favorite-bookmark" type="button" data-id="${item.contentId}">★</button>
+            <div class="distance">저장됨</div>
+          </div>
+        </article>
+      `;
+          })
+          .join("");
+
+        els.favoritesContent
+          .querySelectorAll(".favorite-list-card")
+          .forEach((card) => {
+            card.addEventListener("click", (event) => {
+              if (event.target.classList.contains("favorite-bookmark")) return;
+
+              const item = favoriteItems.find(
+                (camp) => String(camp.contentId) === String(card.dataset.id),
+              );
+
+              if (item) openDetail(item, "favorites");
+            });
+          });
+
+        els.favoritesContent
+          .querySelectorAll(".favorite-bookmark")
+          .forEach((btn) => {
+            btn.addEventListener("click", (event) => {
+              event.stopPropagation();
+              toggleBookmark(btn.dataset.id);
+              renderResults();
+              updateResultsMap();
+            });
+          });
+      }
+
+      function handleBottomNav(type) {
+        if (type === "search" || type === "home") {
+          switchScreen("search");
+          return;
+        }
+
+        if (type === "favorites") {
+          renderFavoritesPage();
+          switchScreen("favorites");
+          return;
+        }
+
+        alert("데모 화면에서는 검색과 MY 즐겨찾기만 구현되어 있습니다.");
+      }
+
+      function syncBottomNav() {
+        els.bottomNavItems.forEach((btn) => {
+          const type = btn.dataset.nav;
+          const active =
+            (state.currentView === "favorites" && type === "favorites") ||
+            ((state.currentView === "search" ||
+              state.currentView === "results" ||
+              state.currentView === "detail") &&
+              type === "search");
+
+          btn.classList.toggle("active", active);
+        });
+      }
+
+      async function shareCurrentCamp() {
+        if (!state.selectedItem) return;
+
+        const text = `${state.selectedItem.facltNm}\n${state.selectedItem.addr1 || ""}`;
+
+        try {
+          if (navigator.share) {
+            await navigator.share({
+              title: state.selectedItem.facltNm,
+              text,
+            });
+          } else {
+            await navigator.clipboard.writeText(text);
+            alert("캠핑장 정보가 클립보드에 복사되었습니다.");
+          }
+        } catch (error) {
+          console.warn("공유를 취소했거나 지원하지 않습니다.", error);
+        }
+      }
+
+      function makeFallbackImage(title = "캠핑장") {
+        const safe = encodeURIComponent(title);
+        return `https://placehold.co/800x500/e9eefc/4863ad?text=${safe}`;
+      }
+
+      function escapeHtml(value) {
+        return String(value ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      init();
+    </script>
+  </body>
+</html>
