@@ -1028,25 +1028,20 @@
         syncBottomNav();
 
         if (name === "results" && state.resultsMap && window.kakao?.maps) {
-          setTimeout(() => {
-            state.resultsMap.relayout();
-            kakao.maps.event.trigger(state.resultsMap, "resize");
-          }, 120);
+          requestAnimationFrame(() => {
+            setTimeout(() => {
+              state.resultsMap.relayout();
+            }, 80);
+          });
         }
 
         if (name === "detail" && state.detailMap && window.kakao?.maps) {
           setTimeout(() => {
-            state.detailMap.relayout();
-            if (state.selectedItem?.mapY && state.selectedItem?.mapX) {
-              const pos = new kakao.maps.LatLng(
-                Number(state.selectedItem.mapY),
-                Number(state.selectedItem.mapX),
-              );
-              state.detailMap.setCenter(pos);
-            }
+            kakao.maps.event.trigger(state.detailMap, "resize");
           }, 120);
         }
       }
+
       function getRecentKeywords() {
         try {
           return (
@@ -1368,17 +1363,19 @@
           return;
         }
 
-        clearResultMarkers();
-
         const validItems = getVisibleItems().filter(
           (item) => item.mapY && item.mapX,
         );
+
         if (!validItems.length || !state.isMapVisible) {
+          clearResultMarkers();
           hideResultsMap();
           return;
         }
 
         showResultsMap();
+        clearResultMarkers();
+
         const bounds = new kakao.maps.LatLngBounds();
 
         validItems.forEach((item) => {
@@ -1408,10 +1405,12 @@
           bounds.extend(currentPosition);
         }
 
-        setTimeout(() => {
-          kakao.maps.event.trigger(state.resultsMap, "resize");
-          state.resultsMap.setBounds(bounds);
-        }, 60);
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            state.resultsMap.relayout();
+            state.resultsMap.setBounds(bounds);
+          }, 100);
+        });
       }
 
       function clearResultMarkers() {
@@ -1425,6 +1424,14 @@
 
       function showResultsMap() {
         els.resultsMapCard.classList.remove("is-hidden");
+
+        if (state.resultsMap && window.kakao?.maps) {
+          requestAnimationFrame(() => {
+            setTimeout(() => {
+              state.resultsMap.relayout();
+            }, 80);
+          });
+        }
       }
 
       function toggleResultsMapVisibility() {
@@ -1441,6 +1448,7 @@
         const hasCoords = getVisibleItems().some(
           (item) => item.mapY && item.mapX,
         );
+
         if (!hasCoords) {
           alert("지도로 표시할 좌표 정보가 없습니다.");
           return;
@@ -1448,8 +1456,23 @@
 
         state.isMapVisible = !state.isMapVisible;
         syncToolbarButtons();
-        toggleResultsMapVisibility();
-        updateResultsMap();
+
+        if (!state.isMapVisible) {
+          hideResultsMap();
+          clearResultMarkers();
+          return;
+        }
+
+        showResultsMap();
+
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            if (state.resultsMap) {
+              state.resultsMap.relayout();
+            }
+            updateResultsMap();
+          }, 100);
+        });
       }
 
       function toggleFavoritesFilter() {
@@ -1609,7 +1632,6 @@
           state.detailMarker.setMap(state.detailMap);
         }, 120);
       }
-
       async function fetchCampImages(contentId) {
         const body = await requestCampingApi("imageList", {
           contentId,
