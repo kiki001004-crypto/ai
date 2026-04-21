@@ -5,524 +5,575 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>전주 로컬 맛집</title>
     <style>
-      :root {
-        --bg: #f4f4f4;
-        --card: #ffffff;
-        --line: #e6e6e6;
-        --text: #111111;
-        --muted: #666666;
-        --primary: #1f1f1f;
-        --accent: #d35400;
-        --accent-soft: #fff1e8;
-        --shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
-        --radius: 18px;
-      }
+                                                                              :root {
+                                                                                --bg: #f4f4f4;
+                                                                                --card: #ffffff;
+                                                                                --line: #e6e6e6;
+                                                                                --text: #111111;
+                                                                                --muted: #666666;
+                                                                                --primary: #1f1f1f;
+                                                                                --accent: #d35400;
+                                                                                --accent-soft: #fff1e8;
+                                                                                --shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+                                                                                --radius: 18px;
+                                                                              }
 
-      * {
-        box-sizing: border-box;
-      }
-      html,
-      body {
-        margin: 0;
-        padding: 0;
-        font-family: "Apple SD Gothic Neo", "Malgun Gothic", Arial, sans-serif;
-        background: var(--bg);
-        color: var(--text);
-      }
-      button,
-      input,
-      textarea,
-      select {
-        font: inherit;
-      }
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
-      body {
-        overflow-x: hidden;
-      }
+                                                                              * {
+                                                                                box-sizing: border-box;
+                                                                              }
+                                                                              html,
+                                                                              body {
+                                                                                margin: 0;
+                                                                                padding: 0;
+                                                                                font-family: "Apple SD Gothic Neo", "Malgun Gothic", Arial, sans-serif;
+                                                                                background: var(--bg);
+                                                                                color: var(--text);
+                                                                              }
+                                                                              button,
+                                                                              input,
+                                                                              textarea,
+                                                                              select {
+                                                                                font: inherit;
+                                                                              }
+                                                                              a {
+                                                                                color: inherit;
+                                                                                text-decoration: none;
+                                                                              }
+                                                                              body {
+                                                                                overflow-x: hidden;
+                                                                              }
 
-      .app {
-        width: 100%;
-        max-width: 480px;
-        min-height: 100vh;
-        margin: 0 auto;
-        background: #efefef;
-        position: relative;
-        overflow: hidden;
-      }
+                                                                              .app {
+                                                                                width: 100%;
+                                                                                max-width: 480px;
+                                                                                min-height: 100vh;
+                                                                                margin: 0 auto;
+                                                                                background: #efefef;
+                                                                                position: relative;
+                                                                                overflow: hidden;
+                                                                              }
 
-      .screen {
-        display: none;
-        min-height: 100vh;
-      }
-      .screen.active {
-        display: block;
-      }
+                                                                              .screen {
+                                                                                display: none;
+                                                                                min-height: 100vh;
+                                                                              }
+                                                                              .screen.active {
+                                                                                display: block;
+                                                                              }
 
-      .topbar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 20px 16px 8px;
-      }
+                                                                              .topbar {
+                                                                                display: flex;
+                                                                                align-items: center;
+                                                                                justify-content: space-between;
+                                                                                padding: 20px 16px 8px;
+                                                                              }
 
-      .title-wrap h1 {
-        margin: 0;
-        font-size: 28px;
-        line-height: 1.2;
-        font-weight: 800;
-      }
+                                                                              .title-wrap h1 {
+                                                                                margin: 0;
+                                                                                font-size: 28px;
+                                                                                line-height: 1.2;
+                                                                                font-weight: 800;
+                                                                              }
 
-      .title-wrap p {
-        margin: 2px 0 0;
-        color: var(--muted);
-        font-size: 14px;
-      }
+                                                                              .title-wrap p {
+                                                                                margin: 2px 0 0;
+                                                                                color: var(--muted);
+                                                                                font-size: 14px;
+                                                                              }
 
-      .icon-btn,
-      .back-btn,
-      .favorite-btn {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        border: none;
-        background: rgba(255, 255, 255, 0.92);
-        box-shadow: var(--shadow);
-        cursor: pointer;
-        font-size: 18px;
-      }
+                                                                              .icon-btn,
+                                                                              .back-btn,
+                                                                              .favorite-btn {
+                                                                                width: 40px;
+                                                                                height: 40px;
+                                                                                border-radius: 50%;
+                                                                                border: none;
+                                                                                background: rgba(255, 255, 255, 0.92);
+                                                                                box-shadow: var(--shadow);
+                                                                                cursor: pointer;
+                                                                                font-size: 18px;
+                                                                              }
 
-      .favorite-btn.active {
-        background: #fff3f3;
-        color: #d83b52;
-      }
+                                                                              .favorite-btn.active {
+                                                                                background: #fff3f3;
+                                                                                color: #d83b52;
+                                                                              }
 
-      .search-box {
-        margin: 10px 16px 14px;
-        background: #fff;
-        border-radius: 24px;
-        padding: 12px 14px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
-      }
+                                                                              .search-box {
+                                                                                margin: 10px 16px 14px;
+                                                                                background: #fff;
+                                                                                border-radius: 24px;
+                                                                                padding: 12px 14px;
+                                                                                display: flex;
+                                                                                align-items: center;
+                                                                                gap: 10px;
+                                                                                box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+                                                                              }
 
-      .search-box input {
-        flex: 1;
-        border: none;
-        outline: none;
-        background: transparent;
-        font-size: 15px;
-      }
+                                                                              .search-box input {
+                                                                                flex: 1;
+                                                                                border: none;
+                                                                                outline: none;
+                                                                                background: transparent;
+                                                                                font-size: 15px;
+                                                                              }
 
-      .chips {
-        display: flex;
-        gap: 8px;
-        padding: 0 16px 6px;
-        overflow-x: auto;
-        scrollbar-width: none;
-      }
-      .chips::-webkit-scrollbar {
-        display: none;
-      }
+                                                                              .chips {
+                                                                                display: flex;
+                                                                                gap: 8px;
+                                                                                padding: 0 16px 6px;
+                                                                                overflow-x: auto;
+                                                                                scrollbar-width: none;
+                                                                              }
+                                                                              .chips::-webkit-scrollbar {
+                                                                                display: none;
+                                                                              }
 
-      .chip {
-        border: 1px solid #d9d9d9;
-        background: #fff;
-        padding: 8px 12px;
-        border-radius: 999px;
-        white-space: nowrap;
-        cursor: pointer;
-        color: #333;
-      }
+                                                                              .chip {
+                                                                                border: 1px solid #d9d9d9;
+                                                                                background: #fff;
+                                                                                padding: 8px 12px;
+                                                                                border-radius: 999px;
+                                                                                white-space: nowrap;
+                                                                                cursor: pointer;
+                                                                                color: #333;
+                                                                              }
 
-      .chip.active {
-        background: var(--primary);
-        color: #fff;
-        border-color: var(--primary);
-      }
+                                                                              .chip.active {
+                                                                                background: var(--primary);
+                                                                                color: #fff;
+                                                                                border-color: var(--primary);
+                                                                              }
 
-      .section {
-        padding: 8px 16px 12px;
-      }
-      .section h2 {
-        margin: 6px 0 12px;
-        font-size: 22px;
-      }
+                                                                              .section {
+                                                                                padding: 8px 16px 12px;
+                                                                              }
+                                                                              .section h2 {
+                                                                                margin: 6px 0 12px;
+                                                                                font-size: 22px;
+                                                                              }
 
-      .hero-card,
-      .list-card,
-      .detail-card,
-      .review-card,
-      .pagination {
-        background: var(--card);
-        border-radius: var(--radius);
-        box-shadow: var(--shadow);
-        overflow: hidden;
-      }
+                                                                              .hero-card,
+                                                                              .list-card,
+                                                                              .detail-card,
+                                                                              .review-card,
+                                                                              .pagination {
+                                                                                background: var(--card);
+                                                                                border-radius: var(--radius);
+                                                                                box-shadow: var(--shadow);
+                                                                                overflow: hidden;
+                                                                              }
 
-      .hero-card {
-        cursor: pointer;
-      }
-      .hero-image,
-      .thumb {
-        width: 100%;
-        object-fit: cover;
-        display: block;
-        background: #ddd;
-      }
-      .hero-image {
-        height: 225px;
-      }
-      .thumb {
-        width: 132px;
-        height: 100px;
-        border-radius: 14px;
-        flex-shrink: 0;
-      }
+                                                                              .hero-card {
+                                                                                cursor: pointer;
+                                                                              }
+                                                                              .hero-image,
+                                                                              .thumb {
+                                                                                width: 100%;
+                                                                                object-fit: cover;
+                                                                                display: block;
+                                                                                background: #ddd;
+                                                                              }
+                                                                              .hero-image {
+                                                                                height: 225px;
+                                                                              }
+                                                                              .thumb {
+                                                        width: 120px;
+                                                        height: 92px;
+                                                        border-radius: 16px;
+                                                        flex-shrink: 0;
+                                                      }
 
-      .hero-content,
-      .review-form,
-      .review-list {
-        padding: 14px;
-      }
+                                                                              .hero-content,
+                                                                              .review-form,
+                                                                              .review-list {
+                                                                                padding: 14px;
+                                                                              }
 
-      .restaurant-name {
-        font-weight: 800;
-        font-size: 24px;
-        margin: 0 0 8px;
-      }
+                                                                              .restaurant-name {
+                                                                                font-weight: 800;
+                                                                                font-size: 24px;
+                                                                                margin: 0 0 8px;
+                                                                              }
 
-      .meta,
-      .sub-meta {
-        display: flex;
-        gap: 18px;
-        flex-wrap: wrap;
-        color: var(--muted);
-        font-size: 14px;
-        align-items: center;
-      }
+                                                                              .meta,
+                                                                              .sub-meta {
+                                                                                display: flex;
+                                                                                gap: 18px;
+                                                                                flex-wrap: wrap;
+                                                                                color: var(--muted);
+                                                                                font-size: 14px;
+                                                                                align-items: center;
+                                                                              }
 
-      .section-label {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 66px;
-        padding: 8px 12px;
-        border-radius: 999px;
-        background: #7b7b7b;
-        color: #fff;
-        font-size: 14px;
-        margin-bottom: 10px;
-      }
+                                                                              .section-label {
+                                                                                display: inline-flex;
+                                                                                align-items: center;
+                                                                                justify-content: center;
+                                                                                min-width: 66px;
+                                                                                padding: 8px 12px;
+                                                                                border-radius: 999px;
+                                                                                background: #7b7b7b;
+                                                                                color: #fff;
+                                                                                font-size: 14px;
+                                                                                margin-bottom: 10px;
+                                                                              }
 
-      .list-wrap {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-      }
+                                                                              .list-wrap {
+                                                                    display: flex;
+                                                                    flex-direction: column;
+                                                                    gap: 16px;
+                                                                    max-height: 430px;
+                                                                    overflow-y: auto;
+                                                                    padding-right: 6px;
+                                                                    padding-bottom: 12px;
+                                                                  }
 
-      .list-card {
-        display: flex;
-        gap: 12px;
-        padding: 12px;
-        cursor: pointer;
-        position: relative;
-      }
+                                                                        .list-wrap::-webkit-scrollbar {
+                                                                          width: 6px;
+                                                                        }
 
-      .card-favorite {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        width: 34px;
-        height: 34px;
-        border: none;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.94);
-        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
-        cursor: pointer;
-        z-index: 2;
-      }
+                                                                        .list-wrap::-webkit-scrollbar-thumb {
+                                                                          background: rgba(0, 0, 0, 0.18);
+                                                                          border-radius: 999px;
+                                                                        }
 
-      .card-favorite.active {
-        color: #d83b52;
-      }
+                                                                              .list-wrap::-webkit-scrollbar {
+                                                                                width: 6px;
+                                                                              }
 
-      .list-card h3 {
-        margin: 0 0 8px;
-        font-size: 19px;
-        padding-right: 36px;
-      }
-      .list-card p {
-        margin: 4px 0;
-        color: var(--muted);
-        font-size: 14px;
-      }
+                                                                              .list-wrap::-webkit-scrollbar-thumb {
+                                                                                background: rgba(0, 0, 0, 0.18);
+                                                                                border-radius: 999px;
+                                                                              }
 
-      .badge-row {
-        display: flex;
-        gap: 8px;
-        align-items: center;
-        flex-wrap: wrap;
-        margin-top: 6px;
-        color: #333;
-        font-size: 14px;
-      }
+                                                                              .list-wrap::-webkit-scrollbar-track {
+                                                                                background: transparent;
+                                                                              }
 
-      .pagination {
-        margin: 16px;
-        padding: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        flex-wrap: wrap;
-      }
+                                                                              .list-card {
+                                                              display: flex;
+                                                              align-items: center;
+                                                              gap: 14px;
+                                                              min-height: 128px;
+                                                              padding: 16px;
+                                                              cursor: pointer;
+                                                              position: relative;
+                                                              border-radius: 22px;
+                                                            }
 
-      .page-btn {
-        min-width: 40px;
-        height: 40px;
-        border: 1px solid #dcdcdc;
-        background: #fff;
-        border-radius: 12px;
-        cursor: pointer;
-        padding: 0 12px;
-      }
-      .page-btn:disabled {
-        opacity: 0.45;
+                                                                              .card-favorite {
+                                                                                position: absolute;
+                                                                                top: 10px;
+                                                                                right: 10px;
+                                                                                width: 34px;
+                                                                                height: 34px;
+                                                                                border: none;
+                                                                                border-radius: 50%;
+                                                                                background: rgba(255, 255, 255, 0.94);
+                                                                                box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+                                                                                cursor: pointer;
+                                                                                z-index: 2;
+                                                                              }
+
+                                                                              .card-favorite.active {
+                                                                                color: #d83b52;
+                                                                              }
+
+                                                                              .list-card h3 {
+                                                                                margin: 0 0 8px;
+                                                                                font-size: 19px;
+                                                                                padding-right: 36px;
+                                                                              }
+                                                                              .list-card p {
+                                                                                margin: 4px 0;
+                                                                                color: var(--muted);
+                                                                                font-size: 14px;
+                                                                              }
+
+                                                                              .badge-row {
+                                                                                display: flex;
+                                                                                gap: 8px;
+                                                                                align-items: center;
+                                                                                flex-wrap: wrap;
+                                                                                margin-top: 6px;
+                                                                                color: #333;
+                                                                                font-size: 14px;
+                                                                              }
+
+                                                                              .pagination {
+              margin: 14px 16px 18px;
+              padding: 0;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 18px;
+              flex-wrap: nowrap;
+              background: transparent;
+              border: none;
+              box-shadow: none;
+            }
+
+                                                                              .page-btn {
+              min-width: auto;
+              height: auto;
+              border: none;
+              background: transparent;
+              border-radius: 0;
+              cursor: pointer;
+              padding: 0;
+              color: #666;
+              font-size: 18px;
+              font-weight: 500;
+              line-height: 1;
+              box-shadow: none;
+            }
+                                                                              .page-btn:disabled {
+        opacity: 0.28;
         cursor: not-allowed;
-      }
-      .page-btn.active {
-        background: var(--primary);
-        color: #fff;
-        border-color: var(--primary);
+        color: #bdbdbd;
       }
 
-      .floating-header {
-        padding: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        position: sticky;
-        top: 0;
-        z-index: 20;
-        background: linear-gradient(
-          180deg,
-          rgba(239, 239, 239, 0.98),
-          rgba(239, 239, 239, 0.88),
-          rgba(239, 239, 239, 0)
-        );
-        backdrop-filter: blur(8px);
+
+                                                                              .page-btn.active {
+        color: #111;
+        font-weight: 800;
       }
 
-      .detail-hero {
-        padding: 0 16px;
-        margin-top: -6px;
-        position: relative;
-      }
-
-      .detail-hero img {
-        width: 100%;
-        height: 280px;
-        object-fit: cover;
-        border-radius: 22px;
-        display: block;
-        box-shadow: var(--shadow);
-        background: #ddd;
-      }
-
-      .hero-actions {
-        position: absolute;
-        top: 14px;
-        right: 28px;
-        display: flex;
-        gap: 8px;
-      }
-
-      .detail-card {
-        margin: 16px;
-        padding: 16px;
-      }
-
-      .detail-block {
-        margin-top: 14px;
-        padding-top: 14px;
-        border-top: 1px solid var(--line);
-      }
-
-      .detail-block:first-child {
-        margin-top: 0;
-        padding-top: 0;
-        border-top: none;
-      }
-
-      .detail-block ul {
-        margin: 0;
-        padding-left: 16px;
-        color: #333;
-        line-height: 1.6;
-      }
-      .detail-block p {
-        margin: 0;
-        line-height: 1.6;
-      }
-
-      .map-box {
-        width: 100%;
-        height: 260px;
-        border-radius: 16px;
-        overflow: hidden;
-        border: 1px solid var(--line);
-        background: #fafafa;
-      }
-
-      .action-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin-top: 12px;
-      }
-
-      .action-btn,
-      .submit-btn {
-        border: none;
-        border-radius: 14px;
-        padding: 14px 16px;
-        cursor: pointer;
-        font-weight: 700;
-      }
-
-      .action-btn.primary,
-      .submit-btn {
-        background: var(--primary);
-        color: #fff;
-      }
-      .action-btn.secondary {
-        background: var(--accent-soft);
-        color: var(--accent);
-      }
-
-      .review-card {
-        margin: 0 16px 16px;
-      }
-
-      .review-form input,
-      .review-form textarea,
-      .review-form select {
-        width: 100%;
-        border: 1px solid #dadada;
-        border-radius: 12px;
-        padding: 12px 14px;
-        margin-bottom: 10px;
-        background: #fff;
-        outline: none;
-      }
-
-      .review-form textarea {
-        min-height: 110px;
-        resize: vertical;
-      }
-
-      .review-item {
-        padding: 14px 0;
-        border-top: 1px solid var(--line);
-      }
-      .review-item:first-child {
-        border-top: none;
-      }
-      .review-item strong {
-        font-size: 16px;
-      }
-      .review-item p {
-        margin: 8px 0 0;
-        color: #333;
-        line-height: 1.55;
-      }
-
-      .rating {
-        letter-spacing: 2px;
-      }
-      .empty {
-        color: var(--muted);
-        text-align: center;
-        padding: 28px 14px;
-      }
-      .muted {
-        color: var(--muted);
-      }
-      .loader {
-        text-align: center;
-        padding: 24px 0;
-        color: var(--muted);
-      }
-
-      .error {
-        margin: 16px;
-        background: #fff4f2;
-        color: #b33a2f;
-        padding: 14px;
-        border-radius: 14px;
-        border: 1px solid #f1d6d2;
-      }
-
-      .bottom-nav {
-        position: sticky;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 0;
-        background: rgba(255, 255, 255, 0.96);
-        border-top: 1px solid #ddd;
-        backdrop-filter: blur(12px);
-        z-index: 30;
-      }
-
-      .nav-btn {
-        border: none;
+      .page-btn:not(:disabled):hover {
+        color: #111;
         background: transparent;
-        padding: 12px 4px 16px;
-        cursor: pointer;
-        color: var(--muted);
-        font-weight: 700;
       }
 
-      .nav-btn.active {
-        color: var(--primary);
-      }
+                                                                              .floating-header {
+                                                                                padding: 16px;
+                                                                                display: flex;
+                                                                                align-items: center;
+                                                                                justify-content: space-between;
+                                                                                position: sticky;
+                                                                                top: 0;
+                                                                                z-index: 20;
+                                                                                background: linear-gradient(
+                                                                                  180deg,
+                                                                                  rgba(239, 239, 239, 0.98),
+                                                                                  rgba(239, 239, 239, 0.88),
+                                                                                  rgba(239, 239, 239, 0)
+                                                                                );
+                                                                                backdrop-filter: blur(8px);
+                                                                              }
 
-      @media (min-width: 860px) {
-        body {
-          padding: 20px;
-        }
-        .app {
-          max-width: 1080px;
-          border-radius: 28px;
-          box-shadow: var(--shadow);
-          display: grid;
-          grid-template-columns: 420px 1fr;
-        }
-        #listScreen {
-          border-right: 1px solid var(--line);
-        }
-        .screen {
-          min-height: calc(100vh - 40px);
-        }
-        .screen.active {
-          display: block;
-        }
-        .floating-header {
-          position: static;
-          background: transparent;
-        }
-        .bottom-nav {
-          display: none;
-        }
-      }
+                                                                              .detail-hero {
+                                                                                padding: 0 16px;
+                                                                                margin-top: -6px;
+                                                                                position: relative;
+                                                                              }
+
+                                                                              .detail-hero img {
+                                                                                width: 100%;
+                                                                                height: 280px;
+                                                                                object-fit: cover;
+                                                                                border-radius: 22px;
+                                                                                display: block;
+                                                                                box-shadow: var(--shadow);
+                                                                                background: #ddd;
+                                                                              }
+
+                                                                              .hero-actions {
+                                                                                position: absolute;
+                                                                                top: 14px;
+                                                                                right: 28px;
+                                                                                display: flex;
+                                                                                gap: 8px;
+                                                                              }
+
+                                                                              .detail-card {
+                                                                                margin: 16px;
+                                                                                padding: 16px;
+                                                                              }
+
+                                                                              .detail-block {
+                                                                                margin-top: 14px;
+                                                                                padding-top: 14px;
+                                                                                border-top: 1px solid var(--line);
+                                                                              }
+
+                                                                              .detail-block:first-child {
+                                                                                margin-top: 0;
+                                                                                padding-top: 0;
+                                                                                border-top: none;
+                                                                              }
+
+                                                                              .detail-block ul {
+                                                                                margin: 0;
+                                                                                padding-left: 16px;
+                                                                                color: #333;
+                                                                                line-height: 1.6;
+                                                                              }
+                                                                              .detail-block p {
+                                                                                margin: 0;
+                                                                                line-height: 1.6;
+                                                                              }
+
+                                                                              .map-box {
+                                                                                width: 100%;
+                                                                                height: 260px;
+                                                                                border-radius: 16px;
+                                                                                overflow: hidden;
+                                                                                border: 1px solid var(--line);
+                                                                                background: #fafafa;
+                                                                              }
+
+                                                                              .action-row {
+                                                                                display: grid;
+                                                                                grid-template-columns: 1fr 1fr;
+                                                                                gap: 10px;
+                                                                                margin-top: 12px;
+                                                                              }
+
+                                                                              .action-btn,
+                                                                              .submit-btn {
+                                                                                border: none;
+                                                                                border-radius: 14px;
+                                                                                padding: 14px 16px;
+                                                                                cursor: pointer;
+                                                                                font-weight: 700;
+                                                                              }
+
+                                                                              .action-btn.primary,
+                                                                              .submit-btn {
+                                                                                background: var(--primary);
+                                                                                color: #fff;
+                                                                              }
+                                                                              .action-btn.secondary {
+                                                                                background: var(--accent-soft);
+                                                                                color: var(--accent);
+                                                                              }
+
+                                                                              .review-card {
+                                                                                margin: 0 16px 16px;
+                                                                              }
+
+                                                                              .review-form input,
+                                                                              .review-form textarea,
+                                                                              .review-form select {
+                                                                                width: 100%;
+                                                                                border: 1px solid #dadada;
+                                                                                border-radius: 12px;
+                                                                                padding: 12px 14px;
+                                                                                margin-bottom: 10px;
+                                                                                background: #fff;
+                                                                                outline: none;
+                                                                              }
+
+                                                                              .review-form textarea {
+                                                                                min-height: 110px;
+                                                                                resize: vertical;
+                                                                              }
+
+                                                                              .review-item {
+                                                                                padding: 14px 0;
+                                                                                border-top: 1px solid var(--line);
+                                                                              }
+                                                                              .review-item:first-child {
+                                                                                border-top: none;
+                                                                              }
+                                                                              .review-item strong {
+                                                                                font-size: 16px;
+                                                                              }
+                                                                              .review-item p {
+                                                                                margin: 8px 0 0;
+                                                                                color: #333;
+                                                                                line-height: 1.55;
+                                                                              }
+
+                                                                              .rating {
+                                                                                letter-spacing: 2px;
+                                                                              }
+                                                                              .empty {
+                                                                                color: var(--muted);
+                                                                                text-align: center;
+                                                                                padding: 28px 14px;
+                                                                              }
+                                                                              .muted {
+                                                                                color: var(--muted);
+                                                                              }
+                                                                              .loader {
+                                                                                text-align: center;
+                                                                                padding: 24px 0;
+                                                                                color: var(--muted);
+                                                                              }
+
+                                                                              .error {
+                                                                                margin: 16px;
+                                                                                background: #fff4f2;
+                                                                                color: #b33a2f;
+                                                                                padding: 14px;
+                                                                                border-radius: 14px;
+                                                                                border: 1px solid #f1d6d2;
+                                                                              }
+
+                                                                              .bottom-nav {
+                                            position: sticky;
+                                            bottom: 0;
+                                            left: 0;
+                                            right: 0;
+                                            display: grid;
+                                            grid-template-columns: repeat(3, 1fr);
+                                            gap: 0;
+                                            background: rgba(255,255,255,0.98);
+                                            border-top: 1px solid #ddd;
+                                            backdrop-filter: blur(12px);
+                                            z-index: 30;
+                                            margin-top: 12px;
+                                          }
+
+                                                                              .nav-btn {
+                                                                                border: none;
+                                                                                background: transparent;
+                                                                                padding: 12px 4px 16px;
+                                                                                cursor: pointer;
+                                                                                color: var(--muted);
+                                                                                font-weight: 700;
+                                                                              }
+
+                                                                              .nav-btn.active {
+                                                                                color: var(--primary);
+                                                                              }
+
+                                                                              @media (min-width: 860px) {
+                                                                                body {
+                                                                                  padding: 20px;
+                                                                                }
+                                                                                .app {
+                                                                                  max-width: 1080px;
+                                                                                  border-radius: 28px;
+                                                                                  box-shadow: var(--shadow);
+                                                                                  display: grid;
+                                                                                  grid-template-columns: 420px 1fr;
+                                                                                }
+                                                                                #listScreen {
+                                                                                  border-right: 1px solid var(--line);
+                                                                                }
+                                                                                .screen {
+                                                                                  min-height: calc(100vh - 40px);
+                                                                                }
+                                                                                .screen.active {
+                                                                                  display: block;
+                                                                                }
+                                                                                .floating-header {
+                                                                                  position: static;
+                                                                                  background: transparent;
+                                                                                }
+                                                                                .bottom-nav {
+                                      display: grid;
+                                      position: sticky;
+                                      bottom: 0;
+                                      left: 0;
+                                      right: 0;
+                                      width: 100%;
+                                      max-width: none;
+                                      transform: none;
+                                    }
     </style>
   </head>
   <body>
@@ -757,8 +808,6 @@
           applyFilters();
         } catch (error) {
           console.error(error);
-
-          
 
           clearError();
           STATE.restaurants = mergeStoredMeta(getFallbackRestaurants());
@@ -1238,23 +1287,24 @@
         return pages;
       }
 
-    function openDetail(uid) {
-  const restaurant = STATE.restaurants.find((item) => String(item.uid) === String(uid));
-  if (!restaurant) return;
+      function openDetail(uid) {
+        const restaurant = STATE.restaurants.find(
+          (item) => String(item.uid) === String(uid),
+        );
+        if (!restaurant) return;
 
-  STATE.selectedRestaurant = restaurant;
+        STATE.selectedRestaurant = restaurant;
 
-  els.listScreen.classList.remove('active');
-  els.detailScreen.classList.add('active');
+        els.listScreen.classList.remove("active");
+        els.detailScreen.classList.add("active");
 
-  if (window.innerWidth >= 860) {
-    els.listScreen.classList.add('active');
-    }
+        if (window.innerWidth >= 860) {
+          els.listScreen.classList.add("active");
+        }
 
-  renderDetail(restaurant);
-  renderReviews(restaurant.uid);
-} 
-      
+        renderDetail(restaurant);
+        renderReviews(restaurant.uid);
+      }
 
       function showListScreen() {
         if (window.innerWidth < 860) {
@@ -1281,7 +1331,11 @@
       </div>
     `;
 
-        const menuList = restaurant.menu.split(/\n|\//).map((menu) => menu.trim()).filter(Boolean).slice(0, 5);
+        const menuList = restaurant.menu
+          .split(/\n|\//)
+          .map((menu) => menu.trim())
+          .filter(Boolean)
+          .slice(0, 5);
 
         els.detailCard.innerHTML = `
       <div class="detail-block">
@@ -1610,244 +1664,261 @@
       }
 
       function getFallbackRestaurants() {
-  return [
-    {
-      uid: 'fallback-1',
-      foodUid: 'fallback-1',
-      name: '전주 가족회관',
-      address: '전주시 완산구 전라감영 5길 17 2층',
-      roadAddr: '전주시 완산구 전라감영 5길 17 2층',
-      jibunAddr: '',
-      menu: '전주 비빔밥 ₩15,000 / 육회비빔밥 ₩18,000',
-      tel: '063-000-0000',
-      intro: '전주 대표 비빔밥 맛집으로 관광객과 현지인 모두에게 인기입니다.',
-      image: 'https://images.unsplash.com/photo-1590301157890-4810ed352733?auto=format&fit=crop&w=1200&q=80',
-      category: '비빔밥',
-      x: 127.1467,
-      y: 35.8194
-    },
-    {
-      uid: 'fallback-2',
-      foodUid: 'fallback-2',
-      name: '현대옥 남부시장점',
-      address: '전주시 완산구 풍남문2길 63',
-      roadAddr: '전주시 완산구 풍남문2길 63',
-      jibunAddr: '',
-      menu: '콩나물국밥 ₩9,000 / 오징어사리 ₩2,000',
-      tel: '063-000-0001',
-      intro: '전주식 콩나물국밥으로 유명한 대표 로컬 맛집입니다.',
-      image: 'https://images.unsplash.com/photo-1600335895229-6e75511892c8?auto=format&fit=crop&w=1200&q=80',
-      category: '국밥',
-      x: 127.1495,
-      y: 35.8148
-    },
-    {
-      uid: 'fallback-3',
-      foodUid: 'fallback-3',
-      name: '다문',
-      address: '전주시 덕진구 기린대로 700',
-      roadAddr: '전주시 덕진구 기린대로 700',
-      jibunAddr: '',
-      menu: '한정식 코스 ₩25,000 / 특선 ₩35,000',
-      tel: '063-000-0002',
-      intro: '반찬 구성이 풍성한 전주식 한정식 맛집입니다.',
-      image: 'https://images.unsplash.com/photo-1553163147-622ab57be1c7?auto=format&fit=crop&w=1200&q=80',
-      category: '한정식',
-      x: 127.1214,
-      y: 35.8462
-    },
-    {
-      uid: 'fallback-4',
-      foodUid: 'fallback-4',
-      name: '삼천동막걸리골목',
-      address: '전주시 완산구 삼천동 일대',
-      roadAddr: '전주시 완산구 삼천동 일대',
-      jibunAddr: '',
-      menu: '막걸리 한상 ₩20,000 / 추가상 ₩15,000',
-      tel: '063-000-0003',
-      intro: '전주 특유의 푸짐한 막걸리 한상을 즐길 수 있는 곳입니다.',
-      image: 'https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1200&q=80',
-      category: '막걸리',
-      x: 127.1149,
-      y: 35.7907
-    },
-    {
-      uid: 'fallback-5',
-      foodUid: 'fallback-5',
-      name: '교동다원',
-      address: '전주시 완산구 은행로 74-11',
-      roadAddr: '전주시 완산구 은행로 74-11',
-      jibunAddr: '',
-      menu: '쌍화차 ₩9,000 / 전통차 ₩8,000',
-      tel: '063-000-0004',
-      intro: '한옥마을 산책 뒤 들르기 좋은 전통 다과 공간입니다.',
-      image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=80',
-      category: '전주한옥마을',
-      x: 127.1537,
-      y: 35.8153
-    },
-    {
-      uid: 'fallback-6',
-      foodUid: 'fallback-6',
-      name: '베테랑 칼국수',
-      address: '전주시 완산구 경기전길 135',
-      roadAddr: '전주시 완산구 경기전길 135',
-      jibunAddr: '',
-      menu: '칼국수 ₩9,000 / 쫄면 ₩8,000',
-      tel: '063-000-0005',
-      intro: '한옥마을 근처에서 부담 없이 즐기기 좋은 분식 스타일 맛집입니다.',
-      image: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=1200&q=80',
-      category: '백반',
-      x: 127.1518,
-      y: 35.8164
-    },
-    {
-      uid: 'fallback-7',
-      foodUid: 'fallback-7',
-      name: '한국집',
-      address: '전주시 완산구 어진길 119',
-      roadAddr: '전주시 완산구 어진길 119',
-      jibunAddr: '',
-      menu: '전주비빔밥 ₩14,000 / 육회비빔밥 ₩17,000',
-      tel: '063-000-0006',
-      intro: '전주비빔밥으로 잘 알려진 전통 있는 맛집입니다.',
-      image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=1200&q=80',
-      category: '비빔밥',
-      x: 127.1498,
-      y: 35.8172
-    },
-    {
-      uid: 'fallback-8',
-      foodUid: 'fallback-8',
-      name: '왱이집',
-      address: '전주시 완산구 동문길 88',
-      roadAddr: '전주시 완산구 동문길 88',
-      jibunAddr: '',
-      menu: '콩나물국밥 ₩8,000 / 모주 ₩3,000',
-      tel: '063-000-0007',
-      intro: '현지인들도 자주 찾는 전주식 콩나물국밥 맛집입니다.',
-      image: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1200&q=80',
-      category: '국밥',
-      x: 127.1506,
-      y: 35.8179
-    },
-    {
-      uid: 'fallback-9',
-      foodUid: 'fallback-9',
-      name: '궁',
-      address: '전주시 완산구 풍남문3길 25',
-      roadAddr: '전주시 완산구 풍남문3길 25',
-      jibunAddr: '',
-      menu: '한정식 정식 ₩22,000 / 특정식 ₩30,000',
-      tel: '063-000-0008',
-      intro: '전주식 반찬 구성이 풍성하게 나오는 한정식 전문점입니다.',
-      image: 'https://images.unsplash.com/photo-1498654896293-37aacf113fd9?auto=format&fit=crop&w=1200&q=80',
-      category: '한정식',
-      x: 127.1472,
-      y: 35.8142
-    },
-    {
-      uid: 'fallback-10',
-      foodUid: 'fallback-10',
-      name: '한벽집',
-      address: '전주시 완산구 전주천동로 80',
-      roadAddr: '전주시 완산구 전주천동로 80',
-      jibunAddr: '',
-      menu: '막걸리 한상 ₩25,000 / 모듬안주 ₩18,000',
-      tel: '063-000-0009',
-      intro: '전주천 분위기와 함께 막걸리 한상을 즐기기 좋은 곳입니다.',
-      image: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=1200&q=80',
-      category: '막걸리',
-      x: 127.1561,
-      y: 35.8128
-    },
-    {
-      uid: 'fallback-11',
-      foodUid: 'fallback-11',
-      name: '자만벽화마을 카페거리',
-      address: '전주시 완산구 자만동 2-3 일대',
-      roadAddr: '전주시 완산구 자만동 2-3 일대',
-      jibunAddr: '',
-      menu: '수제차 ₩7,000 / 디저트 ₩6,500',
-      tel: '063-000-0010',
-      intro: '한옥마을과 함께 둘러보기 좋은 감성 카페 거리입니다.',
-      image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=80',
-      category: '전주한옥마을',
-      x: 127.1584,
-      y: 35.8147
-    },
-    {
-      uid: 'fallback-12',
-      foodUid: 'fallback-12',
-      name: '전주 남부시장 청년몰',
-      address: '전주시 완산구 풍남문1길 19-3',
-      roadAddr: '전주시 완산구 풍남문1길 19-3',
-      jibunAddr: '',
-      menu: '야시장 간식 ₩5,000 / 수제버거 ₩9,500',
-      tel: '063-000-0011',
-      intro: '먹거리와 볼거리가 함께 있는 전주 대표 시장 코스입니다.',
-      image: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1200&q=80',
-      category: '백반',
-      x: 127.1479,
-      y: 35.8160
-    },
-    {
-      uid: 'fallback-13',
-      foodUid: 'fallback-13',
-      name: '고궁 수라간',
-      address: '전주시 완산구 은행로 31',
-      roadAddr: '전주시 완산구 은행로 31',
-      jibunAddr: '',
-      menu: '전주비빔밥 ₩15,000 / 돌솥비빔밥 ₩16,000',
-      tel: '063-000-0012',
-      intro: '관광객이 많이 찾는 전주식 비빔밥 전문점입니다.',
-      image: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=1200&q=80',
-      category: '비빔밥',
-      x: 127.1521,
-      y: 35.8158
-    },
-    {
-      uid: 'fallback-14',
-      foodUid: 'fallback-14',
-      name: '풍년제과 본점',
-      address: '전주시 완산구 팔달로 180',
-      roadAddr: '전주시 완산구 팔달로 180',
-      jibunAddr: '',
-      menu: '초코파이 ₩2,500 / 수제빵 ₩4,000',
-      tel: '063-000-0013',
-      intro: '전주 여행 선물로 유명한 빵집입니다.',
-      image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1200&q=80',
-      category: '전주한옥마을',
-      x: 127.1470,
-      y: 35.8231
-    },
-    {
-      uid: 'fallback-15',
-      foodUid: 'fallback-15',
-      name: '옛촌막걸리',
-      address: '전주시 완산구 서신천변 8길 12',
-      roadAddr: '전주시 완산구 서신천변 8길 12',
-      jibunAddr: '',
-      menu: '막걸리 한상 ₩30,000 / 반반상 ₩22,000',
-      tel: '063-000-0014',
-      intro: '푸짐한 안주와 함께 즐기는 전주식 막걸리 명소입니다.',
-      image: 'https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=1200&q=80',
-      category: '막걸리',
-      x: 127.1208,
-      y: 35.8252
-    }
-  ].map((restaurant) => {
-    const reviews = getReviews(restaurant.uid);
-    const stats = calculateReviewStats(reviews);
-    return {
-      ...restaurant,
-      reviewCount: reviews.length,
-      avgRating: stats.avgRating,
-      ratingCount: stats.ratingCount,
-      isFavorite: isFavorite(restaurant.uid)
-    };
-  });
-}
+        return [
+          {
+            uid: "fallback-1",
+            foodUid: "fallback-1",
+            name: "전주 가족회관",
+            address: "전주시 완산구 전라감영 5길 17 2층",
+            roadAddr: "전주시 완산구 전라감영 5길 17 2층",
+            jibunAddr: "",
+            menu: "전주 비빔밥 ₩15,000 / 육회비빔밥 ₩18,000",
+            tel: "063-000-0000",
+            intro:
+              "전주 대표 비빔밥 맛집으로 관광객과 현지인 모두에게 인기입니다.",
+            image:
+              "https://images.unsplash.com/photo-1590301157890-4810ed352733?auto=format&fit=crop&w=1200&q=80",
+            category: "비빔밥",
+            x: 127.1467,
+            y: 35.8194,
+          },
+          {
+            uid: "fallback-2",
+            foodUid: "fallback-2",
+            name: "현대옥 남부시장점",
+            address: "전주시 완산구 풍남문2길 63",
+            roadAddr: "전주시 완산구 풍남문2길 63",
+            jibunAddr: "",
+            menu: "콩나물국밥 ₩9,000 / 오징어사리 ₩2,000",
+            tel: "063-000-0001",
+            intro: "전주식 콩나물국밥으로 유명한 대표 로컬 맛집입니다.",
+            image:
+              "https://images.unsplash.com/photo-1600335895229-6e75511892c8?auto=format&fit=crop&w=1200&q=80",
+            category: "국밥",
+            x: 127.1495,
+            y: 35.8148,
+          },
+          {
+            uid: "fallback-3",
+            foodUid: "fallback-3",
+            name: "다문",
+            address: "전주시 덕진구 기린대로 700",
+            roadAddr: "전주시 덕진구 기린대로 700",
+            jibunAddr: "",
+            menu: "한정식 코스 ₩25,000 / 특선 ₩35,000",
+            tel: "063-000-0002",
+            intro: "반찬 구성이 풍성한 전주식 한정식 맛집입니다.",
+            image:
+              "https://images.unsplash.com/photo-1553163147-622ab57be1c7?auto=format&fit=crop&w=1200&q=80",
+            category: "한정식",
+            x: 127.1214,
+            y: 35.8462,
+          },
+          {
+            uid: "fallback-4",
+            foodUid: "fallback-4",
+            name: "삼천동막걸리골목",
+            address: "전주시 완산구 삼천동 일대",
+            roadAddr: "전주시 완산구 삼천동 일대",
+            jibunAddr: "",
+            menu: "막걸리 한상 ₩20,000 / 추가상 ₩15,000",
+            tel: "063-000-0003",
+            intro: "전주 특유의 푸짐한 막걸리 한상을 즐길 수 있는 곳입니다.",
+            image:
+              "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1200&q=80",
+            category: "막걸리",
+            x: 127.1149,
+            y: 35.7907,
+          },
+          {
+            uid: "fallback-5",
+            foodUid: "fallback-5",
+            name: "교동다원",
+            address: "전주시 완산구 은행로 74-11",
+            roadAddr: "전주시 완산구 은행로 74-11",
+            jibunAddr: "",
+            menu: "쌍화차 ₩9,000 / 전통차 ₩8,000",
+            tel: "063-000-0004",
+            intro: "한옥마을 산책 뒤 들르기 좋은 전통 다과 공간입니다.",
+            image:
+              "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=80",
+            category: "전주한옥마을",
+            x: 127.1537,
+            y: 35.8153,
+          },
+          {
+            uid: "fallback-6",
+            foodUid: "fallback-6",
+            name: "베테랑 칼국수",
+            address: "전주시 완산구 경기전길 135",
+            roadAddr: "전주시 완산구 경기전길 135",
+            jibunAddr: "",
+            menu: "칼국수 ₩9,000 / 쫄면 ₩8,000",
+            tel: "063-000-0005",
+            intro:
+              "한옥마을 근처에서 부담 없이 즐기기 좋은 분식 스타일 맛집입니다.",
+            image:
+              "https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=1200&q=80",
+            category: "백반",
+            x: 127.1518,
+            y: 35.8164,
+          },
+          {
+            uid: "fallback-7",
+            foodUid: "fallback-7",
+            name: "한국집",
+            address: "전주시 완산구 어진길 119",
+            roadAddr: "전주시 완산구 어진길 119",
+            jibunAddr: "",
+            menu: "전주비빔밥 ₩14,000 / 육회비빔밥 ₩17,000",
+            tel: "063-000-0006",
+            intro: "전주비빔밥으로 잘 알려진 전통 있는 맛집입니다.",
+            image:
+              "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=1200&q=80",
+            category: "비빔밥",
+            x: 127.1498,
+            y: 35.8172,
+          },
+          {
+            uid: "fallback-8",
+            foodUid: "fallback-8",
+            name: "왱이집",
+            address: "전주시 완산구 동문길 88",
+            roadAddr: "전주시 완산구 동문길 88",
+            jibunAddr: "",
+            menu: "콩나물국밥 ₩8,000 / 모주 ₩3,000",
+            tel: "063-000-0007",
+            intro: "현지인들도 자주 찾는 전주식 콩나물국밥 맛집입니다.",
+            image:
+              "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1200&q=80",
+            category: "국밥",
+            x: 127.1506,
+            y: 35.8179,
+          },
+          {
+            uid: "fallback-9",
+            foodUid: "fallback-9",
+            name: "궁",
+            address: "전주시 완산구 풍남문3길 25",
+            roadAddr: "전주시 완산구 풍남문3길 25",
+            jibunAddr: "",
+            menu: "한정식 정식 ₩22,000 / 특정식 ₩30,000",
+            tel: "063-000-0008",
+            intro: "전주식 반찬 구성이 풍성하게 나오는 한정식 전문점입니다.",
+            image:
+              "https://images.unsplash.com/photo-1498654896293-37aacf113fd9?auto=format&fit=crop&w=1200&q=80",
+            category: "한정식",
+            x: 127.1472,
+            y: 35.8142,
+          },
+          {
+            uid: "fallback-10",
+            foodUid: "fallback-10",
+            name: "한벽집",
+            address: "전주시 완산구 전주천동로 80",
+            roadAddr: "전주시 완산구 전주천동로 80",
+            jibunAddr: "",
+            menu: "막걸리 한상 ₩25,000 / 모듬안주 ₩18,000",
+            tel: "063-000-0009",
+            intro: "전주천 분위기와 함께 막걸리 한상을 즐기기 좋은 곳입니다.",
+            image:
+              "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=1200&q=80",
+            category: "막걸리",
+            x: 127.1561,
+            y: 35.8128,
+          },
+          {
+            uid: "fallback-11",
+            foodUid: "fallback-11",
+            name: "자만벽화마을 카페거리",
+            address: "전주시 완산구 자만동 2-3 일대",
+            roadAddr: "전주시 완산구 자만동 2-3 일대",
+            jibunAddr: "",
+            menu: "수제차 ₩7,000 / 디저트 ₩6,500",
+            tel: "063-000-0010",
+            intro: "한옥마을과 함께 둘러보기 좋은 감성 카페 거리입니다.",
+            image:
+              "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=80",
+            category: "전주한옥마을",
+            x: 127.1584,
+            y: 35.8147,
+          },
+          {
+            uid: "fallback-12",
+            foodUid: "fallback-12",
+            name: "전주 남부시장 청년몰",
+            address: "전주시 완산구 풍남문1길 19-3",
+            roadAddr: "전주시 완산구 풍남문1길 19-3",
+            jibunAddr: "",
+            menu: "야시장 간식 ₩5,000 / 수제버거 ₩9,500",
+            tel: "063-000-0011",
+            intro: "먹거리와 볼거리가 함께 있는 전주 대표 시장 코스입니다.",
+            image:
+              "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1200&q=80",
+            category: "백반",
+            x: 127.1479,
+            y: 35.816,
+          },
+          {
+            uid: "fallback-13",
+            foodUid: "fallback-13",
+            name: "고궁 수라간",
+            address: "전주시 완산구 은행로 31",
+            roadAddr: "전주시 완산구 은행로 31",
+            jibunAddr: "",
+            menu: "전주비빔밥 ₩15,000 / 돌솥비빔밥 ₩16,000",
+            tel: "063-000-0012",
+            intro: "관광객이 많이 찾는 전주식 비빔밥 전문점입니다.",
+            image:
+              "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=1200&q=80",
+            category: "비빔밥",
+            x: 127.1521,
+            y: 35.8158,
+          },
+          {
+            uid: "fallback-14",
+            foodUid: "fallback-14",
+            name: "풍년제과 본점",
+            address: "전주시 완산구 팔달로 180",
+            roadAddr: "전주시 완산구 팔달로 180",
+            jibunAddr: "",
+            menu: "초코파이 ₩2,500 / 수제빵 ₩4,000",
+            tel: "063-000-0013",
+            intro: "전주 여행 선물로 유명한 빵집입니다.",
+            image:
+              "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1200&q=80",
+            category: "전주한옥마을",
+            x: 127.147,
+            y: 35.8231,
+          },
+          {
+            uid: "fallback-15",
+            foodUid: "fallback-15",
+            name: "옛촌막걸리",
+            address: "전주시 완산구 서신천변 8길 12",
+            roadAddr: "전주시 완산구 서신천변 8길 12",
+            jibunAddr: "",
+            menu: "막걸리 한상 ₩30,000 / 반반상 ₩22,000",
+            tel: "063-000-0014",
+            intro: "푸짐한 안주와 함께 즐기는 전주식 막걸리 명소입니다.",
+            image:
+              "https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=1200&q=80",
+            category: "막걸리",
+            x: 127.1208,
+            y: 35.8252,
+          },
+        ].map((restaurant) => {
+          const reviews = getReviews(restaurant.uid);
+          const stats = calculateReviewStats(reviews);
+          return {
+            ...restaurant,
+            reviewCount: reviews.length,
+            avgRating: stats.avgRating,
+            ratingCount: stats.ratingCount,
+            isFavorite: isFavorite(restaurant.uid),
+          };
+        });
+      }
     </script>
   </body>
 </html>
