@@ -28,6 +28,21 @@
         -webkit-tap-highlight-color: transparent;
       }
 
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+        -webkit-appearance: none;
+        appearance: none;
+        border-radius: 0;
+      }
+
+      html {
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+      }
+
       html,
       body {
         margin: 0;
@@ -281,13 +296,20 @@
       }
 
       .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         width: 100%;
         height: 56px;
+        min-height: 56px;
+        line-height: 1;
+        padding: 0 16px;
         border-radius: 14px;
         font-size: 22px;
         font-weight: 700;
         letter-spacing: -0.03em;
         cursor: pointer;
+        flex-shrink: 0;
       }
 
       .btn-primary {
