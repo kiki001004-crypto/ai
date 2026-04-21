@@ -284,7 +284,8 @@
       }
 
       .login-screen {
-        padding: 8px 24px calc(24px + env(safe-area-inset-bottom));
+        padding: 42px 24px calc(24px + env(safe-area-inset-bottom));
+
         display: flex;
         flex-direction: column;
         align-items: stretch;
@@ -297,20 +298,20 @@
       .brand {
         display: flex;
         justify-content: center;
-        align-items: flex-start;
-        margin-top: 0;
-        margin-bottom: 18px;
-        height: 118px;
-        overflow: hidden;
+        align-items: center;
+        margin-top: 18px;
+        margin-bottom: 52px;
+        height: auto;
+        overflow: visible;
       }
 
       .brand img {
-        width: 170px;
+        width: 178px;
         max-width: 100%;
         height: auto;
         display: block;
         object-fit: contain;
-        transform: translateY(-34px);
+        transform: none;
       }
 
       .field-group {
@@ -450,6 +451,50 @@
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         padding-bottom: 98px;
+      }
+
+      .main-banner-swiper {
+        position: relative;
+        width: 100%;
+        height: 322px;
+        overflow: hidden;
+      }
+
+      .main-banner-swiper .swiper-slide {
+        padding: 0;
+        min-height: 0;
+        height: 322px;
+      }
+
+      .hero-image {
+        display: block;
+        width: 100%;
+        height: 322px;
+        object-fit: cover;
+      }
+
+      .main-banner-pagination {
+        position: absolute;
+        left: 0 !important;
+        right: 0;
+        bottom: 14px !important;
+        z-index: 5;
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .main-banner-pagination .swiper-pagination-bullet {
+        width: 8px;
+        height: 8px;
+        background: rgba(255, 255, 255, 0.55);
+        opacity: 1;
+        margin: 0 !important;
+      }
+
+      .main-banner-pagination .swiper-pagination-bullet-active {
+        background: #fff;
+        transform: scale(1.08);
       }
 
       .hero-image {
@@ -708,7 +753,7 @@
 
       <section id="login" class="screen login-screen hidden" aria-hidden="true">
         <div class="brand">
-          <img src="./images/splash-1.png" alt="CARBAK 로그인" />
+          <img src="./images/splash.png" alt="CARBAK 로그인" />
         </div>
 
         <div class="field-group">
@@ -813,7 +858,32 @@
 
       <section id="main" class="screen main-screen hidden" aria-hidden="true">
         <div class="main-scroll">
-          <img class="hero-image" src="./images/main-1.png" alt="메인 배너" />
+          <div class="swiper main-banner-swiper">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide">
+                <img
+                  class="hero-image"
+                  src="./images/main-1.png"
+                  alt="메인 배너 1"
+                />
+              </div>
+              <div class="swiper-slide">
+                <img
+                  class="hero-image"
+                  src="./images/main-2.png"
+                  alt="메인 배너 2"
+                />
+              </div>
+              <div class="swiper-slide">
+                <img
+                  class="hero-image"
+                  src="./images/main-3.png"
+                  alt="메인 배너 3"
+                />
+              </div>
+            </div>
+            <div class="swiper-pagination main-banner-pagination"></div>
+          </div>
 
           <div class="main-content">
             <h2 class="section-title">테마별 카테고리</h2>
@@ -962,6 +1032,19 @@
           slideChange(swiperInstance) {
             bgRibbonTrack.style.transform = `translate3d(-${swiperInstance.activeIndex * (100 / 3)}%, 0, 0)`;
           },
+        },
+      });
+
+      const mainBannerSwiper = new Swiper(".main-banner-swiper", {
+        loop: true,
+        speed: 500,
+        autoplay: {
+          delay: 2800,
+          disableOnInteraction: false,
+        },
+        pagination: {
+          el: ".main-banner-pagination",
+          clickable: true,
         },
       });
 
