@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>문서객체 선택</title>
+  </head>
+  <body>
+    <h1 id="txt1">제목태그1</h1>
+    <h1 id="txt2">제목태그2</h1>
+    <h1 id="txt3">제목태그3</h1>
+
+    <script>
+      // getElementById():html태그의 id값으로 문서 객체를 선택
+      // 1.문서 객체 선택
+      let tit1 = document.getElementById("txt1");
+      console.log(tit1);
+
+      //   자바스크립트 프로그램으로 css 적용
+      // 객체.style ->자바스크립트 프로그램으로 css 적용
+      tit1.style.color = "red";
+      tit1.style.background = "yellow";
+      //   자바스크립트는 font-size('-'는 사용불가)
+      // 카멜 기법으로 적용(첫자대문자로 대체)
+      tit1.style.fontSize = "100px";
+
+      //   두번째 제목
+      // 1.문서객체를 선택하여 자바스크립트를 가져와서 변수에 저장
+      let tit2 = document.getElementById("txt2");
+      console.log(tit2);
+      tit2.style.color = "blue";
+
+      //   세번째 제목을 가져와서 글자색을 초록색, 배경색을 빨간색, 글자크기 48px으로 스타일 지정
+      let tit3 = document.getElementById("txt3");
+      tit3.style.color = "green";
+      tit3.style.background = "red";
+      tit3.style.fontSize = "48px";
+      tit3.style.fontWeight = "900";
+    </script>
+  </body>
+</html>
