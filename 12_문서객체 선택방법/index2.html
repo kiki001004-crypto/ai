@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tag 태그선택자</title>
+  </head>
+  <body>
+    <!-- 0번째 -->
+    <h1>큰제목1</h1>
+    <!-- 1번째 -->
+    <h1>큰제목2</h1>
+    <!-- 2번째 -->
+    <h1>큰제목3</h1>
+    <p>첫번째 문단입니다</p>
+
+    <script>
+      // getElementsbyTagname("")-> tagname 으로 문서 객체를 선택
+      //   여러개 일때에는 배열로 선택해서 처리(자동부여)
+      //   tag 이름으로 선택시 무조건 배열로 처리
+
+      // 1. 문서 객체 선택
+      let tit = document.getElementsByTagName("h1");
+      console.log(tit);
+
+      tit[0].style.color = "red";
+      tit[1].style.color = "blue";
+      tit[2].style.color = "green";
+
+      let para = document.getElementsByTagName("p");
+      console.log(para);
+      para[0].style.fontSize = "36px";
+    </script>
+  </body>
+</html>
