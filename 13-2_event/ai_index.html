@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>순수 JavaScript 애니메이션 데모</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 20px;
+        background: #efefef;
+        font-family: "Malgun Gothic", "맑은 고딕", sans-serif;
+        color: #111;
+      }
+
+      h1 {
+        margin: 0 0 20px;
+        font-size: 34px;
+        font-weight: 700;
+      }
+
+      ol {
+        margin: 0 0 18px 24px;
+        padding: 0;
+        font-size: 18px;
+        line-height: 1.8;
+      }
+
+      .btn-wrap {
+        margin-bottom: 18px;
+      }
+
+      .btn-wrap button {
+        padding: 6px 12px;
+        margin-right: 6px;
+        margin-bottom: 6px;
+        border: 1px solid #999;
+        background: #fff;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .btn-wrap button:hover {
+        background: #f7f7f7;
+      }
+
+      hr {
+        margin: 14px 0 10px;
+        border: none;
+        border-top: 1px solid #999;
+      }
+
+      .box-group {
+        width: 640px;
+        min-height: 200px;
+        border: 4px solid #cfcfcf;
+        background: #fff;
+        padding: 0;
+        margin-bottom: 50px;
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-parent {
+        width: 200px;
+        height: 200px;
+        overflow: hidden;
+        position: relative;
+        flex: 0 0 auto;
+      }
+
+      .ani-group {
+        overflow: visible;
+      }
+
+      .box {
+        width: 200px;
+        height: 200px;
+        padding: 10px;
+        font-size: 18px;
+        color: #000;
+        overflow: hidden;
+        flex: 0 0 auto;
+        transition: none;
+        position: relative;
+      }
+
+      .slide-parent .box {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      .red {
+        background: #ff1200;
+      }
+      .green {
+        background: #008d00;
+      }
+      .yellow {
+        background: #f7c600;
+      }
+      .lime {
+        background: #c8ff00;
+      }
+      .sky {
+        background: #18b9e6;
+      }
+
+      #aniBox {
+        position: absolute;
+        top: 0;
+        left: 440px;
+        z-index: 10;
+        margin: 0;
+      }
+
+      .hidden-display {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>[ JavaScript 애니메이션 관련 메서드 ]</h1>
+
+    <ol>
+      <li>fadeIn()</li>
+      <li>fadeOut()</li>
+      <li>fadeToggle()</li>
+      <li>slideUp()</li>
+      <li>slideDown()</li>
+      <li>slideToggle()</li>
+      <li>animate()</li>
+    </ol>
+
+    <div class="btn-wrap">
+      <button id="btnFadeIn">fadeIn</button>
+      <button id="btnFadeOut">fadeOut</button>
+      <button id="btnFadeToggle">fadeToggle</button>
+      <button id="btnSlideUp">slideUp</button>
+      <button id="btnSlideDown">slideDown</button>
+      <button id="btnSlideToggle">slideToggle</button>
+      <button id="btnAni1">ani1</button>
+      <button id="btnAni2">ani2</button>
+    </div>
+
+    <hr />
+
+    <div class="box-group">
+      <div class="box red" id="fadeBox">fadeIn / fadeOut</div>
+      <div class="box green" id="fadeToggleBox">fadeToggle</div>
+    </div>
+
+    <div class="box-group ani-group">
+      <div class="slide-parent">
+        <div class="box yellow" id="slideBox">slideUp / slideDown</div>
+      </div>
+      <div class="slide-parent">
+        <div class="box lime" id="slideToggleBox">slideToggle</div>
+      </div>
+      <div class="box sky" id="aniBox">Animation</div>
+    </div>
+
+    <script>
+      const fadeBox = document.getElementById("fadeBox");
+      const fadeToggleBox = document.getElementById("fadeToggleBox");
+      const slideBox = document.getElementById("slideBox");
+      const slideToggleBox = document.getElementById("slideToggleBox");
+      const aniBox = document.getElementById("aniBox");
+
+      const btnFadeIn = document.getElementById("btnFadeIn");
+      const btnFadeOut = document.getElementById("btnFadeOut");
+      const btnFadeToggle = document.getElementById("btnFadeToggle");
+      const btnSlideUp = document.getElementById("btnSlideUp");
+      const btnSlideDown = document.getElementById("btnSlideDown");
+      const btnSlideToggle = document.getElementById("btnSlideToggle");
+      const btnAni1 = document.getElementById("btnAni1");
+      const btnAni2 = document.getElementById("btnAni2");
+
+      const animationMap = new WeakMap();
+
+      btnFadeIn.addEventListener("click", () => {
+        const current = animationMap.get(fadeBox);
+        if (current) current.cancel();
+
+        if (getComputedStyle(fadeBox).display === "none") {
+          fadeBox.style.display = "block";
+          fadeBox.style.opacity = "0";
+        }
+
+        const animation = fadeBox.animate(
+          [{ opacity: getComputedStyle(fadeBox).opacity }, { opacity: 1 }],
+          { duration: 800, fill: "forwards", easing: "ease" },
+        );
+
+        animationMap.set(fadeBox, animation);
+        animation.onfinish = () => {
+          fadeBox.style.opacity = "1";
+          if (animationMap.get(fadeBox) === animation)
+            animationMap.delete(fadeBox);
+        };
+        animation.oncancel = () => {
+          if (animationMap.get(fadeBox) === animation)
+            animationMap.delete(fadeBox);
+        };
+      });
+
+      btnFadeOut.addEventListener("click", () => {
+        if (getComputedStyle(fadeBox).display === "none") return;
+
+        const current = animationMap.get(fadeBox);
+        if (current) current.cancel();
+
+        const animation = fadeBox.animate(
+          [{ opacity: getComputedStyle(fadeBox).opacity }, { opacity: 0 }],
+          { duration: 800, fill: "forwards", easing: "ease" },
+        );
+
+        animationMap.set(fadeBox, animation);
+        animation.onfinish = () => {
+          fadeBox.style.opacity = "0";
+          fadeBox.style.display = "none";
+          if (animationMap.get(fadeBox) === animation)
+            animationMap.delete(fadeBox);
+        };
+        animation.oncancel = () => {
+          if (animationMap.get(fadeBox) === animation)
+            animationMap.delete(fadeBox);
+        };
+      });
+
+      btnFadeToggle.addEventListener("click", () => {
+        const current = animationMap.get(fadeToggleBox);
+        if (current) current.cancel();
+
+        const isHidden = fadeToggleBox.classList.toggle("fade-toggle-hidden");
+
+        if (isHidden) {
+          const animation = fadeToggleBox.animate(
+            [
+              { opacity: getComputedStyle(fadeToggleBox).opacity },
+              { opacity: 0 },
+            ],
+            { duration: 800, fill: "forwards", easing: "ease" },
+          );
+
+          animationMap.set(fadeToggleBox, animation);
+          animation.onfinish = () => {
+            fadeToggleBox.style.opacity = "0";
+            fadeToggleBox.style.display = "none";
+            if (animationMap.get(fadeToggleBox) === animation)
+              animationMap.delete(fadeToggleBox);
+          };
+          animation.oncancel = () => {
+            if (animationMap.get(fadeToggleBox) === animation)
+              animationMap.delete(fadeToggleBox);
+          };
+        } else {
+          fadeToggleBox.style.display = "block";
+          fadeToggleBox.style.opacity = "0";
+
+          const animation = fadeToggleBox.animate(
+            [{ opacity: 0 }, { opacity: 1 }],
+            { duration: 800, fill: "forwards", easing: "ease" },
+          );
+
+          animationMap.set(fadeToggleBox, animation);
+          animation.onfinish = () => {
+            fadeToggleBox.style.opacity = "1";
+            if (animationMap.get(fadeToggleBox) === animation)
+              animationMap.delete(fadeToggleBox);
+          };
+          animation.oncancel = () => {
+            if (animationMap.get(fadeToggleBox) === animation)
+              animationMap.delete(fadeToggleBox);
+          };
+        }
+      });
+
+      btnSlideUp.addEventListener("click", () => {
+        const current = animationMap.get(slideBox);
+        if (current) current.cancel();
+        if (slideBox.dataset.slidestate === "up") return;
+
+        const animation = slideBox.animate(
+          [
+            { transform: "translateY(0px)", opacity: 1 },
+            { transform: "translateY(-200px)", opacity: 0.4 },
+          ],
+          { duration: 800, fill: "forwards", easing: "ease" },
+        );
+
+        animationMap.set(slideBox, animation);
+        animation.onfinish = () => {
+          slideBox.style.transform = "translateY(-200px)";
+          slideBox.style.opacity = "0.4";
+          slideBox.dataset.slidestate = "up";
+          if (animationMap.get(slideBox) === animation)
+            animationMap.delete(slideBox);
+        };
+        animation.oncancel = () => {
+          if (animationMap.get(slideBox) === animation)
+            animationMap.delete(slideBox);
+        };
+      });
+
+      btnSlideDown.addEventListener("click", () => {
+        const current = animationMap.get(slideBox);
+        if (current) current.cancel();
+        if (slideBox.dataset.slidestate !== "up") return;
+
+        const animation = slideBox.animate(
+          [
+            { transform: "translateY(-200px)", opacity: 0.4 },
+            { transform: "translateY(0px)", opacity: 1 },
+          ],
+          { duration: 800, fill: "forwards", easing: "ease" },
+        );
+
+        animationMap.set(slideBox, animation);
+        animation.onfinish = () => {
+          slideBox.style.transform = "translateY(0px)";
+          slideBox.style.opacity = "1";
+          slideBox.dataset.slidestate = "down";
+          if (animationMap.get(slideBox) === animation)
+            animationMap.delete(slideBox);
+        };
+        animation.oncancel = () => {
+          if (animationMap.get(slideBox) === animation)
+            animationMap.delete(slideBox);
+        };
+      });
+
+      btnSlideToggle.addEventListener("click", () => {
+        const current = animationMap.get(slideToggleBox);
+        if (current) current.cancel();
+
+        const isHidden = slideToggleBox.classList.toggle("slide-toggle-hidden");
+
+        if (isHidden) {
+          const animation = slideToggleBox.animate(
+            [
+              { transform: "translateY(0px)", opacity: 1 },
+              { transform: "translateY(-200px)", opacity: 0.4 },
+            ],
+            { duration: 800, fill: "forwards", easing: "ease" },
+          );
+
+          animationMap.set(slideToggleBox, animation);
+          animation.onfinish = () => {
+            slideToggleBox.style.transform = "translateY(-200px)";
+            slideToggleBox.style.opacity = "0.4";
+            slideToggleBox.dataset.slidestate = "up";
+            if (animationMap.get(slideToggleBox) === animation)
+              animationMap.delete(slideToggleBox);
+          };
+          animation.oncancel = () => {
+            if (animationMap.get(slideToggleBox) === animation)
+              animationMap.delete(slideToggleBox);
+          };
+        } else {
+          const animation = slideToggleBox.animate(
+            [
+              { transform: "translateY(-200px)", opacity: 0.4 },
+              { transform: "translateY(0px)", opacity: 1 },
+            ],
+            { duration: 800, fill: "forwards", easing: "ease" },
+          );
+
+          animationMap.set(slideToggleBox, animation);
+          animation.onfinish = () => {
+            slideToggleBox.style.transform = "translateY(0px)";
+            slideToggleBox.style.opacity = "1";
+            slideToggleBox.dataset.slidestate = "down";
+            if (animationMap.get(slideToggleBox) === animation)
+              animationMap.delete(slideToggleBox);
+          };
+          animation.oncancel = () => {
+            if (animationMap.get(slideToggleBox) === animation)
+              animationMap.delete(slideToggleBox);
+          };
+        }
+      });
+
+      btnAni1.addEventListener("click", () => {
+        const current = animationMap.get(aniBox);
+        if (current) current.cancel();
+
+        const animation = aniBox.animate(
+          [
+            {
+              transform: "translateX(0px)",
+              opacity: 1,
+              borderRadius: "0px",
+            },
+            {
+              transform: "translateX(500px)",
+              opacity: 1,
+              borderRadius: "0px",
+            },
+          ],
+          { duration: 1000, fill: "forwards", easing: "ease" },
+        );
+
+        animationMap.set(aniBox, animation);
+        animation.onfinish = () => {
+          aniBox.style.transform = "translateX(500px)";
+          aniBox.style.opacity = "1";
+          aniBox.style.borderRadius = "0px";
+          if (animationMap.get(aniBox) === animation)
+            animationMap.delete(aniBox);
+        };
+        animation.oncancel = () => {
+          if (animationMap.get(aniBox) === animation)
+            animationMap.delete(aniBox);
+        };
+      });
+
+      btnAni2.addEventListener("click", () => {
+        const current = animationMap.get(aniBox);
+        if (current) current.cancel();
+
+        const animation = aniBox.animate(
+          [
+            {
+              transform: "translateX(500px)",
+              opacity: 1,
+              borderRadius: "0px",
+            },
+            {
+              transform: "translateX(0px)",
+              opacity: 1,
+              borderRadius: "0px",
+            },
+          ],
+          { duration: 1000, fill: "forwards", easing: "ease" },
+        );
+
+        animationMap.set(aniBox, animation);
+        animation.onfinish = () => {
+          aniBox.style.transform = "translateX(0px)";
+          aniBox.style.opacity = "1";
+          aniBox.style.borderRadius = "0px";
+          if (animationMap.get(aniBox) === animation)
+            animationMap.delete(aniBox);
+        };
+        animation.oncancel = () => {
+          if (animationMap.get(aniBox) === animation)
+            animationMap.delete(aniBox);
+        };
+      });
+    </script>
+  </body>
+</html>
