@@ -54,7 +54,7 @@ footer .inner .family .list li {
   text-indent: 12px;
 }
 footer .inner .family .list li:hover {
-  background: gray;
+  background: #bcbcbc;
 }
 
 footer .inner .family .list li a {
