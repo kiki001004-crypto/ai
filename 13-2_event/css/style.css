@@ -22,6 +22,7 @@ body {
 .box3 div {
   width: 200px;
   height: 200px;
+  transition: all 0.5s ease-in-out;
 }
 .box1 div:first-child {
   background: red;
@@ -56,4 +57,34 @@ body {
 
 .bg {
   background: gold;
+}
+
+.fade-hidden {
+  transition: all 1s ease-in-out;
+  opacity: 0;
+}
+.box2 .box {
+  width: 200px;
+  height: 200px;
+  background: orange;
+  transition: all 0.5s ease-in-out;
+}
+
+.slide-box {
+  height: 200px;
+  opacity: 1;
+}
+.box2 .slide-box {
+  height: 0;
+  opacity: 0;
+}
+.slide-hidden {
+  height: 0;
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  transition: all 1s ease-in-out;
+}
+.box2 .ani-move {
+  left: 900px;
 }
