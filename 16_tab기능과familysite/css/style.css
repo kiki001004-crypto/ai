@@ -48,6 +48,12 @@ footer .inner .family .list {
   width: 144px;
   border: 1px solid #bec9ca;
   background: #fff;
+  /* 숨김 */
+  display: none;
+}
+footer .inner .family .list.on {
+  /* 보이기 */
+  display: block;
 }
 
 footer .inner .family .list li {
