@@ -22,7 +22,10 @@ body {
 .box3 div {
   width: 200px;
   height: 200px;
+  /* 🔥 양방향 애니메이션을 위해 기본 박스에 transition 적용 */
   transition: all 0.5s ease-in-out;
+  /* 🔥 left, top 등으로 움직이려면 반드시 필요합니다 */
+  position: relative;
 }
 .box1 div:first-child {
   background: red;
@@ -54,37 +57,48 @@ body {
   top: 0;
 }
 /* bg class에 배경을 골드로 채우는 명령 */
-
 .bg {
   background: gold;
 }
 
+/* =========================================
+   수정된 애니메이션 동작 클래스들
+========================================= */
+
+/* 1. Fade (서서히 숨기기) */
 .fade-hidden {
-  transition: all 1s ease-in-out;
-  opacity: 0;
+  opacity: 0 !important;
+  /* 여기에 있던 transition은 삭제했습니다 (기본 박스의 transition을 따름) */
 }
+
 .box2 .box {
   width: 200px;
   height: 200px;
   background: orange;
-  transition: all 0.5s ease-in-out;
 }
 
+/* 2. Slide (위아래로 접기) 기본 형태 */
 .slide-box {
   height: 200px;
   opacity: 1;
+  overflow: hidden; /* 🔥 높이가 0이 될 때 내용물이 삐져나오지 않게 숨김 (필수) */
 }
-.box2 .slide-box {
-  height: 0;
-  opacity: 0;
-}
+
+/* ❌ 삭제된 코드: .box2 .slide-box { height: 0; opacity: 0; } 
+  이 코드가 시작부터 박스를 숨겨버려서 슬라이드가 고장났던 주범입니다. 삭제했습니다!
+*/
+
+/* 3. Slide 숨기기 클래스 */
 .slide-hidden {
-  height: 0;
-  opacity: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-  transition: all 1s ease-in-out;
+  height: 0 !important;
+  opacity: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin: 0 !important;
+  border: none !important;
 }
+
+/* 4. Move (옆으로 이동) 클래스 */
 .box2 .ani-move {
-  left: 900px;
+  left: 900px !important;
 }
