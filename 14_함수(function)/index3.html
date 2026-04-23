@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>함수매개변수전달t</title>
+  </head>
+  <body>
+    <script>
+      // 여기는 서울입니다 5번만 출력
+      // 여기는 부산입니다 4번만 출력
+      // 여기는 제주입니다 3번만 출력
+      // 여기는 전주입니다 2번만 출력
+      // 함수 미적용
+      for (let i = 1; i <= 5; i++) {
+        document.write("여기는 서울입니다<br>");
+      }
+      for (let i = 1; i <= 4; i++) {
+        document.write("여기는 부산입니다<br>");
+      }
+      for (let i = 1; i <= 3; i++) {
+        document.write("여기는 제주입니다<br>");
+      }
+      for (let i = 1; i <= 2; i++) {
+        document.write("여기는 전주입니다<br>");
+      }
+      document.write("<hr>");
+
+      //   함수를 적용
+      function city(name, count) {
+        for (let i = 1; i <= count; i++) {
+          document.write(`여기는 ${name}입니다<br>`);
+        }
+      }
+      city("서울", 5);
+      city("부산", 4);
+      city("제주", 3);
+      city("전주", 2);
+    </script>
+  </body>
+</html>

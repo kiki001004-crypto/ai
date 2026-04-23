@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>주문내역</title>
+  </head>
+  <body>
+    <button value="아메리카노" id="btn1">아메리카노</button>
+    <button value="카페라떼">카페라떼</button>
+    <button value="바닐라라떼">바닐라라떼</button>
+    <button value="카라멜마끼아또">카라멜마끼아또</button>
+    <button value="헤이즐넛라떼" onclick="coffee(this.value)">
+      헤이즐넛라떼
+    </button>
+    <script>
+      let btn1 = document.getElementById("btn1");
+
+      // 함수선언
+      function coffee(menu) {
+        alert(`고객님은 ${menu} 를 주문하셨습니다`);
+      }
+      btn1.addEventListener("click", function () {
+        alert(this.value);
+      });
+    </script>
+  </body>
+</html>
