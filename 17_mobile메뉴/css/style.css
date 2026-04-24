@@ -26,7 +26,15 @@ button {
   left: 0;
   top: 0;
   background: rgba(0, 0, 0, 0.8);
-  display: none;
+  transition: all 0.5s ease-in-out;
+  opacity: 0;
+  /* 중복 방지 */
+  pointer-events: none;
+}
+.cover.on {
+  opacity: 1;
+  /* 중복 방지 */
+  pointer-events: none;
 }
 /* 모바일 메뉴 숨김 */
 .mobile-menu {
@@ -37,6 +45,7 @@ button {
   right: -100%;
   top: 0;
   padding: 24px;
+  transition: all 0.5s ease-in-out;
 }
 .mobile-menu.on {
   right: 0;
