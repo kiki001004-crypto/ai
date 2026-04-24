@@ -1,0 +1,2529 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shape Layout</title>
+    <style>
+      /* 기본 여백 제거 및 직접 중앙 정렬을 위한 Body 설정 */
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #ffffff;
+        padding-top: 150px; /* 고정형 헤더 높이(150px)만큼 시작 위치 보정 데이터 반영 */
+        overflow-x: auto;
+        width: 100%;
+        min-width: 1920px;
+      }
+
+      /* 헤더 상단 고정 래퍼(Wrapper) 추가 및 테두리 데이터 반영 */
+      .header-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        min-width: 1920px;
+        height: 150px;
+        background-color: #ffffff;
+        border-bottom: 1px solid #e0e0e0; /* 1px 얇은 선 데이터 반영 */
+        display: flex;
+        justify-content: center;
+        z-index: 1000;
+      }
+
+      /* 각 블록의 데이터 속성 */
+      .block-red {
+        width: 1200px;
+        height: 100%; /* 부모 래퍼 높이 상속 */
+        padding: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-sizing: border-box;
+      }
+
+      .box-search {
+        width: 350px;
+        height: 46px;
+        background-color: #ffffff;
+        border: 2px solid #e5e5e5;
+        border-radius: 8px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+        padding-left: 0;
+      }
+      .search-input {
+        flex: 1;
+        border: none;
+        outline: none;
+        padding: 0 8px;
+        font-size: 14px;
+        color: #ccc;
+      }
+      .search-input::placeholder {
+        color: #ccc;
+      }
+      .search-btn {
+        width: 46px;
+        height: 100%;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .icon-search {
+        width: 36px;
+        height: 36px;
+        object-fit: contain;
+      }
+
+      .box-logo {
+        width: 260px;
+        height: 70px;
+        background-color: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .logo-img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+      }
+
+      .box-right {
+        width: 350px;
+        height: 70px;
+        background-color: transparent;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .right-top-bar {
+        width: 100%;
+        height: 24px;
+        background-color: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 24px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #333;
+      }
+      .right-top-bar span {
+        cursor: pointer;
+      }
+      .right-bottom-bar {
+        width: 100%;
+        height: 38px;
+        background-color: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 6px;
+        color: #333;
+        font-size: 17px;
+      }
+      .util-item {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        cursor: pointer;
+      }
+      .icon-util {
+        width: 18px;
+        height: 18px;
+        object-fit: contain;
+      }
+
+      .banner {
+        width: 1920px;
+        height: 450px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      .banner-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .block-purple {
+        width: 1200px;
+        min-height: 600px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* 푸터 화면 전체 넓이 상단 선을 위한 래퍼(Wrapper) 데이터 신설 */
+      .footer-wrapper {
+        width: 100%;
+        min-width: 1920px;
+        border-top: 1px solid #e0e0e0; /* 화면 끝까지 이어지는 1px 얇은 선 데이터 반영 */
+        background-color: #ffffff;
+        display: flex;
+        justify-content: center;
+      }
+
+      /* Footer Layout & Styling 시안 기반 정밀 데이터 반영 */
+      .block-magenta {
+        width: 1200px;
+        min-height: 200px;
+        /* border-top 제거 (wrapper로 이동) */
+        display: flex;
+        padding: 50px 0 70px 0; /* 상/하 여백 시안 맞춤 조정 */
+        gap: 40px;
+        box-sizing: border-box;
+        align-items: flex-start;
+        justify-content: space-between;
+      }
+
+      /* 좌측 고객센터 영역 데이터 */
+      .footer-left {
+        width: 385px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px; /* 내용 블록 간의 간격 15px 고정 데이터 반영 */
+        padding-left: 16px; /* 좌패딩 16px 데이터 추가 */
+        box-sizing: border-box; /* 레이아웃 너비 유지 데이터 추가 */
+      }
+      .cs-heading {
+        margin: 0;
+        padding: 0;
+        font-size: 14px;
+        font-weight: 600;
+        color: #333;
+        line-height: 1.4; /* 내부 줄바꿈 간격 원래대로 복구 */
+      }
+      .cs-email {
+        font-size: 12px;
+        font-weight: 600;
+        color: #333;
+      }
+      .cs-hours {
+        margin: 0;
+        padding: 0;
+        font-size: 12px;
+        font-weight: 600; /* 세미볼드 데이터 추가 반영 */
+        color: #757575;
+        line-height: 1.6; /* 내부 줄바꿈 간격 원래대로 복구 */
+      }
+
+      /* 우측 기업정보 영역 데이터 */
+      .footer-right {
+        width: 775px;
+        display: flex;
+        flex-direction: column;
+      }
+      .company-title {
+        font-size: 12px; /* 글자크기 12px 데이터 반영 */
+        font-weight: 600; /* 세미볼드 데이터 반영 */
+        color: #757575; /* 글자색 #757575 데이터 반영 */
+        margin: 0 0 15px 0; /* 한줄띄고 데이터 반영 */
+        line-height: 15px; /* 전체 줄간격 15px 데이터 반영 */
+      }
+      .footer-company-info {
+        font-size: 12px; /* 글자크기 12px 데이터 반영 */
+        font-weight: 600; /* 세미볼드 데이터 추가 */
+        color: #333333; /* 글자색 #333333 데이터 반영 */
+        margin: 0 0 15px 0; /* 한줄띄고 데이터 반영 */
+        line-height: 15px; /* 전체 줄간격 15px 데이터 반영 */
+      }
+      .footer-bottom-info {
+        font-size: 12px; /* 기본 글자크기 상속 유지 */
+        font-weight: 600; /* 세미볼드 데이터 다시 반영 */
+        color: #cccccc; /* 글자색 #cccccc 데이터 반영 */
+        margin: 0;
+        line-height: 15px; /* 전체 줄간격 15px 데이터 반영 */
+      }
+
+      .inner-box {
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      /* 1) 반찬 박스 영역 레이아웃 구조화 */
+      .box-side-dish {
+        min-height: 1256px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 60px 16px 16px 16px;
+      }
+
+      /* 반찬 박스 내부 타이틀 데이터 */
+      .section-title {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+      .section-title h2 {
+        margin: 50px 0 0 0;
+        font-size: 28px;
+        font-weight: 600;
+        color: #111;
+      }
+      .section-title p {
+        margin: 16px 0 41px 0;
+        font-size: 15px;
+        color: #444;
+      }
+
+      /* 카드 4열 Grid 레이아웃 데이터 */
+      .card-list {
+        display: grid;
+        grid-template-columns: repeat(4, 280px);
+        gap: 16px; /* gap 16px 데이터 유지 */
+        width: 100%;
+      }
+
+      /* MD 탭 컨텐츠용 애니메이션 및 상태 클래스 */
+      .md-tab-content {
+        display: none;
+        width: 100%;
+      }
+      .md-tab-content.active {
+        display: grid;
+        animation: fadeIn 0.4s ease forwards;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* 개별 카드 스타일 데이터 */
+      .card-item {
+        width: 280px;
+        height: 532px; /* 세로 532px 데이터 반영 */
+        background-color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease; /* 호버 애니메이션 추가 */
+        border-radius: 8px; /* 부드러운 카드 외곽선 추가 */
+      }
+
+      .card-item:hover {
+        transform: translateY(-8px); /* 위로 살짝 떠오르는 효과 */
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08); /* 부드러운 그림자 효과 */
+        z-index: 1;
+      }
+
+      .card-image {
+        position: relative;
+        width: 100%;
+        height: 370px; /* 높이 370px 데이터 반영 (기존 380px에서 변경) */
+        flex-shrink: 0;
+        background-color: #f0f0f0;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #999;
+      }
+
+      .card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease; /* 이미지 확대 애니메이션 추가 */
+      }
+
+      /* 카드 호버 시 메인 이미지만 부드럽게 확대 (뱃지나 장바구니 아이콘은 제외) */
+      .card-item:hover .card-image > img:not(.badge-circle):not(.btn-cart) {
+        transform: scale(1.05);
+      }
+
+      .card-image img.badge-circle {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: contain;
+        z-index: 10;
+      }
+
+      .card-image img.btn-cart {
+        position: absolute;
+        bottom: 16px;
+        right: 16px;
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+        object-fit: contain;
+        z-index: 10;
+      }
+
+      .card-info {
+        padding: 16px 16px 20px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      /* 새로 나온 반찬 영역 card-info 내부 줄간격 16px 데이터 반영 */
+      .box-new-product .card-info {
+        width: 280px; /* 가로 280px 데이터 반영 */
+        height: 162px; /* 세로 162px 데이터 반영 */
+        box-sizing: border-box; /* 패딩 포함 크기 유지 */
+        gap: 16px;
+      }
+
+      /* MD 추천 반찬 영역 card-info 상하 패딩 및 줄간격 데이터 반영 */
+      .box-md-pick .card-info {
+        width: 280px;
+        height: 162px;
+        box-sizing: border-box;
+        padding: 16px; /* 상하 패딩 16px (전체 16px) 데이터 반영 */
+        gap: 8px; /* 줄간격 8px 데이터 반영 */
+      }
+
+      /* card-list 패딩 데이터 반영 수정 (중복 패딩 제거) */
+      .box-new-product .card-list,
+      .box-md-pick .card-list {
+        padding: 0 0 16px 0; /* 좌, 우 중복 패딩 제거하여 상위 컨테이너와 정렬 일치 */
+        box-sizing: border-box;
+      }
+
+      /* 기존 margin 간섭 방지 초기화 */
+      .box-new-product .card-desc,
+      .box-md-pick .card-desc {
+        margin: 0;
+      }
+
+      /* card tag 라인 하단 간격 4px 강제 적용 (부모 flex gap 데이터 수치 상쇄) */
+      .box-new-product .card-name {
+        margin: -12px 0 0 0; /* 부모 gap 16px - 12px = 4px 간격 렌더링 */
+      }
+      .box-md-pick .card-name {
+        margin: -4px 0 0 0; /* 부모 gap 8px - 4px = 4px 간격 렌더링 */
+      }
+
+      .card-tags {
+        display: flex;
+        gap: 4px;
+        min-height: 24px; /* 태그가 없을 때도 레이아웃 유지 */
+      }
+
+      .tag-item {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        line-height: 1;
+        white-space: nowrap;
+        font-size: 12px;
+        font-weight: bold;
+        padding: 4px 6px;
+        border-radius: 2px;
+      }
+
+      .tag-new {
+        color: #e93f33;
+        background-color: #fbeae9;
+      }
+      .tag-mild {
+        width: 50px;
+        height: 24px;
+        padding: 2px 4px;
+        font-size: 13px;
+        font-weight: bold;
+        color: #f39f1a;
+        background-color: #fdf0dc;
+        border-radius: 4px;
+      }
+      .tag-best {
+        width: 31px;
+        height: 20px;
+        padding: 2px 4px;
+        font-size: 13px;
+        font-weight: bold;
+        color: #316f35;
+        background-color: #dbe6dc;
+        border-radius: 4px;
+      }
+      /* MD 추천 반찬 영역 등 2글자 주황색 태그를 위한 신규 데이터 클래스 추가 */
+      .tag-sale {
+        width: 31px;
+        height: 20px;
+        padding: 2px 4px;
+        font-size: 13px;
+        font-weight: bold;
+        color: #f39f1a;
+        background-color: #fdf0dc;
+        border-radius: 4px;
+      }
+
+      .card-name {
+        font-size: 16px;
+        font-weight: 500;
+        color: #222;
+        margin: 4px 0 0 0;
+        line-height: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .card-desc {
+        font-size: 13px;
+        color: #888;
+        margin-bottom: 8px;
+        line-height: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .card-price-wrap {
+        display: flex;
+        flex-direction: column;
+      }
+      .card-price-row {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .card-discount {
+        font-size: 16px;
+        font-weight: 500;
+        color: #e93f33;
+      }
+      .card-price {
+        font-size: 16px;
+        font-weight: 600;
+        color: #222;
+      }
+
+      .card-original-price {
+        font-size: 13px;
+        color: #b5b5b5;
+        text-decoration: line-through;
+        margin-top: 4px;
+      }
+
+      .box-regular-sub {
+        min-height: 714px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 60px 16px 16px 16px;
+      }
+
+      /* 2) 새로 나온 반찬 영역 시안 반영 */
+      .box-new-product {
+        min-height: 1256px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 60px 16px 16px 16px; /* 기존 집밥 한끼와 패딩 동기화 */
+      }
+
+      /* 3) 서브 배너 영역 데이터 교정 (치우침 현상 해결) */
+      .box-sub-banner {
+        width: 1200px;
+        height: 200px;
+        background-color: transparent;
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 0 16px; /* 기존 0에서 위아래 박스와 동일한 좌우 16px 패딩 데이터 추가 */
+        box-sizing: border-box;
+      }
+      .sub-banner-item {
+        flex: 1; /* 가용공간(1168px) 내에서 3등분(약 378.66px)되도록 정밀 분할 데이터 적용 */
+        height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 24px;
+        margin-top: 25px;
+        margin-bottom: 25px;
+        border: 1px solid #e5e5e5;
+        border-radius: 16px;
+        background-color: #ffffff;
+        box-sizing: border-box;
+        cursor: pointer;
+        background: yellowgreen;
+      }
+
+      .sub-banner-text {
+        display: flex;
+        flex-direction: column;
+      }
+      .sub-banner-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: #333333;
+        margin-bottom: 16px;
+        line-height: 1;
+      }
+      .sub-banner-desc {
+        font-size: 24px;
+        font-weight: 600;
+        color: #333333;
+        line-height: 1;
+      }
+      .sub-banner-icon {
+        width: 48px;
+        height: 48px;
+        background: #0d5611;
+        padding: 9px;
+        box-sizing: border-box;
+        object-fit: contain;
+      }
+
+      /* 4) MD 추천 반찬 영역 시안 반영 */
+      .box-md-pick {
+        min-height: 1256px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 60px 16px 16px 16px; /* 새로 나온 반찬과 동일한 패딩 데이터 반영 */
+      }
+
+      /* MD 추천 반찬 탭 데이터 추가 */
+      .md-tab-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 42px 0; /* 상품 이미지 카드와의 간격 42px 데이터 반영 */
+        display: flex;
+        gap: 16px; /* gap 16px 데이터 반영 */
+        justify-content: center;
+        align-items: center; /* 세로 53px 지정에 따른 수직 중앙 정렬 데이터 추가 */
+      }
+      .md-tab-item {
+        padding: 16px 24px; /* 상하 16px, 좌우 24px 데이터 반영 */
+        border-radius: 20px;
+        background-color: #ffffff;
+        border: 1px solid #e5e5e5;
+        font-size: 14px;
+        font-weight: 600;
+        color: #666666;
+        cursor: pointer;
+        transition:
+          background-color 0.2s ease,
+          color 0.2s ease; /* Hover 애니메이션 추가 */
+      }
+      .md-tab-item.active {
+        background-color: #0d5611; /* 요청된 #0D5611 데이터 반영 */
+        border-color: #0d5611; /* 요청된 #0D5611 데이터 반영 */
+        color: #ffffff;
+      }
+
+      /* 탭 그룹 전체에 마우스 오버 시 기존 active(비빔밥) 탭의 색상 비활성화 */
+      .md-tab-list:hover .md-tab-item.active {
+        background-color: #ffffff;
+        border-color: #e5e5e5;
+        color: #666666;
+      }
+
+      /* 마우스가 실제로 올라간 개별 탭에 active(비빔밥) 색상 활성화 */
+      .md-tab-list:hover .md-tab-item:hover {
+        background-color: #0d5611;
+        border-color: #0d5611;
+        color: #ffffff;
+      }
+
+      /* --- 새로 추가된 스타일 --- */
+      /* 스크롤 애니메이션 클래스 */
+      .fade-in-up {
+        opacity: 0;
+        transform: translateY(40px);
+        transition:
+          opacity 0.8s ease-out,
+          transform 0.8s ease-out;
+      }
+      .fade-in-up.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* 위로 가기 버튼 */
+      .scroll-top-btn {
+        position: fixed;
+        bottom: 40px;
+        right: 40px;
+        width: 50px;
+        height: 50px;
+        background-color: #0d5611;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        font-size: 24px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(20px);
+        transition:
+          opacity 0.3s ease,
+          transform 0.3s ease,
+          visibility 0.3s ease;
+        z-index: 9999;
+      }
+      .scroll-top-btn.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+      .scroll-top-btn:hover {
+        background-color: #0a400c;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header-wrapper">
+      <header class="block-red">
+        <div class="box-search">
+          <input
+            type="text"
+            placeholder="반찬을 입력해주세요"
+            class="search-input"
+          />
+          <button class="search-btn">
+            <img
+              src="./images/icons/imgi_27_icon-search-f5f5f5-18 1.png"
+              alt="검색"
+              class="icon-search"
+            />
+          </button>
+        </div>
+        <div class="box-logo">
+          <img
+            src="./images/icons/imgi_13_logo_pc 1.png"
+            alt="집반찬연구소 로고"
+            class="logo-img"
+          />
+        </div>
+        <div class="box-right">
+          <div class="right-top-bar">
+            <span>로그인</span>
+            <span>회원가입</span>
+            <span>내정보</span>
+          </div>
+          <div class="right-bottom-bar">
+            <span class="util-item"
+              ><img
+                src="./images/icons/imgi_28_icon-tel2 1.png"
+                alt="전화주문"
+                class="icon-util"
+              />
+              전화주문</span
+            >
+            <span class="util-item"
+              ><img
+                src="./images/icons/imgi_29_icon-document-d4d4d4-28 1.png"
+                alt="브랜드"
+                class="icon-util"
+              />
+              브랜드</span
+            >
+            <span class="util-item"
+              ><img
+                src="./images/icons/imgi_30_icon-list-d4d4d4-28 1.png"
+                alt="반찬보기"
+                class="icon-util"
+              />
+              반찬보기</span
+            >
+            <span class="util-item"
+              ><img
+                src="./images/icons/imgi_31_icon-cart-d4d4d4-28 1.png"
+                alt="장바구니"
+                class="icon-util"
+              />
+              장바구니</span
+            >
+          </div>
+        </div>
+      </header>
+    </div>
+
+    <!-- 애니메이션을 위한 fade-in-up 클래스 추가 -->
+    <section class="banner fade-in-up">
+      <img
+        src="./images/banner/banner_fc9385c24511a68c7a252e6329bed0ce.jpg"
+        alt="메인 배너"
+        class="banner-img"
+      />
+    </section>
+
+    <main class="block-purple">
+      <!-- 부담없는 알뜰 반찬 영역 -->
+      <div class="inner-box box-side-dish fade-in-up">
+        <div class="section-title">
+          <h2>부담없는 알뜰 반찬</h2>
+          <p>착한 가격으로 챙기는 든든한 한끼</p>
+        </div>
+        <div class="card-list">
+          <!-- 기존 알뜰 반찬 카드 내용 유지 -->
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_235_ZIP_P_0214_A.png"
+                alt="쭈꾸미 풋마늘 파스타"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
+              <strong class="card-name">쭈꾸미 풋마늘 파스타</strong>
+              <span class="card-desc"
+                >봄기운 가득! 쭈꾸미와 풋마늘의 찰떡 궁합</span
+              >
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-discount">7%</span>
+                  <span class="card-price">12,800원</span>
+                </div>
+                <span class="card-original-price">13,800원</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_236_ZIP_P_0213_A.png"
+                alt="쭈꾸미 미나리 파스타"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
+              <strong class="card-name">쭈꾸미 미나리 파스타</strong>
+              <span class="card-desc">지금이 제철! 쭈꾸미와 미나리의 만남</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-discount">7%</span>
+                  <span class="card-price">12,800원</span>
+                </div>
+                <span class="card-original-price">13,800원</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_237_main_5.jpg"
+                alt="잡채"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-best">인기</span>
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
+              <strong class="card-name">잡채</strong>
+              <span class="card-desc">탱글한 면발과 맛깔진 고명이 가득</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">12,800원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_238_main_37.jpg"
+                alt="한끼 한돈제육_완조리"
+              />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">한끼 한돈제육_완조리</strong>
+              <span class="card-desc">혼자 먹기 딱 좋은 1인분 제육볶음</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">6,800원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_239_ZIP_P_8073_A.jpg"
+                alt="[원더스푼] 된장국"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
+              <strong class="card-name">[원더스푼] 된장국</strong>
+              <span class="card-desc">매일 먹어도 좋은 담백한 된장국</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">3,300원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_240_ZIP_P_8075_A.jpg"
+                alt="[원더스푼] 맑은 순두부찌개"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
+              <strong class="card-name">[원더스푼] 맑은 순두부찌개</strong>
+              <span class="card-desc">맵지 않은 순두부찌개, 아이도 OK</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">4,300원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_241_ZIP_P_8067_A.jpg"
+                alt="[원더스푼] 맛살 계란 덮밥"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
+              <strong class="card-name">[원더스푼] 맛살 계란 덮밥</strong>
+              <span class="card-desc"
+                >고소한 맛살과 폭신한 계란의 부드러운 조합</span
+              >
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">4,300원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_242_ZIP_P_8066_A.jpg"
+                alt="[원더스푼] 한우 스테이크소스 덮밥"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
+              <strong class="card-name"
+                >[원더스푼] 한우 스테이크소스 덮밥</strong
+              >
+              <span class="card-desc"
+                >한우의 풍미를 그대로 담은 스테이크소스</span
+              >
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">4,500원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 집밥 한 끼 영역 -->
+      <div class="inner-box box-regular-sub fade-in-up">
+        <div class="section-title">
+          <h2>집밥 한 끼</h2>
+          <p>맛있는 한끼를 위한 제안</p>
+        </div>
+        <div class="card-list">
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                class="badge-circle"
+                src="./images/home/percent.png"
+                alt="11% 뱃지"
+              />
+              <img
+                src="./images/home/imgi_113_2442_ZIP_P_4111_T_2.jpg"
+                alt="메추리알 곤약조림"
+              />
+              <img
+                class="btn-cart"
+                src="./images/home/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags"></div>
+              <strong class="card-name">메추리알 간장조림</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-discount">11%</span>
+                  <span class="card-price">3,400원</span>
+                </div>
+                <span class="card-original-price">3,800원</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                class="badge-circle"
+                src="./images/home/sale2.png"
+                alt="12% 뱃지"
+              />
+              <img
+                src="./images/home/imgi_215_ZIP_P_8068_T.jpg"
+                alt="한우야채카레"
+              />
+              <img
+                class="btn-cart"
+                src="./images/home/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+              </div>
+              <strong class="card-name">한우야채카레</strong>
+              <span class="card-desc">담백하고 부드러운 야채들로 풍성하게</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-discount">12%</span>
+                  <span class="card-price">3,800원</span>
+                </div>
+                <span class="card-original-price">4,300원</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                class="badge-circle"
+                src="./images/home/percent.png"
+                alt="11% 뱃지"
+              />
+              <img
+                src="./images/home/imgi_213_ZIP_P_8078_T.jpg"
+                alt="한우 소고기미역국"
+              />
+              <img
+                class="btn-cart"
+                src="./images/home/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
+              <strong class="card-name">[원더스푼] 한우 소고기 미역국</strong>
+              <span class="card-desc">영양가득 든든한 한우 어린이 미역국</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-discount">11%</span>
+                  <span class="card-price">4,700원</span>
+                </div>
+                <span class="card-original-price">5,300원</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                class="badge-circle"
+                src="./images/home/sale2.png"
+                alt="12% 뱃지"
+              />
+              <img
+                src="./images/home/imgi_149_1356_ZIP_P_0102_T.jpg"
+                alt="한끼 한돈 김치두루치기_완조리"
+              />
+              <img
+                class="btn-cart"
+                src="./images/home/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags"></div>
+              <strong class="card-name">한끼 한돈 김치두루치기_완조리</strong>
+              <span class="card-desc"
+                >국내산 한돈으로 만든 든든한 한끼 두루치기</span
+              >
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-discount">12%</span>
+                  <span class="card-price">6,400원</span>
+                </div>
+                <span class="card-original-price">7,300원</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 새로 나온 반찬 영역 -->
+      <div class="inner-box box-new-product fade-in-up">
+        <div class="section-title">
+          <h2>새로 나온 반찬</h2>
+          <p>따끈따끈한 신메뉴 출시</p>
+        </div>
+        <div class="card-list">
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/new_banchan/new1.png"
+                alt="[원더스푼] 두부덮밥"
+              />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
+              <strong class="card-name">[원더스푼] 두부덮밥</strong>
+              <span class="card-desc">아이들도 입맛 없는 날 뚝딱 한 그릇</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">3,500원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 추가 새로 나온 반찬 카드들... -->
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/new_banchan/new2.png"
+                alt="[원더스푼] 한돈 순두부 덮밥"
+              />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
+              <strong class="card-name">[원더스푼] 한돈 순두부 덮밥</strong>
+              <span class="card-desc">몽글몽글 부드러운 한돈 순두부 소스</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">3,800원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/new_banchan/new3.png"
+                alt="[원더스푼] 한우 하이라이스 덮밥"
+              />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
+              <strong class="card-name">[원더스푼] 한우 하이라이스 덮밥</strong>
+              <span class="card-desc"
+                >부드럽게 끓여낸 한우 하이라이스 소스</span
+              >
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">4,300원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/new_banchan/new4.png"
+                alt="[원더스푼] 한우 삼색 소보로 덮밥"
+              />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
+              <strong class="card-name"
+                >[원더스푼] 한우 삼색 소보로 덮밥</strong
+              >
+              <span class="card-desc">알록달록 색감까지 맛있는 삼색 덮밥</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">4,800원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/new_banchan/new5.jpg"
+                alt="저당 두부면 팟타이"
+              />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
+              <strong class="card-name">저당 두부면 팟타이</strong>
+              <span class="card-desc">건강하게 즐기는 새콤달콤 팟타이</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">8,300원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/new_banchan/new6.jpg"
+                alt="저당 두부면 까르보나라"
+              />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
+              <strong class="card-name">저당 두부면 까르보나라</strong>
+              <span class="card-desc">가볍게 즐기는 진한 크림 파스타</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">8,800원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/new_banchan/new7.jpg"
+                alt="맑은 한우 배춧국, 냉동"
+              />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+              </div>
+              <strong class="card-name">맑은 한우 배춧국, 냉동</strong>
+              <span class="card-desc"
+                >담백하고 개운한, 배추와 한우의 깊은 맛</span
+              >
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">9,800원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/new_banchan/new8.png"
+                alt="새콤달콤 풋마늘 무침"
+              />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-best">인기</span>
+              </div>
+              <strong class="card-name">새콤달콤 풋마늘무침</strong>
+              <span class="card-desc">입맛 살리는 톡 쏘는 맛</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">4,800원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 중간 서브 배너 영역 -->
+      <div class="inner-box box-sub-banner fade-in-up">
+        <div class="sub-banner-item">
+          <div class="sub-banner-text">
+            <span class="sub-banner-title">1588-1234</span>
+            <span class="sub-banner-desc">전화주문 바로가기</span>
+          </div>
+          <img
+            src="./images/icons/tell.png"
+            alt="전화 상담"
+            class="sub-banner-icon"
+          />
+        </div>
+
+        <div class="sub-banner-item" style="background: yellow">
+          <div class="sub-banner-text">
+            <span class="sub-banner-title">우리가족 건강하게</span>
+            <span class="sub-banner-desc">우리아이 영양식단 레벨업</span>
+          </div>
+          <img
+            src="./images/icons/kid.png"
+            alt="우리아이 영양식단"
+            class="sub-banner-icon"
+          />
+        </div>
+
+        <div class="sub-banner-item">
+          <div class="sub-banner-text">
+            <span class="sub-banner-title">프리미엄 온라인 반찬가게</span>
+            <span class="sub-banner-desc">집반찬 연구소의 이야기</span>
+          </div>
+          <img
+            src="./images/icons/food.png"
+            alt="온라인반찬가게"
+            class="sub-banner-icon"
+          />
+        </div>
+      </div>
+
+      <!-- MD 추천 반찬 영역 (Tab 기능 적용 대상) -->
+      <div class="inner-box box-md-pick fade-in-up">
+        <div class="section-title">
+          <h2>MD 추천 반찬</h2>
+          <p style="margin-bottom: 42px">
+            이번 주 가장 추천하는 제품만 골라드려요.
+          </p>
+        </div>
+
+        <!-- 탭 리스트 -->
+        <ul class="md-tab-list" style="width: 814px; height: 53px">
+          <li class="md-tab-item active" data-tab="tab-bibimbap">비빔밥</li>
+          <li class="md-tab-item" data-tab="tab-soup">국 / 찌개 / 탕</li>
+          <li class="md-tab-item" data-tab="tab-kids">어린이 반찬</li>
+          <li class="md-tab-item" data-tab="tab-stirfry">볶음</li>
+          <li class="md-tab-item" data-tab="tab-muchim">무침</li>
+          <li class="md-tab-item" data-tab="tab-main">메인요리</li>
+          <li class="md-tab-item" data-tab="tab-jorim">조림</li>
+        </ul>
+
+        <!-- ============================================== -->
+        <!-- [1] 비빔밥 탭 영역 -->
+        <!-- ============================================== -->
+        <div class="card-list md-tab-content active" id="tab-bibimbap">
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                class="badge-circle"
+                src="./images/icons/sale3.png"
+                alt="13% 뱃지"
+              />
+              <img src="./images/md_banchan/md5.png" alt="아이들 한우 비빔밥" />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
+              <strong class="card-name">아이들 한우 비빔밥</strong>
+              <span class="card-desc">아이들도 맛있게 먹는 비빔밥 출시!</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-discount">13%</span>
+                  <span class="card-price">9,400원</span>
+                </div>
+                <span class="card-original-price">10,800원</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img src="./images/md_banchan/md6.png" alt="나물 비빔밥" />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags"></div>
+              <strong class="card-name">나물 비빔밥</strong>
+              <span class="card-desc">가심비 가득, 정성 가득 비빔밥</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">10,800원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img src="./images/md_banchan/md7.png" alt="한우 비빔밥" />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-best">인기</span>
+              </div>
+              <strong class="card-name">한우 비빔밥</strong>
+              <span class="card-desc">고기를 더해 더 맛깔스러워진</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">12,800원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img src="./images/md_banchan/md8.png" alt="양념꼬막 비빔밥" />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags"></div>
+              <strong class="card-name">양념꼬막 비빔밥</strong>
+              <span class="card-desc">꼬막이 있꼬막</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">13,800원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img src="./images/md_banchan/md1.jpg" alt="검은콩조림" />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-best">인기</span>
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
+              <strong class="card-name">검은콩조림</strong>
+              <span class="card-desc">국내산 검은콩은 약콩입니다.</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">3,800원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img src="./images/md_banchan/md2.jpg" alt="메추리알 간장조림" />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags"></div>
+              <strong class="card-name">메추리알 간장조림</strong>
+              <span class="card-desc">달콤 짭쪼름 아기 달걀</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">3,400원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img src="./images/md_banchan/md3.jpg" alt="알감자조림" />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
+              <strong class="card-name">알감자조림</strong>
+              <span class="card-desc">한입에 쏙 맛있는 알감자조림</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">5,800원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img src="./images/md_banchan/md4.jpg" alt="보리새우 무조림" />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags"></div>
+              <strong class="card-name">보리새우 무조림</strong>
+              <span class="card-desc">추워질수록 더욱 맛있어 지는</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">7,700원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- [2] 국 / 찌개 / 탕 탭 영역 -->
+        <!-- ============================================== -->
+        <div class="card-list md-tab-content" id="tab-soup">
+          <!-- 1번 상품 -->
+          <div class="card-item">
+            <div class="card-image">
+              <!-- 아래 src를 국/찌개 사진으로 변경하세요 -->
+              <img
+                src="./images/04_md_banchan/imgi_255_malkeun_A.png"
+                alt="국/찌개 추천상품 1"
+              />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-best">인기</span>
+              </div>
+              <strong class="card-name">[MD추천] 시원한 소고기 무국</strong>
+              <span class="card-desc">국물이 끝내주는 깊은 맛</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">6,800원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 2번 상품 -->
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_256_1690_ZIP_P_2062_A.jpg"
+                alt="국/찌개 추천상품 2"
+              />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-new">신제품</span>
+              </div>
+              <strong class="card-name">[MD추천] 얼큰 돼지고기 김치찌개</strong>
+              <span class="card-desc">한국인이라면 누구나 좋아하는</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">7,500원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 3번~8번 임시 상품 (동일하게 복사) -->
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_257_soup_3.jpg"
+                alt="상품"
+              /><img class="btn-cart" src="./images/icons/lock.png" />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">차돌 된장찌개</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">8,000원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_258_1373_ZIP_P_2048_A.jpg"
+                alt="상품"
+              /><img class="btn-cart" src="./images/icons/lock.png" />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">맑은 콩나물국</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">4,500원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_259_1833_ZIP_P_9396_A.jpg"
+                alt="상품"
+              /><img class="btn-cart" src="./images/icons/lock.png" />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">동태탕</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">9,000원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_260_1830_ZIP_P_9393_A.jpg"
+                alt="상품"
+              /><img class="btn-cart" src="./images/icons/lock.png" />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">황태 해장국</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">7,000원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_261_2068_ZIP_P_9473_A.jpg"
+                alt="상품"
+              /><img class="btn-cart" src="./images/icons/lock.png" />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">미역국</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">5,000원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_262_2100_ZIP_P_9474_A.jpg"
+                alt="상품"
+              /><img class="btn-cart" src="./images/icons/lock.png" />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">부대찌개</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">12,000원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- [3] 어린이 반찬 탭 영역 -->
+        <!-- ============================================== -->
+        <div class="card-list md-tab-content" id="tab-kids">
+          <div class="card-item">
+            <div class="card-image">
+              <!-- 아래 src를 어린이 반찬 사진으로 변경하세요 -->
+              <img src="./images/md_banchan/md1.jpg" alt="어린이 반찬 1" />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <div class="card-tags">
+                <span class="tag-item tag-mild">맵지않음</span>
+              </div>
+              <strong class="card-name">어린이용 깍두기</strong>
+              <span class="card-desc">맵지 않게 즐기는 아삭한 무</span>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">5,000원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 나머지 어린이 반찬 카드 (src 경로만 변경해주시면 됩니다) -->
+          <div class="card-item">
+            <div class="card-image">
+              <img src="./images/md_banchan/md2.jpg" alt="상품" /><img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+              />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">새우살 볶음</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">6,000원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img src="./images/md_banchan/md3.jpg" alt="상품" /><img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+              />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">순살 돈까스</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">7,000원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img src="./images/md_banchan/md4.jpg" alt="상품" /><img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+              />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">어린이 계란말이</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">4,500원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img src="./images/md_banchan/md5.png" alt="상품" /><img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+              />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">한우 장조림</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">11,000원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img src="./images/md_banchan/md6.png" alt="상품" /><img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+              />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">어묵 볶음</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">3,500원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img src="./images/md_banchan/md7.png" alt="상품" /><img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+              />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">브로콜리 두부무침</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">4,000원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img src="./images/md_banchan/md8.png" alt="상품" /><img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+              />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">연어 스테이크</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">12,000원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- [4] 볶음 탭 영역 -->
+        <!-- ============================================== -->
+        <div class="card-list md-tab-content" id="tab-stirfry">
+          <div class="card-item">
+            <div class="card-image">
+              <img src="./images/new_banchan/new1.png" alt="볶음 반찬 1" />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">오징어 볶음</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">8,500원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img src="./images/new_banchan/new2.png" alt="상품" /><img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+              />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">제육 볶음</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">7,800원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img src="./images/new_banchan/new3.png" alt="상품" /><img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+              />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">멸치 볶음</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">4,200원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img src="./images/new_banchan/new4.png" alt="상품" /><img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+              />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">진미채 볶음</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">5,500원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img src="./images/new_banchan/new5.jpg" alt="상품" /><img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+              />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">건새우 볶음</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">5,000원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img src="./images/new_banchan/new6.jpg" alt="상품" /><img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+              />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">감자 채볶음</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">3,800원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img src="./images/new_banchan/new7.jpg" alt="상품" /><img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+              />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">버섯 볶음</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">4,000원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img src="./images/new_banchan/new8.png" alt="상품" /><img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+              />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">우엉 볶음</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">4,500원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- [5] 무침 탭 영역 -->
+        <!-- ============================================== -->
+        <div class="card-list md-tab-content" id="tab-muchim">
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/home/imgi_113_2442_ZIP_P_4111_T_2.jpg"
+                alt="무침 반찬 1"
+              />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">시금치 무침</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">3,500원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/home/imgi_149_1356_ZIP_P_0102_T.jpg"
+                alt="상품"
+              /><img class="btn-cart" src="./images/icons/lock.png" />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">콩나물 무침</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">3,000원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/home/imgi_213_ZIP_P_8078_T.jpg"
+                alt="상품"
+              /><img class="btn-cart" src="./images/icons/lock.png" />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">도라지 무침</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">4,500원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/home/imgi_215_ZIP_P_8068_T.jpg"
+                alt="상품"
+              /><img class="btn-cart" src="./images/icons/lock.png" />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">숙주 무침</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">3,200원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/home/imgi_227_ZIP_P_8066_T.jpg"
+                alt="상품"
+              /><img class="btn-cart" src="./images/icons/lock.png" />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">오이 도라지 무침</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">4,800원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_241_ZIP_P_8067_A.jpg"
+                alt="상품"
+              /><img class="btn-cart" src="./images/icons/lock.png" />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">가지 무침</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">3,800원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_246_muchim_35.jpg"
+                alt="상품"
+              /><img class="btn-cart" src="./images/icons/lock.png" />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">미역 줄기 무침</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">3,500원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_252_jolim_13.jpg"
+                alt="상품"
+              /><img class="btn-cart" src="./images/icons/lock.png" />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">참나물 무침</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">4,000원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- [6] 메인요리 탭 영역 -->
+        <!-- ============================================== -->
+        <div class="card-list md-tab-content" id="tab-main">
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_262_2100_ZIP_P_9474_A.jpg"
+                alt="메인요리 1"
+              />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">소불고기</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">12,500원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_250_fry_5.jpg"
+                alt="상품"
+              /><img class="btn-cart" src="./images/icons/lock.png" />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">매운 갈비찜</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">15,000원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_238_main_37.jpg"
+                alt="상품"
+              /><img class="btn-cart" src="./images/icons/lock.png" />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">고등어 구이</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">8,000원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_243_muchim_8.jpg"
+                alt="상품"
+              /><img class="btn-cart" src="./images/icons/lock.png" />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">닭볶음탕</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">13,500원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_238_main_37.jpg"
+                alt="상품"
+              /><img class="btn-cart" src="./images/icons/lock.png" />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">갈치 조림</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">14,000원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_239_ZIP_P_8073_A.jpg"
+                alt="상품"
+              /><img class="btn-cart" src="./images/icons/lock.png" />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">오삼 불고기</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">11,000원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_240_ZIP_P_8075_A.jpg"
+                alt="상품"
+              /><img class="btn-cart" src="./images/icons/lock.png" />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">수육 세트</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">16,000원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_241_ZIP_P_8067_A.jpg"
+                alt="상품"
+              /><img class="btn-cart" src="./images/icons/lock.png" />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">간장 찜닭</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">13,000원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- [7] 조림 탭 영역 -->
+        <!-- ============================================== -->
+        <div class="card-list md-tab-content" id="tab-jorim">
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_242_ZIP_P_8066_A.jpg"
+                alt="조림 반찬 1"
+              />
+              <img
+                class="btn-cart"
+                src="./images/icons/lock.png"
+                alt="장바구니 담기"
+              />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">연근 조림</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">4,500원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_243_muchim_8.jpg"
+                alt="상품"
+              /><img class="btn-cart" src="./images/icons/lock.png" />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">우엉 조림</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">4,800원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_244_muchim_16.jpg"
+                alt="상품"
+              /><img class="btn-cart" src="./images/icons/lock.png" />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">감자 조림</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">3,500원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_245_muchim_9.jpg"
+                alt="상품"
+              /><img class="btn-cart" src="./images/icons/lock.png" />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">코다리 조림</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">8,000원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_246_muchim_35.jpg"
+                alt="상품"
+              /><img class="btn-cart" src="./images/icons/lock.png" />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">두부 조림</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">4,000원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_252_jolim_13.jpg"
+                alt="상품"
+              /><img class="btn-cart" src="./images/icons/lock.png" />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">꽁치 무조림</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">7,500원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_254_jolim_31.jpg"
+                alt="상품"
+              /><img class="btn-cart" src="./images/icons/lock.png" />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">메추리알 곤약조림</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">3,800원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="card-image">
+              <img
+                src="./images/04_md_banchan/imgi_256_1690_ZIP_P_2062_A.jpg"
+                alt="상품"
+              /><img class="btn-cart" src="./images/icons/lock.png" />
+            </div>
+            <div class="card-info">
+              <strong class="card-name">소고기 장조림</strong>
+              <div class="card-price-wrap">
+                <div class="card-price-row">
+                  <span class="card-price">12,000원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div class="footer-wrapper fade-in-up">
+      <footer class="block-magenta">
+        <div class="footer-left">
+          <div class="cs-heading">
+            고객센터<br />
+            1588-3754<br />
+            <span class="cs-email">zipbanchan@sannamchon.co.kr</span>
+          </div>
+          <div class="cs-hours">
+            평일 08:30~17:30 / 토요일 08:30~12:00<br />
+            점심시간 12:00~13:00<br />
+            일요일, 공휴일은 휴무입니다.
+          </div>
+        </div>
+        <div class="footer-right">
+          <div class="company-title">집반찬연구소</div>
+          <div class="footer-company-info">
+            인천광역시 서구 가석로 26(가좌동)
+            집반찬연구소&nbsp;&nbsp;&nbsp;&nbsp;대표자 : 박종철<br />
+            사업자등록번호 : 121-86-17743&nbsp;&nbsp;&nbsp;&nbsp;통신판매업
+            신고번호 : 제 2023-인천서구-3834
+            호&nbsp;&nbsp;&nbsp;&nbsp;개인정보보호책임자 : 정문채<br />
+            제휴 문의 : zipbanchan@sannamchon.co.kr
+          </div>
+          <div class="footer-bottom-info">
+            집반찬연구소 소개&nbsp;&nbsp;이용약관&nbsp;&nbsp;개인정보처리방침<br />
+            Copyright ⓒ SANNAMCHON CORP. All Rights Reserved.
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- 맨 위로 가기 버튼 추가 -->
+    <button id="scrollTopBtn" class="scroll-top-btn" title="맨 위로 가기">
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M12 19V5M5 12l7-7 7 7" />
+      </svg>
+    </button>
+
+    <!-- 탭 기능 구현 스크립트 -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const tabItems = document.querySelectorAll(".md-tab-item");
+        const tabContents = document.querySelectorAll(".md-tab-content");
+
+        // 탭 클릭 이벤트 바인딩
+        tabItems.forEach((tab) => {
+          tab.addEventListener("click", () => {
+            // 1. 모든 탭 메뉴의 활성화 클래스(active) 제거
+            tabItems.forEach((t) => t.classList.remove("active"));
+            // 2. 모든 콘텐츠 영역 숨기기
+            tabContents.forEach((content) =>
+              content.classList.remove("active"),
+            );
+
+            // 3. 클릭한 탭 활성화 및 대응되는 콘텐츠 보여주기
+            tab.classList.add("active");
+            const targetId = tab.getAttribute("data-tab");
+            document.getElementById(targetId).classList.add("active");
+          });
+        });
+
+        // --- 1. 스크롤에 따른 요소 부드럽게 나타나기 (Intersection Observer) ---
+        const fadeElements = document.querySelectorAll(".fade-in-up");
+
+        const observerOptions = {
+          root: null,
+          rootMargin: "0px",
+          threshold: 0.1, // 요소가 10% 보일 때 실행
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              observer.unobserve(entry.target); // 한 번 보이면 관찰 중단 (퍼포먼스 최적화)
+            }
+          });
+        }, observerOptions);
+
+        fadeElements.forEach((el) => observer.observe(el));
+
+        // --- 2. 맨 위로 가기 버튼 로직 ---
+        const scrollTopBtn = document.getElementById("scrollTopBtn");
+
+        // 스크롤 위치 감지
+        window.addEventListener("scroll", () => {
+          if (window.scrollY > 300) {
+            scrollTopBtn.classList.add("show");
+          } else {
+            scrollTopBtn.classList.remove("show");
+          }
+        });
+
+        // 버튼 클릭 시 맨 위로 부드럽게 이동
+        scrollTopBtn.addEventListener("click", () => {
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
