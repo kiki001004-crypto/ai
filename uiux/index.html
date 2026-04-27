@@ -631,7 +631,7 @@
                     stroke="currentColor"
                     stroke-width="2.2"
                   >
-                    <circle cx="12" cy="12" r="3" >
+                    <circle cx="12" cy="12" r="3" />
                     <path
                       d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
                     />
@@ -910,11 +910,7 @@
 
           <div class="main-scroll-content" style="padding-top: 10px; bottom: 0">
             <!-- 검색 결과 -->
-            <div
-              class="prop-section property-result-section"
-              id="property-result-section"
-              aria-label="매물 검색 결과"
-            >
+            <div class="prop-section..." id="..." role="region" aria-label="매물 검색 결과">
               <div class="prop-sec-header">
                 <div class="prop-sec-title">검색 결과</div>
                 <button
@@ -929,7 +925,7 @@
             </div>
 
             <!-- 최근 검색어 -->
-            <section class="prop-section animate-on-scroll">
+            <div class="prop-section animate-on-scroll">
               <div class="prop-sec-header">
                 <div class="prop-sec-title">
                   최근 검색어
@@ -951,10 +947,10 @@
                 </button>
               </div>
               <div class="chip-list" id="recent-search-list"></div>
-            </section>
+            </div>
 
             <!-- 맞춤형 키워드 -->
-            <section
+            <div
               class="prop-section animate-on-scroll"
               style="margin-top: 16px"
             >
@@ -980,10 +976,10 @@
                 <span class="chip-item">애완동물</span>
                 <span class="chip-item">관리비</span>
               </div>
-            </section>
+            </div>
 
             <!-- 실시간 검색 순위 -->
-            <section
+            <div
               class="prop-section animate-on-scroll"
               style="margin-top: 16px"
             >
@@ -1022,7 +1018,7 @@
                   <span class="rank-name">서초자이</span>
                 </div>
               </div>
-            </section>
+            </div>
 
             <!-- 하단 기획전 배너 (레이어드 구조로 변경됨) -->
             <div class="promo-banner-layer animate-on-scroll">
@@ -2012,7 +2008,7 @@
           <nav class="main-bottom-nav my-bottom-nav">
             <a href="#main" class="nav-item page-link" data-target="#main">
               <svg viewBox="0 0 24 24" fill="currentColor" class="nav-icon">
-                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" >
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
               </svg>
               <span class="nav-text">홈</span>
             </a>
@@ -2370,7 +2366,7 @@
                 </div>
               </div>
 
-              <article class="my-reservation-card" data-reservation-card>
+              <div class="my-reservation-card" data-reservation-card>
                 <strong>래미안 방문 예약</strong>
                 <span data-schedule-text>내일 오전 11:30 · 예약 확정</span>
                 <div class="my-reservation-actions">
@@ -2384,7 +2380,7 @@
                     예약 취소
                   </button>
                 </div>
-              </article>
+              </div>
 
               <article class="my-reservation-card" data-reservation-card>
                 <strong>운양동 라피아노</strong>
