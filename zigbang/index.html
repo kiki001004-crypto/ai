@@ -1,0 +1,2751 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" >
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    >
+    <meta name="format-detection" content="telephone=no" >
+    <title>Zigbang Splash, Walkthrough, Login & Main</title>
+
+    <!-- 카카오맵 API (YOUR_APP_KEY 부분에 실제 API 키를 입력하세요) -->
+    <!-- 수정됨: 로컬 환경(file://)에서도 스크립트를 정상적으로 불러오도록 https:// 를 명시적으로 추가했습니다. -->
+    <script
+      src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2631fbface8acace856d0e9bd3bddd6a&autoload=false&libraries=services"
+    ></script>
+
+    <!-- Web Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" >
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin >
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    >
+
+    <!-- Swiper CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css"
+    >
+    <link rel="stylesheet" href="./css/style.css" >
+</head>
+  <body>
+    <main
+      class="mobile-app"
+      aria-label="직방 스플래시, 워크스루, 로그인 및 메인"
+    >
+      <!-- 온보딩 뷰 -->
+      <section
+        class="app-view onboarding-view"
+        aria-label="직방 스플래시 및 워크스루"
+      >
+        <div class="swiper onboarding-swiper">
+          <div class="swiper-wrapper">
+            <section class="swiper-slide" aria-label="스플래시">
+              <div class="design-stage">
+                <img
+                  class="splash-logo"
+                  src="./images/logo.png"
+                  alt="zigbang 로고"
+                >
+                <div class="splash-loading-wrap" role="status" aria-label="직방 시작 중" aria-live="polite">
+                  <div class="splash-loading-area">
+                    <span class="splash-loading-text">직방 시작 중</span>
+                    <span class="splash-loading-percent">0%</span>
+                  </div>
+                  <div class="splash-progress" aria-hidden="true">
+                    <div class="splash-progress-bar"></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section
+              id="walkthrough"
+              class="swiper-slide slide-1"
+              aria-label="광고 너머의 진실을 봅니다"
+            >
+              <div class="design-stage">
+                <h2 class="walkthrough-title">
+                  <span class="block orange">광고</span>
+                  <span class="block"
+                    >너머의 <span class="orange">진실</span>을 봅니다</span
+                  >
+                </h2>
+                <p class="walkthrough-desc">
+                  불필요한 홍보성 매물은 걷어내고, 당신이 꼭 알아야 할 핵심
+                  데이터만 선별!
+                </p>
+                <img
+                  class="walkthrough-visual visual-1"
+                  src="./images/work1.png"
+                  alt="work1이미지"
+                  aria-hidden="true"
+                >
+                <div class="walkthrough-dots">
+                  <button
+                    type="button"
+                    class="is-active"
+                    data-slide="1"
+                    aria-label="첫 번째 워크스루 보기"
+                  ></button>
+                  <button
+                    type="button"
+                    data-slide="2"
+                    aria-label="두 번째 워크스루 보기"
+                  ></button>
+                  <button
+                    type="button"
+                    data-slide="3"
+                    aria-label="세 번째 워크스루 보기"
+                  ></button>
+                </div>
+                <a
+                  class="skip-link page-link"
+                  href="#login"
+                  data-target="#login"
+                  aria-label="온보딩 건너뛰고 로그인 페이지로 이동"
+                  >Skip</a
+                >
+              </div>
+            </section>
+
+            <section
+              class="swiper-slide slide-2"
+              aria-label="한 눈에 두 매물을 분할비교"
+            >
+              <div class="design-stage">
+                <h2 class="walkthrough-title">
+                  <span class="block"><span class="orange">한 눈</span>에</span>
+                  <span class="block"
+                    >두 매물을 <span class="orange">분할비교</span></span
+                  >
+                </h2>
+                <p class="walkthrough-desc">
+                  알고리즘이 검증한 실매물 데이터를 한 화면에서 즉시
+                  비교/의사결정의 확신을 드립니다
+                </p>
+                <img
+                  class="walkthrough-visual visual-2"
+                  src="./images/work2.png"
+                  alt="work2이미지"
+                  aria-hidden="true"
+                >
+                <div class="walkthrough-dots">
+                  <button
+                    type="button"
+                    data-slide="1"
+                    aria-label="첫 번째 워크스루 보기"
+                  ></button>
+                  <button
+                    type="button"
+                    class="is-active"
+                    data-slide="2"
+                    aria-label="두 번째 워크스루 보기"
+                  ></button>
+                  <button
+                    type="button"
+                    data-slide="3"
+                    aria-label="세 번째 워크스루 보기"
+                  ></button>
+                </div>
+                <a
+                  class="skip-link page-link"
+                  href="#login"
+                  data-target="#login"
+                  aria-label="온보딩 건너뛰고 로그인 페이지로 이동"
+                  >Skip</a
+                >
+              </div>
+            </section>
+
+            <section
+              class="swiper-slide slide-3"
+              aria-label="가장 빠르고 정확한 계약의 시작"
+            >
+              <div class="design-stage">
+                <h2 class="walkthrough-title">
+                  <span class="block"
+                    >가장 <span class="orange">빠르고</span></span
+                  >
+                  <span class="block"
+                    ><span class="orange">정확한</span> 계약의 시작</span
+                  >
+                </h2>
+                <p class="walkthrough-desc">
+                  다이렉트 액션 바를 통해 전문가와의 상담 및 현장 방문을 단 1초
+                  만에 예약하세요.
+                </p>
+                <img
+                  class="walkthrough-visual visual-3"
+                  src="./images/work3.png"
+                  alt="work3이미지"
+                  aria-hidden="true"
+                >
+                <div class="walkthrough-dots">
+                  <button
+                    type="button"
+                    data-slide="1"
+                    aria-label="첫 번째 워크스루 보기"
+                  ></button>
+                  <button
+                    type="button"
+                    data-slide="2"
+                    aria-label="두 번째 워크스루 보기"
+                  ></button>
+                  <button
+                    type="button"
+                    class="is-active"
+                    data-slide="3"
+                    aria-label="세 번째 워크스루 보기"
+                  ></button>
+                </div>
+                <a
+                  class="start-link page-link"
+                  href="#login"
+                  data-target="#login"
+                  aria-label="시작하기, 로그인 페이지로 이동"
+                  >시작하기</a
+                >
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <!-- 로그인 뷰 -->
+      <section
+        class="app-view login-view is-hidden"
+        id="login"
+        aria-label="로그인 화면"
+      >
+        <div class="design-stage login-stage">
+          <img class="login-logo" src="./images/logo.png" alt="zigbang 로고" >
+
+          <form class="login-form" action="#" method="post">
+            <div class="field-group">
+              <label class="field-label" for="userId">아이디</label>
+              <input
+                class="login-input"
+                id="userId"
+                name="userId"
+                type="text"
+                autocomplete="username"
+              >
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="password">비밀번호</label>
+              <input
+                class="login-input"
+                id="password"
+                name="password"
+                type="password"
+                autocomplete="current-password"
+              >
+            </div>
+
+            <div class="login-options">
+              <label class="check-item">
+                <input type="checkbox" name="autoLogin" >
+                <span class="fake-radio" aria-hidden="true"></span>
+                <span>자동 로그인</span>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" name="saveId" >
+                <span class="fake-radio" aria-hidden="true"></span>
+                <span>아이디 저장</span>
+              </label>
+            </div>
+
+            <button class="login-button" type="submit">로그인</button>
+            <a class="join-button page-link" href="#join" data-target="#join"
+              >회원가입</a
+            >
+
+            <nav class="account-links" aria-label="계정 찾기 메뉴">
+              <a class="page-link" href="#find-id" data-target="#find-id"
+                >아이디 찾기</a
+              >
+              <span class="divider" aria-hidden="true"></span>
+              <a
+                class="page-link"
+                href="#find-password"
+                data-target="#find-password"
+                >비밀번호 찾기</a
+              >
+              <span class="divider" aria-hidden="true"></span>
+              <a
+                class="page-link"
+                href="#look-around"
+                data-target="#look-around"
+                >둘러보기</a
+              >
+            </nav>
+          </form>
+
+          <div class="simple-login" role="group" aria-label="간편로그인">
+            <p class="simple-title">간편로그인</p>
+            <div class="social-list">
+              <a
+                class="social-button social-kakao"
+                href="https://www.kakao.com/"
+                aria-label="카카오로 로그인"
+              >
+                <img src="./images/kakaotalk.png" alt="카카오로그인" >
+              </a>
+              <a
+                class="social-button social-naver"
+                href="https://nid.naver.com/nidlogin.login"
+                aria-label="네이버로 로그인"
+              >
+                <img src="./images/naver.png" alt="네이버로그인" >
+              </a>
+              <a
+                class="social-button social-google"
+                href="https://accounts.google.com/"
+                aria-label="구글로 로그인"
+              >
+                <img src="./images/google.png" alt="구글로그인" >
+              </a>
+              <a
+                class="social-button social-facebook"
+                href="https://www.facebook.com/login/"
+                aria-label="페이스북으로 로그인"
+              >
+                <img src="./images/facebook.png" alt="페이스북 로그인" >
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 회원가입 등 서브 뷰들 -->
+      <section
+        class="app-view sub-view is-hidden"
+        id="join"
+        aria-label="회원가입 화면"
+      >
+        <div class="design-stage sub-stage">
+          <header class="sub-header">
+            <button
+              class="back-button page-link"
+              type="button"
+              data-target="#login"
+              aria-label="로그인 화면으로 돌아가기"
+            >
+              ‹
+            </button>
+            <h2 class="sub-title">회원가입</h2>
+          </header>
+          <div class="sub-content">
+            <p class="sub-copy">직방에서 사용할 계정 정보를 입력해 주세요.</p>
+            <form class="sub-form" action="#" method="post">
+              <div class="field-group">
+                <label class="field-label" for="joinId">아이디</label>
+                <input
+                  class="login-input"
+                  id="joinId"
+                  name="joinId"
+                  type="text"
+                  autocomplete="username"
+                >
+              </div>
+              <div class="field-group">
+                <label class="field-label" for="joinPassword">비밀번호</label>
+                <input
+                  class="login-input"
+                  id="joinPassword"
+                  name="joinPassword"
+                  type="password"
+                  autocomplete="new-password"
+                >
+              </div>
+              <div class="field-group">
+                <label class="field-label" for="joinPasswordConfirm"
+                  >비밀번호 확인</label
+                >
+                <input
+                  class="login-input"
+                  id="joinPasswordConfirm"
+                  name="joinPasswordConfirm"
+                  type="password"
+                  autocomplete="new-password"
+                >
+              </div>
+              <div class="field-group">
+                <label class="field-label" for="joinName">이름</label>
+                <input
+                  class="login-input"
+                  id="joinName"
+                  name="joinName"
+                  type="text"
+                  autocomplete="name"
+                >
+              </div>
+              <div class="field-group">
+                <label class="field-label" for="joinPhone">휴대폰 번호</label>
+                <input
+                  class="login-input"
+                  id="joinPhone"
+                  name="joinPhone"
+                  type="tel"
+                  inputmode="tel"
+                  autocomplete="tel"
+                >
+              </div>
+              <button class="sub-button" type="submit">가입하기</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="app-view sub-view is-hidden"
+        id="find-id"
+        aria-label="아이디 찾기 화면"
+      >
+        <div class="design-stage sub-stage">
+          <header class="sub-header">
+            <button
+              class="back-button page-link"
+              type="button"
+              data-target="#login"
+              aria-label="로그인 화면으로 돌아가기"
+            >
+              ‹
+            </button>
+            <h2 class="sub-title">아이디 찾기</h2>
+          </header>
+          <div class="sub-content">
+            <p class="sub-copy">
+              가입할 때 입력한 이름과 휴대폰 번호를 입력하면 아이디 확인을
+              도와드릴게요.
+            </p>
+            <form class="sub-form" action="#" method="post">
+              <div class="field-group">
+                <label class="field-label" for="findIdName">이름</label>
+                <input
+                  class="login-input"
+                  id="findIdName"
+                  name="findIdName"
+                  type="text"
+                  autocomplete="name"
+                >
+              </div>
+              <div class="field-group">
+                <label class="field-label" for="findIdPhone">휴대폰 번호</label>
+                <input
+                  class="login-input"
+                  id="findIdPhone"
+                  name="findIdPhone"
+                  type="tel"
+                  inputmode="tel"
+                  autocomplete="tel"
+                >
+              </div>
+              <button class="sub-button" type="submit">아이디 찾기</button>
+            </form>
+            <div class="sub-result-box">
+              입력한 정보와 일치하는 아이디가 있으면 이 영역에 결과가
+              표시됩니다.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="app-view sub-view is-hidden"
+        id="find-password"
+        aria-label="비밀번호 찾기 화면"
+      >
+        <div class="design-stage sub-stage">
+          <header class="sub-header">
+            <button
+              class="back-button page-link"
+              type="button"
+              data-target="#login"
+              aria-label="로그인 화면으로 돌아가기"
+            >
+              ‹
+            </button>
+            <h2 class="sub-title">비밀번호 찾기</h2>
+          </header>
+          <div class="sub-content">
+            <p class="sub-copy">
+              아이디와 이메일을 입력하면 비밀번호 재설정 안내를 받을 수 있어요.
+            </p>
+            <form class="sub-form" action="#" method="post">
+              <div class="field-group">
+                <label class="field-label" for="findPwId">아이디</label>
+                <input
+                  class="login-input"
+                  id="findPwId"
+                  name="findPwId"
+                  type="text"
+                  autocomplete="username"
+                >
+              </div>
+              <div class="field-group">
+                <label class="field-label" for="findPwEmail">이메일</label>
+                <input
+                  class="login-input"
+                  id="findPwEmail"
+                  name="findPwEmail"
+                  type="email"
+                  autocomplete="email"
+                >
+              </div>
+              <button class="sub-button" type="submit">재설정 안내 받기</button>
+            </form>
+            <div class="sub-result-box">
+              실제 서비스에서는 입력한 이메일로 비밀번호 재설정 링크가
+              발송됩니다.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="app-view sub-view is-hidden"
+        id="look-around"
+        aria-label="둘러보기 화면"
+      >
+        <div class="design-stage sub-stage">
+          <header class="sub-header">
+            <button
+              class="back-button page-link"
+              type="button"
+              data-target="#login"
+              aria-label="로그인 화면으로 돌아가기"
+            >
+              ‹
+            </button>
+            <h2 class="sub-title">둘러보기</h2>
+          </header>
+          <div class="sub-content">
+            <p class="sub-copy">
+              로그인하지 않아도 직방의 주요 기능을 먼저 둘러볼 수 있어요.
+            </p>
+            <div class="look-card-list">
+              <a class="look-card page-link" href="#main" data-target="#main">
+                <strong>추천 매물 보기</strong>
+                <span
+                  >내 주변의 인기 매물과 주요 정보를 빠르게 확인합니다.</span
+                >
+              </a>
+              <a class="look-card page-link" href="#main" data-target="#main">
+                <strong>매물 비교 체험</strong>
+                <span>두 매물의 핵심 조건을 한 화면에서 비교해 봅니다.</span>
+              </a>
+              <a class="look-card page-link" href="#main" data-target="#main">
+                <strong>상담 예약 미리보기</strong>
+                <span>전문가 상담과 방문 예약 흐름을 간단히 확인합니다.</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 
+        ========================================================
+        메인(홈) 화면 뷰 
+        ======================================================== 
+      -->
+      <section
+        class="app-view main-view is-hidden"
+        id="main"
+        aria-label="직방 홈 화면"
+      >
+        <div class="design-stage main-stage">
+          <!-- 스크롤 가능 영역 -->
+          <div class="main-scroll-content">
+            <!-- 상단 히어로 슬라이드 -->
+            <div class="main-hero">
+              <div class="swiper hero-swiper">
+                <div class="swiper-wrapper">
+                  <div class="swiper-slide">
+                    <img class="hero-img" src="./images/slide1.png" alt="슬라이드 이미지1" >
+                  </div>
+                  <div class="swiper-slide">
+                    <img class="hero-img" src="./images/slide2.png" alt="슬라이드 이미지2" >
+                  </div>
+                  <div class="swiper-slide">
+                    <img class="hero-img" src="./images/slide3.png" alt="슬라이드 이미지3" >
+                  </div>
+                </div>
+                <!-- 슬라이드 인디케이터(점) -->
+                <div class="hero-pagination"></div>
+              </div>
+            </div>
+
+            <!-- 헤더 영역 -->
+            <header class="main-header">
+              <img
+                src="./images/logo.png"
+                alt="zigbang 로고"
+                class="main-logo-img page-link"
+                data-target="#main"
+              >
+              <div class="main-header-actions">
+                <button
+                  class="icon-btn page-link"
+                  data-target="#chat-view"
+                  aria-label="채팅"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"
+                    />
+                  </svg>
+                </button>
+                <button
+                  class="icon-btn page-link"
+                  data-target="#noti-view"
+                  aria-label="알림"
+                >
+                  <svg viewBox="0 0 24 24" fill="var(--brand-navy)">
+                    <path
+                      d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"
+                    />
+                  </svg>
+                  <span class="main-badge">3</span>
+                </button>
+                <button
+                  class="icon-btn page-link"
+                  data-target="#settings-view"
+                  aria-label="설정"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.2"
+                  >
+                    <circle cx="12" cy="12" r="3" />
+                    <path
+                      d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </header>
+
+            <!-- 카드 리스트 영역 -->
+            <div class="main-card-list">
+              <article
+                class="main-card page-link animate-on-scroll"
+                data-target="#top3-view"
+              >
+                <h3 class="card-title">01.최고 수익률 단지 TOP 3</h3>
+                <a href="#top3-view" class="card-body">
+                  <div class="card-thumb-wrap">
+                    <img
+                      src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=128&q=80"
+                      alt="꿈의 도시 미래아파트 외관 이미지"
+                      class="card-thumb"
+                    >
+                    <span class="card-badge round">1</span>
+                  </div>
+                  <div class="card-info">
+                    <strong class="info-title">꿈의 도시 미래아파트</strong>
+                    <span class="info-desc">꿈의시 꿈의도 꿈의길 1004</span>
+                  </div>
+                  <div class="card-arrow">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M9 18l6-6-6-6" />
+                    </svg>
+                  </div>
+                </a>
+              </article>
+
+              <article
+                class="main-card page-link animate-on-scroll"
+                data-target="#recommend-view"
+              >
+                <h3 class="card-title">02.추천 매물</h3>
+                <a href="#recommend-view" class="card-body">
+                  <div class="card-thumb-wrap">
+                    <img
+                      src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=128&q=80"
+                      alt=""
+                      class="card-thumb"
+                    >
+                    <span class="card-badge square">hot</span>
+                  </div>
+                  <div class="card-info">
+                    <strong class="info-title">환상의 도시 미래아파트</strong>
+                    <span class="info-desc">꿈의시 꿈의도 꿈의길 1004</span>
+                  </div>
+                  <div class="card-arrow">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M9 18l6-6-6-6" />
+                    </svg>
+                  </div>
+                </a>
+              </article>
+
+              <article class="main-card animate-on-scroll">
+                <h3 class="card-title">03.나의 관심 매물 추이</h3>
+                <div class="card-body-full">
+                  <img
+                    src="https://images.unsplash.com/photo-1543286386-2e659306cd6c?auto=format&fit=crop&w=600&q=80"
+                    alt="시장 트렌드 그래프 이미지"
+                    class="full-img"
+                    style="object-position: center"
+                  >
+                </div>
+              </article>
+
+              <article class="main-card animate-on-scroll">
+                <h3 class="card-title">04.시장 트렌드</h3>
+                <div class="card-body-full">
+                  <img
+                    src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80"
+                    alt=""
+                    class="full-img"
+                    style="object-position: center 20%"
+                  >
+                </div>
+              </article>
+
+              <article class="main-card animate-on-scroll">
+                <h3 class="card-title">05.전문가 코멘트</h3>
+                <div class="card-body-full">
+                  <img
+                    src="https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=600&q=80"
+                    alt=""
+                    class="full-img"
+                    style="object-position: center 40%"
+                 >
+                </div>
+              </article>
+
+              <article class="main-card animate-on-scroll">
+                <h3 class="card-title">06.실시간 급매물 분석</h3>
+                <div class="card-body-full" style="height: 120px">
+                  <img
+                    src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80"
+                    alt=""
+                    class="full-img"
+                    style="border-radius: 4px"
+                  >
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <!-- 맨 위로 가기 버튼 -->
+          <button class="fab-top" aria-label="맨 위로 이동">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M18 15l-6-6-6 6"/>
+            </svg>
+          </button>
+
+          <!-- 하단 네비게이션 탭 -->
+          <nav class="main-bottom-nav">
+            <a
+              href="#main"
+              class="nav-item page-link active"
+              data-target="#main"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor" class="nav-icon">
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+              </svg>
+              <span class="nav-text">홈</span>
+            </a>
+            <a
+              href="#search-view"
+              class="nav-item page-link"
+              data-target="#search-view"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor" class="nav-icon">
+                <path
+                  d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm-1 12h-2v-2h2v2zm1.07-4.52l-.9.92C12.45 11.12 12 11.66 12 12.5h-2c0-1.31.54-2.5 1.41-3.34l1.25-1.26c.22-.22.34-.52.34-.8 0-.55-.45-1-1-1s-1 .45-1 1H9c0-1.66 1.34-3 3-3s3 1.34 3 3c0 .66-.27 1.26-.93 1.88z"
+                />
+              </svg>
+              <span class="nav-text">매물</span>
+            </a>
+            <a
+              href="#favorites-view"
+              class="nav-item page-link"
+              data-target="#favorites-view"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor" class="nav-icon">
+                <path
+                  d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2zm-5 11.45l-2.45 1.5 1.15-2.81-2.19-1.63 2.91-.25L12 8.5l1.38 2.76 2.91.25-2.19 1.63 1.15 2.81L12 14.45z"
+                />
+              </svg>
+              <span class="nav-text">관심</span>
+            </a>
+            <a
+              href="#my-view"
+              class="nav-item page-link"
+              data-target="#my-view"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor" class="nav-icon">
+                <path
+                  d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+                />
+              </svg>
+              <span class="nav-text">마이</span>
+            </a>
+          </nav>
+        </div>
+      </section>
+
+      <!-- 
+        ========================================================
+        매물 탭 첫 화면 (최근 검색어, 맞춤형 키워드, 배너)
+        ======================================================== 
+      -->
+      <section
+        class="app-view sub-view is-hidden"
+        id="search-view"
+        aria-label="매물 검색 화면"
+      >
+        <div class="design-stage sub-stage">
+          <header class="search-header property-search-header">
+            <img
+              src="./images/logo.png"
+              alt="zigbang 로고"
+              class="search-logo page-link"
+              data-target="#main"
+            >
+            <div class="search-input-wrap">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="M21 21l-4.35-4.35"></path>
+              </svg>
+              <input type="text" id="prop-search-input" placeholder="검색" aria-label="매물 검색어 입력" >
+            </div>
+            <div class="header-icon-group" role="navigation" aria-label="매물 상단 메뉴">
+              <button
+                class="icon-btn page-link"
+                data-target="#map-view"
+                aria-label="지도"
+                type="button"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polygon
+                    points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"
+                  ></polygon>
+                  <line x1="8" y1="2" x2="8" y2="18"></line>
+                  <line x1="16" y1="6" x2="16" y2="22"></line>
+                </svg>
+              </button>
+              <button
+                class="icon-btn filter-open-btn"
+                aria-label="필터"
+                type="button"
+                aria-controls="filter-view"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="4" y1="21" x2="4" y2="14"></line>
+                  <line x1="4" y1="10" x2="4" y2="3"></line>
+                  <line x1="12" y1="21" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12" y2="3"></line>
+                  <line x1="20" y1="21" x2="20" y2="16"></line>
+                  <line x1="20" y1="12" x2="20" y2="3"></line>
+                  <line x1="1" y1="14" x2="7" y2="14"></line>
+                  <line x1="9" y1="8" x2="15" y2="8"></line>
+                  <line x1="17" y1="16" x2="23" y2="16"></line>
+                </svg>
+              </button>
+            </div>
+          </header>
+
+          <div class="main-scroll-content" style="padding-top: 10px; bottom: 0">
+            <!-- 검색 결과 -->
+            <div class="prop-section..." id="..." role="region" aria-label="매물 검색 결과">
+              <div class="prop-sec-header">
+                <div class="prop-sec-title">검색 결과</div>
+                <button
+                  class="prop-delete-btn"
+                  id="btn-clear-property-result"
+                  type="button"
+                >
+                  닫기
+                </button>
+              </div>
+              <div class="property-result-list" id="property-result-list"></div>
+            </div>
+
+            <!-- 최근 검색어 -->
+            <div class="prop-section animate-on-scroll">
+              <div class="prop-sec-header">
+                <div class="prop-sec-title">
+                  최근 검색어
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 16v-4"></path>
+                    <path d="M12 8h.01"></path>
+                  </svg>
+                </div>
+                <button class="prop-delete-btn" id="btn-delete-recent">
+                  삭제
+                </button>
+              </div>
+              <div class="chip-list" id="recent-search-list"></div>
+            </div>
+
+            <!-- 맞춤형 키워드 -->
+            <div
+              class="prop-section animate-on-scroll"
+              style="margin-top: 16px"
+            >
+              <div class="prop-sec-header">
+                <div class="prop-sec-title">
+                  맞춤형 키워드
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 16v-4"></path>
+                    <path d="M12 8h.01"></path>
+                  </svg>
+                </div>
+              </div>
+              <div class="chip-list" id="custom-keyword-list">
+                <span class="chip-item">초역세권</span>
+                <span class="chip-item">애완동물</span>
+                <span class="chip-item">관리비</span>
+              </div>
+            </div>
+
+            <!-- 실시간 검색 순위 -->
+            <div
+              class="prop-section animate-on-scroll"
+              style="margin-top: 16px"
+            >
+              <div class="prop-sec-header">
+                <div class="prop-sec-title">
+                  실시간 검색 순위
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 16v-4"></path>
+                    <path d="M12 8h.01"></path>
+                  </svg>
+                </div>
+              </div>
+              <div class="rank-list">
+                <div class="rank-item is-top">
+                  <span class="rank-num">1</span>
+                  <span class="rank-name">은마 아파트</span>
+                </div>
+                <div class="rank-item">
+                  <span class="rank-num">2</span>
+                  <span class="rank-name">타워팰리스</span>
+                </div>
+                <div class="rank-item">
+                  <span class="rank-num">3</span>
+                  <span class="rank-name">용산아이파크</span>
+                </div>
+                <div class="rank-item">
+                  <span class="rank-num">4</span>
+                  <span class="rank-name">서초자이</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 하단 기획전 배너 (레이어드 구조로 변경됨) -->
+            <div class="promo-banner-layer animate-on-scroll">
+              <img
+                src="./images/banner.png"
+                alt=""
+                class="promo-bg"
+                onerror="
+                  this.src =
+                    'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80'
+                "
+              >
+              <img
+                src="./images/bannerimg.png"
+                alt=""
+                class="promo-owl"
+                onerror="
+                  this.src =
+                    'https://cdn-icons-png.flaticon.com/512/3069/3069172.png'
+                "
+              >
+            </div>
+          </div>
+
+          <!-- 하단 네비게이션 탭 -->
+          <nav class="main-bottom-nav">
+            <a href="#main" class="nav-item page-link" data-target="#main">
+              <svg viewBox="0 0 24 24" fill="currentColor" class="nav-icon">
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+              </svg>
+              <span class="nav-text">홈</span>
+            </a>
+            <a
+              href="#search-view"
+              class="nav-item page-link active"
+              data-target="#search-view"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor" class="nav-icon">
+                <path
+                  d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm-1 12h-2v-2h2v2zm1.07-4.52l-.9.92C12.45 11.12 12 11.66 12 12.5h-2c0-1.31.54-2.5 1.41-3.34l1.25-1.26c.22-.22.34-.52.34-.8 0-.55-.45-1-1-1s-1 .45-1 1H9c0-1.66 1.34-3 3-3s3 1.34 3 3c0 .66-.27 1.26-.93 1.88z"
+                />
+              </svg>
+              <span class="nav-text">매물</span>
+            </a>
+            <a
+              href="#favorites-view"
+              class="nav-item page-link"
+              data-target="#favorites-view"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor" class="nav-icon">
+                <path
+                  d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2zm-5 11.45l-2.45 1.5 1.15-2.81-2.19-1.63 2.91-.25L12 8.5l1.38 2.76 2.91.25-2.19 1.63 1.15 2.81L12 14.45z"
+                />
+              </svg>
+              <span class="nav-text">관심</span>
+            </a>
+            <a
+              href="#my-view"
+              class="nav-item page-link"
+              data-target="#my-view"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor" class="nav-icon">
+                <path
+                  d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+                />
+              </svg>
+              <span class="nav-text">마이</span>
+            </a>
+          </nav>
+
+          <!-- 매물 필터 팝업 -->
+          <div
+            id="filter-view"
+            class="filter-modal is-hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="filter-title"
+          >
+            <div class="filter-sheet">
+              <div class="filter-sheet-header">
+                <h2 class="filter-sheet-title" id="filter-title">상세 조건</h2>
+                <button
+                  type="button"
+                  class="filter-close-btn"
+                  aria-label="필터 닫기"
+                >
+                  ×
+                </button>
+              </div>
+
+              <div class="filter-group">
+                <p class="filter-group-title">거래 유형</p>
+                <div class="filter-option-list">
+                  <button type="button" class="filter-option is-selected">
+                    전체
+                  </button>
+                  <button type="button" class="filter-option">매매</button>
+                  <button type="button" class="filter-option">전세</button>
+                  <button type="button" class="filter-option">월세</button>
+                </div>
+              </div>
+
+              <div class="filter-group">
+                <p class="filter-group-title">가격대</p>
+                <div class="filter-option-list">
+                  <button type="button" class="filter-option">5억 이하</button>
+                  <button type="button" class="filter-option">5억~10억</button>
+                  <button type="button" class="filter-option">10억 이상</button>
+                </div>
+              </div>
+
+              <div class="filter-group">
+                <p class="filter-group-title">맞춤 조건</p>
+                <div class="filter-option-list filter-map-option-list">
+                  <button type="button" class="filter-option" data-map-filter="subway">
+                    역세권
+                  </button>
+                  <button type="button" class="filter-option" data-map-filter="pet">
+                    반려동물
+                  </button>
+                  <button type="button" class="filter-option" data-map-filter="fee">
+                    관리비 낮음
+                  </button>
+                  <button type="button" class="filter-option">신축</button>
+                </div>
+              </div>
+
+              <div class="filter-action-row">
+                <button type="button" class="filter-reset-btn">초기화</button>
+                <button type="button" class="filter-apply-btn">
+                  조건 적용
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 매물 검색 상세 팝업 -->
+          <div
+            class="property-detail-overlay is-hidden"
+            id="property-detail-popup"
+            role="dialog"
+            aria-modal="true"
+            aria-hidden="true"
+            aria-labelledby="property-detail-title"
+          >
+            <article class="property-detail-modal">
+              <div class="property-detail-top">
+                <h2 class="property-detail-title" id="property-detail-title">
+                  매물 상세정보
+                </h2>
+                <button
+                  type="button"
+                  class="property-detail-close"
+                  id="property-detail-close"
+                  aria-label="매물 상세정보 닫기"
+                >
+                  ×
+                </button>
+              </div>
+              <img class="property-detail-img" id="property-detail-img" src="about:blank" alt="" >
+              <div class="property-detail-body">
+                <p class="property-detail-price" id="property-detail-price"></p>
+                <span
+                  class="property-detail-area"
+                  id="property-detail-area"
+                ></span>
+                <p
+                  class="property-detail-address"
+                  id="property-detail-address"
+                ></p>
+                <div class="property-detail-grid">
+                  <div class="property-detail-info-box">
+                    <span>교통</span>
+                    <strong id="property-detail-station"></strong>
+                  </div>
+                  <div class="property-detail-info-box">
+                    <span>관리비</span>
+                    <strong id="property-detail-fee"></strong>
+                  </div>
+                </div>
+                <div
+                  class="property-detail-checks"
+                  id="property-detail-checks"
+                ></div>
+                <div class="property-detail-action-stack">
+                  <button
+                    type="button"
+                    class="property-detail-fav-btn"
+                    id="property-detail-fav-btn"
+                  >
+                    관심 매물 담기
+                  </button>
+                  <div class="property-detail-sub-actions">
+                    <button
+                      type="button"
+                      class="property-detail-sub-btn"
+                      id="property-detail-alert-btn"
+                    >
+                      알림 받기
+                    </button>
+                    <button
+                      type="button"
+                      class="property-detail-sub-btn"
+                      id="property-detail-reserve-btn"
+                    >
+                      방문 예약
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- 
+        ========================================================
+        지도 화면 뷰 (map-view) - 오버레이 및 필터 추가
+        ======================================================== 
+      -->
+      <section
+        class="app-view main-view is-hidden"
+        id="map-view"
+        aria-label="지도 화면"
+      >
+        <div class="design-stage main-stage">
+          <!-- 상단 검색바 & 뒤로가기 -->
+          <header class="search-header map-search-header">
+            <button
+              class="map-back-button page-link"
+              type="button"
+              data-target="#search-view"
+              aria-label="매물 검색 화면으로 돌아가기"
+            >
+              ‹
+            </button>
+            <div class="search-input-wrap map-search-input-wrap">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="M21 21l-4.35-4.35"></path>
+              </svg>
+              <input
+                type="text"
+                id="map-search-input"
+                placeholder="지역, 아파트, 지하철역 검색"
+                autocomplete="off" aria-label="지도 지역 검색어 입력"
+                style="width: 100%"
+              >
+            </div>
+            <!-- 지도 화면에서도 상세 조건 필터 팝업 열기 -->
+            <button
+              class="icon-btn filter-open-btn"
+              aria-label="필터"
+              type="button"
+              aria-controls="filter-view"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="4" y1="21" x2="4" y2="14"></line>
+                <line x1="4" y1="10" x2="4" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12" y2="3"></line>
+                <line x1="20" y1="21" x2="20" y2="16"></line>
+                <line x1="20" y1="12" x2="20" y2="3"></line>
+                <line x1="1" y1="14" x2="7" y2="14"></line>
+                <line x1="9" y1="8" x2="15" y2="8"></line>
+                <line x1="17" y1="16" x2="23" y2="16"></line>
+              </svg>
+            </button>
+          </header>
+
+          <!-- 카카오맵 렌더링 영역 (바닥에서 64px 띄워서 네비바 확보) -->
+          <div
+            class="sub-content"
+            style="
+              position: absolute;
+              left: 0;
+              right: 0;
+              top: 62px;
+              bottom: 64px;
+              padding: 0;
+            "
+          >
+            <div
+              id="kakao-map-container"
+              style="width: 100%; height: 100%"
+            ></div>
+
+            <!-- 하단 팝업 카드 -->
+            <div class="map-bottom-card" id="map-property-card">
+              <button class="mc-close" id="mc-close-btn">&times;</button>
+              <div class="map-card-inner">
+                <div class="mc-img-wrap">
+                  <img src="about:blank" alt="" class="mc-img" id="mc-img" >
+                </div>
+                <div class="mc-info">
+                  <div class="mc-type-price" id="mc-price"></div>
+                  <div class="mc-title" id="mc-title"></div>
+                  <div class="mc-addr" id="mc-addr"></div>
+                  <div class="mc-tags" id="mc-tags"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 하단 네비게이션 탭 -->
+          <nav class="main-bottom-nav">
+            <a href="#main" class="nav-item page-link" data-target="#main">
+              <svg viewBox="0 0 24 24" fill="currentColor" class="nav-icon">
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+              </svg>
+              <span class="nav-text">홈</span>
+            </a>
+            <!-- 지도 상태에서도 네비게이션 '매물'을 하이라이트 -->
+            <a
+              href="#search-view"
+              class="nav-item page-link active"
+              data-target="#search-view"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor" class="nav-icon">
+                <path
+                  d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm-1 12h-2v-2h2v2zm1.07-4.52l-.9.92C12.45 11.12 12 11.66 12 12.5h-2c0-1.31.54-2.5 1.41-3.34l1.25-1.26c.22-.22.34-.52.34-.8 0-.55-.45-1-1-1s-1 .45-1 1H9c0-1.66 1.34-3 3-3s3 1.34 3 3c0 .66-.27 1.26-.93 1.88z"
+                />
+              </svg>
+              <span class="nav-text">매물</span>
+            </a>
+            <a
+              href="#favorites-view"
+              class="nav-item page-link"
+              data-target="#favorites-view"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor" class="nav-icon">
+                <path
+                  d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2zm-5 11.45l-2.45 1.5 1.15-2.81-2.19-1.63 2.91-.25L12 8.5l1.38 2.76 2.91.25-2.19 1.63 1.15 2.81L12 14.45z"
+                />
+              </svg>
+              <span class="nav-text">관심</span>
+            </a>
+            <a
+              href="#my-view"
+              class="nav-item page-link"
+              data-target="#my-view"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor" class="nav-icon">
+                <path
+                  d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+                />
+              </svg>
+              <span class="nav-text">마이</span>
+            </a>
+          </nav>
+        </div>
+      </section>
+
+      <!-- 
+        ========================================================
+        관심 매물 화면
+        ======================================================== 
+      -->
+      <section
+        class="app-view sub-view is-hidden"
+        id="favorites-view"
+        aria-label="관심 매물 화면"
+      >
+        <div class="design-stage favorite-view-stage">
+          <header class="favorite-header">
+            <button
+              class="favorite-back-btn page-link"
+              type="button"
+              data-target="#main"
+              aria-label="메인 화면으로 돌아가기"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M15 18l-6-6 6-6"></path>
+              </svg>
+            </button>
+            <h2 class="favorite-title">관심 매물</h2>
+            <button
+              class="favorite-menu-btn"
+              type="button"
+              aria-label="관심 매물 메뉴"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="4" y1="6" x2="20" y2="6"></line>
+                <line x1="4" y1="12" x2="20" y2="12"></line>
+                <line x1="4" y1="18" x2="20" y2="18"></line>
+              </svg>
+            </button>
+          </header>
+
+          <div class="favorite-menu-panel is-hidden" id="favorite-menu-panel" role="menu" aria-label="관심 매물 전체 메뉴" aria-hidden="true">
+            <div class="favorite-menu-group">
+              <p class="favorite-menu-heading">메인 카드 리스트</p>
+              <div class="favorite-menu-list">
+                <a
+                  class="favorite-menu-row page-link"
+                  href="#top3-view"
+                  data-target="#top3-view"
+                >
+                  <span>01. 최고 수익률 단지 TOP 3</span>
+                  <span class="favorite-menu-arrow">›</span>
+                </a>
+                <a
+                  class="favorite-menu-row page-link"
+                  href="#recommend-view"
+                  data-target="#recommend-view"
+                >
+                  <span>02. 추천 매물</span>
+                  <span class="favorite-menu-arrow">›</span>
+                </a>
+                <button class="favorite-menu-row" type="button">
+                  <span>03. 나의 관심 매물 추이</span>
+                  <span class="favorite-menu-arrow">›</span>
+                </button>
+                <button class="favorite-menu-row" type="button">
+                  <span>04. 시장 트렌드</span>
+                  <span class="favorite-menu-arrow">›</span>
+                </button>
+                <button class="favorite-menu-row" type="button">
+                  <span>05. 전문가 코멘트</span>
+                  <span class="favorite-menu-arrow">›</span>
+                </button>
+                <button class="favorite-menu-row" type="button">
+                  <span>06. 실시간 급매물 분석</span>
+                  <span class="favorite-menu-arrow">›</span>
+                </button>
+              </div>
+            </div>
+            <div class="favorite-menu-group">
+              <p class="favorite-menu-heading">메뉴 bar</p>
+              <div class="favorite-menu-list">
+                <a
+                  class="favorite-menu-row page-link"
+                  href="#main"
+                  data-target="#main"
+                >
+                  <span>홈</span>
+                  <span class="favorite-menu-arrow">›</span>
+                </a>
+                <a
+                  class="favorite-menu-row page-link"
+                  href="#search-view"
+                  data-target="#search-view"
+                >
+                  <span>매물</span>
+                  <span class="favorite-menu-arrow">›</span>
+                </a>
+                <a
+                  class="favorite-menu-row page-link"
+                  href="#favorites-view"
+                  data-target="#favorites-view"
+                >
+                  <span>관심</span>
+                  <span class="favorite-menu-arrow">›</span>
+                </a>
+                <a
+                  class="favorite-menu-row page-link"
+                  href="#my-view"
+                  data-target="#my-view"
+                >
+                  <span>마이</span>
+                  <span class="favorite-menu-arrow">›</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <button
+            class="favorite-delete-selected-btn"
+            id="favorite-delete-selected-btn"
+            type="button"
+          >
+            삭제
+          </button>
+
+          <ul
+            class="favorite-list"
+            id="favorite-property-list"
+            aria-label="관심 매물 목록"
+          >
+            <li class="favorite-item">
+              <label class="favorite-check">
+                <input
+                  type="checkbox"
+                  name="favoriteProperty"
+                  value="롯데캐슬"
+                >
+                <span class="favorite-radio" aria-hidden="true"></span>
+                <span>롯데캐슬</span>
+              </label>
+            </li>
+            <li class="favorite-item">
+              <label class="favorite-check">
+                <input type="checkbox" name="favoriteProperty" value="래미안" >
+                <span class="favorite-radio" aria-hidden="true"></span>
+                <span>래미안</span>
+              </label>
+            </li>
+            <li class="favorite-item">
+              <label class="favorite-check">
+                <input
+                  type="checkbox"
+                  name="favoriteProperty"
+                  value="한강 메트로 자이 3단지"
+                >
+                <span class="favorite-radio" aria-hidden="true"></span>
+                <span>한강 메트로 자이 3단지</span>
+              </label>
+            </li>
+            <li class="favorite-item">
+              <label class="favorite-check">
+                <input
+                  type="checkbox"
+                  name="favoriteProperty"
+                  value="풍무센트럴 푸르지오"
+                >
+                <span class="favorite-radio" aria-hidden="true"></span>
+                <span>풍무센트럴 푸르지오</span>
+              </label>
+            </li>
+            <li class="favorite-item">
+              <label class="favorite-check">
+                <input
+                  type="checkbox"
+                  name="favoriteProperty"
+                  value="운양동 라피아노"
+                >
+                <span class="favorite-radio" aria-hidden="true"></span>
+                <span>운양동 라피아노</span>
+              </label>
+            </li>
+            <li class="favorite-item">
+              <label class="favorite-check">
+                <input type="checkbox" name="favoriteProperty" value="더 휴" >
+                <span class="favorite-radio" aria-hidden="true"></span>
+                <span>더 휴</span>
+              </label>
+            </li>
+            <li class="favorite-item">
+              <label class="favorite-check">
+                <input
+                  type="checkbox"
+                  name="favoriteProperty"
+                  value="자이더빌리지"
+                >
+                <span class="favorite-radio" aria-hidden="true"></span>
+                <span>자이더빌리지</span>
+              </label>
+            </li>
+            <li class="favorite-item">
+              <label class="favorite-check">
+                <input
+                  type="checkbox"
+                  name="favoriteProperty"
+                  value="마산동 센트라빌"
+                >
+                <span class="favorite-radio" aria-hidden="true"></span>
+                <span>마산동 센트라빌</span>
+              </label>
+            </li>
+          </ul>
+
+          <section class="favorite-recent" aria-label="최근 본 매물">
+            <div class="favorite-recent-head">
+              <h3 class="favorite-recent-title">최근 본 매물</h3>
+              <span class="favorite-recent-line" aria-hidden="true"></span>
+            </div>
+            <div class="favorite-recent-list">
+              <span>운양동 라피아노</span>
+              <span>자이더빌리지</span>
+              <span>더 휴</span>
+              <span>롯데캐슬</span>
+              <span>래미안</span>
+              <span>한강 메트로 자이 3단지</span>
+              <span>풍무센트럴 푸르지오</span>
+              <span>마산동 센트라빌</span>
+              <span>김포 한강신도시 푸르지오</span>
+              <span>검단신도시 우미린</span>
+            </div>
+          </section>
+
+          <button class="favorite-compare-btn" type="button">
+            매물 비교하기
+          </button>
+
+          <!-- 하단 네비게이션 탭 -->
+          <nav class="main-bottom-nav">
+            <a href="#main" class="nav-item page-link" data-target="#main">
+              <svg viewBox="0 0 24 24" fill="currentColor" class="nav-icon">
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+              </svg>
+              <span class="nav-text">홈</span>
+            </a>
+            <a
+              href="#search-view"
+              class="nav-item page-link"
+              data-target="#search-view"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor" class="nav-icon">
+                <path
+                  d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm-1 12h-2v-2h2v2zm1.07-4.52l-.9.92C12.45 11.12 12 11.66 12 12.5h-2c0-1.31.54-2.5 1.41-3.34l1.25-1.26c.22-.22.34-.52.34-.8 0-.55-.45-1-1-1s-1 .45-1 1H9c0-1.66 1.34-3 3-3s3 1.34 3 3c0 .66-.27 1.26-.93 1.88z"
+                />
+              </svg>
+              <span class="nav-text">매물</span>
+            </a>
+            <a
+              href="#favorites-view"
+              class="nav-item page-link active"
+              data-target="#favorites-view"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor" class="nav-icon">
+                <path
+                  d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2zm-5 11.45l-2.45 1.5 1.15-2.81-2.19-1.63 2.91-.25L12 8.5l1.38 2.76 2.91.25-2.19 1.63 1.15 2.81L12 14.45z"
+                />
+              </svg>
+              <span class="nav-text">관심</span>
+            </a>
+            <a
+              href="#my-view"
+              class="nav-item page-link"
+              data-target="#my-view"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor" class="nav-icon">
+                <path
+                  d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+                />
+              </svg>
+              <span class="nav-text">마이</span>
+            </a>
+          </nav>
+        </div>
+      </section>
+
+      <!-- 
+        ========================================================
+        매물 비교 화면
+        ======================================================== 
+      -->
+      <section
+        class="app-view sub-view is-hidden"
+        id="favorite-compare-view"
+        aria-label="매물 비교 화면"
+      >
+        <div class="design-stage compare-view-stage">
+          <header class="compare-header">
+            <button
+              class="compare-back-btn page-link"
+              type="button"
+              data-target="#favorites-view"
+              aria-label="관심 매물 화면으로 돌아가기"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M15 18l-6-6 6-6"></path>
+              </svg>
+            </button>
+            <h2 class="compare-title">매물 비교</h2>
+            <button
+              class="compare-share-btn"
+              type="button"
+              aria-label="공유하기"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M12 3v12"></path>
+                <path d="M7 8l5-5 5 5"></path>
+                <path d="M5 13v6h14v-6"></path>
+              </svg>
+            </button>
+          </header>
+
+          <img
+            class="compare-owl"
+            src="./images/bannerimg.png"
+            alt=""
+            aria-hidden="true"
+            onerror="this.style.display = 'none'"
+          >
+
+          <div class="compare-card-grid">
+            <article
+              class="compare-card"
+              aria-label="첫 번째 선택 매물 비교 정보"
+            >
+              <h3 class="compare-card-title" id="compare-left-name">
+                롯데캐슬
+              </h3>
+              <img class="compare-thumb" id="compare-left-image" src="about:blank" alt="" >
+              <div class="compare-info-row price" id="compare-left-price">
+                10억5천
+              </div>
+              <div class="compare-info-row area" id="compare-left-area">
+                33평형(109㎡)
+              </div>
+              <div class="compare-info-row station" id="compare-left-station">
+                강남역<br >5분
+              </div>
+              <div class="compare-info-row fee" id="compare-left-fee">
+                관리비 12만원
+              </div>
+              <div class="compare-data-label">데이터 검증</div>
+              <div class="compare-check-list" id="compare-left-checks"></div>
+            </article>
+
+            <article
+              class="compare-card"
+              aria-label="두 번째 선택 매물 비교 정보"
+            >
+              <h3 class="compare-card-title" id="compare-right-name">래미안</h3>
+              <img class="compare-thumb" id="compare-right-image" src="about:blank" alt="" >
+              <div class="compare-info-row price" id="compare-right-price">
+                11억
+              </div>
+              <div class="compare-info-row area" id="compare-right-area">
+                33평형(109㎡)
+              </div>
+              <div class="compare-info-row station" id="compare-right-station">
+                교대역<br >3분
+              </div>
+              <div class="compare-info-row fee" id="compare-right-fee">
+                관리비 15만원
+              </div>
+              <div class="compare-data-label">데이터 검증</div>
+              <div class="compare-check-list" id="compare-right-checks"></div>
+            </article>
+          </div>
+
+          <button
+            class="compare-other-btn page-link"
+            type="button"
+            data-target="#favorites-view"
+          >
+            다른 매물 비교하기
+          </button>
+        </div>
+      </section>
+
+      <!-- 
+        ========================================================
+        마이페이지 화면
+        ======================================================== 
+      -->
+      <section
+        class="app-view sub-view is-hidden"
+        id="my-view"
+        aria-label="마이페이지"
+      >
+        <div class="design-stage my-stage">
+          <header class="my-header">
+            <button
+              class="my-back-btn page-link"
+              type="button"
+              data-target="#main"
+              aria-label="메인 화면으로 돌아가기"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M15 18l-6-6 6-6"></path>
+              </svg>
+            </button>
+            <h2 class="my-title">마이페이지</h2>
+            <button
+              class="my-gear-btn page-link"
+              type="button"
+              data-target="#my-settings-view"
+              aria-label="마이페이지 설정"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="3"></circle>
+                <path
+                  d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.14.47.51.84.98.98.19.06.4.02.62.02h.09a2 2 0 0 1 0 4H21c-.22 0-.43-.04-.62.02-.47.14-.84.51-.98.98z"
+                ></path>
+              </svg>
+            </button>
+          </header>
+
+          <section class="my-profile" aria-label="사용자 인사말">
+            <!-- 마이페이지 부엉이 이미지는 ./images/my-owl.png 파일로 넣으면 됩니다. -->
+            <img
+              class="my-owl-img"
+              src="./images/myimg.png"
+              alt="마이페이지 부엉이"
+              onerror="
+                this.onerror = null;
+                this.src = './images/bannerimg.png';
+              "
+            >
+            <p class="my-greeting">
+              <span class="my-name-line"
+                ><span class="orange">이지연</span>님</span
+              >
+              <span class="my-copy-line">집에서 편리하게 직방하세요!</span>
+            </p>
+          </section>
+
+          <nav class="my-menu-list" aria-label="마이페이지 메뉴">
+            <a
+              href="#my-condition-view"
+              class="my-menu-card page-link"
+              data-target="#my-condition-view"
+            >
+              <span class="my-menu-icon" aria-hidden="true">
+                <!-- 이 이미지만 교체하면 마이페이지 메뉴 아이콘을 바꿀 수 있습니다. -->
+                <img
+                  src="./images/management.png"
+                  alt="내 조건 설정 아이콘"
+                  onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                >
+                <svg class="my-menu-fallback"
+                  viewBox="0 0 64 64"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M10 16h30v38H10z"></path>
+                  <path d="M18 30h14"></path>
+                  <path d="M18 40h10"></path>
+                  <circle cx="48" cy="18" r="8"></circle>
+                  <path
+                    d="M48 5v5M48 26v5M35 18h5M56 18h5M39 9l4 4M53 23l4 4M57 9l-4 4M43 23l-4 4"
+                  ></path>
+                  <circle cx="24" cy="25" r="5"></circle>
+                  <path d="M16 50c2-8 14-8 16 0"></path>
+                </svg>
+              </span>
+              <span class="my-menu-text">
+                <strong>내 조건 설정</strong>
+                <span>나만의 맞춤 매물 알림 설정</span>
+              </span>
+              <svg
+                class="my-menu-arrow"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M9 18l6-6-6-6"></path>
+              </svg>
+            </a>
+
+            <a
+              href="#my-alert-view"
+              class="my-menu-card page-link"
+              data-target="#my-alert-view"
+            >
+              <span class="my-menu-icon" aria-hidden="true">
+                <!-- 이 이미지만 교체하면 마이페이지 메뉴 아이콘을 바꿀 수 있습니다. -->
+                <img
+                  src="./images/alarm.png"
+                  alt="알림 관리 아이콘"
+                  onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                >
+                <svg class="my-menu-fallback"
+                  viewBox="0 0 64 64"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="32" cy="34" r="20"></circle>
+                  <path
+                    d="M20 12l-8 8M44 12l8 8M32 18v18l10 6M22 56l-4 5M42 56l4 5"
+                  ></path>
+                </svg>
+              </span>
+              <span class="my-menu-text">
+                <strong>알림 관리</strong>
+                <span>실시간 매물, 가격 변동 알림</span>
+              </span>
+              <svg
+                class="my-menu-arrow"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M9 18l6-6-6-6"></path>
+              </svg>
+            </a>
+
+            <a
+              href="#my-reservation-view"
+              class="my-menu-card page-link"
+              data-target="#my-reservation-view"
+            >
+              <span class="my-menu-icon" aria-hidden="true">
+                <!-- 이 이미지만 교체하면 마이페이지 메뉴 아이콘을 바꿀 수 있습니다. -->
+                <img
+                  src="./images/reservation-orders.png"
+                  alt="방문 예약 내역 아이콘"
+                  onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                >
+                <svg class="my-menu-fallback"
+                  viewBox="0 0 64 64"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M14 8h30l8 8v40H14z"></path>
+                  <path d="M44 8v12h12M22 24h14M22 34h22M22 44h18"></path>
+                  <path d="M10 16h8M10 28h8M10 40h8M10 52h8"></path>
+                </svg>
+              </span>
+              <span class="my-menu-text">
+                <strong>방문 예약 내역</strong>
+                <span>신청한 매물 현장 방문 관리</span>
+              </span>
+              <svg
+                class="my-menu-arrow"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M9 18l6-6-6-6"></path>
+              </svg>
+            </a>
+          </nav>
+
+          <!-- 하단 네비게이션 탭 -->
+          <nav class="main-bottom-nav my-bottom-nav">
+            <a href="#main" class="nav-item page-link" data-target="#main">
+              <svg viewBox="0 0 24 24" fill="currentColor" class="nav-icon">
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+              </svg>
+              <span class="nav-text">홈</span>
+            </a>
+            <a
+              href="#search-view"
+              class="nav-item page-link"
+              data-target="#search-view"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor" class="nav-icon">
+                <path
+                  d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm-1 12h-2v-2h2v2zm1.07-4.52l-.9.92C12.45 11.12 12 11.66 12 12.5h-2c0-1.31.54-2.5 1.41-3.34l1.25-1.26c.22-.22.34-.52.34-.8 0-.55-.45-1-1-1s-1 .45-1 1H9c0-1.66 1.34-3 3-3s3 1.34 3 3c0 .66-.27 1.26-.93 1.88z"
+                />
+              </svg>
+              <span class="nav-text">매물</span>
+            </a>
+            <a
+              href="#favorites-view"
+              class="nav-item page-link"
+              data-target="#favorites-view"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor" class="nav-icon">
+                <path
+                  d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2zm-5 11.45l-2.45 1.5 1.15-2.81-2.19-1.63 2.91-.25L12 8.5l1.38 2.76 2.91.25-2.19 1.63 1.15 2.81L12 14.45z"
+                />
+              </svg>
+              <span class="nav-text">관심</span>
+            </a>
+            <a
+              href="#my-view"
+              class="nav-item page-link active"
+              data-target="#my-view"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor" class="nav-icon">
+                <path
+                  d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+                />
+              </svg>
+              <span class="nav-text">마이</span>
+            </a>
+          </nav>
+        </div>
+      </section>
+
+      <section
+        class="app-view sub-view is-hidden"
+        id="my-settings-view"
+        aria-label="마이페이지 설정 화면"
+      >
+        <div class="design-stage sub-stage">
+          <header class="sub-header">
+            <button
+              class="back-button page-link"
+              type="button"
+              data-target="#my-view"
+              aria-label="마이페이지로 돌아가기"
+            >
+              ‹
+            </button>
+            <h2 class="sub-title">설정</h2>
+          </header>
+          <div class="sub-content my-detail-content">
+            <p class="sub-copy">
+              마이페이지에서 사용할 기본 설정을 바로 조정할 수 있어요.
+            </p>
+
+            <section class="my-form-card">
+              <h3>프로필 설정</h3>
+              <div class="my-form-row">
+                <label class="my-form-label" for="my-nickname-input"
+                  >닉네임</label
+                >
+                <input
+                  class="my-input"
+                  id="my-nickname-input"
+                  type="text"
+                  value="이지연"
+                >
+              </div>
+              <div class="my-inline-actions">
+                <button type="button" class="my-pill-btn is-active">
+                  부엉이 이미지 사용
+                </button>
+                <button type="button" class="my-pill-btn">
+                  기본 이미지 사용
+                </button>
+              </div>
+            </section>
+
+            <section class="my-form-card">
+              <h3>앱 표시 설정</h3>
+              <div class="my-inline-actions">
+                <button type="button" class="my-pill-btn is-active">
+                  글자 보통
+                </button>
+                <button type="button" class="my-pill-btn">글자 크게</button>
+                <button type="button" class="my-pill-btn">메뉴 간단히</button>
+              </div>
+            </section>
+
+            <section class="my-form-card">
+              <h3>보안 설정</h3>
+              <div class="my-toggle-row">
+                <div>
+                  <strong>자동 로그인</strong>
+                  <span>다음 접속부터 로그인 단계를 줄입니다.</span>
+                </div>
+                <button
+                  type="button"
+                  class="my-toggle is-active"
+                  aria-label="자동 로그인 켜기"
+                ></button>
+              </div>
+              <div class="my-toggle-row">
+                <div>
+                  <strong>로그인 알림</strong>
+                  <span>새 기기 로그인 시 알림을 받습니다.</span>
+                </div>
+                <button
+                  type="button"
+                  class="my-toggle is-active"
+                  aria-label="로그인 알림 켜기"
+                ></button>
+              </div>
+            </section>
+
+            <div class="my-inline-actions">
+              <button type="button" class="my-save-btn my-save-settings-btn">
+                설정 저장하기
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="app-view sub-view is-hidden"
+        id="my-condition-view"
+        aria-label="내 조건 설정 화면"
+      >
+        <div class="design-stage sub-stage">
+          <header class="sub-header">
+            <button
+              class="back-button page-link"
+              type="button"
+              data-target="#my-view"
+              aria-label="마이페이지로 돌아가기"
+            >
+              ‹
+            </button>
+            <h2 class="sub-title">내 조건 설정</h2>
+          </header>
+          <div class="sub-content my-detail-content">
+            <section class="my-form-card">
+              <h3>관심 지역</h3>
+              <div class="my-inline-actions" id="my-region-chip-list">
+                <button type="button" class="my-region-chip">
+                  김포 장기역
+                </button>
+                <button type="button" class="my-region-chip">
+                  운양역
+                </button>
+                <button type="button" class="my-region-chip">의왕</button>
+                <button type="button" class="my-region-chip">강남역</button>
+              </div>
+              <div class="my-form-row">
+                <label class="my-form-label" for="my-region-input"
+                  >지역 직접 추가</label
+                >
+                <input
+                  class="my-input"
+                  id="my-region-input"
+                  type="text"
+                  placeholder="예: 판교역, 광교중앙역"
+                >
+                <button
+                  type="button"
+                  class="my-secondary-btn"
+                  id="my-region-add-btn"
+                >
+                  지역 추가하기
+                </button>
+              </div>
+            </section>
+
+            <section class="my-form-card">
+              <h3>예산 범위</h3>
+              <input
+                class="my-range"
+                id="my-budget-range"
+                type="range"
+                min="3"
+                max="20"
+                value="11"
+              >
+              <div class="my-budget-output">
+                <span>3억</span>
+                <strong id="my-budget-label">최대 11억</strong>
+                <span>20억+</span>
+              </div>
+            </section>
+
+            <section class="my-form-card">
+              <h3>생활 조건</h3>
+              <div class="my-check-list">
+                <label class="my-check-item"
+                  ><input type="checkbox" checked > 역세권</label
+                >
+                <label class="my-check-item"
+                  ><input type="checkbox" checked > 반려동물</label
+                >
+                <label class="my-check-item"
+                  ><input type="checkbox" > 주차 가능</label
+                >
+                <label class="my-check-item"
+                  ><input type="checkbox" checked > 관리비 낮음</label
+                >
+              </div>
+            </section>
+
+            <div class="my-inline-actions">
+              <button type="button" class="my-save-btn my-save-condition-btn">
+                조건 저장하고 알림 받기
+              </button>
+              <button
+                type="button"
+                class="my-secondary-btn page-link"
+                data-target="#my-reservation-view"
+              >
+                방문 예약하러 가기
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="app-view sub-view is-hidden"
+        id="my-alert-view"
+        aria-label="알림 관리 화면"
+      >
+        <div class="design-stage sub-stage">
+          <header class="sub-header">
+            <button
+              class="back-button page-link"
+              type="button"
+              data-target="#my-view"
+              aria-label="마이페이지로 돌아가기"
+            >
+              ‹
+            </button>
+            <h2 class="sub-title">알림 관리</h2>
+          </header>
+          <div class="sub-content my-detail-content">
+            <section class="my-form-card">
+              <h3>알림 항목</h3>
+              <div class="my-toggle-row">
+                <div>
+                  <strong>실시간 매물 알림</strong>
+                  <span>조건에 맞는 새 매물이 등록되면 알려줍니다.</span>
+                </div>
+                <button
+                  type="button"
+                  class="my-toggle is-active"
+                  aria-label="실시간 매물 알림 켜기"
+                ></button>
+              </div>
+              <div class="my-toggle-row">
+                <div>
+                  <strong>가격 변동 알림</strong>
+                  <span>관심 매물의 가격이 바뀌면 알려줍니다.</span>
+                </div>
+                <button
+                  type="button"
+                  class="my-toggle is-active"
+                  aria-label="가격 변동 알림 켜기"
+                ></button>
+              </div>
+              <div class="my-toggle-row">
+                <div>
+                  <strong>방문 일정 알림</strong>
+                  <span>예약 1시간 전에 방문 일정을 알려줍니다.</span>
+                </div>
+                <button
+                  type="button"
+                  class="my-toggle is-active"
+                  aria-label="방문 일정 알림 켜기"
+                ></button>
+              </div>
+            </section>
+
+            <section class="my-form-card">
+              <h3>알림 시간</h3>
+              <select class="my-select" id="my-alert-time-select">
+                <option>항상 받기</option>
+                <option>오전 9시 ~ 오후 9시</option>
+                <option>오전 10시 ~ 오후 6시</option>
+                <option>방문 예약 알림만 받기</option>
+              </select>
+            </section>
+
+            <div class="my-inline-actions">
+              <button type="button" class="my-save-btn my-save-alert-btn">
+                알림 설정 저장
+              </button>
+              <button type="button" class="my-secondary-btn my-test-alert-btn">
+                테스트 알림 보기
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="app-view sub-view is-hidden"
+        id="my-reservation-view"
+        aria-label="방문 예약 내역 화면"
+      >
+        <div class="design-stage sub-stage">
+          <header class="sub-header">
+            <button
+              class="back-button page-link"
+              type="button"
+              data-target="#my-view"
+              aria-label="마이페이지로 돌아가기"
+            >
+              ‹
+            </button>
+            <h2 class="sub-title">방문 예약 내역</h2>
+          </header>
+          <div class="sub-content my-detail-content">
+            <button
+              type="button"
+              class="my-save-btn"
+              id="my-new-reservation-btn"
+            >
+              새 방문 예약 추가
+            </button>
+
+            <div class="my-reservation-list" id="my-reservation-list">
+              <div class="my-reservation-card" data-reservation-card>
+                <strong>롯데캐슬 방문 예약</strong>
+                <span data-schedule-text
+                  >오늘 오후 3:00 · 담당 중개사 확인 대기</span
+                >
+                <div class="my-reservation-actions">
+                  <button type="button" class="my-small-btn my-reschedule-btn">
+                    일정 변경
+                  </button>
+                  <button
+                    type="button"
+                    class="my-small-btn danger my-cancel-reservation-btn"
+                  >
+                    예약 취소
+                  </button>
+                </div>
+              </div>
+
+              <div class="my-reservation-card" data-reservation-card>
+                <strong>래미안 방문 예약</strong>
+                <span data-schedule-text>내일 오전 11:30 · 예약 확정</span>
+                <div class="my-reservation-actions">
+                  <button type="button" class="my-small-btn my-reschedule-btn">
+                    일정 변경
+                  </button>
+                  <button
+                    type="button"
+                    class="my-small-btn danger my-cancel-reservation-btn"
+                  >
+                    예약 취소
+                  </button>
+                </div>
+              </div>
+
+              <div class="my-reservation-card" data-reservation-card>
+                <strong>운양동 라피아노</strong>
+                <span data-schedule-text>방문 희망 시간 조율 중</span>
+                <div class="my-reservation-actions">
+                  <button type="button" class="my-small-btn my-reschedule-btn">
+                    일정 변경
+                  </button>
+                  <button
+                    type="button"
+                    class="my-small-btn danger my-cancel-reservation-btn"
+                  >
+                    예약 취소
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="my-schedule-modal is-hidden"
+            id="my-schedule-modal"
+            aria-hidden="true"
+          >
+            <div class="my-schedule-sheet">
+              <button
+                type="button"
+                class="my-schedule-close"
+                id="my-schedule-close"
+                aria-label="일정 변경 닫기"
+              >
+                ×
+              </button>
+              <h3>방문 일정 변경</h3>
+              <div class="my-form-row">
+                <label class="my-form-label" for="my-schedule-date"
+                  >방문 날짜</label
+                >
+                <input class="my-input" id="my-schedule-date" type="date" >
+              </div>
+              <div class="my-inline-actions" id="my-schedule-time-list">
+                <button
+                  type="button"
+                  class="my-pill-btn is-active"
+                  data-time="오전 10:00"
+                >
+                  오전 10:00
+                </button>
+                <button type="button" class="my-pill-btn" data-time="오후 1:00">
+                  오후 1:00
+                </button>
+                <button type="button" class="my-pill-btn" data-time="오후 3:00">
+                  오후 3:00
+                </button>
+                <button type="button" class="my-pill-btn" data-time="오후 5:30">
+                  오후 5:30
+                </button>
+              </div>
+              <div class="my-inline-actions">
+                <button type="button" class="my-save-btn" id="my-schedule-save">
+                  변경 완료
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 채팅 화면 추가 -->
+      <section
+        class="app-view sub-view is-hidden"
+        id="chat-view"
+        aria-label="채팅 화면"
+      >
+        <div class="design-stage sub-stage">
+          <header class="sub-header">
+            <button
+              class="back-button page-link"
+              type="button"
+              data-target="#main"
+              aria-label="메인 화면으로 돌아가기"
+            >
+              ‹
+            </button>
+            <h2 class="sub-title">채팅</h2>
+          </header>
+          <div
+            class="sub-content"
+            style="
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              height: 600px;
+            "
+          >
+            <svg
+              width="48"
+              height="48"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#cfd5dc"
+              stroke-width="1.5"
+              style="margin-bottom: 16px"
+            >
+              <path
+                d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"
+              />
+            </svg>
+            <p class="sub-copy" style="color: #9b9b9b">
+              진행 중인 채팅 내역이 없습니다.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 알림 화면 추가 -->
+      <section
+        class="app-view sub-view is-hidden"
+        id="noti-view"
+        aria-label="알림 화면"
+      >
+        <div class="design-stage sub-stage">
+          <header class="sub-header">
+            <button
+              class="back-button page-link"
+              type="button"
+              data-target="#main"
+              aria-label="메인 화면으로 돌아가기"
+            >
+              ‹
+            </button>
+            <h2 class="sub-title">알림</h2>
+          </header>
+          <div class="sub-content" style="left: 0; right: 0; top: 98px">
+            <ul class="noti-list">
+              <li class="noti-item unread">
+                <div class="noti-icon">🔔</div>
+                <div class="noti-text">
+                  <strong>관심 매물 알림</strong>
+                  <span
+                    >'꿈의 도시 미래아파트'의 새로운 실거래가가
+                    등록되었습니다.</span
+                  >
+                  <span>10분 전</span>
+                </div>
+              </li>
+              <li class="noti-item unread">
+                <div class="noti-icon">⚡️</div>
+                <div class="noti-text">
+                  <strong>급매물 알림</strong>
+                  <span
+                    >관심 지역의 새로운 급매물이 등록되었습니다. 빠르게
+                    확인해보세요.</span
+                  >
+                  <span>1시간 전</span>
+                </div>
+              </li>
+              <li class="noti-item unread">
+                <div class="noti-icon">🎉</div>
+                <div class="noti-text">
+                  <strong>이벤트 알림</strong>
+                  <span
+                    >직방 중개수수료 할인 이벤트가 시작되었습니다! 놓치지
+                    마세요.</span
+                  >
+                  <span>어제</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 설정 화면 추가 -->
+      <section
+        class="app-view sub-view is-hidden"
+        id="settings-view"
+        aria-label="설정 화면"
+      >
+        <div class="design-stage sub-stage">
+          <header class="sub-header">
+            <button
+              class="back-button page-link"
+              type="button"
+              data-target="#main"
+              aria-label="메인 화면으로 돌아가기"
+            >
+              ‹
+            </button>
+            <h2 class="sub-title">설정</h2>
+          </header>
+          <div class="sub-content">
+            <div style="margin-top: 20px">
+              <div
+                style="
+                  padding: 16px 0;
+                  border-bottom: 1px solid #e1e6eb;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                "
+              >
+                <span
+                  style="
+                    font-size: 16px;
+                    font-weight: 500;
+                    color: var(--brand-navy);
+                  "
+                  >버전 정보</span
+                >
+                <span style="font-size: 14px; color: #9b9b9b">v 1.0.0</span>
+              </div>
+              <div
+                style="
+                  padding: 16px 0;
+                  border-bottom: 1px solid #e1e6eb;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                "
+              >
+                <span
+                  style="
+                    font-size: 16px;
+                    font-weight: 500;
+                    color: var(--brand-navy);
+                  "
+                  >알림 설정</span
+                >
+                <span style="font-size: 14px; color: #9b9b9b">켜짐</span>
+              </div>
+              <div
+                style="
+                  padding: 16px 0;
+                  border-bottom: 1px solid #e1e6eb;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                "
+              >
+                <span
+                  style="
+                    font-size: 16px;
+                    font-weight: 500;
+                    color: var(--brand-navy);
+                  "
+                  >로그아웃</span
+                >
+                <a
+                  href="#login"
+                  class="page-link"
+                  data-target="#login"
+                  style="
+                    font-size: 14px;
+                    color: var(--brand-orange);
+                    text-decoration: none;
+                  "
+                  >로그아웃</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 최고 수익률 단지 TOP 3 상세 화면 -->
+      <section
+        class="app-view sub-view is-hidden"
+        id="top3-view"
+        aria-label="최고 수익률 단지 상세"
+      >
+        <div class="design-stage sub-stage">
+          <header class="sub-header">
+            <button
+              class="back-button page-link"
+              type="button"
+              data-target="#main"
+              aria-label="메인 화면으로 돌아가기"
+            >
+              ‹
+            </button>
+            <h2 class="sub-title">수익률 단지 TOP 3</h2>
+          </header>
+          <div class="sub-content" style="padding-top: 10px">
+            <img
+              src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=600&q=80"
+              alt=""
+              style="width: 100%; border-radius: 10px; margin-bottom: 16px"
+            >
+            <p class="sub-copy">
+              최근 3개월 간 가장 높은 수익률을 기록한
+              <strong>꿈의 도시 미래아파트</strong> 단지의 상세 정보입니다.
+            </p>
+            <div class="sub-result-box" style="margin-top: 0">
+              <strong
+                style="
+                  display: block;
+                  margin-bottom: 10px;
+                  color: var(--brand-navy);
+                  font-size: 16px;
+                "
+                >수익률 분석 요약</strong
+              >
+              <span style="display: block; line-height: 1.6">
+                1. 매매가 대비 전세가율 상승폭 1위<br >
+                2. 주변 대형 상권 및 교통 호재 반영<br >
+                3. 지속적인 1인가구 및 신혼부부 유입
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 추천 매물 상세 화면 -->
+      <section
+        class="app-view sub-view is-hidden"
+        id="recommend-view"
+        aria-label="추천 매물 상세"
+      >
+        <div class="design-stage sub-stage">
+          <header class="sub-header">
+            <button
+              class="back-button page-link"
+              type="button"
+              data-target="#main"
+              aria-label="메인 화면으로 돌아가기"
+            >
+              ‹
+            </button>
+            <h2 class="sub-title">추천 매물</h2>
+          </header>
+          <div class="sub-content" style="padding-top: 10px">
+            <img
+              src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600&q=80"
+              alt=""
+              style="width: 100%; border-radius: 10px; margin-bottom: 16px"
+            >
+            <p class="sub-copy">
+              환상의 도시 미래아파트의 로얄동/로얄층 매물입니다. 남향으로 채광과
+              통풍이 우수합니다.
+            </p>
+            <div class="sub-result-box" style="margin-top: 0">
+              <strong
+                style="
+                  display: block;
+                  margin-bottom: 10px;
+                  color: var(--brand-navy);
+                  font-size: 16px;
+                "
+                >매물 상세 정보</strong
+              >
+              <span style="display: block; line-height: 1.6">
+                - 공급/전용면적: 110㎡ / 84㎡<br >
+                - 해당층/총층: 15층 / 25층<br >
+                - 방수/욕실수: 3개 / 2개<br >
+                - 입주가능일: 즉시 입주 협의 가능
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
+    <script src="./script/script.js"></script>
+  </body>
+</html>
