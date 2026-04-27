@@ -3207,6 +3207,12 @@
           background-color 0.2s ease,
           box-shadow 0.2s ease;
       }
+      .property-detail-sub-btn.is-active {
+        border-color: var(--brand-orange);
+        background: var(--brand-orange);
+        color: #fff;
+      }
+
       .property-detail-sub-btn:hover {
         background: rgba(255, 117, 24, 0.08);
         box-shadow: 0 8px 16px rgba(255, 117, 24, 0.12);

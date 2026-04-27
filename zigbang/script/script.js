@@ -248,9 +248,7 @@ const LOGIN_URL = "#login";
 
       function showPropertyCard(prop) {
         const cardEl = document.getElementById("map-property-card");
-        const mcImg = document.getElementById("mc-img");
-        mcImg.src = prop.image;
-        mcImg.alt = `${prop.title} 매물 이미지`;
+        document.getElementById("mc-img").src = prop.image;
         document.getElementById("mc-price").textContent =
           `${prop.dealType} ${prop.price}`;
         document.getElementById("mc-title").textContent = prop.title;
@@ -1266,9 +1264,9 @@ const LOGIN_URL = "#login";
       const propSearchInput = document.getElementById("prop-search-input");
       const recentSearchList = document.getElementById("recent-search-list");
       const btnDeleteRecent = document.getElementById("btn-delete-recent");
-      const propertyResultSection = document.getElementById(
-        "property-result-section",
-      );
+      const propertyResultSection =
+        document.getElementById("property-result-section") ||
+        document.getElementById("property-result-sectio");
       const propertyResultList = document.getElementById(
         "property-result-list",
       );
@@ -1400,13 +1398,20 @@ const LOGIN_URL = "#login";
           propertyDetailFavBtn.dataset.favoriteProperty = item.name;
           syncPropertyFavoriteButtons(item.name);
         }
+        if (typeof propertyDetailAlertBtn !== "undefined" && propertyDetailAlertBtn) {
+          propertyDetailAlertBtn.classList.remove("is-active");
+          propertyDetailAlertBtn.textContent = "알림 받기";
+        }
 
         propertyDetailPopup.classList.remove("is-hidden");
         propertyDetailPopup.setAttribute("aria-hidden", "false");
       }
 
       function renderPropertySearchResults(query, openFirstResult = false) {
-        if (!propertyResultSection || !propertyResultList) return;
+        if (!propertyResultSection || !propertyResultList) {
+          return;
+        }
+        propertyResultSection.classList.add("property-result-section");
         const results = findPropertySearchResults(query);
         propertyResultCache = results;
         propertyResultSection.classList.add("is-active");
@@ -1457,7 +1462,6 @@ const LOGIN_URL = "#login";
             if (!propertyName) return;
             addFavoriteProperty(propertyName);
             syncPropertyFavoriteButtons(propertyName);
-            showToast(`'${propertyName}' 관심 매물에 담았습니다.`);
             return;
           }
 
@@ -1487,7 +1491,6 @@ const LOGIN_URL = "#login";
           if (!propertyName) return;
           addFavoriteProperty(propertyName);
           syncPropertyFavoriteButtons(propertyName);
-          showToast(`'${propertyName}' 관심 매물에 담았습니다.`);
         });
       }
 
@@ -1521,7 +1524,6 @@ const LOGIN_URL = "#login";
               propSearchInput.focus();
             }
             renderPropertySearchResults(keyword, true);
-            showToast(`'${keyword}' 키워드로 매물을 검색합니다.`);
           });
           recentSearchList.appendChild(span);
         });
@@ -1529,18 +1531,30 @@ const LOGIN_URL = "#login";
 
       renderRecentKeywords();
 
+      document.querySelectorAll(".rank-item").forEach((rankItem) => {
+        rankItem.addEventListener("click", () => {
+          const keyword = rankItem.querySelector(".rank-name")?.textContent?.trim();
+          if (!keyword || !propSearchInput) return;
+          propSearchInput.value = keyword;
+          renderPropertySearchResults(keyword, true);
+        });
+      });
+
+
       const customKeywordList = document.getElementById("custom-keyword-list");
       if (customKeywordList && propSearchInput) {
         customKeywordList.addEventListener("click", (e) => {
           const keywordChip = e.target.closest(".chip-item");
           if (!keywordChip) return;
 
-          propSearchInput.value = keywordChip.textContent.trim();
+          const keywordValue = keywordChip.textContent.trim();
+          propSearchInput.value = keywordValue;
           propSearchInput.focus();
           propSearchInput.setSelectionRange(
             propSearchInput.value.length,
             propSearchInput.value.length,
           );
+          renderPropertySearchResults(keywordValue, true);
         });
       }
 
@@ -1556,8 +1570,17 @@ const LOGIN_URL = "#login";
 
               saveKeywordsToStorage();
               renderRecentKeywords();
+
+      document.querySelectorAll(".rank-item").forEach((rankItem) => {
+        rankItem.addEventListener("click", () => {
+          const keyword = rankItem.querySelector(".rank-name")?.textContent?.trim();
+          if (!keyword || !propSearchInput) return;
+          propSearchInput.value = keyword;
+          renderPropertySearchResults(keyword, true);
+        });
+      });
+
               renderPropertySearchResults(val, true);
-              showToast(`'${val}'(을)를 검색했습니다.`);
             }
           }
         });
@@ -1569,7 +1592,16 @@ const LOGIN_URL = "#login";
           recentKeywords = [];
           saveKeywordsToStorage();
           renderRecentKeywords();
-          showToast("최근 검색어 내역을 모두 삭제했습니다.");
+
+      document.querySelectorAll(".rank-item").forEach((rankItem) => {
+        rankItem.addEventListener("click", () => {
+          const keyword = rankItem.querySelector(".rank-name")?.textContent?.trim();
+          if (!keyword || !propSearchInput) return;
+          propSearchInput.value = keyword;
+          renderPropertySearchResults(keyword, true);
+        });
+      });
+
         });
       }
 
@@ -2218,7 +2250,14 @@ const LOGIN_URL = "#login";
       if (propertyDetailAlertBtn) {
         propertyDetailAlertBtn.addEventListener("click", () => {
           const propertyName = currentDetailPropertyName || "선택한 매물";
-          showToast(`'${propertyName}' 가격 변동 알림을 켰습니다.`);
+          propertyDetailAlertBtn.classList.toggle("is-active");
+          const isActive = propertyDetailAlertBtn.classList.contains("is-active");
+          propertyDetailAlertBtn.textContent = isActive ? "알림 설정완료" : "알림 받기";
+          showToast(
+            isActive
+              ? `'${propertyName}' 가격 변동 알림을 켰습니다.`
+              : `'${propertyName}' 가격 변동 알림을 껐습니다.`,
+          );
         });
       }
 
