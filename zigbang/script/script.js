@@ -2342,33 +2342,46 @@ document.addEventListener("visibilitychange", () => {
 });
 
 // ==========================================
-// [추가] 워크스루 라디오 버튼(점) 고정 및 활성화 로직
+// [수정] 워크스루 라디오 버튼 & Skip/시작 버튼 고정 로직
 // ==========================================
 const onboardingSwiperEl = document.querySelector(".onboarding-swiper");
 const firstDots = document.querySelector(".slide-1 .walkthrough-dots");
+const firstSkipBtn = document.querySelector(".slide-1 .skip-link");
+const startBtn = document.querySelector(".slide-3 .start-link");
 
-if (onboardingSwiperEl && firstDots) {
-  // 1. 첫 번째 슬라이드의 점을 꺼내서 스와이퍼 고정 영역에 배치 (슬라이드와 함께 움직이지 않음)
+if (onboardingSwiperEl && firstDots && firstSkipBtn && startBtn) {
+  // 1. 요소들을 슬라이드 밖(온보딩 컨테이너)으로 빼내서 화면에 찰싹 고정
   onboardingSwiperEl.appendChild(firstDots);
+  onboardingSwiperEl.appendChild(firstSkipBtn);
+  onboardingSwiperEl.appendChild(startBtn);
 
-  // 2. 다른 슬라이드(slide-2, 3)에 남아있는 불필요한 점들은 JS로 깔끔하게 삭제
+  // 2. 다른 슬라이드에 남아있는 중복 요소들 깔끔하게 삭제 (겹침 방지)
   document
     .querySelectorAll(".swiper-slide .walkthrough-dots")
-    .forEach((dots) => dots.remove());
+    .forEach((el) => el.remove());
+  document
+    .querySelectorAll(".swiper-slide .skip-link")
+    .forEach((el) => el.remove());
+  document
+    .querySelectorAll(".swiper-slide .start-link")
+    .forEach((el) => el.remove());
 
   const dotButtons = firstDots.querySelectorAll("button");
 
-  // 3. 슬라이드가 넘어갈 때마다 라디오 버튼 불빛(활성화)만 바꿔주는 함수
-  const updateDots = () => {
+  // 3. 슬라이드가 넘어갈 때마다 상태(불빛, 버튼 보이기/숨기기) 업데이트
+  const updateWalkthroughUI = () => {
     const currentIndex = swiper.activeIndex;
 
-    // 스플래시(로딩) 화면인 0번 인덱스에서는 점들을 숨김
+    // 스플래시(로딩) 화면일 때 전부 숨김
     if (currentIndex === 0) {
       firstDots.style.display = "none";
+      firstSkipBtn.style.display = "none";
+      startBtn.style.display = "none";
     } else {
+      // 워크스루 화면일 때 점 표시
       firstDots.style.display = "flex";
 
-      // 1, 2, 3 슬라이드 위치에 맞춰서 is-active 클래스 이동
+      // 점 활성화 상태 변경
       dotButtons.forEach((btn, i) => {
         if (i === currentIndex - 1) {
           btn.classList.add("is-active");
@@ -2376,14 +2389,23 @@ if (onboardingSwiperEl && firstDots) {
           btn.classList.remove("is-active");
         }
       });
+
+      // 3번째 슬라이드면 '시작하기' 표시, 아니면 'Skip' 표시
+      if (currentIndex === 3) {
+        firstSkipBtn.style.display = "none";
+        startBtn.style.display = "flex"; // 시작하기 버튼은 flex로 정렬되어 있음
+      } else {
+        firstSkipBtn.style.display = "block";
+        startBtn.style.display = "none";
+      }
     }
   };
 
   // 초기 상태 로드 및 슬라이드가 바뀔 때마다 함수 실행
-  updateDots();
-  swiper.on("slideChange", updateDots);
+  updateWalkthroughUI();
+  swiper.on("slideChange", updateWalkthroughUI);
 
-  // 4. (보너스) 고정된 라디오 버튼을 클릭하면 해당 슬라이드로 부드럽게 이동!
+  // 4. 점 클릭 시 해당 슬라이드로 이동
   dotButtons.forEach((btn, index) => {
     btn.addEventListener("click", () => {
       swiper.slideTo(index + 1);

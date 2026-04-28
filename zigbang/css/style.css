@@ -129,7 +129,8 @@ button {
 .splash-loading-wrap {
   position: absolute;
   left: 50%;
-  top: 505px;
+  top: auto; /* 기존 505px 무효화 */
+  bottom: 20vh; /* 화면 맨 밑에서 20% 위로 띄움 */
   z-index: 10;
   width: 170px;
   transform: translateX(-50%);
@@ -409,7 +410,7 @@ button {
 .login-logo {
   position: absolute;
   left: 50%;
-  top: 102px;
+  top: 14vh; /* 기존 102px 대신 화면 높이의 14% 지점 */
   width: 165px;
   height: auto;
   display: block;
@@ -431,7 +432,7 @@ button {
   position: absolute;
   left: 23px;
   right: 22px;
-  top: 260px;
+  top: 32vh; /* 기존 260px 대신 화면 높이의 32% 지점에 배치 */
 }
 
 .field-group {
@@ -643,7 +644,9 @@ button {
   position: absolute;
   left: 23px;
   right: 27px;
-  top: 638px;
+  top: auto; /* 기존 638px를 무효화합니다 */
+  bottom: 6vh; /* 화면 맨 밑에서 6% 위로 띄웁니다 */
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 .simple-title {
