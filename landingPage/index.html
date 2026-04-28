@@ -1,20 +1,20 @@
 <!doctype html>
 <html lang="ko">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" >
+    <meta name="viewport" content="width=device-width, initial-scale=1" >
     <meta
       name="description"
       content="퍼스널 컬러 리얼 모델 모집 랜딩페이지. 모델 모집 안내, 지원 분야, 사진 첨부 가이드, 신청 모달을 제공하는 정적 웹페이지입니다."
-    />
+    >
     <title>리얼모델모집 | 퍼스널 컬러 모델 지원</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" >
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin >
     <link
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&family=Montserrat:wght@700;800;900&display=swap"
       rel="stylesheet"
-    />
-    <link rel="stylesheet" href="./css/style.css" />
+    >
+    <link rel="stylesheet" href="./css/style.css" >
     <script defer src="./script/script.js"></script>
   </head>
 
@@ -41,7 +41,7 @@
     </header>
 
     <main>
-      <section id="hero" class="hero" aria-labelledby="heroTitle">
+      <main id="hero" class="hero" aria-labelledby="heroTitle">
         <div class="hero-shell">
           <div class="hero-copy reveal">
             <p class="hero-kicker">REAL BEAUTY MODEL CASTING</p>
@@ -71,27 +71,27 @@
 
           <div class="hero-title-ko reveal reveal-delay-2">리얼모델모집</div>
         </div>
-      </section>
+      </main>section>
 
-      <section class="model-gallery section-white" aria-labelledby="galleryTitle">
+      <div class="model-gallery section-white" aria-labelledby="galleryTitle">
         <div class="container">
           <div class="model-card-row" id="galleryTitle">
-            <article class="model-card reveal">
+            <div class="model-card reveal">
               <div class="portrait portrait-female-a" aria-hidden="true"></div>
               <span>FACE MODEL</span>
-            </article>
-            <article class="model-card reveal reveal-delay-1">
+            </div>
+            <div class="model-card reveal reveal-delay-1">
               <div class="portrait portrait-male" aria-hidden="true"></div>
               <span>STYLE MODEL</span>
-            </article>
-            <article class="model-card reveal reveal-delay-2">
+            </div>
+            <div class="model-card reveal reveal-delay-2">
               <div class="portrait portrait-female-b" aria-hidden="true"></div>
               <span>BEAUTY MODEL</span>
-            </article>
+            </div>
           </div>
           <div class="brand-line reveal">JAYJUN BEAUTY STUDIO</div>
         </div>
-      </section>
+      </div>
 
       <section id="recruit" class="recruit-section" aria-labelledby="recruitTitle">
         <div class="container recruit-inner reveal">
@@ -162,7 +162,7 @@
             <p>원하는 분야를 선택하면 신청 모달의 프로그램 항목에 바로 반영됩니다.</p>
           </div>
 
-          <div id="programList" class="program-grid" aria-label="프로그램 목록">
+          <div id="programList" class="program-grid" role="list" aria-label="프로그램 목록">
             <div class="skeleton-card"></div>
             <div class="skeleton-card"></div>
             <div class="skeleton-card"></div>
@@ -170,11 +170,11 @@
         </div>
       </section>
 
-      <section id="photoGuide" class="photo-guide section-white" aria-labelledby="photoGuideTitle">
+      <section id="photoGuide" class="photo-guide section-white" aria-label="포토 가이드">
         <div class="container narrow-container">
           <div class="guide-box reveal">
             <div class="guide-title">
-              <strong>사진첨부 전<br />필수 확인!</strong>
+              <strong>사진첨부 전<br >필수 확인!</strong>
             </div>
             <div class="guide-content">
               <div class="tab-buttons" role="tablist" aria-label="사진 첨부 가이드 탭">
@@ -234,7 +234,7 @@
             <h2 id="reviewsTitle">참여자 후기</h2>
             <p>선정 전 궁금한 분위기와 경험을 후기로 확인하세요.</p>
           </div>
-          <div id="reviewList" class="review-grid" aria-label="후기 목록">
+          <div id="reviewList" class="review-grid" role="list" aria-label="후기 목록">
             <div class="skeleton-card"></div>
             <div class="skeleton-card"></div>
             <div class="skeleton-card"></div>
@@ -248,7 +248,7 @@
             <p class="section-kicker">FAQ</p>
             <h2 id="faqTitle">자주 묻는 질문</h2>
           </div>
-          <div id="faqList" class="faq-list" aria-label="FAQ 목록">
+          <div id="faqList" class="faq-list" role="list" aria-label="FAQ 목록">
             <div class="skeleton-line"></div>
             <div class="skeleton-line"></div>
             <div class="skeleton-line"></div>
@@ -258,7 +258,7 @@
     </main>
 
     <footer class="site-footer">
-      <div class="footer-buttons" aria-label="관련 메뉴">
+      <div class="footer-buttons" role="navigation" aria-label="관련 메뉴">
         <a href="#reviews">리얼스토리</a>
         <a href="#programs">지원분야</a>
         <a href="#photoGuide">사진가이드</a>
@@ -289,20 +289,20 @@
           <form id="applicationForm" class="application-form" novalidate>
             <div class="field-group">
               <label for="name">이름</label>
-              <input id="name" name="name" type="text" autocomplete="name" placeholder="성함을 입력해 주세요" />
+              <input id="name" name="name" type="text" autocomplete="name" placeholder="성함을 입력해 주세요" >
               <p id="nameError" class="field-error" aria-live="polite"></p>
             </div>
 
             <div class="field-group">
               <label for="tel">연락처</label>
-              <input id="tel" name="tel" type="tel" inputmode="numeric" autocomplete="tel" placeholder="010-0000-0000" />
+              <input id="tel" name="tel" type="tel" inputmode="numeric" autocomplete="tel" placeholder="010-0000-0000" >
               <p id="telError" class="field-error" aria-live="polite"></p>
             </div>
 
             <div class="field-row">
               <div class="field-group">
                 <label for="age">나이</label>
-                <input id="age" name="age" type="number" inputmode="numeric" min="19" max="60" placeholder="예: 25" />
+                <input id="age" name="age" type="number" inputmode="numeric" min="19" max="60" placeholder="예: 25" >
                 <p id="ageError" class="field-error" aria-live="polite"></p>
               </div>
 
@@ -321,7 +321,7 @@
             </div>
 
             <label class="agreement">
-              <input id="agreement" name="agreement" type="checkbox" />
+              <input id="agreement" name="agreement" type="checkbox" >
               <span>개인정보 수집 및 이용에 동의합니다.</span>
             </label>
             <p id="agreementError" class="field-error agreement-error" aria-live="polite"></p>
