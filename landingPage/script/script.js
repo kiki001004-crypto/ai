@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const SHEETS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwjLaEXirEODYpG_GINcaRo7W0WaUwwWNnK-EMXTYDK0Iz_HTNUXLLS1S_RxWlyOKe9NQ/exec";
+  const SHEETS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwOtaOE32xgC0fUfyg4opOFSXjqh-V05FGSqayYJmctHZeZzkuwDYrzS7dfc6L90WEozw/exec";
   const API_URL = /^https?:\/\//.test(SHEETS_WEB_APP_URL.trim()) ? SHEETS_WEB_APP_URL.trim() : "";
   const REQUEST_TIMEOUT_MS = 5000;
 
@@ -464,26 +464,76 @@
       throw new Error("SHEETS_WEB_APP_URL is empty. Apps Script 웹앱 URL을 입력해주세요.");
     }
 
-    const body = new URLSearchParams(payload);
-    body.set("action", "saveApplication");
-
     /**
-     * Google Apps Script Web App은 외부 도메인(GitHub Pages 등)에서 일반 fetch로
-     * 응답을 읽으려고 하면 CORS 때문에 실패할 수 있습니다.
-     * mode: "no-cors"로 보내면 응답 내용은 읽을 수 없지만 시트 저장 요청은 정상 전송됩니다.
+     * Google Apps Script는 GitHub Pages 같은 외부 도메인에서 일반 fetch 응답을 읽을 수 없습니다.
+     * 그래서 hidden iframe + form POST + postMessage 방식으로 저장 결과를 실제로 확인합니다.
+     * 이제 Apps Script가 saved:true를 보내야만 신청 완료 화면으로 넘어갑니다.
      */
-    await requestWithTimeout(
-      (signal) =>
-        fetch(API_URL, {
-          method: "POST",
-          mode: "no-cors",
-          body,
-          signal,
-        }),
-      REQUEST_TIMEOUT_MS,
-    );
+    return new Promise((resolve, reject) => {
+      const iframeName = `sheetsSubmitFrame_${Date.now()}_${Math.random().toString(16).slice(2)}`;
+      const iframe = document.createElement("iframe");
+      const form = document.createElement("form");
+      const timeoutMs = 15000;
 
-    return { ok: true };
+      let settled = false;
+      let timer = null;
+
+      function cleanup() {
+        window.removeEventListener("message", handleMessage);
+        if (timer) window.clearTimeout(timer);
+        window.setTimeout(() => {
+          iframe.remove();
+          form.remove();
+        }, 0);
+      }
+
+      function finish(error, data) {
+        if (settled) return;
+        settled = true;
+        cleanup();
+        if (error) reject(error);
+        else resolve(data);
+      }
+
+      function handleMessage(event) {
+        const data = event.data;
+        if (!data || typeof data !== "object" || data.source !== "jayjun-sheets") return;
+
+        if (data.ok && data.saved) {
+          finish(null, data);
+        } else {
+          finish(new Error(data.error || "Google Sheets 저장에 실패했습니다."));
+        }
+      }
+
+      iframe.name = iframeName;
+      iframe.title = "Google Sheets submit frame";
+      iframe.style.display = "none";
+
+      form.method = "POST";
+      form.action = API_URL;
+      form.target = iframeName;
+      form.style.display = "none";
+      form.acceptCharset = "UTF-8";
+
+      const formData = { ...payload, action: "saveApplication" };
+      Object.entries(formData).forEach(([key, value]) => {
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = key;
+        input.value = value == null ? "" : String(value);
+        form.append(input);
+      });
+
+      window.addEventListener("message", handleMessage);
+      document.body.append(iframe, form);
+
+      timer = window.setTimeout(() => {
+        finish(new Error("Apps Script 응답이 없습니다. 웹앱 권한이 '모든 사용자'인지, /exec URL인지 확인해주세요."));
+      }, timeoutMs);
+
+      form.submit();
+    });
   }
 
   function showSuccess() {
