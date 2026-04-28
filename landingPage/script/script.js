@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const SHEETS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwOtaOE32xgC0fUfyg4opOFSXjqh-V05FGSqayYJmctHZeZzkuwDYrzS7dfc6L90WEozw/exec";
+  const SHEETS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwOCLnL88tWCsSgLd0MsbEndRIqE8E9d8SipKf26bSQt-Fiv-2TYXvZv4XL6vt7l5gmYQ/exec";
   const API_URL = /^https?:\/\//.test(SHEETS_WEB_APP_URL.trim()) ? SHEETS_WEB_APP_URL.trim() : "";
   const REQUEST_TIMEOUT_MS = 5000;
 
