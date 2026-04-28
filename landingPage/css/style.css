@@ -1820,3 +1820,96 @@ svg {
 .hero-title-ko {
   top: 60px !important;
 right: 180px !important;}
+
+/* 신청 모달 한 화면 compact 버전 */
+.modal-overlay {
+  padding: 16px;
+}
+
+.modal {
+  width: min(620px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  padding: 26px 30px 28px;
+  border-radius: 24px;
+}
+
+.modal-icon {
+  display: none;
+}
+
+.modal-eyebrow {
+  margin-bottom: 4px;
+  font-size: 11px;
+}
+
+.modal h2 {
+  font-size: 24px;
+}
+
+.modal-desc {
+  margin: 8px auto 16px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.application-form {
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 12px;
+}
+
+.application-form > .field-row,
+.application-form > .field-group:nth-child(4),
+.application-form > .agreement,
+.application-form > .agreement-error,
+.application-form > .modal-submit {
+  grid-column: 1 / -1;
+}
+
+.field-row {
+  gap: 12px;
+}
+
+.field-group {
+  gap: 5px;
+}
+
+.field-group label {
+  font-size: 13px;
+}
+
+.field-group input,
+.field-group select,
+.field-group textarea {
+  padding: 11px 13px;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+.field-group textarea {
+  height: 58px;
+  min-height: 58px;
+  resize: none;
+}
+
+.field-error {
+  min-height: 0;
+  line-height: 1.25;
+}
+
+.field-error:empty {
+  display: none;
+}
+
+.agreement {
+  padding: 9px 12px;
+  font-size: 13px;
+}
+
+.agreement-error {
+  margin-top: -4px;
+}
+
+.modal-submit {
+  padding: 13px 18px;
+  font-size: 15px;
+}
