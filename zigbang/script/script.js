@@ -2340,3 +2340,53 @@ document.addEventListener("visibilitychange", () => {
     swiper.autoplay.start();
   }
 });
+
+// ==========================================
+// [추가] 워크스루 라디오 버튼(점) 고정 및 활성화 로직
+// ==========================================
+const onboardingSwiperEl = document.querySelector(".onboarding-swiper");
+const firstDots = document.querySelector(".slide-1 .walkthrough-dots");
+
+if (onboardingSwiperEl && firstDots) {
+  // 1. 첫 번째 슬라이드의 점을 꺼내서 스와이퍼 고정 영역에 배치 (슬라이드와 함께 움직이지 않음)
+  onboardingSwiperEl.appendChild(firstDots);
+
+  // 2. 다른 슬라이드(slide-2, 3)에 남아있는 불필요한 점들은 JS로 깔끔하게 삭제
+  document
+    .querySelectorAll(".swiper-slide .walkthrough-dots")
+    .forEach((dots) => dots.remove());
+
+  const dotButtons = firstDots.querySelectorAll("button");
+
+  // 3. 슬라이드가 넘어갈 때마다 라디오 버튼 불빛(활성화)만 바꿔주는 함수
+  const updateDots = () => {
+    const currentIndex = swiper.activeIndex;
+
+    // 스플래시(로딩) 화면인 0번 인덱스에서는 점들을 숨김
+    if (currentIndex === 0) {
+      firstDots.style.display = "none";
+    } else {
+      firstDots.style.display = "flex";
+
+      // 1, 2, 3 슬라이드 위치에 맞춰서 is-active 클래스 이동
+      dotButtons.forEach((btn, i) => {
+        if (i === currentIndex - 1) {
+          btn.classList.add("is-active");
+        } else {
+          btn.classList.remove("is-active");
+        }
+      });
+    }
+  };
+
+  // 초기 상태 로드 및 슬라이드가 바뀔 때마다 함수 실행
+  updateDots();
+  swiper.on("slideChange", updateDots);
+
+  // 4. (보너스) 고정된 라디오 버튼을 클릭하면 해당 슬라이드로 부드럽게 이동!
+  dotButtons.forEach((btn, index) => {
+    btn.addEventListener("click", () => {
+      swiper.slideTo(index + 1);
+    });
+  });
+}

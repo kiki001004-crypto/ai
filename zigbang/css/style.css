@@ -259,12 +259,13 @@ button {
 .walkthrough-dots {
   position: absolute;
   left: 0;
-  right: -40px;
+  right: 0; /* -40px 였던 것을 0으로 바꿔서 정중앙에 완벽히 맞춥니다 */
   bottom: 145px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 14px;
+  z-index: 20; /* 슬라이드가 지나갈 때 점이 묻히지 않고 무조건 맨 위에 뜨도록! */
 }
 
 .walkthrough-dots button {
@@ -306,7 +307,7 @@ button {
   outline-offset: 4px;
 }
 
-.swiper-slide-active .walkthrough-dots button.is-active {
+.walkthrough-dots button.is-active {
   animation: dotPop 0.36s ease both;
 }
 
