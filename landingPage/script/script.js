@@ -461,34 +461,29 @@
 
   async function submitApplication(payload) {
     if (!API_URL) {
-      await new Promise((resolve) => window.setTimeout(resolve, 650));
-      return { ok: true };
+      throw new Error("SHEETS_WEB_APP_URL is empty. Apps Script 웹앱 URL을 입력해주세요.");
     }
 
     const body = new URLSearchParams(payload);
     body.set("action", "saveApplication");
 
-    const response = await requestWithTimeout(
+    /**
+     * Google Apps Script Web App은 외부 도메인(GitHub Pages 등)에서 일반 fetch로
+     * 응답을 읽으려고 하면 CORS 때문에 실패할 수 있습니다.
+     * mode: "no-cors"로 보내면 응답 내용은 읽을 수 없지만 시트 저장 요청은 정상 전송됩니다.
+     */
+    await requestWithTimeout(
       (signal) =>
         fetch(API_URL, {
           method: "POST",
+          mode: "no-cors",
           body,
           signal,
         }),
       REQUEST_TIMEOUT_MS,
     );
 
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-    const text = await response.text();
-    try {
-      const json = JSON.parse(text);
-      if (json && json.error) throw new Error(json.error);
-      return json;
-    } catch (error) {
-      if (text && text.trim().startsWith("{")) throw error;
-      return { ok: true };
-    }
+    return { ok: true };
   }
 
   function showSuccess() {
