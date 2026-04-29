@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="한국한복문화예술협회 반응형 웹사이트" />
+    <title>한국한복문화예술협회</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Noto+Serif+KR:wght@500;600;700;900&family=Roboto:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">본문 바로가기</a>
+
+    <header class="header" id="header">
+      <div class="header-util" aria-label="사용자 메뉴">
+        <a href="javascript:void(0)">로그인</a>
+        <a href="javascript:void(0)">회원가입</a>
+        <a href="javascript:void(0)">마이페이지</a>
+      </div>
+
+      <div class="header-inner">
+        <h1 class="logo">
+          <a href="#main" aria-label="한국한복문화예술협회 메인으로 이동">
+            <img src="./images/logo.png" alt="한국한복문화예술협회" />
+          </a>
+        </h1>
+
+        <nav class="gnb" aria-label="주요 메뉴">
+          <ul>
+            <li><a href="#about">협회소개</a></li>
+            <li><a href="#media">홍보광장</a></li>
+            <li><a href="#group">아젤리아패션그룹</a></li>
+            <li><a href="#global">국제교류체험관</a></li>
+            <li><a href="#notice">나눔과기쁨 &amp; 복지관</a></li>
+            <li><a href="#gallery">협력기관</a></li>
+          </ul>
+        </nav>
+
+        <button
+          class="menu-btn"
+          type="button"
+          aria-label="메뉴 열기"
+          aria-controls="mobileMenu"
+          aria-expanded="false"
+        >
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+
+      <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+        <nav aria-label="모바일 메뉴">
+          <a href="#about">협회소개</a>
+          <a href="#media">홍보광장</a>
+          <a href="#group">아젤리아패션그룹</a>
+          <a href="#global">국제교류체험관</a>
+          <a href="#notice">나눔과기쁨 &amp; 복지관</a>
+          <a href="#gallery">협력기관</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section
+        class="visual-slider"
+        id="about"
+        aria-label="메인 비주얼 슬라이드"
+      >
+        <div class="visual-track">
+          <article class="visual-slide is-active" data-slide="0">
+            <picture>
+                            
+              <img src="./images/banner/pc_banner.png" alt="한복 배너 이미지" />
+              
+            </picture>
+            <div class="visual-copy" aria-label="한복 한국의 전통의상">
+              <h2>한복</h2>
+              <h3>한국의 전통의상</h3>
+              <p>“ 아름다운 우리 옷 한복<br />전통에 스며들다. ”</p>
+              <span class="en">BE INFLUENCED BY TRADITION</span>
+            </div>
+          </article>
+
+          <article class="visual-slide" data-slide="1">
+            <picture>
+              
+              <img
+                src="./images/banner/pc_banner2.png"
+                alt="한복 문화 배너 이미지"
+              />
+            </picture>
+            <div class="visual-copy" aria-label="한복 한국의 전통의상">
+              <h2>한복</h2>
+              <h3>한국의 전통의상</h3>
+              <p>“ 아름다운 우리 옷 한복<br />전통에 스며들다. ”</p>
+              <span class="en">BE INFLUENCED BY TRADITION</span>
+            </div>
+          </article>
+
+          <article class="visual-slide" data-slide="2">
+            <picture>
+              
+              <img
+                src="./images/banner/pc_banner3.png"
+                alt="전통 한복 배너 이미지"
+              />
+            </picture>
+            <div class="visual-copy" aria-label="한복 한국의 전통의상">
+              <h2>한복</h2>
+              <h3>한국의 전통의상</h3>
+              <p>“ 아름다운 우리 옷 한복<br />전통에 스며들다. ”</p>
+              <span class="en">BE INFLUENCED BY TRADITION</span>
+            </div>
+          </article>
+        </div>
+
+        <div class="visual-controls" aria-label="메인 비주얼 제어">
+          <button
+            type="button"
+            class="visual-prev"
+            aria-label="이전 메인 비주얼"
+          ></button>
+          <button
+            type="button"
+            class="visual-next"
+            aria-label="다음 메인 비주얼"
+          ></button>
+        </div>
+      </section>
+
+      <section
+        class="collection-slider"
+        id="group"
+        aria-label="한복 드레스 배너 슬라이드"
+      >
+        <div class="collection-track">
+          <article class="collection-slide is-active">
+            <div
+              class="collection-bg"
+              style="
+                background-image: url(&quot;https://images.unsplash.com/photo-1517154421773-0529f29ea451?auto=format&fit=crop&w=1600&q=80&quot;);
+              "
+            ></div>
+            <div class="collection-inner container">
+              <div class="collection-meta">
+                <span class="collection-num">01</span>
+                <div class="collection-text">
+                  <span class="collection-small"
+                    ><img
+                      src="./images/icons/Taegeuk.png"
+                      alt=""
+                    />태극문양디자인등록</span
+                  >
+                  <strong>한복드레스</strong>
+                  <em>디자인등록특허 제30-1087062호</em>
+                </div>
+              </div>
+
+              <figure class="collection-thumb">
+                <img
+                  src="./images/img/right.png"
+                  alt="한복드레스 대표 이미지"
+                />
+              </figure>
+            </div>
+          </article>
+
+          <article class="collection-slide">
+            <div
+              class="collection-bg"
+              style="
+                background-image: url(&quot;https://images.unsplash.com/photo-1524492449090-1abe288c3a37?auto=format&fit=crop&w=1600&q=80&quot;);
+              "
+            ></div>
+            <div class="collection-inner container">
+              <div class="collection-meta">
+                <span class="collection-num">02</span>
+                <div class="collection-text">
+                  <span class="collection-small"
+                    ><img src="./images/icons/Taegeuk.png" alt="" />K-전통문화 콘텐츠</span
+                  >
+                  <strong>궁중한복</strong>
+                  <em>전통미와 현대미를 담은 문화예술 콘텐츠</em>
+                </div>
+              </div>
+
+              <figure class="collection-thumb">
+                <img src="./images/img/right2.png" alt="궁중한복 대표 이미지" />
+              </figure>
+            </div>
+          </article>
+
+          <article class="collection-slide">
+            <div
+              class="collection-bg"
+              style="
+                background-image: url(&quot;https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1600&q=80&quot;);
+              "
+            ></div>
+            <div class="collection-inner container">
+              <div class="collection-meta">
+                <span class="collection-num">03</span>
+                <div class="collection-text">
+                  <span class="collection-small"
+                    ><img src="./images/icons/Taegeuk.png" alt="" />글로벌 한복 캠페인</span
+                  >
+                  <strong>한복문화</strong>
+                  <em>세계로 확장되는 한국 전통의상</em>
+                </div>
+              </div>
+
+              <figure class="collection-thumb">
+                <img
+                  src="./images/img/right3.png"
+                  alt="한복문화 대표 이미지"
+                />
+              </figure>
+            </div>
+          </article>
+        </div>
+
+        <div class="collection-controls">
+          <button
+            type="button"
+            class="collection-prev"
+            aria-label="이전 배너"
+          ></button>
+          <button
+            type="button"
+            class="collection-next"
+            aria-label="다음 배너"
+          ></button>
+        </div>
+      </section>
+
+      <section class="media-section" id="media">
+        <div class="media-grid container">
+          <article class="media-box media-poster reveal">
+            <div class="section-head inline">
+              <div>
+                <h2>포스터</h2>
+                <p>Poster</p>
+              </div>
+              <a href="javascript:void(0)" aria-label="포스터 더보기">+</a>
+            </div>
+
+            <div class="poster-slider" aria-label="포스터 슬라이드">
+              <div class="poster-track">
+                <a class="poster-item" href="javascript:void(0)"
+                  ><img
+                    src="./images/img/poster1.png"
+                    alt="제1회 아젤리아 무궁화 퀸 모델 콘테스트 포스터"
+                /></a>
+                <a class="poster-item" href="javascript:void(0)"
+                  ><img
+                    src="./images/img/poster2.png"
+                    alt="제1회 인터내셔널 CEO K스타 모델 콘테스트 포스터"
+                /></a>
+                <a class="poster-item" href="javascript:void(0)"
+                  ><img
+                    src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=600&q=80"
+                    alt="한복문화 행사 포스터"
+                /></a>
+              </div>
+              <span class="poster-count" aria-live="polite">1/3</span>
+            </div>
+          </article>
+
+          <article class="media-box media-video reveal">
+            <div class="section-head inline">
+              <div>
+                <h2>동영상</h2>
+                <p>Video</p>
+              </div>
+              <a href="https://www.youtube.com/embed/LHm0bqMI0e0?si=JgQTXl0Wsu7_SmKV" aria-label="동영상 더보기">+</a>
+            </div>
+            <a
+              class="video-card"
+              href="https://www.youtube.com/embed/LHm0bqMI0e0?si=JgQTXl0Wsu7_SmKV"
+              aria-label="한국한복문화예술협회 동영상 보기"
+            >
+              <img
+                src="./images/img/썸네일이미지.png"
+                alt="한국한복문화예술협회 영상 썸네일"
+              />
+              <span class="play-mark" aria-hidden="true"></span>
+            </a>
+          </article>
+
+          <article class="media-box media-youtube reveal" id="global">
+            <div class="section-head inline">
+              <div>
+                <h2>유튜브</h2>
+                <p>Youtube</p>
+              </div>
+              <a href="javascript:void(0)" aria-label="유튜브 더보기">+</a>
+            </div>
+            <div class="youtube-frame" aria-label="유튜브 영상 영역">
+              <iframe
+                src="https://www.youtube.com/embed/LHm0bqMI0e0?si=JgQTXl0Wsu7_SmKV"
+                title="한국한복문화예술협회 유튜브 영상"
+                loading="lazy"
+                allow="
+                  accelerometer;
+                  autoplay;
+                  clipboard-write;
+                  encrypted-media;
+                  gyroscope;
+                  picture-in-picture;
+                  web-share;
+                "
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen
+              ></iframe>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="notice-section" id="notice">
+        <img
+          class="deco-left"
+          src="./images/deco-left.png"
+          alt=""
+          aria-hidden="true"
+        />
+        <img
+          class="deco-right"
+          src="./images/deco-right.png"
+          alt=""
+          aria-hidden="true"
+        />
+
+        <div class="container">
+          <div class="section-title reveal">
+            <h2>공지사항</h2>
+            <p>한국한복문화예술협회 문화 소통구</p>
+          </div>
+
+          <div
+            class="notice-tabs reveal"
+            role="tablist"
+            aria-label="공지사항 카테고리"
+          >
+            <button
+              type="button"
+              class="is-active"
+              role="tab"
+              aria-selected="true"
+              data-filter="all"
+            >
+              전체
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected="false"
+              data-filter="notice"
+            >
+              공지사항
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected="false"
+              data-filter="news"
+            >
+              뉴스
+            </button>
+          </div>
+
+          <div class="notice-list">
+            <article class="notice-card reveal is-line" data-category="notice">
+              <span class="label">공지</span>
+              <h3>
+                <a href="javascript:void(0)">2025년도 한국한복문화예술협회 공지사항</a>
+              </h3>
+              <p>
+                행사 및 프로그램과 관련된 중요한 소식을 빠르게 안내해 드립니다.
+                업데이트되는 공지사항을 확인하시고, 놓치지 말고 참여해 주세요!
+              </p>
+              <time datetime="2025-01-16">2025-01-16</time>
+            </article>
+            <article class="notice-card reveal" data-category="notice">
+              <span class="label">공지</span>
+              <h3><a href="javascript:void(0)">공지사항</a></h3>
+              <p>
+                행사 및 프로그램과 관련된 중요한 소식과 안내를 확인하세요. 최신
+                정보를 통해 원활한 참여와 소통을 도와드립니다.
+              </p>
+              <time datetime="2025-01-12">2025-01-12</time>
+            </article>
+            <article class="notice-card reveal" data-category="notice">
+              <span class="label">공지</span>
+              <h3><a href="javascript:void(0)">2025 K-선비한복모델 선발대회</a></h3>
+              <p>
+                전통과 현대가 어우러진 축제의 장으로 여러분을 초대합니다! 다양한
+                공연, 체험 프로그램, 전시 등이 마련되어 있습니다.
+              </p>
+              <time datetime="2025-01-09">2025-01-09</time>
+            </article>
+            <article class="notice-card reveal" data-category="notice">
+              <span class="label">공지</span>
+              <h3>
+                <a href="javascript:void(0)"
+                  >2025년도 각 복지센터와 함께하는 소외 계층을 위한 전통문화
+                  프로그램</a
+                >
+              </h3>
+              <p>
+                한복을 기반으로 다양한 전통문화 체험 프로그램이나 공연 문화
+                행사에 활용하는 경로가 많습니다.
+              </p>
+              <time datetime="2025-01-03">2025-01-03</time>
+            </article>
+            <article class="notice-card reveal" data-category="news">
+              <span class="label news">뉴스</span>
+              <h3>
+                <a href="javascript:void(0)"
+                  >[MJ포토] 아젤리아드레스 입은 주한 지킴이·알리미 디자이너
+                  목포</a
+                >
+              </h3>
+              <p>
+                대한민국 정치문화 기념회 아리아자사동 국제공정가 지난 6월 25일
+                서울 명동 중앙...
+              </p>
+              <time datetime="2021-07-05">2021-07-05</time>
+            </article>
+            <article class="notice-card reveal" data-category="news">
+              <span class="label news">뉴스</span>
+              <h3>
+                <a href="javascript:void(0)"
+                  >[MJ포토] 아젤리아드레스 입은 주한 지킴이·알리미 디자이너
+                  목포</a
+                >
+              </h3>
+              <p>
+                대한민국 정치문화 기념회 아리아자사동 국제공정가 지난 6월 25일
+                서울 명동 중앙...
+              </p>
+              <time datetime="2021-07-05">2021-07-05</time>
+            </article>
+            <article class="notice-card reveal" data-category="news">
+              <span class="label news">뉴스</span>
+              <h3>
+                <a href="javascript:void(0)"
+                  >[MJ포토] 아젤리아드레스 입은 주한 지킴이·알리미 디자이너
+                  목포</a
+                >
+              </h3>
+              <p>
+                대한민국 정치문화 기념회 아리아자사동 국제공정가 지난 6월 25일
+                서울 명동 중앙...
+              </p>
+              <time datetime="2021-07-05">2021-07-05</time>
+            </article>
+            <article class="notice-card reveal" data-category="news">
+              <span class="label news">뉴스</span>
+              <h3>
+                <a href="javascript:void(0)"
+                  >[MJ포토] 아젤리아드레스 입은 주한 지킴이·알리미 디자이너
+                  목포</a
+                >
+              </h3>
+              <p>
+                대한민국 정치문화 기념회 아리아자사동 국제공정가 지난 6월 25일
+                서울 명동 중앙...
+              </p>
+              <time datetime="2021-07-05">2021-07-05</time>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="gallery-section" id="gallery">
+        <div class="gallery-bg" aria-hidden="true"></div>
+        <div class="gallery-wrap">
+          <div class="gallery-title reveal">
+            <h2>갤러리</h2>
+            <p>사진으로 본 문화현장</p>
+          </div>
+          <div class="gallery-window" aria-label="갤러리 이미지 슬라이드">
+            <div class="gallery-list">
+              <a class="gallery-card reveal is-large" href="javascript:void(0)">
+                <img
+                  src="./images/img/image1.png"
+                  alt="제13회 효창원 8위 선열 숭모제전"
+                />
+                <strong>제13회 효창원 8위 선열 숭모제전</strong>
+                <time datetime="2023-11-15">2023-11-15</time>
+              </a>
+              <a class="gallery-card reveal" href="javascript:void(0)">
+                <img src="./images/img/image2.png" alt="한복 문화행사 현장" />
+                <strong>제13회 효창원 8위 선열 숭모제전</strong>
+                <time datetime="2023-11-15">2023-11-15</time>
+              </a>
+              <a class="gallery-card reveal" href="javascript:void(0)">
+                <img src="./images/img/image3.png" alt="어린이 한복 공연" />
+                <strong>제13회 효창원 8위 선열 숭모제전</strong>
+                <time datetime="2023-11-15">2023-11-15</time>
+              </a>
+              <a class="gallery-card reveal" href="javascript:void(0)">
+                <img src="./images/img/image4.png" alt="태극기와 한복 행사" />
+                <strong>제13회 효창원 8위 선열 숭모제전</strong>
+                <time datetime="2023-11-15">2023-11-15</time>
+              </a>
+              <a class="gallery-card reveal" href="javascript:void(0)">
+                <img src="./images/img/image3.png" alt="한복 문화 갤러리" />
+                <strong>제13회 효창원 8위 선열 숭모제전</strong>
+                <time datetime="2023-11-15">2023-11-15</time>
+              </a>
+              <a class="gallery-card reveal" href="javascript:void(0)">
+                <img src="./images/img/image4.png" alt="한복 행사 갤러리" />
+                <strong>제13회 효창원 8위 선열 숭모제전</strong>
+                <time datetime="2023-11-15">2023-11-15</time>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner container">
+        <div class="footer-info">
+          <img src="./images/logo2.png" alt="한국한복문화예술협회" />
+          <p class="footer-text">
+            <span>Homepage : www.kawhk.or.kr</span>
+            <span>Mobile : 010-7385-7888</span>
+            <span>Email : tj442536@naver.com</span>
+            <span
+              >Office : 서울특별시 용산구 효창원로 64길 64, Haum-ro 64-gil,
+              Seoul, Korea</span
+            >
+          </p>
+        </div>
+        <div class="sns-list" aria-label="SNS 링크">
+          <a href="https://www.youtube.com/" aria-label="유튜브"
+            ><img src="./images/icons/youtube.png" alt=""
+          /></a>
+          <a href="https://www.instagram.com/" aria-label="인스타그램"
+            ><img src="./images/icons/instargram.png" alt=""
+          /></a>
+          <a href="https://www.facebook.com/" aria-label="페이스북"
+            ><img src="./images/icons/facebook.png" alt=""
+          /></a>
+          <a href="https://section.blog.naver.com/" aria-label="블로그"
+            ><img src="./images/icons/blog.png" alt=""
+          /></a>
+        </div>
+      </div>
+    </footer>
+
+    <button type="button" class="top-btn" aria-label="맨 위로 이동">↑</button>
+    <script src="./script/main.js"></script>
+</body>
+</html>
