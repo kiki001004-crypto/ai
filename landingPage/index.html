@@ -1,20 +1,20 @@
 <!doctype html>
 <html lang="ko">
   <head>
-    <meta charset="utf-8" >
-    <meta name="viewport" content="width=device-width, initial-scale=1" >
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
       content="퍼스널 컬러 리얼 모델 모집 랜딩페이지. 모델 모집 안내, 지원 분야, 사진 첨부 가이드, 신청 모달을 제공하는 정적 웹페이지입니다."
-    >
+    />
     <title>리얼모델모집 | 퍼스널 컬러 모델 지원</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" >
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin >
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&family=Montserrat:wght@700;800;900&display=swap"
       rel="stylesheet"
-    >
-    <link rel="stylesheet" href="./css/style.css" >
+    />
+    <link rel="stylesheet" href="./css/style.css" />
     <script defer src="./script/script.js"></script>
   </head>
 
@@ -26,7 +26,7 @@
     <header class="site-header" id="siteHeader">
       <a href="#hero" class="brand" aria-label="상단으로 이동">
         <span class="brand-symbol" aria-hidden="true">J</span>
-        <span class="brand-text">JAYJUN MODEL</span>
+        <span class="brand-text">JIYEON MODEL</span>
       </a>
 
       <nav class="header-nav" aria-label="페이지 섹션 이동">
@@ -51,7 +51,9 @@
             </h1>
             <p class="hero-subtitle">퍼스널 컬러 · 뷰티 콘텐츠 리얼모델 모집</p>
             <div class="hero-actions">
-              <button class="btn btn-deep" type="button" data-open-modal>지금 지원하기</button>
+              <button class="btn btn-deep" type="button" data-open-modal>
+                지금 지원하기
+              </button>
               <a class="btn btn-light" href="#recruit">모집 안내 보기</a>
             </div>
           </div>
@@ -73,7 +75,11 @@
         </div>
       </section>
 
-      <div class="model-gallery section-white" role="region" aria-labelledby="galleryTitle">
+      <div
+        class="model-gallery section-white"
+        role="region"
+        aria-labelledby="galleryTitle"
+      >
         <div class="container">
           <div class="model-card-row" id="galleryTitle">
             <div class="model-card reveal">
@@ -89,11 +95,15 @@
               <span>BEAUTY MODEL</span>
             </div>
           </div>
-          <div class="brand-line reveal">JAYJUN BEAUTY STUDIO</div>
+          <div class="brand-line reveal">JIYEON BEAUTY STUDIO</div>
         </div>
       </div>
 
-      <section id="recruit" class="recruit-section" aria-labelledby="recruitTitle">
+      <section
+        id="recruit"
+        class="recruit-section"
+        aria-labelledby="recruitTitle"
+      >
         <div class="container recruit-inner reveal">
           <div class="recruit-copy">
             <p class="section-kicker">RECRUIT INFO</p>
@@ -146,7 +156,9 @@
           <div class="notice-box">
             <h3>모델 지원 신청 시 주의사항</h3>
             <ul>
-              <li>모델의 초상권은 브랜드 홍보 목적에 한해 사용될 수 있습니다.</li>
+              <li>
+                모델의 초상권은 브랜드 홍보 목적에 한해 사용될 수 있습니다.
+              </li>
               <li>지원자가 많을 경우 연락이 지연될 수 있습니다.</li>
               <li>상세 일정은 개별 연락 후 조율됩니다.</li>
             </ul>
@@ -154,15 +166,27 @@
         </div>
       </section>
 
-      <section id="programs" class="programs-section section-white" aria-labelledby="programsTitle">
+      <section
+        id="programs"
+        class="programs-section section-white"
+        aria-labelledby="programsTitle"
+      >
         <div class="container">
           <div class="section-head center reveal">
             <p class="section-kicker">PROGRAMS</p>
             <h2 id="programsTitle">지원 가능한 프로그램</h2>
-            <p>원하는 분야를 선택하면 신청 모달의 프로그램 항목에 바로 반영됩니다.</p>
+            <p>
+              원하는 분야를 선택하면 신청 모달의 프로그램 항목에 바로
+              반영됩니다.
+            </p>
           </div>
 
-          <div id="programList" class="program-grid" role="list" aria-label="프로그램 목록">
+          <div
+            id="programList"
+            class="program-grid"
+            role="list"
+            aria-label="프로그램 목록"
+          >
             <div class="skeleton-card"></div>
             <div class="skeleton-card"></div>
             <div class="skeleton-card"></div>
@@ -170,32 +194,88 @@
         </div>
       </section>
 
-      <section id="photoGuide" class="photo-guide section-white" aria-label="포토 가이드">
+      <section
+        id="photoGuide"
+        class="photo-guide section-white"
+        aria-label="포토 가이드"
+      >
         <div class="container narrow-container">
           <div class="guide-box reveal">
             <div class="guide-title">
-              <strong>사진첨부 전<br >필수 확인!</strong>
+              <strong>사진첨부 전<br />필수 확인!</strong>
             </div>
             <div class="guide-content">
-              <div class="tab-buttons" role="tablist" aria-label="사진 첨부 가이드 탭">
-                <button id="tabFace" class="tab-button active" type="button" role="tab" aria-selected="true" aria-controls="panelFace" data-tab="face">FACE</button>
-                <button id="tabStyle" class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="panelStyle" data-tab="style">STYLE</button>
-                <button id="tabConsent" class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="panelConsent" data-tab="consent">CHECK</button>
+              <div
+                class="tab-buttons"
+                role="tablist"
+                aria-label="사진 첨부 가이드 탭"
+              >
+                <button
+                  id="tabFace"
+                  class="tab-button active"
+                  type="button"
+                  role="tab"
+                  aria-selected="true"
+                  aria-controls="panelFace"
+                  data-tab="face"
+                >
+                  FACE
+                </button>
+                <button
+                  id="tabStyle"
+                  class="tab-button"
+                  type="button"
+                  role="tab"
+                  aria-selected="false"
+                  aria-controls="panelStyle"
+                  data-tab="style"
+                >
+                  STYLE
+                </button>
+                <button
+                  id="tabConsent"
+                  class="tab-button"
+                  type="button"
+                  role="tab"
+                  aria-selected="false"
+                  aria-controls="panelConsent"
+                  data-tab="consent"
+                >
+                  CHECK
+                </button>
               </div>
 
-              <div id="panelFace" class="tab-panel active" role="tabpanel" aria-labelledby="tabFace" data-panel="face">
+              <div
+                id="panelFace"
+                class="tab-panel active"
+                role="tabpanel"
+                aria-labelledby="tabFace"
+                data-panel="face"
+              >
                 <ol>
                   <li>메이크업과 보정 필터를 최소화한 정면, 45도, 측면 사진</li>
                   <li>자신 있는 셀카 사진 1장 포함</li>
                 </ol>
               </div>
-              <div id="panelStyle" class="tab-panel" role="tabpanel" aria-labelledby="tabStyle" data-panel="style">
+              <div
+                id="panelStyle"
+                class="tab-panel"
+                role="tabpanel"
+                aria-labelledby="tabStyle"
+                data-panel="style"
+              >
                 <ol>
                   <li>상반신이 보이는 밝은 사진</li>
                   <li>평소 즐겨 입는 스타일 사진 1장 포함</li>
                 </ol>
               </div>
-              <div id="panelConsent" class="tab-panel" role="tabpanel" aria-labelledby="tabConsent" data-panel="consent">
+              <div
+                id="panelConsent"
+                class="tab-panel"
+                role="tabpanel"
+                aria-labelledby="tabConsent"
+                data-panel="consent"
+              >
                 <ol>
                   <li>사진 사용 범위는 선정 후 별도 안내됩니다.</li>
                   <li>최종 촬영 일정은 개별 상담 후 확정됩니다.</li>
@@ -210,31 +290,66 @@
               <h3>STYLE 예시</h3>
             </div>
             <div class="example-grid">
-              <figure class="photo-example"><span class="example-face front"></span><figcaption>정면</figcaption></figure>
-              <figure class="photo-example"><span class="example-face angle"></span><figcaption>45도</figcaption></figure>
-              <figure class="photo-example"><span class="example-face side"></span><figcaption>측면</figcaption></figure>
-              <figure class="photo-example"><span class="example-face selfie"></span><figcaption>셀카</figcaption></figure>
-              <figure class="photo-example"><span class="example-body front"></span><figcaption>정면</figcaption></figure>
-              <figure class="photo-example"><span class="example-body angle"></span><figcaption>45도</figcaption></figure>
-              <figure class="photo-example"><span class="example-body side"></span><figcaption>측면</figcaption></figure>
-              <figure class="photo-example"><span class="example-body selfie"></span><figcaption>셀카</figcaption></figure>
+              <figure class="photo-example">
+                <span class="example-face front"></span>
+                <figcaption>정면</figcaption>
+              </figure>
+              <figure class="photo-example">
+                <span class="example-face angle"></span>
+                <figcaption>45도</figcaption>
+              </figure>
+              <figure class="photo-example">
+                <span class="example-face side"></span>
+                <figcaption>측면</figcaption>
+              </figure>
+              <figure class="photo-example">
+                <span class="example-face selfie"></span>
+                <figcaption>셀카</figcaption>
+              </figure>
+              <figure class="photo-example">
+                <span class="example-body front"></span>
+                <figcaption>정면</figcaption>
+              </figure>
+              <figure class="photo-example">
+                <span class="example-body angle"></span>
+                <figcaption>45도</figcaption>
+              </figure>
+              <figure class="photo-example">
+                <span class="example-body side"></span>
+                <figcaption>측면</figcaption>
+              </figure>
+              <figure class="photo-example">
+                <span class="example-body selfie"></span>
+                <figcaption>셀카</figcaption>
+              </figure>
             </div>
           </div>
 
           <div class="center-button reveal">
-            <button class="btn btn-wine" type="button" data-open-modal>지원하기</button>
+            <button class="btn btn-wine" type="button" data-open-modal>
+              지원하기
+            </button>
           </div>
         </div>
       </section>
 
-      <section id="reviews" class="reviews-section" aria-labelledby="reviewsTitle">
+      <section
+        id="reviews"
+        class="reviews-section"
+        aria-labelledby="reviewsTitle"
+      >
         <div class="container">
           <div class="section-head center reveal">
             <p class="section-kicker">REVIEW</p>
             <h2 id="reviewsTitle">참여자 후기</h2>
             <p>선정 전 궁금한 분위기와 경험을 후기로 확인하세요.</p>
           </div>
-          <div id="reviewList" class="review-grid" role="list" aria-label="후기 목록">
+          <div
+            id="reviewList"
+            class="review-grid"
+            role="list"
+            aria-label="후기 목록"
+          >
             <div class="skeleton-card"></div>
             <div class="skeleton-card"></div>
             <div class="skeleton-card"></div>
@@ -242,7 +357,11 @@
         </div>
       </section>
 
-      <section id="faq" class="faq-section section-white" aria-labelledby="faqTitle">
+      <section
+        id="faq"
+        class="faq-section section-white"
+        aria-labelledby="faqTitle"
+      >
         <div class="container narrow-container">
           <div class="section-head center reveal">
             <p class="section-kicker">FAQ</p>
@@ -271,38 +390,78 @@
       <p>© JAYJUN Beauty Studio. All rights reserved.</p>
     </footer>
 
-    <button class="top-button" id="topButton" type="button" aria-label="맨 위로 이동">
+    <button
+      class="top-button"
+      id="topButton"
+      type="button"
+      aria-label="맨 위로 이동"
+    >
       <span class="top-button-progress" aria-hidden="true"></span>
       <span class="top-button-arrow" aria-hidden="true">↑</span>
     </button>
 
     <div class="modal-overlay" id="applicationModal" aria-hidden="true">
-      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-        <button class="modal-close" type="button" aria-label="신청 팝업 닫기" data-close-modal>×</button>
+      <div
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modalTitle"
+      >
+        <button
+          class="modal-close"
+          type="button"
+          aria-label="신청 팝업 닫기"
+          data-close-modal
+        >
+          ×
+        </button>
 
         <div id="formState" class="modal-state active">
           <div class="modal-icon" aria-hidden="true">✦</div>
           <p class="modal-eyebrow">MODEL APPLY</p>
           <h2 id="modalTitle">리얼모델 지원하기</h2>
-          <p class="modal-desc">간단한 정보를 남겨주시면 담당자가 순차적으로 연락드립니다.</p>
+          <p class="modal-desc">
+            간단한 정보를 남겨주시면 담당자가 순차적으로 연락드립니다.
+          </p>
 
           <form id="applicationForm" class="application-form" novalidate>
             <div class="field-group">
               <label for="name">이름</label>
-              <input id="name" name="name" type="text" autocomplete="name" placeholder="성함을 입력해 주세요" >
+              <input
+                id="name"
+                name="name"
+                type="text"
+                autocomplete="name"
+                placeholder="성함을 입력해 주세요"
+              />
               <p id="nameError" class="field-error" aria-live="polite"></p>
             </div>
 
             <div class="field-group">
               <label for="tel">연락처</label>
-              <input id="tel" name="tel" type="tel" inputmode="numeric" autocomplete="tel" placeholder="010-0000-0000" >
+              <input
+                id="tel"
+                name="tel"
+                type="tel"
+                inputmode="numeric"
+                autocomplete="tel"
+                placeholder="010-0000-0000"
+              />
               <p id="telError" class="field-error" aria-live="polite"></p>
             </div>
 
             <div class="field-row">
               <div class="field-group">
                 <label for="age">나이</label>
-                <input id="age" name="age" type="number" inputmode="numeric" min="19" max="60" placeholder="예: 25" >
+                <input
+                  id="age"
+                  name="age"
+                  type="number"
+                  inputmode="numeric"
+                  min="19"
+                  max="60"
+                  placeholder="예: 25"
+                />
                 <p id="ageError" class="field-error" aria-live="polite"></p>
               </div>
 
@@ -311,30 +470,51 @@
                 <select id="objective" name="objective">
                   <option value="">선택해 주세요</option>
                 </select>
-                <p id="objectiveError" class="field-error" aria-live="polite"></p>
+                <p
+                  id="objectiveError"
+                  class="field-error"
+                  aria-live="polite"
+                ></p>
               </div>
             </div>
 
             <div class="field-group">
               <label for="question">문의내용 <span>선택</span></label>
-              <textarea id="question" name="question" rows="3" placeholder="희망 일정이나 궁금한 점을 남겨주세요"></textarea>
+              <textarea
+                id="question"
+                name="question"
+                rows="3"
+                placeholder="희망 일정이나 궁금한 점을 남겨주세요"
+              ></textarea>
             </div>
 
             <label class="agreement">
-              <input id="agreement" name="agreement" type="checkbox" >
+              <input id="agreement" name="agreement" type="checkbox" />
               <span>개인정보 수집 및 이용에 동의합니다.</span>
             </label>
-            <p id="agreementError" class="field-error agreement-error" aria-live="polite"></p>
+            <p
+              id="agreementError"
+              class="field-error agreement-error"
+              aria-live="polite"
+            ></p>
 
-            <button id="submitButton" class="modal-submit" type="submit">신청 완료하기</button>
+            <button id="submitButton" class="modal-submit" type="submit">
+              신청 완료하기
+            </button>
           </form>
         </div>
 
-        <div id="successState" class="modal-state success-state" aria-live="polite">
+        <div
+          id="successState"
+          class="modal-state success-state"
+          aria-live="polite"
+        >
           <div class="success-check" aria-hidden="true">✓</div>
           <h2>신청이 완료되었습니다!</h2>
           <p>확인 후 담당자가 순차적으로 연락드릴게요.</p>
-          <button class="modal-submit" type="button" data-close-modal>확인</button>
+          <button class="modal-submit" type="button" data-close-modal>
+            확인
+          </button>
         </div>
       </div>
     </div>
