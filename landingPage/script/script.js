@@ -374,6 +374,7 @@
       validateField("objective");
     }
 
+    syncSubmitAvailability();
     window.setTimeout(() => elements.fields.name.focus(), 80);
   }
 
@@ -427,6 +428,13 @@
     return ["name", "tel", "age", "objective", "agreement"].every(validateField);
   }
 
+  function syncSubmitAvailability() {
+    if (!elements.submitButton || !elements.fields.agreement) return;
+    const isAllowed = elements.fields.agreement.checked;
+    elements.submitButton.disabled = !isAllowed;
+    elements.submitButton.setAttribute("aria-disabled", String(!isAllowed));
+  }
+
   function formatPhoneInput(value) {
     const digits = value.replace(/\D/g, "").slice(0, 11);
     if (digits.length <= 3) return digits;
@@ -448,7 +456,12 @@
     });
     elements.fields.tel.addEventListener("blur", () => validateField("tel"));
 
-    elements.fields.agreement.addEventListener("change", () => validateField("agreement"));
+    elements.fields.agreement.addEventListener("change", () => {
+      validateField("agreement");
+      syncSubmitAvailability();
+    });
+
+    syncSubmitAvailability();
   }
 
   function getToday() {
@@ -544,6 +557,7 @@
   function resetForm() {
     elements.form.reset();
     ["name", "tel", "age", "objective", "agreement"].forEach((fieldName) => setFieldError(fieldName, ""));
+    syncSubmitAvailability();
   }
 
   async function handleSubmit(event) {
@@ -576,10 +590,10 @@
         elements.submitButton.textContent = originalText;
       }, 1600);
     } finally {
-      elements.submitButton.disabled = false;
       if (elements.submitButton.textContent === "처리 중...") {
         elements.submitButton.textContent = originalText;
       }
+      syncSubmitAvailability();
     }
   }
 
