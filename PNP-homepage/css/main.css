@@ -1,0 +1,1023 @@
+/* ==============================
+  main.css
+  메인페이지 전용 스타일
+============================== */
+
+/* ==============================
+  1. Main Visual
+============================== */
+.main-visual {
+  position: relative;
+  overflow: hidden;
+  background: #020916;
+}
+
+.main-visual-slider {
+  position: relative;
+  width: 100%;
+  height: 975px;
+  overflow: hidden;
+}
+
+.main-visual-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transform: translateX(0);
+  transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.main-visual-slide {
+  flex: 0 0 100%;
+  display: flex;
+  align-items: flex-start;
+  height: 100%;
+  padding-top: 190px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+/* 이미지 경로는 네가 실제 이미지명으로 교체 */
+.main-visual-slide01 {
+  background-image: url("../images/main/main-Slide1.png");
+}
+
+.main-visual-slide02 {
+  background-image: url("../images/main/main-Slide2.png");
+}
+
+.main-visual-slide03 {
+  background-image: url("../images/main/main-Slide3.png");
+}
+
+.main-visual-inner {
+  position: relative;
+  z-index: 2;
+}
+
+.main-visual-content {
+  max-width: 560px;
+  color: var(--white);
+}
+
+.main-visual-title {
+  font-size: 70px;
+  line-height: 1.28;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+
+.main-visual-desc {
+  margin-top: 28px;
+  font-size: 30px;
+  line-height: 1.55;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.main-visual-btns {
+  display: flex;
+  gap: 14px;
+  margin-top: 34px;
+}
+
+.main-visual-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 259px;
+  height: 73px;
+  padding: 0 24px;
+  border-radius: 999px;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.main-visual-btn-primary {
+  color: #071735;
+  background: var(--point);
+  border: 1px solid transparent;
+}
+
+.main-visual-btn-primary:hover {
+  color: #071735;
+  background: var(--white);
+  border-color: var(--white);
+}
+
+.main-visual-btn-outline {
+  color: var(--white);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+.main-visual-btn-outline:hover {
+  color: #071735;
+  background: var(--white);
+}
+
+.main-visual-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 50%;
+  color: var(--white);
+  background: rgba(0, 0, 0, 0.48);
+  transform: translateY(-50%);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.main-visual-arrow:hover {
+  border-color: var(--white);
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.main-visual-arrow span {
+  display: block;
+  font-size: 42px;
+  line-height: 0.7;
+  transform: translateY(-2px);
+}
+
+.main-visual-prev {
+  left: calc((100% - var(--inner-size)) / 2 - 170px);
+}
+
+.main-visual-next {
+  right: calc((100% - var(--inner-size)) / 2 - 170px);
+}
+
+.main-visual-dots {
+  position: absolute;
+  left: 50%;
+  bottom: 86px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transform: translateX(-50%);
+}
+
+.main-visual-dots button {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.48);
+  transition: width 0.2s ease, background-color 0.2s ease;
+}
+
+.main-visual-dots button.is-active {
+  width: 34px;
+  background: var(--white);
+}
+
+/* ==============================
+  2. Key Points
+============================== */
+.main-keypoints {
+  position: relative;
+  z-index: 10;
+  margin-top: -42px;
+}
+
+.keypoint-inner {
+  width: min(1824px, calc(100% - 48px));
+  margin-inline: auto;
+}
+
+.keypoint-box {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  min-height: 254px;
+  overflow: hidden;
+  border-radius: 16px;
+  background: var(--white);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
+}
+
+.keypoint-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  padding: 0 42px;
+}
+
+.keypoint-item + .keypoint-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 28px;
+  bottom: 28px;
+  width: 1px;
+  background: #d9d9d9;
+}
+
+.keypoint-icon {
+  flex: 0 0 100px;
+}
+
+.keypoint-icon img {
+  width: 100px;
+  height: auto;
+}
+
+.keypoint-text strong {
+  display: block;
+  font-size: 29px;
+  line-height: 1.35;
+  font-weight: 700;
+  color: #111;
+}
+
+.keypoint-text p {
+  margin-top: 12px;
+  font-size: 20px;
+  line-height: 1.5;
+  font-weight: 500;
+  color: #555;
+}
+
+/* ==============================
+  3. Common Main Section
+============================== */
+.main-section {
+  padding-top: 100px;
+}
+
+.main-section-head {
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+.main-section-title {
+  font-size: 45px;
+  line-height: 1.35;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--navy);
+}
+
+.main-section-desc {
+  margin-top: 10px;
+  font-size: 22px;
+  line-height: 1.6;
+  font-weight: 500;
+  color: var(--gray-700);
+}
+
+/* ==============================
+  4. Solution
+============================== */
+.solution-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  margin: 0 auto;
+}
+
+.solution-card {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  min-height: 550px;
+  padding: 32px 28px;
+  border-radius: 10px;
+  color: var(--white);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.solution-card:visited {
+  color: var(--white);
+}
+
+.solution-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.34), rgba(0, 0, 0, 0.06));
+}
+
+.solution-card span,
+.solution-card strong {
+  position: relative;
+  z-index: 2;
+  display: block;
+}
+
+.solution-card span {
+  font-size: 48px;
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.solution-card strong {
+  margin-top: 8px;
+  font-size: 24px;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+/* 이미지 경로는 네가 실제 이미지명으로 교체 */
+.solution-card01 {
+  background-image: url("../images/main/solution01.png");
+}
+
+.solution-card02 {
+  background-image: url("../images/main/solution02.png");
+}
+
+/* ==============================
+  5. Business
+============================== */
+.business-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 300px);
+  justify-content: space-between;
+  gap: 0px;
+  margin: 0 auto;
+}
+
+.business-card {
+  display: block;
+  width: 300px;
+  min-height: 466px;
+  padding: 48px 22px 36px;
+  border-radius: 8px;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.business-card:visited {
+  color: inherit;
+}
+
+.business-card-blue {
+  background: #eef3ff;
+}
+
+.business-card-green {
+  background: #f1f8eb;
+}
+
+.business-card-sky {
+  background: #eef8fb;
+}
+
+.business-card-purple {
+  background: #f4f0ff;
+}
+
+.business-icon {
+  display: flex;
+  justify-content: center;
+  height: 130px;
+  margin-bottom: 32px;
+}
+
+.business-icon img {
+  width: 130px;
+  height: auto;
+  object-fit: contain;
+}
+
+.business-card h3 {
+  margin-bottom: 16px;
+  font-size: 28px;
+  line-height: 1.35;
+  font-weight: 700;
+  text-align: center;
+  color: var(--primary);
+}
+
+.business-card-blue h3 {
+  color: #004CCD;
+}
+
+.business-card-green h3 {
+  color: #4F7522;
+}
+
+.business-card-sky h3 {
+  color: #3C4D7B;
+}
+
+.business-card-purple h3 {
+  color: #0033FF;
+}
+
+.business-card ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 17px;
+  line-height: 1.5;
+  font-weight: 500;
+  color: #444;
+}
+
+.business-card li {
+  position: relative;
+  padding-left: 12px;
+  white-space: nowrap;
+}
+
+.business-card li + li {
+  margin-top: 16px;
+}
+
+.business-card li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 11px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* ==============================
+  6. Partner
+============================== */
+.main-partner {
+  padding-bottom: 100px;
+}
+
+.partner-title {
+  margin-bottom: 20px;
+  font-size: 32px;
+  line-height: 1.4;
+  font-weight: 700;
+  text-align: center;
+  color: var(--navy);
+}
+
+.partner-box {
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 14px;
+  background: var(--white);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+}
+
+.partner-list {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  align-items: center;
+}
+
+.partner-list li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 120px;
+  padding: 0 18px;
+}
+
+.partner-list li + li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 18px;
+  bottom: 18px;
+  width: 1px;
+  background: #e2e2e2;
+}
+
+.partner-list img {
+  display: block;
+  object-fit: contain;
+}
+
+/* LG CNS */
+.partner-list li:nth-child(1) img {
+  width: 112px;
+  height: 28px;
+}
+
+/* SK */
+.partner-list li:nth-child(2) img {
+  width: 112px;
+  height: 60px;
+}
+
+/* SAMSUNG SDS */
+.partner-list li:nth-child(3) img {
+  width: 132px;
+  height: 16px;
+}
+
+/* IBM */
+.partner-list li:nth-child(4) img {
+  width: 42px;
+  height: 17px;
+}
+
+/* NH */
+.partner-list li:nth-child(5) img {
+  width: 132px;
+  height: 20px;
+}
+
+/* MG */
+.partner-list li:nth-child(6) img {
+  width: 150px;
+  height: 28px;
+}
+
+.partner-list a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* ==============================
+  Interaction
+  키워드 / 주요솔루션 / 핵심사업분야
+============================== */
+@media (hover: hover) and (pointer: fine) {
+  /* 키워드 */
+  .keypoint-item {
+    transition: background-color 0.25s ease, transform 0.25s ease;
+  }
+
+  .keypoint-icon img {
+    transition: transform 0.25s ease;
+  }
+
+  .keypoint-text strong {
+    transition: color 0.25s ease;
+  }
+
+  .keypoint-item:hover {
+    background: #f5f8ff;
+    transform: translateY(-6px);
+  }
+
+  .keypoint-item:hover .keypoint-icon img {
+    transform: scale(1.08);
+  }
+
+  .keypoint-item:hover .keypoint-text strong {
+    color: var(--primary);
+  }
+
+  /* 주요솔루션 */
+  .solution-card {
+    transition: transform 0.28s ease, box-shadow 0.28s ease;
+  }
+
+  .solution-card::after {
+    transition: background 0.28s ease;
+  }
+
+  .solution-card span,
+  .solution-card strong {
+    transition: transform 0.28s ease;
+  }
+
+  .solution-card:hover {
+  transform: translateY(-6px) scale(1.05);
+  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.18);
+}
+
+  .solution-card:hover::after {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.44), rgba(0, 0, 0, 0.1));
+  }
+
+  .solution-card:hover span,
+  .solution-card:hover strong {
+    transform: translateY(-4px);
+  }
+
+  /* 핵심사업분야 */
+  .business-card {
+    transition: transform 0.28s ease, box-shadow 0.28s ease;
+  }
+
+  .business-icon img {
+    transition: transform 0.28s ease;
+  }
+
+  .business-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.14);
+  }
+
+  .business-card:hover .business-icon img {
+    transform: translateY(-6px) scale(1.06);
+  }
+}
+
+/* 파트너 */
+  .partner-list a {
+    transition: transform 0.22s ease, opacity 0.22s ease;
+  }
+
+  .partner-list a:hover {
+    transform: translateY(-2px);
+    opacity: 0.75;
+  }
+
+/* ==============================
+  7. Mobile Main Only
+  PC 기본 스타일 영향 없음
+============================== */
+@media (max-width: 900px) {
+  .site-main {
+    overflow: hidden;
+  }
+  .mo-hide{
+    display: none;
+  }
+
+  /* Main Visual */
+
+  .main-visual {
+    background: #020916;
+  }
+
+  .main-visual-slider {
+    width: 100%;
+    height: 360px;
+    overflow: hidden;
+  }
+
+  .main-visual-track {
+    width: 100%;
+    height: 100%;
+  }
+
+  .main-visual-slide {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 360px;
+    padding: 0;
+    background-size: cover;
+    background-position: center center;
+}
+
+  .main-visual-inner {
+    width: 328px;
+  max-width: calc(100% - 32px);
+  margin-inline: auto;
+  }
+
+  .main-visual-content {
+    width: 100%;
+    padding-top: 18px;
+    padding-right: 0px;
+    box-sizing: border-box;
+    text-align: right;
+  }
+
+  .main-visual-title {
+    width: 100%;
+    max-width: none;
+    margin-left: 0;
+    font-size: 22px;
+    line-height: 1.28;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    text-align: right;
+    color: white;
+    text-shadow: 0 3px 8px rgba(0, 0, 0, 0.8);
+  }
+
+  .main-visual-title br:nth-of-type(2) {
+    display: none;
+  }
+
+  .main-visual-desc {
+    width: fit-content;
+    max-width: 230px;
+    margin: 12px 0 0 auto;
+    padding: 6px 0 6px 9px;
+    border-radius: 8px 0 0 8px;
+    font-size: 12px;
+    line-height: 1.45;
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    color: #dbe8ff;
+    text-align: right;
+    background: rgba(0, 0, 0, 0.42);
+    text-shadow: none;
+  }
+
+  .main-visual-btns,
+  .main-visual-arrow,
+  .main-visual-dots {
+    display: none;
+  }
+
+  /* Key Points */
+  .main-keypoints {
+    position: relative;
+    z-index: 5;
+    margin-top: -32px;
+  }
+
+  .keypoint-inner {
+     width: calc(100% - 32px);
+     max-width: 328px;
+     margin-inline: auto;
+  }
+
+  .keypoint-box {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    width: 328px;
+    max-width: 100%;
+    min-height: 60px;
+    border-radius: 18px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+  }
+
+  .keypoint-item {
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    min-height: 0;
+    padding: 0 4px;
+    text-align: center;
+  }
+
+  .keypoint-item + .keypoint-item::before,
+  .keypoint-item:nth-child(odd)::after {
+    display: none;
+  }
+
+  .keypoint-item + .keypoint-item {
+    border-left: 1px solid #eeeeee;
+  }
+
+  .keypoint-icon {
+    flex: 0 0 auto;
+  }
+
+  .keypoint-icon img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+  }
+
+  .keypoint-text strong {
+    font-size: 8px;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+  }
+
+  .keypoint-text p {
+    display: none;
+  }
+
+  /* Section Common */
+  .main-section {
+    padding-top: 30px;
+  }
+
+  .main-section-head {
+    margin-bottom: 12px;
+  }
+
+  .main-solution .inner,
+  .main-business .inner,
+  .main-partner .inner {
+     width: calc(100% - 32px);
+     max-width: 328px;
+     margin-inline: auto;
+  }
+
+  .main-section-title {
+    font-size: 16px;
+    line-height: 1.3;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    text-align: center;
+  }
+
+  .main-section-desc {
+    margin-top: 4px;
+    font-size: 10px;
+    line-height: 1.45;
+    font-weight: 400;
+    letter-spacing: -0.04em;
+    text-align: center;
+  }
+
+  /* Solution */
+  .solution-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    max-width: none;
+    margin-top: 0;
+  }
+
+  .solution-card {
+    width: 328px;
+    height: 215px;
+    min-height: 0;
+    margin: 0 auto;
+    padding: 16px;
+    box-sizing: border-box;
+    background-size: cover;
+    background-position: center center;
+  }
+
+  .solution-card span {
+    font-size: 24px;
+    line-height: 1.22;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+  }
+
+  .solution-card strong {
+    margin-top: 8px;
+    font-size: 16px;
+    line-height: 1.35;
+    font-weight: 600;
+    letter-spacing: -0.05em;
+  }
+
+  /* Business */
+  .main-business {
+    padding-top: 28px;
+  }
+
+  .business-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-content: initial;
+    gap: 8px;
+    max-width: none;
+    margin-top: 0;
+  }
+
+  .business-card {
+    width: auto;
+    height: 193px;
+    min-height: 193px;
+    padding: 20px 8px 12px;
+    border-radius: 8px;
+  }
+
+  .business-icon {
+    height: 62px;
+    margin-bottom: 8px;
+  }
+
+  .business-icon img {
+    width: 62px;
+    height: 62px;
+    object-fit: contain;
+  }
+
+  .business-card h3 {
+    margin-bottom: 10px;
+    font-size: 13px;
+    line-height: 1.25;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    text-align: center;
+  }
+
+  .business-card ul {
+    padding-left: 6px;
+    font-size: 9px;
+    line-height: 1.55;
+    font-weight: 500;
+    letter-spacing: -0.06em;
+  }
+
+  .business-card li {
+    padding-left: 6px;
+    white-space: nowrap;
+  }
+
+  .business-card li + li {
+    margin-top: 3px;
+  }
+
+  .business-card li::before {
+    top: 5px;
+    width: 2px;
+    height: 2px;
+  }
+
+  /* Partner */
+  .main-partner {
+    padding-top: 24px;
+    padding-bottom: 20px;
+  }
+
+  .partner-title {
+    margin-bottom: 10px;
+    font-size: 13px;
+    line-height: 1.3;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .partner-box {
+    height: 38px;
+    padding: 0 12px;
+    border-radius: 14px;
+  }
+
+  .partner-list {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    gap: 0;
+  }
+
+  .partner-list li {
+    height: 38px;
+    padding: 0;
+    border-top: 0;
+  }
+
+  .partner-list li + li::before,
+  .partner-list li:nth-child(odd)::before {
+    display: none;
+  }
+
+  .partner-list img {
+    display: block;
+    object-fit: contain;
+  }
+
+  .partner-list li:nth-child(1) img {
+    width: 33px;
+    height: 8px;
+  }
+
+  .partner-list li:nth-child(2) img {
+    width: 33px;
+    height: 18px;
+  }
+
+  .partner-list li:nth-child(3) img {
+    width: 39px;
+    height: 5px;
+  }
+
+  .partner-list li:nth-child(4) img {
+    width: 19px;
+    height: 8px;
+  }
+
+  .partner-list li:nth-child(5) img {
+    width: 42px;
+    height: 6px;
+  }
+
+  .partner-list li:nth-child(6) img {
+    width: 48px;
+    height: 9px;
+  }
+
+  /* ==============================
+    Mobile Images
+  ============================== */
+
+  .main-visual-slide01 {
+    background-image: url("../images/main/mo-mainSlide1.png");
+  }
+
+  .main-visual-slide02 {
+    background-image: url("../images/main/mo-mainSlide2.png");
+  }
+
+  .main-visual-slide03 {
+    background-image: url("../images/main/mo-mainSlide3.png");
+  }
+
+  .solution-card01 {
+    background-image: url("../images/main/mo-solution01.png");
+  }
+
+  .solution-card02 {
+    background-image: url("../images/main/mo-solution02.png");
+  }
+
+}
+

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>개인정보처리방침</title>
+
+  <!-- 모든 페이지 공통 CSS -->
+  <link rel="stylesheet" href="./css/common.css" />
+  <link rel="stylesheet" href="./css/sub.css" />
+</head>
+<body>
+  <!-- 키보드 접근성: 본문 바로가기 -->
+  <a href="#content" class="skip-link">본문 바로가기</a>
+
+  <!-- ==============================
+    Header
+    - 모든 페이지 공통 영역
+    - PC: 1차 메뉴 hover 시 2차 메뉴 노출
+    - Mobile: 같은 메뉴 구조를 슬라이드/아코디언으로 사용
+  =============================== -->
+  <header class="site-header">
+    <!-- 모바일 메뉴가 열렸을 때 배경 클릭용 dim -->
+    <div class="gnb-dim" aria-hidden="true"></div>
+
+    <div class="inner header-inner">
+      <!-- 로고: 실제 파일명에 맞게 src 경로만 바꾸면 됩니다. -->
+      <h1 class="logo">
+        <a href="./index.html" aria-label="PNPC 메인으로 이동">
+          <img src="./images/icon/pnpc-logo(color).png" alt="PNPC" />
+        </a>
+      </h1>
+
+      <!-- GNB: PC와 모바일이 같은 HTML을 사용하므로 메뉴를 중복 작성하지 않음 -->
+      <nav id="siteGnb" class="gnb" aria-label="주요 메뉴">
+        <!-- 모바일 메뉴 상단 영역 -->
+        <div class="gnb-mobile-head">
+          <a href="./index.html" class="gnb-mobile-logo" aria-label="PNPC 메인으로 이동">
+            <img src="./images/icon/pnpc-mologo(color).png" alt="PNPC" />
+          </a>
+          <button type="button" class="gnb-close" aria-label="모바일 메뉴 닫기">
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+
+        <ul class="gnb-list">
+          <!-- 현재 페이지의 1차 메뉴에만 is-current를 붙입니다. -->
+          <li class="gnb-item has-depth">
+            <a href="./company-greeting.html" class="gnb-link">회사소개</a>
+            <div class="gnb-depth">
+              <div class="gnb-depth-inner">
+                <ul class="gnb-depth-list">
+                  <li><a href="./company-greeting.html" class="gnb-depth-link">CEO 인사말</a></li>
+                  <li><a href="./company-overview.html" class="gnb-depth-link">회사개요</a></li>
+                  <li><a href="./history.html" class="gnb-depth-link">연혁</a></li>
+                  <li><a href="./organization.html" class="gnb-depth-link">조직도</a></li>
+                  <li><a href="./location.html" class="gnb-depth-link">오시는 길</a></li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+          <li class="gnb-item has-depth">
+            <a href="./business-data.html" class="gnb-link">사업영역</a>
+            <div class="gnb-depth">
+              <div class="gnb-depth-inner">
+                <ul class="gnb-depth-list">
+                  <li><a href="./business-data.html" class="gnb-depth-link">데이터사업부</a></li>
+                  <li><a href="./business-digital.html" class="gnb-depth-link">디지털사업부</a></li>
+                  <li><a href="./business-operation.html" class="gnb-depth-link">운영사업부</a></li>
+                  <li><a href="./business-support.html" class="gnb-depth-link">기술지원사업부</a></li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+          <li class="gnb-item has-depth">
+            <a href="./solution-infosphere.html" class="gnb-link">솔루션</a>
+            <div class="gnb-depth gnb-depth-wide">
+              <div class="gnb-depth-inner">
+                <ul class="gnb-depth-list">
+                  <li><a href="./solution-infosphere.html" class="gnb-depth-link">IBM InfoSphere Information Server</a></li>
+                  <li><a href="./solution-mstr.html" class="gnb-depth-link">Strategic Inc MSTR</a></li>
+                  <li><a href="./solution-outsourcing.html" class="gnb-depth-link">IT Outsourcing</a></li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+          <li class="gnb-item has-depth">
+            <a href="./support-notice.html" class="gnb-link">고객지원</a>
+            <div class="gnb-depth gnb-depth-small">
+              <div class="gnb-depth-inner">
+                <ul class="gnb-depth-list">
+                  <li><a href="./support-notice.html" class="gnb-depth-link">공지사항</a></li>
+                  <li><a href="./support-contact.html" class="gnb-depth-link">문의하기</a></li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+          <li class="gnb-item has-depth">
+            <a href="./recruit-info.html" class="gnb-link">채용/협업</a>
+            <div class="gnb-depth">
+              <div class="gnb-depth-inner">
+                <ul class="gnb-depth-list">
+                  <li><a href="./recruit-info.html" class="gnb-depth-link">채용안내</a></li>
+                  <li><a href="./recruit-partner.html" class="gnb-depth-link">프리랜서/협력문의</a></li>
+                </ul>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- PC 우측 버튼 -->
+      <a href="./support-contact.html" class="btn btn-primary btn-sm header-contact">
+        프로젝트 문의하기
+        <span class="btn-icon" aria-hidden="true">→</span>
+      </a>
+
+      <!-- 모바일 메뉴 열기 버튼 -->
+      <button type="button" class="mobile-menu-btn" aria-controls="siteGnb" aria-expanded="false" aria-label="모바일 메뉴 열기">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ==============================
+    Main
+    - 메인 섹션은 아직 만들지 않음
+    - 페이지별 콘텐츠는 각 HTML에서 작성
+  =============================== -->
+  <main id="content" class="site-main sub-main policy-main">
+  <!-- Sub Visual -->
+  <section class="sub-visual sub-visual-default" aria-label="서브 비주얼">
+    <div class="inner sub-visual-inner">
+      <h1 class="sub-visual-title">개인정보처리방침</h1>
+      <p class="sub-visual-desc">
+        (주)피앤피컨설팅은 개인정보를 안전하게 보호합니다.
+      </p>
+    </div>
+  </section>
+
+  <!-- Sub Content -->
+  <section class="sub-content">
+    <div class="inner sub-content-inner">
+      <!-- Left Navigation -->
+      <aside class="sub-lnb" aria-label="서브 메뉴">
+        <button type="button" class="sub-lnb-current" aria-expanded="false">
+          <span>현재 메뉴명</span>
+          <span class="sub-lnb-icon" aria-hidden="true"></span>
+        </button>
+
+        <nav class="sub-lnb-nav" aria-label="하위 메뉴">
+          <ul class="sub-lnb-list">
+            <li><a href="#" class="is-active">현재 메뉴명</a></li>
+            <li><a href="#">하위 메뉴명</a></li>
+            <li><a href="#">하위 메뉴명</a></li>
+            <li><a href="#">하위 메뉴명</a></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <!-- Page Body -->
+      <article class="sub-body">
+        <header class="sub-page-head">
+          <span class="sub-page-line" aria-hidden="true"></span>
+          <h2 class="sub-page-title">개인정보처리방침</h2>
+          <p class="sub-page-desc">㈜피앤피컨설팅은 개인정보를 안전하게 보호합니다.</p>
+        </header>
+
+        <!-- 페이지별 본문 시작 -->
+        <div class="sub-page-content">
+          <section class="policy-content">
+  <div class="policy-block">
+    <p>
+      ㈜피앤피컨설팅은 정보주체의 자유와 권리 보호를 위해 개인정보 보호법 및 관계 법령이 정한 바를 준수하며,
+      적법하게 개인정보를 처리하고 안전하게 관리하고 있습니다.
+    </p>
+  </div>
+
+  <section class="policy-section">
+    <h3>제1조 개인정보의 처리 목적</h3>
+    <p>
+      회사는 문의 응대, 서비스 상담, 프로젝트 제안 및 요청사항 확인을 목적으로 개인정보를 처리합니다.
+      처리한 개인정보는 목적 이외의 용도로 이용되지 않으며, 이용 목적이 변경되는 경우에는 관련 법령에 따라 필요한 조치를 이행합니다.
+    </p>
+  </section>
+
+  <section class="policy-section">
+    <h3>제2조 처리하는 개인정보 항목</h3>
+    <p>회사는 홈페이지 문의 과정에서 아래와 같은 개인정보를 처리할 수 있습니다.</p>
+    <ul>
+      <li>필수항목: 이름, 연락처, 이메일, 문의내용</li>
+      <li>자동수집항목: 접속 IP, 쿠키, 서비스 이용기록, 접속 로그</li>
+    </ul>
+  </section>
+
+  <section class="policy-section">
+    <h3>제3조 개인정보의 처리 및 보유기간</h3>
+    <p>
+      회사는 개인정보 수집 및 이용 목적이 달성된 후에는 해당 정보를 지체 없이 파기합니다.
+      단, 관계 법령에 따라 보존할 필요가 있는 경우에는 해당 법령에서 정한 기간 동안 보관합니다.
+    </p>
+  </section>
+
+  <section class="policy-section">
+    <h3>제4조 개인정보의 제3자 제공</h3>
+    <p>
+      회사는 정보주체의 개인정보를 원칙적으로 외부에 제공하지 않습니다.
+      다만, 정보주체의 동의가 있거나 법령에 특별한 규정이 있는 경우에는 예외로 합니다.
+    </p>
+  </section>
+
+  <section class="policy-section">
+    <h3>제5조 개인정보 처리의 위탁</h3>
+    <p>
+      회사는 원활한 서비스 제공을 위하여 개인정보 처리 업무를 외부에 위탁할 수 있습니다.
+      위탁이 발생하는 경우 위탁받는 자와 위탁 업무의 내용을 본 처리방침에 공개하겠습니다.
+    </p>
+  </section>
+
+  <section class="policy-section">
+    <h3>제6조 개인정보의 파기 절차 및 방법</h3>
+    <p>
+      회사는 개인정보 보유기간의 경과, 처리 목적 달성 등 개인정보가 불필요하게 되었을 때에는 지체 없이 해당 개인정보를 파기합니다.
+    </p>
+    <ul>
+      <li>전자적 파일: 복구 또는 재생할 수 없도록 안전하게 삭제</li>
+      <li>종이 문서: 분쇄 또는 소각</li>
+    </ul>
+  </section>
+
+  <section class="policy-section">
+    <h3>제7조 정보주체의 권리와 행사 방법</h3>
+    <p>
+      정보주체는 회사에 대해 개인정보 열람, 정정, 삭제, 처리정지 요구 등의 권리를 행사할 수 있습니다.
+      권리 행사는 서면, 전화, 이메일 등을 통해 요청할 수 있으며 회사는 이에 대해 지체 없이 조치하겠습니다.
+    </p>
+  </section>
+
+  <section class="policy-section">
+    <h3>제8조 개인정보의 안전성 확보조치</h3>
+    <p>
+      회사는 개인정보의 안전성 확보를 위해 관리적, 기술적, 물리적 보호조치를 시행하고 있습니다.
+    </p>
+    <ul>
+      <li>개인정보 취급 직원의 최소화 및 교육</li>
+      <li>개인정보 접근 권한 관리</li>
+      <li>보안 프로그램 설치 및 점검</li>
+      <li>개인정보 보관 장소의 접근 통제</li>
+    </ul>
+  </section>
+
+  <section class="policy-section">
+    <h3>제9조 개인정보 보호책임자</h3>
+    <p>
+      회사는 개인정보 처리에 관한 업무를 총괄하고 개인정보 관련 문의 및 불만 처리를 위하여 아래와 같이 개인정보 보호책임자를 지정하고 있습니다.
+    </p>
+
+    <div class="policy-info-box">
+      <p><strong>개인정보 보호책임자</strong></p>
+      <p>회사명: ㈜피앤피컨설팅</p>
+      <p>전화: 02-501-0900</p>
+      <p>이메일: webmaster@pnpc.co.kr</p>
+    </div>
+  </section>
+
+  <section class="policy-section">
+    <h3>제10조 개인정보처리방침의 변경</h3>
+    <p>
+      본 개인정보처리방침은 시행일로부터 적용되며, 관련 법령 및 회사 정책 변경에 따라 내용이 변경될 수 있습니다.
+    </p>
+    <p class="policy-date">시행일자: 2026년 00월 00일</p>
+  </section>
+</section>
+        </div>
+        <!-- 페이지별 본문 끝 -->
+      </article>
+    </div>
+  </section>
+</main>
+
+  <!-- ==============================
+    Footer
+    - 모든 페이지 공통 영역
+  =============================== -->
+<footer class="site-footer">
+  <div class="inner footer-inner">
+    <div class="footer-info">
+      <a href="./index.html" class="footer-logo" aria-label="PNPC 메인으로 이동">
+        <img src="./images/icon/pnpc-logo-d9.png" alt="PNPC" />
+      </a>
+
+      <p class="footer-company">㈜피앤피컨설팅 ㅣ 대표이사 이순만</p>
+      <address class="footer-address">
+        서울특별시 강남구 테헤란로 310 두꺼비빌딩 8층<br />
+        T. 02-501-0900&nbsp;&nbsp; F. 02-501-1437<br />
+        Email. webmaster@pnpc.co.kr
+      </address>
+    </div>
+
+    <!-- PC 푸터 메뉴: 기존 구조 그대로 -->
+    <div class="footer-nav">
+      <div class="footer-menu">
+        <strong>회사소개</strong>
+        <ul>
+          <li><a href="./company-greeting.html">CEO 인사말</a></li>
+          <li><a href="./company-overview.html">회사개요</a></li>
+          <li><a href="./history.html">연혁</a></li>
+          <li><a href="./organization.html">조직도</a></li>
+          <li><a href="./location.html">오시는 길</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-menu">
+        <strong>사업영역</strong>
+        <ul>
+          <li><a href="./business-data.html">데이터사업부</a></li>
+          <li><a href="./business-digital.html">디지털사업부</a></li>
+          <li><a href="./business-operation.html">운영사업부</a></li>
+          <li><a href="./business-support.html">기술지원사업부</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-menu">
+        <strong>솔루션</strong>
+        <ul>
+          <li><a href="./solution-infosphere.html">IBM InfoSphere<br>
+          Information Sever</a></li>
+          <li><a href="./solution-mstr.html">Strategy Inc MSTR</a></li>
+          <li><a href="./solution-outsourcing.html">IT Outsourcing</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-menu">
+        <strong>고객지원</strong>
+        <ul>
+          <li><a href="./support-notice.html">공지사항</a></li>
+          <li><a href="./support-contact.html">문의하기</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-menu">
+        <strong>채용/협업</strong>
+        <ul>
+          <li><a href="./recruit-info.html">채용안내</a></li>
+          <li><a href="./recruit-partner.html">프리랜서/협력문의</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 모바일 푸터 메뉴: PC에서는 숨김 -->
+    <div class="footer-mobile-nav">
+      <div class="footer-mobile-menu">
+        <button type="button" class="footer-mobile-toggle">
+          <span>회사소개</span>
+          <span class="footer-mobile-icon" aria-hidden="true"></span>
+        </button>
+        <ul class="footer-mobile-depth">
+          <li><a href="./company-greeting.html">CEO 인사말</a></li>
+          <li><a href="./company-overview.html">회사개요</a></li>
+          <li><a href="./history.html">연혁</a></li>
+          <li><a href="./organization.html">조직도</a></li>
+          <li><a href="./location.html">오시는 길</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-mobile-menu">
+        <button type="button" class="footer-mobile-toggle">
+          <span>사업영역</span>
+          <span class="footer-mobile-icon" aria-hidden="true"></span>
+        </button>
+        <ul class="footer-mobile-depth">
+          <li><a href="./business-data.html">데이터사업부</a></li>
+          <li><a href="./business-digital.html">디지털사업부</a></li>
+          <li><a href="./business-operation.html">운영사업부</a></li>
+          <li><a href="./business-support.html">기술지원사업부</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-mobile-menu">
+        <button type="button" class="footer-mobile-toggle">
+          <span>솔루션</span>
+          <span class="footer-mobile-icon" aria-hidden="true"></span>
+        </button>
+        <ul class="footer-mobile-depth">
+          <li><a href="./solution-infosphere.html">IBM InfoSphere</a></li>
+          <li><a href="./solution-mstr.html">Strategy Inc MSTR</a></li>
+          <li><a href="./solution-outsourcing.html">IT Outsourcing</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-mobile-menu">
+        <button type="button" class="footer-mobile-toggle">
+          <span>고객지원</span>
+          <span class="footer-mobile-icon" aria-hidden="true"></span>
+        </button>
+        <ul class="footer-mobile-depth">
+          <li><a href="./support-notice.html">공지사항</a></li>
+          <li><a href="./support-contact.html">문의하기</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-mobile-menu">
+        <button type="button" class="footer-mobile-toggle">
+          <span>채용/협업</span>
+          <span class="footer-mobile-icon" aria-hidden="true"></span>
+        </button>
+        <ul class="footer-mobile-depth">
+          <li><a href="./recruit-info.html">채용안내</a></li>
+          <li><a href="./recruit-partner.html">프리랜서/협력문의</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- footer-bottom은 반드시 footer-inner 밖에 있어야 함 -->
+  <div class="inner footer-bottom">
+    <div class="footer-policy">
+      <a href="./privacy-policy.html">개인정보처리방침</a>
+      <a href="./email-rejection.html">이메일무단수집거부</a>
+    </div>
+    <p class="copyright">© 2006-2026 Pnpc All rights reserved.</p>
+  </div>
+</footer>
+
+  <!-- 위로가기 버튼 -->
+  <button type="button" class="top-btn" aria-label="페이지 상단으로 이동">↑</button>
+
+  <!-- 모든 페이지 공통 JS -->
+  <script src="./script/main.js"></script>
+</body>
+</html>

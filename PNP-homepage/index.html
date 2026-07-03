@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PNPC</title>
+
+  <!-- 모든 페이지 공통 CSS -->
+  <link rel="stylesheet" href="./css/common.css" />
+  <link rel="stylesheet" href="./css/main.css" />
+</head>
+<body>
+  <!-- 키보드 접근성: 본문 바로가기 -->
+  <a href="#content" class="skip-link">본문 바로가기</a>
+
+  <!-- ==============================
+    Header
+    - 모든 페이지 공통 영역
+    - PC: 1차 메뉴 hover 시 2차 메뉴 노출
+    - Mobile: 같은 메뉴 구조를 슬라이드/아코디언으로 사용
+  =============================== -->
+  <header class="site-header">
+    <!-- 모바일 메뉴가 열렸을 때 배경 클릭용 dim -->
+    <div class="gnb-dim" aria-hidden="true"></div>
+
+    <div class="inner header-inner">
+      <!-- 로고: 실제 파일명에 맞게 src 경로만 바꾸면 됩니다. -->
+      <h1 class="logo">
+        <a href="./index.html" aria-label="PNPC 메인으로 이동">
+          <img src="./images/icon/pnpc-logo(color).png" alt="PNPC" />
+        </a>
+      </h1>
+
+      <!-- GNB: PC와 모바일이 같은 HTML을 사용하므로 메뉴를 중복 작성하지 않음 -->
+      <nav id="siteGnb" class="gnb" aria-label="주요 메뉴">
+        <!-- 모바일 메뉴 상단 영역 -->
+        <div class="gnb-mobile-head">
+          <a href="./index.html" class="gnb-mobile-logo" aria-label="PNPC 메인으로 이동">
+            <img src="./images/icon/pnpc-mologo(color).png" alt="PNPC" />
+          </a>
+          <button type="button" class="gnb-close" aria-label="모바일 메뉴 닫기">
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+
+        <ul class="gnb-list">
+          <!-- 현재 페이지의 1차 메뉴에만 is-current를 붙입니다. -->
+          <li class="gnb-item has-depth">
+            <a href="./company-greeting.html" class="gnb-link">회사소개</a>
+            <div class="gnb-depth">
+              <div class="gnb-depth-inner">
+                <ul class="gnb-depth-list">
+                  <li><a href="./company-greeting.html" class="gnb-depth-link">CEO 인사말</a></li>
+                  <li><a href="./company-overview.html" class="gnb-depth-link">회사개요</a></li>
+                  <li><a href="./history.html" class="gnb-depth-link">연혁</a></li>
+                  <li><a href="./organization.html" class="gnb-depth-link">조직도</a></li>
+                  <li><a href="./location.html" class="gnb-depth-link">오시는 길</a></li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+          <li class="gnb-item has-depth">
+            <a href="./business-data.html" class="gnb-link">사업영역</a>
+            <div class="gnb-depth">
+              <div class="gnb-depth-inner">
+                <ul class="gnb-depth-list">
+                  <li><a href="./business-data.html" class="gnb-depth-link">데이터사업부</a></li>
+                  <li><a href="./business-digital.html" class="gnb-depth-link">디지털사업부</a></li>
+                  <li><a href="./business-operation.html" class="gnb-depth-link">운영사업부</a></li>
+                  <li><a href="./business-support.html" class="gnb-depth-link">기술지원사업부</a></li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+          <li class="gnb-item has-depth">
+            <a href="./solution-infosphere.html" class="gnb-link">솔루션</a>
+            <div class="gnb-depth gnb-depth-wide">
+              <div class="gnb-depth-inner">
+                <ul class="gnb-depth-list">
+                  <li><a href="./solution-infosphere.html" class="gnb-depth-link">IBM InfoSphere Information Server</a></li>
+                  <li><a href="./solution-mstr.html" class="gnb-depth-link">Strategic Inc MSTR</a></li>
+                  <li><a href="./solution-outsourcing.html" class="gnb-depth-link">IT Outsourcing</a></li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+          <li class="gnb-item has-depth">
+            <a href="./support-notice.html" class="gnb-link">고객지원</a>
+            <div class="gnb-depth gnb-depth-small">
+              <div class="gnb-depth-inner">
+                <ul class="gnb-depth-list">
+                  <li><a href="./support-notice.html" class="gnb-depth-link">공지사항</a></li>
+                  <li><a href="./support-contact.html" class="gnb-depth-link">문의하기</a></li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+          <li class="gnb-item has-depth">
+            <a href="./recruit-info.html" class="gnb-link">채용/협업</a>
+            <div class="gnb-depth">
+              <div class="gnb-depth-inner">
+                <ul class="gnb-depth-list">
+                  <li><a href="./recruit-info.html" class="gnb-depth-link">채용안내</a></li>
+                  <li><a href="./recruit-partner.html" class="gnb-depth-link">프리랜서/협력문의</a></li>
+                </ul>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- PC 우측 버튼 -->
+      <a href="./support-contact.html" class="btn btn-primary btn-sm header-contact">
+        프로젝트 문의하기
+        <span class="btn-icon" aria-hidden="true">→</span>
+      </a>
+
+      <!-- 모바일 메뉴 열기 버튼 -->
+      <button type="button" class="mobile-menu-btn" aria-controls="siteGnb" aria-expanded="false" aria-label="모바일 메뉴 열기">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="content" class="site-main">
+  <!-- ==============================
+    Main Visual
+  ============================== -->
+  <section class="main-visual" aria-label="메인 비주얼">
+    <div class="main-visual-slider">
+     <div class="main-visual-track">
+      <div class="main-visual-slide main-visual-slide01 is-active" aria-hidden="false">
+        <div class="inner main-visual-inner">
+          <div class="main-visual-content">
+            <h2 class="main-visual-title">
+              AI와 데이터로<br />
+              금융 IT의 경쟁력을<br />
+              높입니다.
+            </h2>
+            <p class="main-visual-desc">
+              데이터 기반 컨설팅과 디지털 혁신으로<br />
+              고객의 가치를 함께 성장시키는 금융 IT 전문기업
+            </p>
+            <div class="main-visual-btns">
+              <a href="./business-data.html" class="main-visual-btn main-visual-btn-primary">
+                사업영역 보기
+                <span aria-hidden="true">→</span>
+              </a>
+              <a href="./solution-infosphere.html" class="main-visual-btn main-visual-btn-outline">
+                솔루션 알아보기
+                <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="main-visual-slide main-visual-slide02" aria-hidden="true">
+        <div class="inner main-visual-inner">
+          <div class="main-visual-content">
+            <h2 class="main-visual-title">
+              데이터 통합으로<br />
+              비즈니스의 흐름을<br />
+              연결합니다.
+            </h2>
+            <p class="main-visual-desc">
+              데이터 수집부터 통합·운영까지<br />
+              안정적인 금융 데이터 환경을 구축합니다.
+            </p>
+            <div class="main-visual-btns">
+              <a href="./business-data.html" class="main-visual-btn main-visual-btn-primary">
+                사업영역 보기
+                <span aria-hidden="true">→</span>
+              </a>
+              <a href="./solution-infosphere.html" class="main-visual-btn main-visual-btn-outline">
+                솔루션 알아보기
+                <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="main-visual-slide main-visual-slide03" aria-hidden="true">
+        <div class="inner main-visual-inner">
+          <div class="main-visual-content">
+            <h2 class="main-visual-title">
+              클라우드와 AI로<br />
+              더 빠른 의사결정을<br />
+              지원합니다.
+            </h2>
+            <p class="main-visual-desc">
+              분석·리포팅·운영 자동화로<br />
+              금융IT 서비스의 활용 가치를 높입니다.
+            </p>
+            <div class="main-visual-btns">
+              <a href="./business-data.html" class="main-visual-btn main-visual-btn-primary">
+                사업영역 보기
+                <span aria-hidden="true">→</span>
+              </a>
+              <a href="./solution-infosphere.html" class="main-visual-btn main-visual-btn-outline">
+                솔루션 알아보기
+                <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+     </div>
+
+      <button type="button" class="main-visual-arrow main-visual-prev" aria-label="이전 비주얼 보기">
+        <span aria-hidden="true">‹</span>
+      </button>
+      <button type="button" class="main-visual-arrow main-visual-next" aria-label="다음 비주얼 보기">
+        <span aria-hidden="true">›</span>
+      </button>
+
+      <div class="main-visual-dots" aria-label="메인 비주얼 슬라이드 선택">
+        <button type="button" class="is-active" aria-label="1번 비주얼 보기" aria-current="true"></button>
+        <button type="button" aria-label="2번 비주얼 보기"></button>
+        <button type="button" aria-label="3번 비주얼 보기"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================
+    Key Points
+  ============================== -->
+  <section class="main-keypoints" aria-label="PNPC 핵심 강점">
+    <div class="keypoint-inner">
+      <div class="keypoint-box">
+        <div class="keypoint-item">
+          <div class="keypoint-icon">
+            <img src="./images/icon/keypoint01.svg" alt="" aria-hidden="true" />
+          </div>
+          <div class="keypoint-text">
+            <strong>Since 1998</strong>
+            <p>29년 금융 IT 전문 노하우<br />신뢰받는 파트너</p>
+          </div>
+        </div>
+
+        <div class="keypoint-item">
+          <div class="keypoint-icon">
+            <img src="./images/icon/keypoint02.svg" alt="" aria-hidden="true" />
+          </div>
+          <div class="keypoint-text">
+            <strong>금융 IT 파트너</strong>
+            <p>금융권 및 공공기관 중심<br />전문 IT 파트너</p>
+          </div>
+        </div>
+
+        <div class="keypoint-item">
+          <div class="keypoint-icon">
+            <img src="./images/icon/keypoint03.svg" alt="" aria-hidden="true" />
+          </div>
+          <div class="keypoint-text">
+            <strong>데이터 &amp; AI 역량</strong>
+            <p>데이터와 AI 기반의<br />통합 적용</p>
+          </div>
+        </div>
+
+        <div class="keypoint-item">
+          <div class="keypoint-icon">
+            <img src="./images/icon/keypoint04.svg" alt="" aria-hidden="true" />
+          </div>
+          <div class="keypoint-text">
+            <strong>End-to-End 서비스</strong>
+            <p>기획부터 운영/기술지원<br />통합 서비스</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================
+    Solution
+  ============================== -->
+  <section class="main-section main-solution">
+    <div class="inner">
+      <div class="main-section-head">
+        <h2 class="main-section-title">주요 솔루션</h2>
+        <p class="main-section-desc">
+          <span class="mo-hide">
+          데이터 통합부터 분석·리포팅까지,</span> 검증된 솔루션으로 금융 IT의 데이터 활용 가치를 높입니다.
+        </p>
+      </div>
+
+      <div class="solution-grid">
+        <a href="./solution.html" class="solution-card solution-card01">
+          <span>AI 기반 데이터 분석</span>
+          <strong>스마트 리포팅 &amp; 대시보드</strong>
+        </a>
+
+        <a href="./solution.html" class="solution-card solution-card02">
+          <span>데이터 통합의 시작</span>
+          <strong>안정적인 ETL 플랫폼</strong>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================
+    Business
+  ============================== -->
+  <section class="main-section main-business">
+    <div class="inner">
+      <div class="main-section-head">
+        <h2 class="main-section-title">핵심 사업분야</h2>
+        <p class="main-section-desc">
+          금융 비즈니스와 IT를 연결하여 데이터 기반의 혁신과 경쟁력있는 운영을 지원합니다.
+        </p>
+      </div>
+
+      <div class="business-grid">
+        <a href="./business.html" class="business-card business-card-blue" aria-label="데이터사업부 페이지로 이동">
+          <div class="business-icon">
+            <img src="./images/icon/business01.svg" alt="" aria-hidden="true" />
+          </div>
+          <h3>데이터사업부</h3>
+          <ul>
+            <li>금융 데이터 자산화 및 전환 컨설팅</li>
+            <li>DW/BI 분석 환경 구축</li>
+            <li>리포팅·대시보드 시스템 구축</li>
+            <li>데이터 품질 및 통합관리</li>
+          </ul>
+        </a>
+
+        <a href="./business.html" class="business-card business-card-green" aria-label="디지털사업부 페이지로 이동">
+          <div class="business-icon">
+            <img src="./images/icon/business02.svg" alt="" aria-hidden="true" />
+          </div>
+          <h3>디지털사업부</h3>
+          <ul>
+            <li>디지털 혁신, 산업무모델 서비스 구축</li>
+            <li>고객 경험 혁신을 이끄는 전환 솔루션</li>
+            <li>디지털 플랫폼 구축</li>
+            <li>채널/서비스 고도화</li>
+          </ul>
+        </a>
+
+        <a href="./business.html" class="business-card business-card-sky" aria-label="운영사업부 페이지로 이동">
+          <div class="business-icon">
+            <img src="./images/icon/business03.svg" alt="" aria-hidden="true" />
+          </div>
+          <h3>운영사업부</h3>
+          <ul>
+            <li>안정적인 고객경험의 24/7 운영 지원</li>
+            <li>인프라 &amp; 시스템 운영 관리</li>
+            <li>서비스 운영 최적 지원</li>
+            <li>장애 예방 및 개선</li>
+          </ul>
+        </a>
+
+        <a href="./business.html" class="business-card business-card-purple" aria-label="기술지원사업부 페이지로 이동">
+          <div class="business-icon">
+            <img src="./images/icon/business04.svg" alt="" aria-hidden="true" />
+          </div>
+          <h3>기술지원사업부</h3>
+          <ul>
+            <li>전문 기술지원으로 안정적 운영 지원</li>
+            <li>운영/관리자 기술지원</li>
+            <li>기술지원 및 문제 해결</li>
+            <li>개선 및 컨설팅</li>
+          </ul>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================
+    Partner
+  ============================== -->
+  <section class="main-section main-partner">
+    <div class="inner">
+      <h2 class="partner-title">Partner &amp; Reference</h2>
+
+      <div class="partner-box">
+        <ul class="partner-list">
+  <li>
+    <a href="https://www.lgcns.com/kr" target="_blank" rel="noopener noreferrer" aria-label="LG CNS 사이트로 이동">
+      <img src="./images/icon/lgcns.svg" alt="LG CNS" />
+    </a>
+  </li>
+  <li>
+    <a href="https://www.skax.co.kr/" target="_blank" rel="noopener noreferrer" aria-label="SK 사이트로 이동">
+      <img src="./images/icon/skc&c.svg" alt="SK" />
+    </a>
+  </li>
+  <li>
+    <a href="https://www.samsungsds.com/kr/index.html" target="_blank" rel="noopener noreferrer" aria-label="Samsung SDS 사이트로 이동">
+      <img src="./images/icon/samsung SDS.svg" alt="Samsung SDS" />
+    </a>
+  </li>
+  <li>
+    <a href="https://www.ibm.com/kr-ko" target="_blank" rel="noopener noreferrer" aria-label="IBM 사이트로 이동">
+      <img src="./images/icon/IBM.svg" alt="IBM" />
+    </a>
+  </li>
+  <li>
+    <a href="https://www.nhbank.com/nhmn/EN_NHMN_01.do" target="_blank" rel="noopener noreferrer" aria-label="NH농협은행 사이트로 이동">
+      <img src="./images/icon/nhbanklogo.svg" alt="NH농협은행" />
+    </a>
+  </li>
+  <li>
+    <a href="https://www.kfcc.co.kr/index.do" target="_blank" rel="noopener noreferrer" aria-label="MG새마을금고 사이트로 이동">
+      <img src="./images/icon/mg.svg" alt="MG새마을금고" />
+    </a>
+  </li>
+</ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+  <!-- ==============================
+    Footer
+    - 모든 페이지 공통 영역
+  =============================== -->
+<footer class="site-footer">
+  <div class="inner footer-inner">
+    <div class="footer-info">
+      <a href="./index.html" class="footer-logo" aria-label="PNPC 메인으로 이동">
+        <img src="./images/icon/pnpc-logo-d9.png" alt="PNPC" />
+      </a>
+
+      <p class="footer-company">㈜피앤피컨설팅 ㅣ 대표이사 이순만</p>
+      <address class="footer-address">
+        서울특별시 강남구 테헤란로 310 두꺼비빌딩 8층<br />
+        T. 02-501-0900&nbsp;&nbsp; F. 02-501-1437<br />
+        Email. webmaster@pnpc.co.kr
+      </address>
+    </div>
+
+    <!-- PC 푸터 메뉴: 기존 구조 그대로 -->
+    <div class="footer-nav">
+      <div class="footer-menu">
+        <strong>회사소개</strong>
+        <ul>
+          <li><a href="./company-greeting.html">CEO 인사말</a></li>
+          <li><a href="./company-overview.html">회사개요</a></li>
+          <li><a href="./history.html">연혁</a></li>
+          <li><a href="./organization.html">조직도</a></li>
+          <li><a href="./location.html">오시는 길</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-menu">
+        <strong>사업영역</strong>
+        <ul>
+          <li><a href="./business-data.html">데이터사업부</a></li>
+          <li><a href="./business-digital.html">디지털사업부</a></li>
+          <li><a href="./business-operation.html">운영사업부</a></li>
+          <li><a href="./business-support.html">기술지원사업부</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-menu">
+        <strong>솔루션</strong>
+        <ul>
+          <li><a href="./solution-infosphere.html">IBM InfoSphere<br>
+          Information Sever</a></li>
+          <li><a href="./solution-mstr.html">Strategy Inc MSTR</a></li>
+          <li><a href="./solution-outsourcing.html">IT Outsourcing</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-menu">
+        <strong>고객지원</strong>
+        <ul>
+          <li><a href="./support-notice.html">공지사항</a></li>
+          <li><a href="./support-contact.html">문의하기</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-menu">
+        <strong>채용/협업</strong>
+        <ul>
+          <li><a href="./recruit-info.html">채용안내</a></li>
+          <li><a href="./recruit-partner.html">프리랜서/협력문의</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 모바일 푸터 메뉴: PC에서는 숨김 -->
+    <div class="footer-mobile-nav">
+      <div class="footer-mobile-menu">
+        <button type="button" class="footer-mobile-toggle">
+          <span>회사소개</span>
+          <span class="footer-mobile-icon" aria-hidden="true"></span>
+        </button>
+        <ul class="footer-mobile-depth">
+          <li><a href="./company-greeting.html">CEO 인사말</a></li>
+          <li><a href="./company-overview.html">회사개요</a></li>
+          <li><a href="./history.html">연혁</a></li>
+          <li><a href="./organization.html">조직도</a></li>
+          <li><a href="./location.html">오시는 길</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-mobile-menu">
+        <button type="button" class="footer-mobile-toggle">
+          <span>사업영역</span>
+          <span class="footer-mobile-icon" aria-hidden="true"></span>
+        </button>
+        <ul class="footer-mobile-depth">
+          <li><a href="./business-data.html">데이터사업부</a></li>
+          <li><a href="./business-digital.html">디지털사업부</a></li>
+          <li><a href="./business-operation.html">운영사업부</a></li>
+          <li><a href="./business-support.html">기술지원사업부</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-mobile-menu">
+        <button type="button" class="footer-mobile-toggle">
+          <span>솔루션</span>
+          <span class="footer-mobile-icon" aria-hidden="true"></span>
+        </button>
+        <ul class="footer-mobile-depth">
+          <li><a href="./solution-infosphere.html">IBM InfoSphere</a></li>
+          <li><a href="./solution-mstr.html">Strategy Inc MSTR</a></li>
+          <li><a href="./solution-outsourcing.html">IT Outsourcing</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-mobile-menu">
+        <button type="button" class="footer-mobile-toggle">
+          <span>고객지원</span>
+          <span class="footer-mobile-icon" aria-hidden="true"></span>
+        </button>
+        <ul class="footer-mobile-depth">
+          <li><a href="./support-notice.html">공지사항</a></li>
+          <li><a href="./support-contact.html">문의하기</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-mobile-menu">
+        <button type="button" class="footer-mobile-toggle">
+          <span>채용/협업</span>
+          <span class="footer-mobile-icon" aria-hidden="true"></span>
+        </button>
+        <ul class="footer-mobile-depth">
+          <li><a href="./recruit-info.html">채용안내</a></li>
+          <li><a href="./recruit-partner.html">프리랜서/협력문의</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- footer-bottom은 반드시 footer-inner 밖에 있어야 함 -->
+  <div class="inner footer-bottom">
+    <div class="footer-policy">
+      <a href="./privacy-policy.html">개인정보처리방침</a>
+      <a href="./email-rejection.html">이메일무단수집거부</a>
+    </div>
+    <p class="copyright">© 2006-2026 Pnpc All rights reserved.</p>
+  </div>
+</footer>
+
+  <!-- 위로가기 버튼 -->
+  <button type="button" class="top-btn" aria-label="페이지 상단으로 이동">↑</button>
+
+  <!-- 모든 페이지 공통 JS -->
+  <script src="./script/main.js"></script>
+</body>
+</html>
