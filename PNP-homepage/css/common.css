@@ -881,18 +881,19 @@ button {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  min-height: 64px;
-  color: #d9d9d9;
-  font-size: 20px;
-  font-weight: 600;
+  min-height: 40px;
+  color:#ffffff;
+  font-size: 16px;
+  line-height: 1.35;
+  font-weight: 700;
   text-align: left;
 }
 
   .footer-mobile-icon {
     position: relative;
-    flex: 0 0 28px;
-    width: 28px;
-    height: 28px;
+    flex: 0 0 24px;
+    width: 24px;
+    height: 24px;
     border: 1px solid rgba(255, 255, 255, 0.8);
   }
 
@@ -907,13 +908,13 @@ button {
   }
 
   .footer-mobile-icon::before {
-    width: 16px;
-    height: 2px;
+    width: 13px;
+    height: 1px;
   }
 
   .footer-mobile-icon::after {
-    width: 2px;
-    height: 16px;
+    width: 1px;
+    height: 13px;
   }
 
   .footer-mobile-menu.is-open .footer-mobile-icon::after {
@@ -930,13 +931,16 @@ button {
   }
 
   .footer-mobile-depth li + li {
-    margin-top: 6px;
+    margin-top: 4px;
   }
 
   .footer-mobile-depth a {
-    font-size: 12px;
-    line-height: 1.6;
-    font-weight: 400;
+    display: block;
+   padding: 2px 0;
+   font-size: 12px;
+   line-height: 1.6;
+   font-weight: 400;
+   color: rgba(255, 255, 255, 0.68);
   }
 
   .footer-bottom {
