@@ -5414,6 +5414,56 @@ button.creative-thumb,
 .responsive-shot {
   cursor: pointer !important;
 }
+
+/* ===== 모바일 3곳 수정 ===== */
+@media screen and (max-width: 600px) {
+
+  /* 1. 소개 - 항목명과 내용 사이 간격 */
+  #about .info-list li {
+    display: grid !important;
+    grid-template-columns: 96px minmax(0, 1fr) !important;
+    column-gap: 16px !important;
+    align-items: start !important;
+  }
+
+  #about .info-list strong,
+  #about .info-list span {
+    margin: 0 !important;
+  }
+
+
+  /* 2. 퍼스널컬러 - 전체 화면 보기 버튼 잘림 수정 */
+  .featured-exam-visual.landing-browser .landing-open {
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    justify-content: center !important;
+    padding: 12px !important;
+    overflow: visible !important;
+  }
+
+  .featured-exam-visual.landing-browser .landing-open span {
+    width: auto !important;
+    max-width: calc(100% - 24px) !important;
+    box-sizing: border-box !important;
+    white-space: nowrap !important;
+  }
+
+
+  /* 3. 기타 자격증 - 항목명과 내용 사이 간격 */
+  #certificate .info-list li {
+    display: grid !important;
+    grid-template-columns: 96px minmax(0, 1fr) !important;
+    column-gap: 16px !important;
+    align-items: start !important;
+  }
+
+  #certificate .info-list strong,
+  #certificate .info-list span {
+    margin: 0 !important;
+  }
+}
 </style>
 </head>
 <body>
