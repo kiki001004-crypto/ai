@@ -5415,89 +5415,54 @@ button.creative-thumb,
   cursor: pointer !important;
 }
 
-/* ===== MOBILE ONLY FIX - PC 유지 ===== */
+
+/* ===== MOBILE ONLY FIX / PC CSS untouched ===== */
 @media (max-width:620px){
 
-  /* 기존 소개/섹션 여백 복구 */
-  .section,
-  .exam-projects {
-    padding-left:20px;
-    padding-right:20px;
+  /* 소개 영역 - 항목과 내용 간격 */
+  .info-list li{
+    display:grid !important;
+    grid-template-columns:90px 1fr !important;
+    gap:14px !important;
+    align-items:start !important;
+    line-height:1.7;
   }
 
-  .exam-head {
-    margin-bottom:32px;
+  .info-list strong{
+    min-width:0 !important;
   }
 
-  .exam-projects {
-    padding-top:72px;
-    padding-bottom:72px;
+  /* 기타 자격증 - 제목과 설명 간격 */
+  .certificate-item{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:flex-start !important;
+    gap:8px !important;
   }
 
-  /* 평가시험 첫 화면 - 모바일 정렬 */
-  .featured-exam {
-    padding:16px;
-    gap:28px;
-    margin-bottom:24px;
+  .certificate-item span{
+    white-space:normal !important;
+    line-height:1.6;
   }
 
-  .featured-exam-visual {
-    width:100%;
+  /* 퍼스널 컬러 모바일 미리보기 잘림 방지 */
+  .featured-exam-visual,
+  .landing-browser{
+    overflow:hidden !important;
   }
 
-  /* 퍼스널 컬러 랜딩 iframe 전용 */
-  .featured-exam-visual.landing-browser {
-    height:360px;
+  .landing-browser iframe{
+    width:100% !important;
+    height:520px !important;
+    transform:none !important;
   }
 
-  .landing-browser iframe {
-    width:160%;
-    height:760px;
-    transform:scale(.625);
-    transform-origin:left top;
-  }
-
-  .featured-exam-copy h3 {
-    font-size:26px;
-    line-height:1.3;
-  }
-
-  .featured-exam-copy > p {
-    font-size:15px;
-  }
-
-  /* 배너/상세페이지 카드 중앙 유지 */
-  .creative-grid {
-    gap:24px;
-  }
-
-  .creative-thumb {
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:14px;
-  }
-
-  .creative-thumb.banner,
-  .creative-thumb.detail {
-    height:auto;
-    min-height:330px;
-  }
-
-  .creative-thumb img {
-    max-width:100%;
-    height:auto;
+  /* 프로젝트 이미지 원본 비율 유지 */
+  .project-image img{
+    height:auto !important;
     object-fit:contain !important;
   }
 
-  .creative-body {
-    padding:22px;
-  }
-
-  /* 카드 사이 간격 */
-  .creative-card {
-    margin-bottom:0;
-  }
 }
 
 </style>
