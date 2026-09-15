@@ -3718,17 +3718,6 @@
       font-weight: 600;
     }
 
-    .landing-browser iframe {
-      display: block;
-      width: 160%;
-      height: 760px;
-      border: 0;
-      transform: scale(.625);
-      transform-origin: left top;
-      background: #fff;
-      pointer-events: none;
-    }
-
     /* 평가시험 썸네일: 자르지 말고 작품 전체 비율을 우선 */
     .creative-thumb {
       height: 390px;
@@ -5419,6 +5408,35 @@ button.creative-thumb,
   }
 }
 
+.landing-preview {
+  width: 100%;
+  height: 680px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+
+.landing-preview iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+
+@media (max-width:620px) {
+
+  .landing-preview {
+    height: 520px;
+  }
+
+  .landing-preview iframe {
+    width: 375px;
+    height: 812px;
+    transform: scale(.75);
+    transform-origin: top left;
+  }
+
+}
+    
 </style>
 </head>
 <body>
@@ -5746,7 +5764,13 @@ button.creative-thumb,
 <span></span><span></span><span></span>
 <b>Original Landing Page</b>
 </div>
-<iframe loading="lazy" src="assets/exam/landingPage/index.html" title="퍼스널 컬러 리얼모델 모집 랜딩페이지 실제 화면"></iframe>
+<div class="landing-preview">
+  <iframe 
+    loading="lazy" 
+    src="assets/exam/landingPage/index.html" 
+    title="퍼스널 컬러 리얼모델 모집 랜딩페이지 실제 화면">
+  </iframe>
+</div>
 </div>
 
 <div class="featured-exam-copy">
