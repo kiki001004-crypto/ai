@@ -5451,12 +5451,21 @@ button.creative-thumb,
     overflow:hidden !important;
   }
 
-  .landing-browser iframe{
-    width:90% !important;
+.landing-browser iframe{
+    width:100% !important;
     height:430px !important;
-    margin:0 auto !important;
     display:block;
 }
+
+.landing-browser{
+    overflow:hidden !important;
+}
+
+.landing-browser iframe{
+    transform:scale(0.75);
+    transform-origin:top center;
+}
+
   /* 프로젝트 이미지 원본 비율 유지 */
   .project-image img{
     height:auto !important;
