@@ -5278,6 +5278,62 @@ button.creative-thumb,
 }
 
 
+
+/* ===== MOBILE FINAL FIX ===== */
+
+@media (max-width:620px){
+
+  /* 소개 정보 간격 */
+  .info-list li{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    align-items:flex-start;
+    padding-bottom:16px;
+  }
+
+  .info-list strong{
+    min-width:0;
+  }
+
+  /* 평가시험 iframe / 랜딩페이지 */
+  .featured-exam-visual,
+  .landing-browser{
+    width:100%;
+    max-width:100%;
+    overflow:hidden;
+  }
+
+  .featured-exam-visual iframe{
+    width:100%;
+    height:520px;
+    display:block;
+    border:0;
+  }
+
+  /* 프로젝트 이미지 잘림 방지 */
+  .project-image img,
+  .before-after img,
+  .evidence-grid img{
+    height:auto !important;
+    max-height:none;
+    object-fit:contain;
+  }
+
+  /* 기타 자격증 간격 */
+  .certificate-item{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:8px;
+  }
+
+  .certificate-item span{
+    white-space:normal;
+  }
+
+}
+
 </style>
 </head>
 <body>
