@@ -1061,12 +1061,6 @@
       line-height: 1.7;
     }
 
-    .project-image img{
-  width:100%;
-  height:auto;
-  object-fit:contain;
-}
-
     @media (max-width: 900px) {
       .secondary-project,
       .secondary-project.reverse {
@@ -3700,6 +3694,13 @@
       align-items: stretch;
     }
 
+    .featured-exam-visual.landing-browser {
+      height: 520px;
+      background: #fff;
+      overflow: hidden;
+      border: 1px solid #e3e3e8;
+    }
+
     .landing-browserbar {
       height: 42px;
       display: flex;
@@ -3722,6 +3723,17 @@
       font-size: 11px;
       color: #777780;
       font-weight: 600;
+    }
+
+    .landing-browser iframe {
+      display: block;
+      width: 160%;
+      height: 760px;
+      border: 0;
+      transform: scale(.625);
+      transform-origin: left top;
+      background: #fff;
+      pointer-events: none;
     }
 
     /* 평가시험 썸네일: 자르지 말고 작품 전체 비율을 우선 */
@@ -3836,12 +3848,162 @@
       box-shadow: 0 18px 38px rgba(75,42,157,.10);
     }
 
+  
+    /* ===== v37 landing preview click / full page ===== */
+    .landing-browser {
+      position: relative;
+    }
+
+    .landing-open {
+      position: absolute;
+      inset: 42px 0 0 0;
+      z-index: 5;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
+      padding: 18px;
+      text-decoration: none;
+      background: linear-gradient(
+        to top,
+        rgba(33, 18, 68, .18) 0%,
+        rgba(33, 18, 68, 0) 34%
+      );
+      opacity: 0;
+      transition: opacity .25s ease;
+      cursor: pointer;
+    }
+
+    .landing-open span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 18px;
+      border-radius: 999px;
+      background: #EEE8FA;
+      color: #4B2A9D;
+      border: 1px solid #D8CCF1;
+      font-size: 14px;
+      font-weight: 700;
+      box-shadow: 0 8px 22px rgba(75,42,157,.12);
+      transition: background .22s ease, color .22s ease, transform .22s ease;
+    }
+
+    .landing-browser:hover .landing-open,
+    .landing-open:focus-visible {
+      opacity: 1;
+    }
+
+    .landing-open:hover span {
+      background: #4B2A9D;
+      color: #fff;
+      transform: translateY(-2px);
+    }
 
     /* 태블릿/모바일에서는 버튼을 항상 보여줌 */
     @media (max-width: 900px) {
       .landing-open {
         opacity: 1;
       }
+    }
+
+  
+    /* ===== v38 clickable large previews ===== */
+    button.creative-thumb {
+      width: 100%;
+      border: 0;
+      font: inherit;
+      cursor: zoom-in;
+    }
+
+    .work-preview {
+      position: relative;
+      cursor: zoom-in;
+    }
+
+    .preview-hint {
+      position: absolute;
+      right: 16px;
+      bottom: 16px;
+      z-index: 4;
+      display: inline-flex;
+      align-items: center;
+      min-height: 40px;
+      padding: 0 15px;
+      border-radius: 999px;
+      background: #EEE8FA;
+      color: #4B2A9D;
+      border: 1px solid #D8CCF1;
+      font-size: 13px;
+      font-weight: 700;
+      opacity: 0;
+      transform: translateY(5px);
+      transition: opacity .22s ease, transform .22s ease, background .22s ease, color .22s ease;
+      pointer-events: none;
+      box-shadow: 0 8px 20px rgba(75,42,157,.12);
+    }
+
+    .work-preview:hover .preview-hint,
+    .work-preview:focus-visible .preview-hint {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .work-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 34px;
+      background: rgba(16,14,22,.88);
+      backdrop-filter: blur(6px);
+    }
+
+    .work-lightbox.is-open {
+      display: flex;
+    }
+
+    .work-lightbox-stage {
+      width: min(1180px, 94vw);
+      max-height: 90vh;
+      overflow: auto;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .work-lightbox-image {
+      display: none;
+      max-width: 100%;
+      height: auto;
+      background: #fff;
+      box-shadow: 0 24px 70px rgba(0,0,0,.28);
+    }
+
+    .work-lightbox-video {
+      display: none;
+      max-width: min(520px, 92vw);
+      max-height: 88vh;
+      background: #000;
+      box-shadow: 0 24px 70px rgba(0,0,0,.32);
+    }
+
+    .work-lightbox-close {
+      position: fixed;
+      top: 22px;
+      right: 28px;
+      z-index: 10001;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.35);
+      background: rgba(255,255,255,.92);
+      color: #4B2A9D;
+      font-size: 30px;
+      line-height: 1;
+      cursor: pointer;
     }
 
     @media (max-width: 900px) {
@@ -5253,49 +5415,89 @@ button.creative-thumb,
   cursor: pointer !important;
 }
 
+/* ===== MOBILE ONLY FIX - PC 유지 ===== */
+@media (max-width:620px){
 
-
-/* ===== FINAL MOBILE ONLY FIX (PC untouched) ===== */
-@media screen and (max-width:600px){
-
-  /* 소개 정보: 라벨/내용 간격 */
-  #about .info-list li{
-    display:grid !important;
-    grid-template-columns:88px 1fr !important;
-    column-gap:14px !important;
-    align-items:start !important;
+  /* 기존 소개/섹션 여백 복구 */
+  .section,
+  .exam-projects {
+    padding-left:20px;
+    padding-right:20px;
   }
 
-  /* 기타 자격증 */
-  .certificate-item{
-    align-items:flex-start !important;
-    gap:8px !important;
-    flex-direction:column !important;
+  .exam-head {
+    margin-bottom:32px;
   }
 
-  .certificate-item span{
-    white-space:normal !important;
+  .exam-projects {
+    padding-top:72px;
+    padding-bottom:72px;
   }
 
-  /* 평가시험 퍼스널컬러: PC 스타일 유지, 모바일 높이만 조정 */
-  .featured-exam-visual{
-    width:100% !important;
-    overflow:hidden !important;
+  /* 평가시험 첫 화면 - 모바일 정렬 */
+  .featured-exam {
+    padding:16px;
+    gap:28px;
+    margin-bottom:24px;
   }
 
-  .featured-exam-visual iframe{
-    width:100% !important;
-    height:520px !important;
-    display:block !important;
-    border:0 !important;
+  .featured-exam-visual {
+    width:100%;
   }
 
-  /* 상세페이지: 모바일에서만 원본 비율 */
-  .project-image img{
-    height:auto !important;
+  /* 퍼스널 컬러 랜딩 iframe 전용 */
+  .featured-exam-visual.landing-browser {
+    height:360px;
+  }
+
+  .landing-browser iframe {
+    width:160%;
+    height:760px;
+    transform:scale(.625);
+    transform-origin:left top;
+  }
+
+  .featured-exam-copy h3 {
+    font-size:26px;
+    line-height:1.3;
+  }
+
+  .featured-exam-copy > p {
+    font-size:15px;
+  }
+
+  /* 배너/상세페이지 카드 중앙 유지 */
+  .creative-grid {
+    gap:24px;
+  }
+
+  .creative-thumb {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:14px;
+  }
+
+  .creative-thumb.banner,
+  .creative-thumb.detail {
+    height:auto;
+    min-height:330px;
+  }
+
+  .creative-thumb img {
+    max-width:100%;
+    height:auto;
     object-fit:contain !important;
   }
 
+  .creative-body {
+    padding:22px;
+  }
+
+  /* 카드 사이 간격 */
+  .creative-card {
+    margin-bottom:0;
+  }
 }
 
 </style>
@@ -5625,11 +5827,11 @@ button.creative-thumb,
 <span></span><span></span><span></span>
 <b>Original Landing Page</b>
 </div>
-<iframe 
-  loading="lazy"
-  src="assets/exam/landingPage/index.html"
-  title="퍼스널 컬러 리얼모델 모집 랜딩페이지 실제 화면">
-</iframe>
+<iframe loading="lazy" src="assets/exam/landingPage/index.html" title="퍼스널 컬러 리얼모델 모집 랜딩페이지 실제 화면"></iframe>
+<a aria-label="퍼스널 컬러 리얼모델 모집 랜딩페이지 전체 화면 보기" class="landing-open" href="assets/exam/landingPage/index.html" rel="noopener noreferrer" target="_blank">
+<span>전체 화면 보기 ↗</span>
+</a>
+</div>
 <div class="featured-exam-copy">
 <span class="project-type">EXAM PROJECT · ORIGINAL LANDING PAGE</span>
 <h3>퍼스널 컬러 리얼모델 모집 랜딩페이지</h3>
