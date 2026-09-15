@@ -5431,26 +5431,6 @@ button.creative-thumb,
     margin: 0 !important;
   }
 
-
-  /* 2. 퍼스널컬러 - 전체 화면 보기 버튼 잘림 수정 */
-  .featured-exam-visual.landing-browser .landing-open {
-    left: 0 !important;
-    right: 0 !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    justify-content: center !important;
-    padding: 12px !important;
-    overflow: visible !important;
-  }
-
-  .featured-exam-visual.landing-browser .landing-open span {
-    width: auto !important;
-    max-width: calc(100% - 24px) !important;
-    box-sizing: border-box !important;
-    white-space: nowrap !important;
-  }
-
-
   /* 3. 기타 자격증 - 항목명과 내용 사이 간격 */
   #certificate .info-list li {
     display: grid !important;
@@ -5465,35 +5445,6 @@ button.creative-thumb,
   }
 }
 
-/* 모바일 - 퍼스널컬러 전체 화면 보기 버튼 위치 수정 */
-@media screen and (max-width: 600px) {
-  .featured-exam-visual.landing-browser {
-    padding-bottom: 90px !important;
-    overflow: visible !important;
-  }
-
-  .featured-exam-visual.landing-browser .landing-open {
-    position: absolute !important;
-    left: 50% !important;
-    right: auto !important;
-    bottom: 20px !important;
-    top: auto !important;
-    width: auto !important;
-    transform: translateX(-50%) !important;
-    padding: 0 !important;
-    overflow: visible !important;
-    z-index: 10 !important;
-  }
-
-  .featured-exam-visual.landing-browser .landing-open span {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: auto !important;
-    max-width: none !important;
-    white-space: nowrap !important;
-  }
-}
 </style>
 </head>
 <body>
@@ -5822,10 +5773,16 @@ button.creative-thumb,
 <b>Original Landing Page</b>
 </div>
 <iframe loading="lazy" src="assets/exam/landingPage/index.html" title="퍼스널 컬러 리얼모델 모집 랜딩페이지 실제 화면"></iframe>
-<a aria-label="퍼스널 컬러 리얼모델 모집 랜딩페이지 전체 화면 보기" class="landing-open" href="assets/exam/landingPage/index.html" rel="noopener noreferrer" target="_blank">
-<span>전체 화면 보기 ↗</span>
-</a>
 </div>
+
+<a aria-label="퍼스널 컬러 리얼모델 모집 랜딩페이지 전체 화면 보기"
+   class="landing-open"
+   href="assets/exam/landingPage/index.html"
+   rel="noopener noreferrer"
+   target="_blank">
+    <span>전체 화면 보기 ↗</span>
+</a>
+
 <div class="featured-exam-copy">
 <span class="project-type">EXAM PROJECT · ORIGINAL LANDING PAGE</span>
 <h3>퍼스널 컬러 리얼모델 모집 랜딩페이지</h3>
