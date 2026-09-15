@@ -3694,13 +3694,6 @@
       align-items: stretch;
     }
 
-    .featured-exam-visual.landing-browser {
-      height: 520px;
-      background: #fff;
-      overflow: hidden;
-      border: 1px solid #e3e3e8;
-    }
-
     .landing-browserbar {
       height: 42px;
       display: flex;
@@ -3852,25 +3845,6 @@
     /* ===== v37 landing preview click / full page ===== */
     .landing-browser {
       position: relative;
-    }
-
-    .landing-open {
-      position: absolute;
-      inset: 42px 0 0 0;
-      z-index: 5;
-      display: flex;
-      align-items: flex-end;
-      justify-content: flex-end;
-      padding: 18px;
-      text-decoration: none;
-      background: linear-gradient(
-        to top,
-        rgba(33, 18, 68, .18) 0%,
-        rgba(33, 18, 68, 0) 34%
-      );
-      opacity: 0;
-      transition: opacity .25s ease;
-      cursor: pointer;
     }
 
     .landing-open span {
@@ -5442,33 +5416,6 @@ button.creative-thumb,
   #certificate .info-list strong,
   #certificate .info-list span {
     margin: 0 !important;
-  }
-}
-
-/* 퍼스널컬러 랜딩페이지 모바일 미리보기 수정 */
-@media screen and (max-width: 600px) {
-
-  .featured-exam-visual.landing-browser {
-    height: auto !important;
-    overflow: hidden !important;
-  }
-
-  .featured-exam-visual.landing-browser iframe {
-    width: 100% !important;
-    height: 420px !important;
-    display: block !important;
-    border: 0 !important;
-  }
-
-  .featured-exam-visual.landing-browser .landing-open {
-    position: relative !important;
-    display: flex !important;
-    justify-content: center !important;
-    margin: 20px auto !important;
-    transform: none !important;
-    left: auto !important;
-    right: auto !important;
-    bottom: auto !important;
   }
 }
 
